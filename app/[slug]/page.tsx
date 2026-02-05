@@ -4,8 +4,8 @@ import Link from "next/link"
 import { Metadata } from "next"
 import { getPostBySlug, getAllPosts } from "@/lib/posts"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft} from "lucide-react"
-import ShareButton from "@/components/share" 
+import { ArrowLeft } from "lucide-react"
+import ShareButton from "@/components/share"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -79,7 +79,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
-  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://driveexplorer.pro'}/${slug}`
+  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://webscraper.pro'}/${slug}`
   const shareText = `Check out this post: ${post.title} - ${post.excerpt}`
   const shareTitle = encodeURIComponent(post.title)
   const shareDescription = encodeURIComponent(post.excerpt)
@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <h1 className="text-4xl md:text-5xl font-heading mb-6 leading-tight">{post.title}</h1>
             <div className="flex flex-wrap items-center gap-1 text-muted-foreground">
               By
-              <Link 
+              <Link
                 href={`/author/${encodeURIComponent(post.author)}`}
                 className="hover:text-primary transition-colors"
               >
@@ -128,7 +128,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <span className="px-2">•</span>
               <span>{post.date}</span>
               <span className="px-2">•</span>
-              <Link 
+              <Link
                 href={`/category/${encodeURIComponent(post.category)}`}
                 className="hover:text-primary transition-colors"
               >
@@ -149,10 +149,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <footer className="pt-8 border-t border-border/50">
             <h3 className="text-lg font-semibold mb-6">Share this article</h3>
             <div className="flex flex-wrap gap-3">
-              <ShareButton 
-                title={post.title} 
-                excerpt={post.excerpt} 
-                url={postUrl} 
+              <ShareButton
+                title={post.title}
+                excerpt={post.excerpt}
+                url={postUrl}
               />
               {/* <Button
                 variant="outline"

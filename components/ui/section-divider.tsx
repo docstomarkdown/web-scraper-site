@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { fadeUpVariant } from "@/lib/framer-animations";
 import { cn } from "@/lib/utils";
 
 interface SectionDividerProps {
@@ -7,15 +9,15 @@ interface SectionDividerProps {
     className?: string;
 }
 
-export function SectionDivider({ 
-    color = "blue",
-    className 
-}: SectionDividerProps) {
-    const bgColor = color === "primary" ? "bg-primary/20" : "bg-[#2772ed]/20";
-    
+export function SectionDivider({ color = "blue", className }: SectionDividerProps) {
     return (
-        <div className={cn("flex items-center justify-center mb-5", className)}>
-            <div className={cn("w-1.5 h-1.5 rounded-full", bgColor)}></div>
-        </div>
+        <motion.div
+            variants={fadeUpVariant}
+            className={cn(
+                "w-20 h-1.5 rounded-full mx-auto mb-6",
+                color === "primary" ? "bg-primary" : "bg-blue-600",
+                className
+            )}
+        />
     );
 }

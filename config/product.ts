@@ -42,7 +42,7 @@ export const pricing = {
       features: [
         "Up to 100 file uploads/month",
         "Basic file organization",
-        "Single sheet integration",
+        "Excel & CSV export",
         "Email support",
       ],
       ctaText: "Get Started",
@@ -57,7 +57,7 @@ export const pricing = {
       features: [
         "Unlimited file uploads",
         "Advanced file organization",
-        "Multiple sheet integration",
+        "Advanced export options",
         "Priority support",
         "Custom folder structures",
       ],
@@ -102,7 +102,7 @@ export const productConfig = {
     image: "hero-image.png",
     version: "1.0.0",
     lastUpdated: "2026-02-02",
-    supportmail: "support@webscraper.pro",
+    supportmail: "vikram@thinksolv.com",
   },
 
   // Hero section
@@ -181,7 +181,7 @@ export const productConfig = {
         icon: FileSpreadsheet,
         title: "Export to Any Format",
         description:
-          "Export your data to CSV, JSON, Excel, or Google Sheets.",
+          "Export your data to CSV, JSON, or Excel.",
       },
       {
         icon: Upload,
@@ -290,7 +290,7 @@ export const productConfig = {
       },
       {
         quote:
-          "Exporting to Google Sheets is seamless. Highly recommended for non-technical users.",
+          "Exporting data is seamless. Highly recommended for non-technical users.",
         author: "Emily Rodriguez",
         position: "Product Manager, GlobalFirm",
         avatar:
@@ -345,40 +345,40 @@ export const productConfig = {
 
   // Use cases section
   useCases: {
-    title: "Perfect for Every Team",
+    title: "Built for E-commerce Growth",
     subtitle:
-      "See how different teams use Web Scraper Pro to streamline their workflows",
+      "Everything you need to stay competitive in the fast-paced world of e-commerce.",
     cases: [
       {
-        title: "Marketing Teams",
+        title: "Price Monitoring",
         description:
-          "Gather competitive intelligence, monitor trends, and analyze social sentiment.",
+          "Track competitor prices in real-time. Adjust your pricing strategy dynamically to win the Buy Box and maximize margins.",
         icon: BarChart3,
         features: [
-          "Competitor tracking",
-          "Trend analysis",
-          "Lead generation",
+          "Real-time price tracking",
+          "Dynamic pricing alerts",
+          "Historical price trends",
         ],
         image:
-          "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
+          "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
       },
       {
-        title: "Sales Teams",
+        title: "Product Research",
         description:
-          "Build lead lists, enrich contact data, and monitor prospect activities.",
-        icon: Users,
-        features: ["Lead building", "Data enrichment", "Prospect monitoring"],
+          "Analyze top-selling products, identify gaps in the market, and validate new product ideas with data-backed insights.",
+        icon: Search,
+        features: ["Bestseller analysis", "Gap analysis", "Market validation"],
         image:
-          "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
+          "https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
       },
       {
-        title: "Researchers",
+        title: "Competitor Analysis",
         description:
-          "Collect data for academic research, market studies, and content aggregation.",
-        icon: FolderOpen,
-        features: ["Data collection", "Content aggregation", "Analysis"],
+          "Monitor competitor inventory, promotions, and customer reviews to stay one step ahead in your niche.",
+        icon: Users, // Or Store/ShoppingBag if available, sticking to existing imports for safety unless I add more
+        features: ["Inventory tracking", "Review sentiment", "Promotion monitoring"],
         image:
-          "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
+          "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
       },
     ],
   },
@@ -400,7 +400,7 @@ export const productConfig = {
   contact: {
     heading: "Get in Touch",
     subheading: "Have questions about Web Scraper Pro? We're here to help.",
-    email: "support@webscraper.pro",
+    email: "vikram@thinksolv.com",
     address:
       "Thinksolv Technologies Pvt Ltd, KCT Tech Park, Coimbatore, India.",
     socialLinks: {

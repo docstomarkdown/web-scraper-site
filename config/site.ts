@@ -52,7 +52,7 @@ export const navigationConfig = {
     },
     {
       title: "Docs",
-      href: "https://docs.driveexplorer.pro",
+      href: "https://docs.webscraper.pro",
       external: true,
     },
     {

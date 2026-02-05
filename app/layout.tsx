@@ -55,8 +55,8 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: '@driveexplorer',
-    site: '@driveexplorer',
+    creator: '@webscraperpro',
+    site: '@webscraperpro',
   },
   robots: {
     index: false,

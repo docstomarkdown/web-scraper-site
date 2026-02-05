@@ -1,6 +1,6 @@
 # SEO Metadata Template for Tools
 
-## CSV/Google Sheets Format
+## CSV/Spreadsheet Format
 
 Use this format to prepare metadata for all tools. Each row represents one tool.
 
@@ -85,7 +85,7 @@ invoice-generator|Free Invoice Generator Online | Create Professional PDF Invoic
 28. resume-generator
 29. appointment-letter-generator
 
-### Example for Google Sheets:
+### Example for Spreadsheet:
 
 Create a sheet with these columns:
 - Column A: tool_slug

@@ -1,20 +1,17 @@
 # Who we are
-Our website address is: https://www.driveexplorer.pro.
+Our website address is: https://www.webscraper.pro.
 
 At Web Scraper Pro ("We", "Us", "Our"), we respect the client's ("You", "Your" or "User") privacy and protect it seriously. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us.
 
-## Limited Use Requirements
-Web Scraper respects your privacy and only obtain, use the minimum necessary information from Google APIs to provide our services. Web Scraper use and transfer to any other app of information received from Google APIs will adhere to Google API Services User Data Policy, including the Limited Use requirements.
+## Data Usage Policy
+Web Scraper Pro respects your privacy. We process data locally on your device where possible. Any data transfer to third-party services (such as cloud storage integrations) is done only at your explicit request and adheres to strict privacy standards.
 
-## Google OAuth Permissions Overview
-We request specific permissions through Google OAuth to enable the app's functionality, as explained against each permission stated below:
+## Application Permissions Overview
+We request specific permissions to enable the app's functionality:
 
-- **See, edit, create, and delete only the specific Google Drive files you use with this app** – To upload the files to your Google Drive and list selected files from Google Drive into Sheets.
-- **View and manage documents that this application has been installed in** – To display the add-on sidebar if you want to list files inside the Google Docs.
-- **View and manage spreadsheets that this application has been installed in** – To display the add-on sidebar to upload files to Google Drive from Google Sheets and list files from Google Drive into Google Sheets.
-- **Connect to an external service** – To interact with the Web Scraper Pro license server.
-- **Display and run third-party web content in prompts and sidebars inside Google applications** – To display the add-on as a right sidebar that provides the option to interact with the Google Drive.
-- **Allow this application to run when you are not present** – This permission is a requirement for the OAuth token generation, which is essential for enabling the Google Picker API. The Google Picker allows you to select files from Google Drive that you'd like to add to your Google Sheets.
+- **Access to all websites**: To extract data from the pages you visit as requested by you.
+- **Downloads**: To export extracted data to your local device in formats like CSV, JSON, or Excel.
+- **Cloud Integration**: To optionally upload scraped data to your configured cloud storage providers if you choose to connect them.
 
 ## What information do we collect?
 When you use our app, we collect your email to validate your Web Scraper Pro license on a per-user basis and track service usage for individual users.
@@ -39,7 +36,7 @@ We take a number of steps to protect your information, including:
 - You can delete or deactivate your account. If your personal information changes, or if you no longer desire our service, you can delete or deactivate your account.
 - We may disclose your personal information as required by law. We may disclose your personal information as required by law, such as to comply with a subpoena, bankruptcy proceedings, or similar legal process.
 
-For any other queries, contact us at vikram@driveexplorer.pro
+For any other queries, contact us at vikram@thinksolv.com
 
 ## Comments in Blog Posts
 When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor's IP address and browser user agent string to help spam detection.

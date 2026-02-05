@@ -64,7 +64,7 @@ const pricingData = {
       features: [
         "50,000 credits / month",
         "Cloud Scraper & Scheduling",
-        "Google Sheets Sync",
+        "Advanced Exports",
         "Premium Proxy Rotation",
       ],
       ctaText: "Start Free Trial",
@@ -167,99 +167,90 @@ export default function PricingSection() {
               >
                 <Card
                   className={cn(
-                    "flex flex-col w-full border border-slate-200 hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-md relative bg-white",
-                    plan.popular && "border-primary/40"
+                    "flex flex-col w-full transition-all duration-300 relative bg-white overflow-hidden",
+                    plan.popular
+                      ? "border-blue-200 shadow-xl shadow-blue-900/5 scale-105 z-10"
+                      : "border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300"
                   )}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                      <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-md whitespace-nowrap">
+                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600" />
+                  )}
+
+                  {plan.popular && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <span className="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full font-semibold border border-blue-100">
                         Most Popular
                       </span>
                     </div>
                   )}
-                  <CardHeader className="pb-4">
-                    <CardTitle className="font-heading text-lg font-semibold leading-[1.2] mb-2 text-slate-700">
+
+                  <CardHeader className="pb-4 pt-8">
+                    <CardTitle className="font-heading text-xl font-bold leading-tight mb-2 text-slate-900">
                       {plan.name}
                     </CardTitle>
-                    <CardDescription className="text-sm text-slate-600 font-normal leading-[1.5] mb-4">
+                    <CardDescription className="text-sm text-slate-500 font-normal mb-6 min-h-[40px]">
                       {plan.description}
                     </CardDescription>
-                    <div className="h-14 flex items-center">
+
+                    <div className="h-14 flex items-end">
                       <AnimatePresence mode="wait">
                         <motion.div
                           key={`${plan.name}-${isYearly ? "yearly" : "monthly"}`}
-                          initial={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 20 }}
+                          exit={{ opacity: 0, y: 10 }}
                           transition={priceTransition}
-                          className="flex items-baseline"
+                          className="flex items-baseline gap-1"
                         >
-                          <span className="text-4xl text-primary font-heading">
+                          <span className="text-4xl font-bold text-slate-900 tracking-tight">
                             {planData.price}
                           </span>
                           {planData.price !== "Free" &&
                             planData.price !== "Custom" && (
-                              <span className="text-sm text-slate-500 ml-1">
+                              <span className="text-slate-500 font-medium text-sm">
                                 /{isYearly ? "year" : "month"}
                               </span>
                             )}
                         </motion.div>
                       </AnimatePresence>
                     </div>
-                    {/* {isYearly &&
-                      plan.yearly.price !== "Free" &&
-                      plan.yearly.price !== "Custom" &&
-                      plan.monthly.price !== "Free" &&
-                      plan.monthly.price !== "Custom" && (
-                        <div className="mt-1 text-sm text-muted-foreground">
-                          $
-                          {Math.round(
-                            Number(plan.yearly.price.replace("$", "")) / 12
-                          )}{" "}
-                          per month
-                        </div>
-                      )} */}
                   </CardHeader>
-                  <CardContent className="flex-grow py-4">
-                    <ul className="space-y-2.5">
+
+                  <CardContent className="flex-grow py-6">
+                    <div className="w-full h-px bg-slate-100 mb-6" />
+                    <ul className="space-y-4">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start">
-                          <Check className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-0.5" />
-                          <span className="text-sm text-slate-600 font-normal leading-[1.5]">{feature}</span>
+                          <div className={cn(
+                            "rounded-full p-1 mr-3 shrink-0 mt-0.5",
+                            plan.popular ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-600"
+                          )}>
+                            <Check className="h-3 w-3" strokeWidth={3} />
+                          </div>
+                          <span className="text-sm text-slate-700 font-medium leading-relaxed">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </CardContent>
-                  <CardFooter className="pt-4">
-                    {plan.popular ? (
-                      <Button
-                        asChild
-                        size="lg"
-                        className="relative group w-full h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 border-0 rounded-xl overflow-hidden"
-                      >
-                        <Link href={planData.ctaurl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                          <span className="relative z-10">{plan.ctaText}</span>
-                          <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                        </Link>
-                      </Button>
-                    ) : (
-                      <Button
-                        asChild
-                        size="lg"
-                        variant="outline"
-                        className={cn(
-                          "w-full h-12 border-2 border-slate-300 hover:border-blue-400 bg-white hover:bg-blue-50/50 text-slate-700 hover:text-blue-700 font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300",
-                          plan.ctaText === "Contact Sales" && "hover:border-slate-400 hover:bg-slate-50/50 hover:text-slate-800"
-                        )}
-                      >
-                        <Link href={planData.ctaurl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                          {plan.ctaText}
-                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                        </Link>
-                      </Button>
-                    )}
+
+                  <CardFooter className="pt-2 pb-8">
+                    <Button
+                      asChild
+                      size="lg"
+                      variant={plan.popular ? "default" : "outline"}
+                      className={cn(
+                        "w-full h-12 rounded-xl font-semibold text-sm transition-all duration-300",
+                        plan.popular
+                          ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30"
+                          : "border-slate-200 text-slate-700 hover:border-blue-600 hover:text-blue-600 hover:bg-white"
+                      )}
+                    >
+                      <Link href={planData.ctaurl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                        {plan.ctaText}
+                        {plan.popular && <ArrowRight className="w-4 h-4" />}
+                      </Link>
+                    </Button>
                   </CardFooter>
                 </Card>
               </motion.div>

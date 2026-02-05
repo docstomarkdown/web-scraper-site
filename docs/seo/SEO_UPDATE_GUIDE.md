@@ -6,7 +6,7 @@ I've created a template for you to fill in. Here's how to use it:
 
 ### Step 1: Prepare Your Data
 
-Use the `seo-metadata-template.csv` file as a starting point, or create a Google Sheet with these columns:
+Use the `seo-metadata-template.csv` file as a starting point, or create a spreadsheet with these columns:
 
 | Column | Description | Example | Notes |
 |--------|-------------|---------|-------|
@@ -32,8 +32,8 @@ Copy the template row for each tool and fill in the details. Make sure:
 
 ### Step 3: Export Your Data
 
-**Option A: Google Sheets**
-1. Create a Google Sheet with the columns above
+**Option A: Spreadsheet**
+1. Create a spreadsheet with the columns above
 2. Fill in all 29 rows
 3. Export as CSV (File → Download → Comma-separated values)
 4. Share the CSV file with me
