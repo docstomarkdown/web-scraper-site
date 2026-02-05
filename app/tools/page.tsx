@@ -44,6 +44,7 @@ const toolDescriptions: Record<string, string> = {
     "Experience Letter Generator": "Generate professional experience letters",
     "Salary Slip Generator": "Create detailed payslips with deductions and earnings",
     "Checklist Generator": "Build custom checklists for any workflow",
+    "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
 };
 
 export default function ToolsPage() {

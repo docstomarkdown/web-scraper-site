@@ -25,7 +25,19 @@ export const siteConfig = {
 
 // Tools groups configuration (exported separately for tools page)
 // Tools groups configuration (exported separately for tools page)
-export const toolsGroups: { title: string; icon: string; items: { title: string; href: string }[] }[] = [];
+// Tools groups configuration (exported separately for tools page)
+export const toolsGroups = [
+  {
+    title: "E-commerce Tools",
+    icon: "shopping-cart",
+    items: [
+      {
+        title: "Dropshipping Profit Calculator",
+        href: "/tools/dropshipping-profit-calculator",
+      },
+    ],
+  },
+];
 
 // Navigation
 export const navigationConfig = {
