@@ -2,14 +2,18 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { CalculatorInput } from "./CalculatorInput"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { IndianRupee, Sparkles } from "lucide-react"
-import { FadeIn } from "./FadeIn"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Sparkles, Globe, HelpCircle, Info } from "lucide-react"
+import { CurrencyCombobox } from "@/components/ui/currency-combobox"
+import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_components"
+
 
 export function Calculator() {
     // State for inputs - initialized as empty for placeholder effect
+    const [currency, setCurrency] = useState("USD")
     const [purchasePrice, setPurchasePrice] = useState<number | "">("")
     const [salesPrice, setSalesPrice] = useState<number | "">("")
     const [ordersReceived, setOrdersReceived] = useState<number | "">("")
@@ -20,6 +24,23 @@ export function Calculator() {
 
     // Helper to safely get number for calculation
     const val = (v: number | "") => (v === "" ? 0 : v)
+
+    // Currency symbols map
+    const currencySymbols: Record<string, string> = {
+        USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
+        AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
+        RUB: '₽', ZAR: 'R', SEK: 'kr', NOK: 'kr', DKK: 'kr', PLN: 'zł', THB: '฿',
+        IDR: 'Rp', MYR: 'RM', PHP: '₱', VND: '₫', TRY: '₺', SAR: '﷼', NZD: 'NZ$',
+        EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
+    }
+    const getSymbol = () => currencySymbols[currency] || "$"
+
+    const scrollToGuide = () => {
+        const element = document.getElementById('how-to-use');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     // Calculations
     const purchasePriceVal = val(purchasePrice)
@@ -46,12 +67,14 @@ export function Calculator() {
 
     // Currency formatter
     const formatCurrency = (val: number) => {
-        return new Intl.NumberFormat('en-IN', {
+        return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'INR',
+            currency: currency,
             maximumFractionDigits: 0
         }).format(val)
     }
+
+    const symbol = getSymbol()
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
@@ -61,26 +84,44 @@ export function Calculator() {
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50">
-                                <CardTitle className="text-2xl font-bold text-slate-900 w-fit">
-                                    Calculator Inputs
-                                </CardTitle>
-                                <CardDescription className="pt-1">Enter your product and marketing costs below.</CardDescription>
+                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-3">
+                                        <CardTitle className="text-2xl font-bold text-blue-700">
+                                            Calculator Inputs
+                                        </CardTitle>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={scrollToGuide}
+                                            className="text-slate-600 hover:text-slate-900 hover:bg-slate-100 gap-1.5 h-8 px-3 rounded-full text-xs font-medium"
+                                        >
+                                            <HelpCircle className="w-3.5 h-3.5" />
+                                            How to Use
+                                        </Button>
+                                    </div>
+                                    <CardDescription>Enter your product and marketing costs below.</CardDescription>
+                                </div>
+                                <div className="w-[180px]">
+                                    <CurrencyCombobox value={currency} onValueChange={setCurrency} />
+                                </div>
                             </CardHeader>
                             <CardContent className="space-y-6 pt-6">
                                 <CalculatorInput
-                                    label="Purchase Price (₹)"
+                                    label={`Purchase Price (${symbol})`}
                                     value={purchasePrice}
                                     onChange={setPurchasePrice}
-                                    placeholder="500"
+                                    placeholder="50"
                                     max={10000}
+                                    tooltip="The cost to buy the product from your supplier."
                                 />
                                 <CalculatorInput
-                                    label="Sales Price (₹)"
+                                    label={`Sales Price (${symbol})`}
                                     value={salesPrice}
                                     onChange={setSalesPrice}
-                                    placeholder="1500"
+                                    placeholder="150"
                                     max={20000}
+                                    tooltip="The price you sell the product for on your store."
                                 />
                                 <CalculatorInput
                                     label="Orders Received"
@@ -88,6 +129,7 @@ export function Calculator() {
                                     onChange={setOrdersReceived}
                                     placeholder="100"
                                     max={10000}
+                                    tooltip="Total number of orders you received from customers."
                                 />
                                 <CalculatorInput
                                     label="Cancelled Qty (Before Shipping)"
@@ -95,6 +137,7 @@ export function Calculator() {
                                     onChange={setCancelledQty}
                                     placeholder="5"
                                     max={ordersReceivedVal}
+                                    tooltip="Orders cancelled by customers before you shipped them."
                                 />
                                 <CalculatorInput
                                     label="Return to Origin (RTO %)"
@@ -102,29 +145,26 @@ export function Calculator() {
                                     onChange={setRtoPercentage}
                                     placeholder="15"
                                     max={100}
-                                    tooltip="Percentage of orders returned before delivery. For COD in India, 15-30% is common."
+                                    tooltip="Percentage of orders returned before delivery. For COD markets, 15-30% is common."
                                 />
                                 <CalculatorInput
-                                    label="Ads Cost per Product (CPA) (₹)"
+                                    label={`Ads Cost per Product (CPA) (${symbol})`}
                                     value={adsCostPerProduct}
                                     onChange={setAdsCostPerProduct}
-                                    placeholder="200"
+                                    placeholder="20"
                                     max={5000}
                                     tooltip="Cost Per Acquisition - your total ad spend divided by number of orders."
                                 />
 
-                                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 mt-4">
+                                <div className="mt-4">
                                     <CalculatorInput
-                                        label="Return to Origin Cost (₹)"
+                                        label={`Return to Origin Cost (${symbol})`}
                                         value={shippingCost}
                                         onChange={setShippingCost}
-                                        placeholder="80"
+                                        placeholder="8"
                                         max={500}
                                         tooltip="How much you pay the courier per order. You pay this twice for returned orders."
                                     />
-                                    <p className="text-[11px] text-slate-400 mt-2 text-right">
-                                        *Applied to delivered orders and RTOs (round-trip)
-                                    </p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -142,16 +182,19 @@ export function Calculator() {
                             <CardHeader className="pb-2 relative z-10">
                                 <div className="flex items-center justify-between">
                                     <CardTitle className={`text-sm font-medium uppercase tracking-wider ${netProfit >= 0 ? 'text-blue-200' : 'text-red-200'}`}>Net Profit / Loss</CardTitle>
-                                    <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-800/50 px-2 py-1 rounded-full">
-                                        <Sparkles className="w-3 h-3 text-emerald-400" />
-                                        <span>Live</span>
+                                    <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400">
+                                        <div className="relative flex h-2 w-2">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                        </div>
+                                        Live
                                     </div>
                                 </div>
                             </CardHeader>
                             <CardContent className="relative z-10">
                                 <div className="flex items-baseline gap-3 mb-6">
                                     <span className={`text-4xl font-bold tracking-tight ${netProfit >= 0 ? 'text-white' : 'text-red-300'}`}>
-                                        {formatCurrency(netProfit)}
+                                        <Counter value={netProfit} formatter={formatCurrency} key={currency} />
                                     </span>
                                     {deliveredOrders > 0 && (
                                         <span className={`text-sm font-bold px-3 py-1 rounded-full ${netProfit >= 0 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/30 text-red-200'}`}>
@@ -161,25 +204,45 @@ export function Calculator() {
                                 </div>
 
                                 <div className="space-y-3 pt-4 border-t border-slate-700/50">
-                                    <Row label="Revenue" value={formatCurrency(revenueGenerated)} className="text-slate-300" />
-                                    <Row label="Total Ads Cost" value={formatCurrency(totalAdsCost)} className="text-slate-400" />
-                                    <Row label="Purchase Cost" value={formatCurrency(totalPurchaseCost)} className="text-slate-400" />
-                                    <Row label="Shipping & RTO" value={formatCurrency(totalRtoCost + (deliveredOrders * shippingCostVal))} className="text-slate-400" />
+                                    <Row label="Revenue" value={<Counter value={revenueGenerated} formatter={formatCurrency} key={currency} />} className="text-slate-300" />
+                                    <Row label="Total Ads Cost" value={<Counter value={totalAdsCost} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
+                                    <Row label="Purchase Cost" value={<Counter value={totalPurchaseCost} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
+                                    <Row label="Shipping & RTO" value={<Counter value={totalRtoCost + (deliveredOrders * shippingCostVal)} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
                                 </div>
                             </CardContent>
                         </Card>
 
                         {/* Metrics Grid */}
                         <div className="grid grid-cols-2 gap-3">
-                            <ResultCard title="Margin per Sale" value={formatCurrency(marginPerOrder)} dark />
-                            <ResultCard title="Return on Ad Spend (ROAS)" value={`${totalAdsCost > 0 ? ((revenueGenerated / totalAdsCost).toFixed(2)) + 'X' : '0X'}`} dark />
-                            <ResultCard title="Delivered" value={`${deliveredOrders}`} dark />
-                            <ResultCard title="Return to Origin Orders (RTO)" value={`${rtoQty}`} darkwarning />
+                            <ResultCard
+                                title="Margin per Sale"
+                                value={<Counter value={marginPerOrder} formatter={formatCurrency} key={currency} />}
+                                dark
+                                tooltip="The profit you make on each sale before advertising and RTO costs. Calculated as: Selling Price - Product Cost."
+                            />
+                            <ResultCard
+                                title="Return on Ad Spend (ROAS)"
+                                value={<><Counter value={totalAdsCost > 0 ? (revenueGenerated / totalAdsCost) : 0} formatter={(v) => v.toFixed(2)} />X</>}
+                                dark
+                                tooltip="Revenue generated for every ₹1 spent on ads. A ROAS of 4X means you earned ₹4 for every ₹1 in ads. Aim for 4X+ after accounting for RTOs."
+                            />
+                            <ResultCard
+                                title="Delivered"
+                                value={<Counter value={deliveredOrders} />}
+                                dark
+                                tooltip="Total orders that were successfully delivered to customers. This excludes cancelled orders and RTO orders."
+                            />
+                            <ResultCard
+                                title="Return to Origin Orders (RTO)"
+                                value={<Counter value={rtoQty} />}
+                                darkwarning
+                                tooltip="Orders that were shipped but returned undelivered (customer refused, wrong address, etc). Each RTO costs you shipping both ways + wasted ad spend."
+                            />
                         </div>
 
                         {/* Context Summary */}
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
-                            If you purchase products at <strong>{formatCurrency(purchasePriceVal)}</strong> each and sell them at <strong>{formatCurrency(salesPriceVal)}</strong> each, receiving a total of <strong>{ordersReceivedVal}</strong> orders (with <strong>{deliveredOrders}</strong> orders delivered), your total profit or loss would be <strong>{formatCurrency(netProfit)}</strong>.
+                            If you purchase at <strong><Counter value={purchasePriceVal} formatter={formatCurrency} key={currency} /></strong> and sell at <strong><Counter value={salesPriceVal} formatter={formatCurrency} key={currency} /></strong>, with <strong><Counter value={ordersReceivedVal} /></strong> orders, your total profit is <strong><Counter value={netProfit} formatter={formatCurrency} key={currency} /></strong>.
                         </div>
                     </FadeIn>
                 </div>
@@ -188,7 +251,7 @@ export function Calculator() {
     )
 }
 
-function ResultCard({ title, value, dark, darkwarning }: { title: string, value: string, dark?: boolean, darkwarning?: boolean }) {
+function ResultCard({ title, value, dark, darkwarning, tooltip }: { title: string, value: React.ReactNode, dark?: boolean, darkwarning?: boolean, tooltip?: string }) {
     return (
         <div className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default ${dark
             ? 'bg-white border-slate-200 shadow-sm'
@@ -196,13 +259,29 @@ function ResultCard({ title, value, dark, darkwarning }: { title: string, value:
                 ? 'bg-orange-50/50 border-orange-100'
                 : 'bg-white border-slate-200 shadow-sm'
             }`}>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{title}</p>
+            <div className="flex items-center gap-1.5 mb-1">
+                <p className="text-xs font-semibold text-slate-500">{title}</p>
+                {tooltip && (
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button type="button" className="text-slate-400 hover:text-blue-500 transition-colors">
+                                    <Info className="h-3 w-3" />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                {tooltip}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
+            </div>
             <p className={`text-xl font-bold ${darkwarning ? 'text-orange-600' : 'text-slate-800'}`}>{value}</p>
         </div>
     )
 }
 
-function Row({ label, value, isNegative, className }: { label: string, value: string, isNegative?: boolean, className?: string }) {
+function Row({ label, value, isNegative, className }: { label: string, value: React.ReactNode, isNegative?: boolean, className?: string }) {
     return (
         <div className={`flex justify-between items-center text-sm ${className}`}>
             <span>{label}</span>

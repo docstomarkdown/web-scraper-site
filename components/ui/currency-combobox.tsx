@@ -18,7 +18,43 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import { currencies } from '@/app/tools/_data/currencies';
+
+const currencies = [
+    { code: 'USD', symbol: '$', name: 'US Dollar', flag: 'us' },
+    { code: 'EUR', symbol: '€', name: 'Euro', flag: 'eu' },
+    { code: 'GBP', symbol: '£', name: 'British Pound', flag: 'gb' },
+    { code: 'INR', symbol: '₹', name: 'Indian Rupee', flag: 'in' },
+    { code: 'AUD', symbol: 'A$', name: 'Australian Dollar', flag: 'au' },
+    { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar', flag: 'ca' },
+    { code: 'JPY', symbol: '¥', name: 'Japanese Yen', flag: 'jp' },
+    { code: 'CNY', symbol: '¥', name: 'Chinese Yuan', flag: 'cn' },
+    { code: 'AED', symbol: 'AED', name: 'UAE Dirham', flag: 'ae' },
+    { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar', flag: 'sg' },
+    { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar', flag: 'hk' },
+    { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc', flag: 'ch' },
+    { code: 'MXN', symbol: 'MX$', name: 'Mexican Peso', flag: 'mx' },
+    { code: 'BRL', symbol: 'R$', name: 'Brazilian Real', flag: 'br' },
+    { code: 'KRW', symbol: '₩', name: 'South Korean Won', flag: 'kr' },
+    { code: 'RUB', symbol: '₽', name: 'Russian Ruble', flag: 'ru' },
+    { code: 'ZAR', symbol: 'R', name: 'South African Rand', flag: 'za' },
+    { code: 'SEK', symbol: 'kr', name: 'Swedish Krona', flag: 'se' },
+    { code: 'NOK', symbol: 'kr', name: 'Norwegian Krone', flag: 'no' },
+    { code: 'DKK', symbol: 'kr', name: 'Danish Krone', flag: 'dk' },
+    { code: 'PLN', symbol: 'zł', name: 'Polish Zloty', flag: 'pl' },
+    { code: 'THB', symbol: '฿', name: 'Thai Baht', flag: 'th' },
+    { code: 'IDR', symbol: 'Rp', name: 'Indonesian Rupiah', flag: 'id' },
+    { code: 'MYR', symbol: 'RM', name: 'Malaysian Ringgit', flag: 'my' },
+    { code: 'PHP', symbol: '₱', name: 'Philippine Peso', flag: 'ph' },
+    { code: 'VND', symbol: '₫', name: 'Vietnamese Dong', flag: 'vn' },
+    { code: 'TRY', symbol: '₺', name: 'Turkish Lira', flag: 'tr' },
+    { code: 'SAR', symbol: '﷼', name: 'Saudi Riyal', flag: 'sa' },
+    { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar', flag: 'nz' },
+    { code: 'EGP', symbol: 'E£', name: 'Egyptian Pound', flag: 'eg' },
+    { code: 'PKR', symbol: '₨', name: 'Pakistani Rupee', flag: 'pk' },
+    { code: 'BDT', symbol: '৳', name: 'Bangladeshi Taka', flag: 'bd' },
+    { code: 'NGN', symbol: '₦', name: 'Nigerian Naira', flag: 'ng' },
+    { code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling', flag: 'ke' },
+];
 
 interface CurrencyComboboxProps {
     value: string;

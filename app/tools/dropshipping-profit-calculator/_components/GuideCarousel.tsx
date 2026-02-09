@@ -105,7 +105,7 @@ export function GuideCarousel() {
     return (
         <section>
             <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-200">
-                <div className="p-2.5 bg-slate-100 rounded-xl text-slate-700">
+                <div className="p-2.5 bg-blue-50 rounded-xl text-blue-600">
                     <BookOpen className="h-6 w-6" />
                 </div>
                 <div>
@@ -117,7 +117,7 @@ export function GuideCarousel() {
                 <CarouselContent className="-ml-2 md:-ml-4">
                     {slides.map((slide) => (
                         <CarouselItem key={slide.number} className="pl-2 md:pl-4 basis-[90%] md:basis-[85%]">
-                            <Card className="border border-slate-200 shadow-sm bg-white h-full min-h-[420px]">
+                            <Card className="border border-slate-200 shadow-sm bg-white h-full min-h-[320px]">
                                 <CardContent className="p-8 md:p-10 h-full flex flex-col">
                                     <div className="flex items-center gap-4 mb-6">
                                         <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl shrink-0">

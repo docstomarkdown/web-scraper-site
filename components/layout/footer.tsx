@@ -57,7 +57,13 @@ export default function Footer() {
           <div>
             <h3 className="text-slate-900 font-semibold mb-6">Free Tools</h3>
             <ul className="space-y-3 text-sm">
-              {/* Pending content */}
+              {navigationConfig.footerNav.freeTools.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-slate-500 hover:text-blue-600 transition-colors">
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

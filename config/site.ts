@@ -99,7 +99,12 @@ export const navigationConfig = {
         href: "/contact",
       },
     ],
-    freeTools: [],
+    freeTools: [
+      {
+        title: "Dropshipping Profit Calculator",
+        href: "/tools/dropshipping-profit-calculator",
+      },
+    ],
     legal: [
       {
         title: "Privacy Policy",
