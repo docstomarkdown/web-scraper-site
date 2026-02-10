@@ -1,14 +1,13 @@
 "use client"
 
-import * as React from "react"
-import { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Sparkles, Globe, HelpCircle, Info } from "lucide-react"
+import { HelpCircle, Info } from "lucide-react"
 import { CurrencyCombobox } from "@/components/ui/currency-combobox"
-import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_components"
+import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
 
 
 export function Calculator() {
@@ -21,6 +20,7 @@ export function Calculator() {
     const [rtoPercentage, setRtoPercentage] = useState<number | "">("")
     const [adsCostPerProduct, setAdsCostPerProduct] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
+    const [otherCosts, setOtherCosts] = useState<number | "">("")
 
     // Helper to safely get number for calculation
     const val = (v: number | "") => (v === "" ? 0 : v)
@@ -50,6 +50,7 @@ export function Calculator() {
     const rtoPercentageVal = val(rtoPercentage)
     const adsCostPerProductVal = val(adsCostPerProduct)
     const shippingCostVal = val(shippingCost)
+    const otherCostsVal = val(otherCosts)
 
     const marginPerOrder = salesPriceVal - purchasePriceVal
     const totalOrderValue = salesPriceVal * ordersReceivedVal
@@ -59,10 +60,11 @@ export function Calculator() {
 
     const totalRtoCost = rtoQty * shippingCostVal
     const totalAdsCost = ordersReceivedVal * adsCostPerProductVal
+    const totalOtherCosts = ordersReceivedVal * otherCostsVal
     const totalPurchaseCost = deliveredOrders * purchasePriceVal
     const revenueGenerated = deliveredOrders * salesPriceVal
 
-    const totalExpenses = totalPurchaseCost + totalAdsCost + totalRtoCost + (deliveredOrders * shippingCostVal)
+    const totalExpenses = totalPurchaseCost + totalAdsCost + totalRtoCost + (deliveredOrders * shippingCostVal) + totalOtherCosts
     const netProfit = revenueGenerated - totalExpenses
 
     // Currency formatter
@@ -90,15 +92,23 @@ export function Calculator() {
                                         <CardTitle className="text-2xl font-bold text-blue-600">
                                             Calculator Inputs
                                         </CardTitle>
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={scrollToGuide}
-                                            className="text-slate-600 hover:text-slate-900 hover:bg-slate-100 gap-1.5 h-8 px-3 rounded-full text-xs font-medium"
-                                        >
-                                            <HelpCircle className="w-3.5 h-3.5" />
-                                            How to Use
-                                        </Button>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={scrollToGuide}
+                                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
+                                                    >
+                                                        <HelpCircle className="w-4 h-4" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                    How to use this calculator
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
                                     </div>
                                     <CardDescription>Enter your product and marketing costs below.</CardDescription>
                                 </div>
@@ -145,7 +155,7 @@ export function Calculator() {
                                     onChange={setAdsCostPerProduct}
                                     placeholder="20"
                                     max={5000}
-                                    tooltip="Cost Per Acquisition - your total ad spend divided by number of orders."
+                                    tooltip="CPA (Cost Per Acquisition): The average amount you spend on ads to get just one successfully placed order."
                                 />
                                 <CalculatorInput
                                     label="Return to Origin (RTO %)"
@@ -153,7 +163,7 @@ export function Calculator() {
                                     onChange={setRtoPercentage}
                                     placeholder="15"
                                     max={100}
-                                    tooltip="Percentage of orders returned before delivery. For COD markets, 15-30% is common."
+                                    tooltip="RTO (Return to Origin): The percentage of orders that are sent back to you because they couldn't be delivered."
                                 />
                                 <CalculatorInput
                                     label="Cancelled Qty (Before Shipping)"
@@ -162,6 +172,14 @@ export function Calculator() {
                                     placeholder="5"
                                     max={ordersReceivedVal}
                                     tooltip="Orders cancelled by customers before you shipped them."
+                                />
+                                <CalculatorInput
+                                    label={`Other Cost per Product (${symbol})`}
+                                    value={otherCosts}
+                                    onChange={setOtherCosts}
+                                    placeholder="2"
+                                    max={1000}
+                                    tooltip="Other: Additional expenses per order like packaging, gateway fees, or handling."
                                 />
 
                             </CardContent>
@@ -206,6 +224,7 @@ export function Calculator() {
                                     <Row label="Total Ads Cost" value={<Counter value={totalAdsCost} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
                                     <Row label="Purchase Cost" value={<Counter value={totalPurchaseCost} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
                                     <Row label="Shipping & RTO" value={<Counter value={totalRtoCost + (deliveredOrders * shippingCostVal)} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
+                                    <Row label="Other Costs" value={<Counter value={totalOtherCosts} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
                                 </div>
                             </CardContent>
                         </Card>
@@ -215,26 +234,23 @@ export function Calculator() {
                             <ResultCard
                                 title="Margin per Sale"
                                 value={<Counter value={marginPerOrder} formatter={formatCurrency} key={currency} />}
-                                dark
                                 tooltip="The profit you make on each sale before advertising and RTO costs. Calculated as: Selling Price - Product Cost."
                             />
                             <ResultCard
                                 title="Return on Ad Spend (ROAS)"
                                 value={<><Counter value={totalAdsCost > 0 ? (revenueGenerated / totalAdsCost) : 0} formatter={(v) => v.toFixed(2)} />X</>}
-                                dark
-                                tooltip="Revenue generated for every ₹1 spent on ads. A ROAS of 4X means you earned ₹4 for every ₹1 in ads. Aim for 4X+ after accounting for RTOs."
+                                tooltip="ROAS (Return on Ad Spend): The money you make for every $1 spent on ads. Aim for 4X or more."
                             />
                             <ResultCard
                                 title="Delivered"
                                 value={<Counter value={deliveredOrders} />}
-                                dark
-                                tooltip="Total orders that were successfully delivered to customers. This excludes cancelled orders and RTO orders."
+                                tooltip="Delivered Orders: Total orders that successfully reached your customers."
                             />
                             <ResultCard
                                 title="Return to Origin Orders (RTO)"
                                 value={<Counter value={rtoQty} />}
                                 darkwarning
-                                tooltip="Orders that were shipped but returned undelivered (customer refused, wrong address, etc). Each RTO costs you shipping both ways + wasted ad spend."
+                                tooltip="RTO (Return to Origin): Orders sent back to you. This costs you double shipping plus wasted ad money."
                             />
                         </div>
 
@@ -249,13 +265,11 @@ export function Calculator() {
     )
 }
 
-function ResultCard({ title, value, dark, darkwarning, tooltip }: { title: string, value: React.ReactNode, dark?: boolean, darkwarning?: boolean, tooltip?: string }) {
+function ResultCard({ title, value, darkwarning, tooltip }: { title: string, value: React.ReactNode, darkwarning?: boolean, tooltip?: string }) {
     return (
-        <div className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default ${dark
-            ? 'bg-white border-slate-200 shadow-sm'
-            : darkwarning
-                ? 'bg-orange-50/50 border-orange-100'
-                : 'bg-white border-slate-200 shadow-sm'
+        <div className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default ${darkwarning
+            ? 'bg-orange-50/50 border-orange-100'
+            : 'bg-white border-slate-200 shadow-sm'
             }`}>
             <div className="flex items-center gap-1.5 mb-1">
                 <p className="text-xs font-semibold text-slate-500">{title}</p>

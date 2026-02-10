@@ -1,6 +1,7 @@
 "use client"
 
-import { BookOpen, AlertTriangle, CircleDollarSign, Calculator } from "lucide-react"
+import { BookOpen, AlertTriangle, CircleDollarSign, Calculator, Info } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 const DrawingTrendingDown = () => (
     <svg
@@ -46,7 +47,8 @@ const insights = [
             "Each return = forward + return shipping",
             "Plus wasted ad spend on that order",
             "COD markets: 15–30% RTO is common"
-        ]
+        ],
+        tooltip: "RTO (Return to Origin): When a customer doesn't accept the package and it's sent back to you. You lose the money spent on shipping and ads."
     },
     {
         icon: CircleDollarSign,
@@ -60,7 +62,8 @@ const insights = [
             "3.5× ROAS ignores product costs & RTOs",
             "You may keep only 15% of revenue",
             "Factor RTO rate into every calculation"
-        ]
+        ],
+        tooltip: "ROAS (Return on Ad Spend): How much money you make for every $1 spent on ads. For example, 4X means you made $4 from $1 of ads."
     },
     {
         icon: Calculator,
@@ -74,7 +77,8 @@ const insights = [
             "Sale price − all costs = max CPA",
             "Lower CPA = more scaling headroom",
             "Know your limit before spending on ads"
-        ]
+        ],
+        tooltip: "CPA (Cost Per Acquisition): The average amount you spend on ads to get just one order."
     }
 ]
 
@@ -103,7 +107,23 @@ export function ProfitGuide() {
                                         <div className={`w-9 h-9 rounded-xl ${insight.iconBg} ${insight.iconColor} flex items-center justify-center border border-slate-100/50`}>
                                             <Icon className="w-4.5 h-4.5" />
                                         </div>
-                                        <h3 className="text-base font-bold text-slate-900">{insight.title}</h3>
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-base font-bold text-slate-900">{insight.title}</h3>
+                                            {'tooltip' in insight && (
+                                                <TooltipProvider delayDuration={100}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                                                <Info className="h-3.5 w-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                            {insight.tooltip}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                        </div>
                                     </div>
                                     <ul className="space-y-2">
                                         {insight.points.map((point, i) => (

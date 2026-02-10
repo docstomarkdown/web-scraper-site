@@ -51,7 +51,11 @@ export function CalculatorInput({
                     <TooltipProvider delayDuration={100}>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-500 hover:text-blue-600 transition-colors">
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
+                                    className="text-slate-500 hover:text-blue-600 transition-colors cursor-default"
+                                >
                                     <Info className="h-3.5 w-3.5" />
                                 </button>
                             </TooltipTrigger>

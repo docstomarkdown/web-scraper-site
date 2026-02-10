@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { HelpCircle, TrendingUp, ShoppingBag, Truck, RefreshCcw, Wallet } from "lucide-react"
 import { ProfitGuide } from "./_components/ProfitGuide"
-import { FadeIn, ToolFAQ, ToolCTA } from "@/app/tools/_components"
+import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { CTA } from "@/components/sections/CTA"
 
 export const metadata: Metadata = {
     title: "Dropshipping Profit Calculator - Estimate your e-commerce margins",
@@ -18,7 +19,7 @@ export default function DropshippingCalculatorPage() {
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
                             Dropshipping Profit Calculator
                         </h1>
                     </FadeIn>
@@ -142,18 +143,12 @@ export default function DropshippingCalculatorPage() {
                         />
                     </FadeIn>
 
-                    {/* CTA Section */}
-                    <FadeIn delay={0.2}>
-                        <ToolCTA
-                            tagline="Recommended for Web Scraping & E-commerce Users"
-                            title="Ready to find"
-                            highlightedText="winning products?"
-                            description="Scrape any website in seconds with our powerful Chrome extension."
-                            buttonText="Install Free Extension"
-                            buttonHref="#"
-                        />
-                    </FadeIn>
                 </div>
+
+                {/* CTA Section */}
+                <FadeIn delay={0.2}>
+                    <CTA />
+                </FadeIn>
             </div >
         </div >
     )
