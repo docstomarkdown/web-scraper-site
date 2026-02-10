@@ -39,80 +39,72 @@ export default function DropshippingCalculatorPage() {
                                 <h2 className="text-2xl font-bold text-slate-900">How to Use This Calculator</h2>
                             </div>
 
-                            <div className="relative">
-                                {/* Connecting Line (Desktop) */}
-                                <div className="hidden lg:block absolute top-[2.5rem] left-[10%] right-[10%] h-0.5 bg-slate-100 -z-10" />
+                            <div className="relative max-w-2xl mx-auto pl-4 sm:pl-8">
+                                {/* Vertical Connector Line */}
+                                <div className="absolute left-[34px] sm:left-[54px] top-8 bottom-8 w-0.5 bg-blue-100 -z-10" />
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div className="space-y-6">
                                     {/* Step 1 */}
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-xl border-l-4 border-l-blue-500 border border-slate-200/60 p-5 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 group">
-                                        <div className="flex items-start gap-4">
-                                            <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300 opacity-80">
-                                                <ShoppingBag className="w-6 h-6" />
+                                    <div className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
+                                        <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
+                                            <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 01</span>
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-xs font-semibold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">Step 1</span>
-                                                </div>
-                                                <h3 className="text-base font-semibold text-slate-900 mb-1">Enter Product Costs</h3>
-                                                <p className="text-sm text-slate-500 leading-relaxed">
-                                                    Fill in your selling price and product cost from your supplier.
-                                                </p>
-                                            </div>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Enter Product Costs</h3>
+                                            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                                Start by entering your selling price and product cost from your supplier. This is the foundation of your margin analysis.
+                                            </p>
                                         </div>
                                     </div>
 
                                     {/* Step 2 */}
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-xl border-l-4 border-l-blue-500 border border-slate-200/60 p-5 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 group">
-                                        <div className="flex items-start gap-4">
-                                            <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300 opacity-80">
-                                                <Truck className="w-6 h-6" />
+                                    <div className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
+                                        <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
+                                            <Truck className="w-5 h-5 sm:w-6 sm:h-6" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 02</span>
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-xs font-semibold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">Step 2</span>
-                                                </div>
-                                                <h3 className="text-base font-semibold text-slate-900 mb-1">Add Shipping & Ads</h3>
-                                                <p className="text-sm text-slate-500 leading-relaxed">
-                                                    Enter shipping cost and your average CPA (ads cost per order).
-                                                </p>
-                                            </div>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Add Shipping & Ads</h3>
+                                            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                                Input your shipping costs and ad spend (CPA). These often overlooked costs are what truly determine your net profitability.
+                                            </p>
                                         </div>
                                     </div>
 
                                     {/* Step 3 */}
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-xl border-l-4 border-l-blue-500 border border-slate-200/60 p-5 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 group">
-                                        <div className="flex items-start gap-4">
-                                            <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300 opacity-80">
-                                                <RefreshCcw className="w-6 h-6" />
+                                    <div className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
+                                        <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
+                                            <RefreshCcw className="w-5 h-5 sm:w-6 sm:h-6" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 03</span>
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-xs font-semibold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">Step 3</span>
-                                                </div>
-                                                <h3 className="text-base font-semibold text-slate-900 mb-1">Set RTO Percentage</h3>
-                                                <p className="text-sm text-slate-500 leading-relaxed">
-                                                    Enter expected return rate. COD markets: 15-30% typical.
-                                                </p>
-                                            </div>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Set RTO Percentage</h3>
+                                            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                                Factor in your expected Return to Origin (RTO) rate. In COD markets, this is the #1 reason dropshippers lose money.
+                                            </p>
                                         </div>
                                     </div>
 
-                                    {/* Step 4 */}
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-xl border-l-4 border-l-blue-500 border border-slate-200/60 p-5 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 group">
-                                        <div className="flex items-start gap-4">
-                                            <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300 opacity-80">
-                                                <Wallet className="w-6 h-6" />
+                                    {/* Step 4 (The Goal) */}
+                                    <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/40 p-5 sm:p-6 rounded-2xl border-2 border-blue-200 shadow-sm shadow-blue-100/20 hover:shadow-md hover:shadow-blue-200/25 transition-all duration-300 scale-[1.02] origin-left">
+                                        <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-500 border border-blue-400 rounded-xl flex items-center justify-center text-white z-10 shadow-sm transition-transform duration-300 group-hover:scale-110">
+                                            <Wallet className="w-5 h-5 sm:w-6 sm:h-6" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-[10px] font-bold text-white bg-blue-600 px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">The Goal</span>
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-xs font-semibold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">Step 4</span>
-                                                </div>
-                                                <h3 className="text-base font-semibold text-slate-900 mb-1">View Your Profit</h3>
-                                                <p className="text-sm text-slate-500 leading-relaxed">
-                                                    See net profit, margin %, and impact of returns.
-                                                </p>
-                                            </div>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">View Your Profit</h3>
+                                            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                                                Instantly see your net profit, margins, and the Break-Even CPA you need to hit to stay in the green.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

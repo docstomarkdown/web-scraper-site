@@ -120,7 +120,7 @@ export function GuideCarousel() {
                             <Card className="border border-slate-200 shadow-sm bg-white h-full min-h-[320px]">
                                 <CardContent className="p-8 md:p-10 h-full flex flex-col">
                                     <div className="flex items-center gap-4 mb-6">
-                                        <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl shrink-0">
+                                        <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-xl shrink-0">
                                             {slide.number}
                                         </div>
                                         <div>

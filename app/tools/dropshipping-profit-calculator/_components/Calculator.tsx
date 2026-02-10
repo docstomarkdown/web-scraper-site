@@ -87,7 +87,7 @@ export function Calculator() {
                             <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-3">
-                                        <CardTitle className="text-2xl font-bold text-blue-700">
+                                        <CardTitle className="text-2xl font-bold text-blue-600">
                                             Calculator Inputs
                                         </CardTitle>
                                         <Button
@@ -116,7 +116,7 @@ export function Calculator() {
                                     tooltip="The cost to buy the product from your supplier."
                                 />
                                 <CalculatorInput
-                                    label={`Sales Price (${symbol})`}
+                                    label={`Selling Price (${symbol})`}
                                     value={salesPrice}
                                     onChange={setSalesPrice}
                                     placeholder="150"
@@ -132,12 +132,20 @@ export function Calculator() {
                                     tooltip="Total number of orders you received from customers."
                                 />
                                 <CalculatorInput
-                                    label="Cancelled Qty (Before Shipping)"
-                                    value={cancelledQty}
-                                    onChange={setCancelledQty}
-                                    placeholder="5"
-                                    max={ordersReceivedVal}
-                                    tooltip="Orders cancelled by customers before you shipped them."
+                                    label={`Shipping Cost (${symbol})`}
+                                    value={shippingCost}
+                                    onChange={setShippingCost}
+                                    placeholder="8"
+                                    max={500}
+                                    tooltip="Average shipping cost per order. Applied to all delivered orders."
+                                />
+                                <CalculatorInput
+                                    label={`Ads Cost per Product (CPA) (${symbol})`}
+                                    value={adsCostPerProduct}
+                                    onChange={setAdsCostPerProduct}
+                                    placeholder="20"
+                                    max={5000}
+                                    tooltip="Cost Per Acquisition - your total ad spend divided by number of orders."
                                 />
                                 <CalculatorInput
                                     label="Return to Origin (RTO %)"
@@ -148,24 +156,14 @@ export function Calculator() {
                                     tooltip="Percentage of orders returned before delivery. For COD markets, 15-30% is common."
                                 />
                                 <CalculatorInput
-                                    label={`Ads Cost per Product (CPA) (${symbol})`}
-                                    value={adsCostPerProduct}
-                                    onChange={setAdsCostPerProduct}
-                                    placeholder="20"
-                                    max={5000}
-                                    tooltip="Cost Per Acquisition - your total ad spend divided by number of orders."
+                                    label="Cancelled Qty (Before Shipping)"
+                                    value={cancelledQty}
+                                    onChange={setCancelledQty}
+                                    placeholder="5"
+                                    max={ordersReceivedVal}
+                                    tooltip="Orders cancelled by customers before you shipped them."
                                 />
 
-                                <div className="mt-4">
-                                    <CalculatorInput
-                                        label={`Return to Origin Cost (${symbol})`}
-                                        value={shippingCost}
-                                        onChange={setShippingCost}
-                                        placeholder="8"
-                                        max={500}
-                                        tooltip="How much you pay the courier per order. You pay this twice for returned orders."
-                                    />
-                                </div>
                             </CardContent>
                         </Card>
                     </FadeIn>
@@ -265,7 +263,7 @@ function ResultCard({ title, value, dark, darkwarning, tooltip }: { title: strin
                     <TooltipProvider delayDuration={100}>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-400 hover:text-blue-500 transition-colors">
+                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
                                     <Info className="h-3 w-3" />
                                 </button>
                             </TooltipTrigger>

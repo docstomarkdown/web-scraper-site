@@ -66,7 +66,7 @@ export function CalculatorInput({
                 type="number"
                 value={value}
                 onChange={handleInputChange}
-                className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
+                className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
                 min={min}
                 max={max}
                 step={step}

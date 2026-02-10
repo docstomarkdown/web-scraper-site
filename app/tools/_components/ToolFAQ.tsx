@@ -15,17 +15,18 @@ export function ToolFAQ({ title = "Frequently Asked Questions", faqs }: ToolFAQP
     return (
         <section>
             <ToolSectionHeader icon={HelpCircle} title={title} />
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-3xl mx-auto space-y-6">
                 {faqs.map((faq, index) => (
-                    <div key={index} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                        <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
-                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-medium ring-1 ring-slate-200">
-                                {index + 1}
-                            </span>
-                            <h3 className="text-base font-semibold text-slate-900">{faq.question}</h3>
-                        </div>
-                        <div className="bg-slate-50 px-6 py-4">
-                            <p className="text-slate-600 leading-relaxed text-sm" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                    <div
+                        key={index}
+                        className="group bg-white border border-slate-200/60 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-300"
+                    >
+                        <div className="p-6 sm:p-7">
+                            <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">
+                                {faq.question}
+                            </h3>
+                            <div className="w-12 h-0.5 bg-slate-100 mb-3 rounded-full" />
+                            <p className="text-slate-600 leading-relaxed text-sm font-medium" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                         </div>
                     </div>
                 ))}
