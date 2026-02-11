@@ -19,32 +19,8 @@ const iconMap: Record<string, React.ElementType> = {
 
 // Full descriptions for tools
 const toolDescriptions: Record<string, string> = {
-    "Goods and Services Tax Invoice Generator": "Create GST-compliant tax invoices with automatic CGST, SGST, and IGST calculations",
-    "Invoice Generator": "Professional invoices with customizable templates and multi-currency support",
-    "Proforma Invoice Maker": "Generate pro-forma invoices for quotes and advance payments",
-    "Sales Receipt Generator": "Quick sales receipts for retail and point-of-sale transactions",
-    "Credit Note Generator": "Issue credit notes for returns, discounts, and adjustments",
-    "Debit Note Generator": "Create debit notes for additional charges and corrections",
-    "Purchase Order Generator": "Streamlined purchase orders for vendor and supplier management",
-    "Work Order Generator": "Detailed work orders for projects and service requests",
-    "Purchase Return Generator": "Document purchase returns with proper credit tracking",
-    "Sales Return Generator": "Process customer returns with comprehensive documentation",
-    "Stock Keeping Unit Generator": "Generate structured SKUs for inventory management",
-    "Packing Slip Generator": "Create packing slips for shipments and deliveries",
-    "Goods Received Note Generator": "Document incoming goods with quantity verification",
-    "Stock Transfer Note Generator": "Track inter-warehouse stock movements",
-    "Free Barcode Generator": "Generate barcodes in multiple formats for products",
-    "Quotation Generator": "Professional quotes with itemized pricing",
-    "Project Cost Quote Calculator": "Calculate and quote project costs accurately",
-    "Budget Calculator": "Plan and track budgets with category breakdowns",
-    "Tax Deducted at Source Calculator": "Calculate TDS for salary, contracts, and payments",
-    "Expense Report Generator": "Organize and report business expenses",
-    "Petty Cash Voucher Generator": "Track small cash transactions",
-    "Appointment Letter Generator": "Create professional appointment letters and employment offer letters",
-    "Experience Letter Generator": "Generate professional experience letters",
-    "Salary Slip Generator": "Create detailed payslips with deductions and earnings",
-    "Checklist Generator": "Build custom checklists for any workflow",
     "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
+    "Dimension Converter": "Convert product dimensions between inches, cm, and mm with volume and dimensional weight calculations.",
 };
 
 export default function ToolsPage() {

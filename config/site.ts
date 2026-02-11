@@ -35,6 +35,10 @@ export const toolsGroups = [
         title: "Dropshipping Profit Calculator",
         href: "/tools/dropshipping-profit-calculator",
       },
+      {
+        title: "Dimension Converter",
+        href: "/tools/dimension-converter",
+      },
     ],
   },
 ];
