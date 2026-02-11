@@ -1,79 +1,52 @@
 "use client"
 
-import { BookOpen, AlertTriangle, CircleDollarSign, Calculator, Info } from "lucide-react"
+import { BookOpen, Box, Truck, Percent, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
-const DrawingTrendingDown = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-    >
-        <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-        <polyline points="17 18 23 18 23 12" />
-    </svg>
-)
 
 const insights = [
     {
-        icon: DrawingTrendingDown,
-        iconBg: "bg-rose-50",
-        iconColor: "text-rose-500",
-        statColor: "text-rose-600",
-        title: "The Margin Illusion",
-        stat: "30–40%",
-        statLabel: "Profit lost to hidden costs",
-        description: "Gross margins often look great on paper, but shipping and ad costs can deceptive. These hidden expenses frequently cut profits by 30–40%, so always prioritize calculating NET profit."
-    },
-    {
-        icon: AlertTriangle,
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-500",
-        statColor: "text-amber-600",
-        title: "The RTO Problem",
-        stat: "2×",
-        statLabel: "Shipping cost per return",
-        description: "Returns are costly—you pay for both forward and return shipping, plus wasted ad spend. In COD markets, RTO rates of 15–30% are common and must be factored in.",
-        tooltip: "RTO (Return to Origin): When a customer doesn't accept the package and it's sent back to you. You lose the money spent on shipping and ads."
-    },
-    {
-        icon: CircleDollarSign,
+        icon: Percent,
         iconBg: "bg-blue-50",
         iconColor: "text-blue-500",
         statColor: "text-blue-600",
-        title: "ROAS Reality Check",
-        stat: "4×+",
-        statLabel: "Target ROAS (not 3.5×)",
-        description: "A 3.5× ROAS might look profitable but often ignores product costs and RTOs. You often keep only ~15% of revenue, so factor RTO rates into every calculation.",
-        tooltip: "ROAS (Return on Ad Spend): How much money you make for every $1 spent on ads. For example, 4X means you made $4 from $1 of ads."
+        title: "Amazon Referral Fee",
+        stat: "15%",
+        statLabel: "Typical Platform Fee",
+        description: "A fee paid to Amazon for selling on their marketplace, typically 15% for most categories with a minimum of $0.30 per item.",
+        tooltip: "Referral Fee: A percentage of the total sales price (usually 15%) paid to Amazon for the privilege of selling on their marketplace."
     },
     {
-        icon: Calculator,
+        icon: Box,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-500",
+        statColor: "text-amber-600",
+        title: "FBA Fulfillment Fee",
+        stat: "Size",
+        statLabel: "Determined by Tier",
+        description: "Covers the cost of picking, packing, shipping, and customer service. Fees are determined by your product's size tier and shipping weight—minimize packaging to lower costs.",
+        tooltip: "Fulfillment Fee: The cost Amazon charges to pick, pack, and ship your order to the customer, plus handle customer service."
+    },
+    {
+        icon: Truck,
         iconBg: "bg-emerald-50",
         iconColor: "text-emerald-500",
         statColor: "text-emerald-600",
-        title: "Break-Even CPA",
-        stat: "Know It",
-        statLabel: "Your max cost per acquisition",
-        description: "Your Break-Even CPA is your sale price minus all costs. Knowing this limit before spending on ads is crucial—a lower CPA gives you more room to scale profitably.",
-        tooltip: "CPA (Cost Per Acquisition): The average amount you spend on ads to get just one order."
-    }
+        title: "Inbound Shipping",
+        stat: "Ship",
+        statLabel: "Cost to Warehouse",
+        description: "The oft-overlooked cost of sending inventory to Amazon's fulfillment centers. Rates vary by carrier and distance.",
+        tooltip: "Inbound Shipping: The cost you pay to ship your inventory from your supplier or home to Amazon's fulfillment centers."
+    },
 ]
 
-export function ProfitGuide() {
+export function FBAGuide() {
     return (
-        <section id="profit-guide">
+        <section id="fba-guide">
             <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-100">
                 <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                     <BookOpen className="h-6 w-6" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Dropshipping Profitability</h2>
+                <h2 className="text-2xl font-bold text-slate-900">Understanding Amazon FBA Fees</h2>
             </div>
 
             <div className="space-y-6">

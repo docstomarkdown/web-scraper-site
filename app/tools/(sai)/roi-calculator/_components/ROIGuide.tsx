@@ -1,80 +1,61 @@
 "use client"
 
-import { BookOpen, AlertTriangle, CircleDollarSign, Calculator, Info } from "lucide-react"
+import { BookOpen, CircleDollarSign, TrendingUp, Percent, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
-const DrawingTrendingDown = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-    >
-        <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-        <polyline points="17 18 23 18 23 12" />
-    </svg>
-)
+import { ToolSectionHeader } from "@/app/tools/_shared/components"
 
 const insights = [
-    {
-        icon: DrawingTrendingDown,
-        iconBg: "bg-rose-50",
-        iconColor: "text-rose-500",
-        statColor: "text-rose-600",
-        title: "The Margin Illusion",
-        stat: "30–40%",
-        statLabel: "Profit lost to hidden costs",
-        description: "Gross margins often look great on paper, but shipping and ad costs can deceptive. These hidden expenses frequently cut profits by 30–40%, so always prioritize calculating NET profit."
-    },
-    {
-        icon: AlertTriangle,
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-500",
-        statColor: "text-amber-600",
-        title: "The RTO Problem",
-        stat: "2×",
-        statLabel: "Shipping cost per return",
-        description: "Returns are costly—you pay for both forward and return shipping, plus wasted ad spend. In COD markets, RTO rates of 15–30% are common and must be factored in.",
-        tooltip: "RTO (Return to Origin): When a customer doesn't accept the package and it's sent back to you. You lose the money spent on shipping and ads."
-    },
     {
         icon: CircleDollarSign,
         iconBg: "bg-blue-50",
         iconColor: "text-blue-500",
         statColor: "text-blue-600",
-        title: "ROAS Reality Check",
-        stat: "4×+",
-        statLabel: "Target ROAS (not 3.5×)",
-        description: "A 3.5× ROAS might look profitable but often ignores product costs and RTOs. You often keep only ~15% of revenue, so factor RTO rates into every calculation.",
-        tooltip: "ROAS (Return on Ad Spend): How much money you make for every $1 spent on ads. For example, 4X means you made $4 from $1 of ads."
+        title: "Investment Cost",
+        stat: "Cost",
+        statLabel: "Your total money put in",
+        description: "The total amount of money spent on a product or project. This includes product cost, shipping fees, advertising spend, platform fees, and any other associated expenses.",
+        tooltip: "Everything you spent to source, ship, and sell the product."
     },
     {
-        icon: Calculator,
+        icon: TrendingUp,
         iconBg: "bg-emerald-50",
         iconColor: "text-emerald-500",
         statColor: "text-emerald-600",
-        title: "Break-Even CPA",
-        stat: "Know It",
-        statLabel: "Your max cost per acquisition",
-        description: "Your Break-Even CPA is your sale price minus all costs. Knowing this limit before spending on ads is crucial—a lower CPA gives you more room to scale profitably.",
-        tooltip: "CPA (Cost Per Acquisition): The average amount you spend on ads to get just one order."
+        title: "Revenue Earned",
+        stat: "Sales",
+        statLabel: "Total money coming in",
+        description: "The total income generated from selling the product. This is your gross revenue before subtracting any costs or expenses.",
+        tooltip: "The total dollar amount received from customers."
+    },
+    {
+        icon: Percent,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-500",
+        statColor: "text-amber-600",
+        title: "ROI Percentage",
+        stat: "ROI %",
+        statLabel: "The key profitability metric",
+        description: "Return on Investment expressed as a percentage. Calculated as: ((Revenue - Investment) / Investment) × 100. A positive ROI means you made money; a negative ROI means you lost money.",
+        tooltip: "How much profit you made relative to what you invested."
+    },
+    {
+        icon: Info,
+        iconBg: "bg-violet-50",
+        iconColor: "text-violet-500",
+        statColor: "text-violet-600",
+        title: "Net Profit",
+        stat: "Profit",
+        statLabel: "Your bottom line earnings",
+        description: "The actual amount of money earned after subtracting all investment costs from total revenue. Calculated as: Revenue - Investment Cost.",
+        tooltip: "The real money you take home after all costs."
     }
 ]
 
-export function ProfitGuide() {
+export function ROIGuide() {
     return (
-        <section id="profit-guide">
-            <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-100">
-                <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
-                    <BookOpen className="h-6 w-6" />
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Dropshipping Profitability</h2>
-            </div>
+        <section id="roi-guide">
+
+            <ToolSectionHeader icon={BookOpen} title="Understanding ROI" />
 
             <div className="space-y-6">
                 {insights.map((insight, index) => {
@@ -114,7 +95,7 @@ export function ProfitGuide() {
                                     </p>
                                 </div>
 
-                                {/* Right: Takeaway Stat Panel (Neutral Background) */}
+                                {/* Right: Takeaway Stat Panel */}
                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
                                     <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100/50 px-2 py-0.5 rounded-full">

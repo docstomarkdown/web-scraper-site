@@ -1,80 +1,61 @@
 "use client"
 
-import { BookOpen, AlertTriangle, CircleDollarSign, Calculator, Info } from "lucide-react"
+import { BookOpen, CircleDollarSign, Percent, Calculator, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
-const DrawingTrendingDown = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-    >
-        <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-        <polyline points="17 18 23 18 23 12" />
-    </svg>
-)
+import { ToolSectionHeader } from "@/app/tools/_shared/components"
 
 const insights = [
-    {
-        icon: DrawingTrendingDown,
-        iconBg: "bg-rose-50",
-        iconColor: "text-rose-500",
-        statColor: "text-rose-600",
-        title: "The Margin Illusion",
-        stat: "30–40%",
-        statLabel: "Profit lost to hidden costs",
-        description: "Gross margins often look great on paper, but shipping and ad costs can deceptive. These hidden expenses frequently cut profits by 30–40%, so always prioritize calculating NET profit."
-    },
-    {
-        icon: AlertTriangle,
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-500",
-        statColor: "text-amber-600",
-        title: "The RTO Problem",
-        stat: "2×",
-        statLabel: "Shipping cost per return",
-        description: "Returns are costly—you pay for both forward and return shipping, plus wasted ad spend. In COD markets, RTO rates of 15–30% are common and must be factored in.",
-        tooltip: "RTO (Return to Origin): When a customer doesn't accept the package and it's sent back to you. You lose the money spent on shipping and ads."
-    },
     {
         icon: CircleDollarSign,
         iconBg: "bg-blue-50",
         iconColor: "text-blue-500",
         statColor: "text-blue-600",
-        title: "ROAS Reality Check",
-        stat: "4×+",
-        statLabel: "Target ROAS (not 3.5×)",
-        description: "A 3.5× ROAS might look profitable but often ignores product costs and RTOs. You often keep only ~15% of revenue, so factor RTO rates into every calculation.",
-        tooltip: "ROAS (Return on Ad Spend): How much money you make for every $1 spent on ads. For example, 4X means you made $4 from $1 of ads."
+        title: "Original Price",
+        stat: "Start",
+        statLabel: "The starting price before discount",
+        description: "The initial listed price of the item or service before any reductions are applied. This is often referred to as the 'Sticker Price' or 'MSRP'.",
+        tooltip: "The price you see on the tag before any deals or coupons."
     },
     {
-        icon: Calculator,
+        icon: Percent,
         iconBg: "bg-emerald-50",
         iconColor: "text-emerald-500",
         statColor: "text-emerald-600",
-        title: "Break-Even CPA",
-        stat: "Know It",
-        statLabel: "Your max cost per acquisition",
-        description: "Your Break-Even CPA is your sale price minus all costs. Knowing this limit before spending on ads is crucial—a lower CPA gives you more room to scale profitably.",
-        tooltip: "CPA (Cost Per Acquisition): The average amount you spend on ads to get just one order."
+        title: "Discount Percentage",
+        stat: "Off %",
+        statLabel: "The rate of reduction",
+        description: "The percentage by which the original price is reduced. A 20% discount means you pay 80% of the original price.",
+        tooltip: "How much percent is being taken off the original price."
+    },
+    {
+        icon: Calculator,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-500",
+        statColor: "text-amber-600",
+        title: "You Save",
+        stat: "Saved",
+        statLabel: "Money kept in your pocket",
+        description: "The actual amount of money deducted from the original price. This is calculated as: Original Price × (Discount % / 100).",
+        tooltip: "The total dollar amount you are not paying."
+    },
+    {
+        icon: Info,
+        iconBg: "bg-violet-50",
+        iconColor: "text-violet-500",
+        statColor: "text-violet-600",
+        title: "Final Price",
+        stat: "Pay",
+        statLabel: "The amount you actually pay",
+        description: "The final amount you need to pay after the discount is applied. Calculated as: Original Price - You Save.",
+        tooltip: "The bottom line price after all discounts."
     }
 ]
 
-export function ProfitGuide() {
+export function DiscountGuide() {
     return (
-        <section id="profit-guide">
-            <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-100">
-                <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
-                    <BookOpen className="h-6 w-6" />
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Dropshipping Profitability</h2>
-            </div>
+        <section id="discount-guide">
+
+            <ToolSectionHeader icon={BookOpen} title="Understanding Discounts" />
 
             <div className="space-y-6">
                 {insights.map((insight, index) => {

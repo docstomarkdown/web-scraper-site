@@ -1,0 +1,651 @@
+"use client"
+
+import React, { useState, useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { HelpCircle, Info, Check, ChevronsUpDown } from "lucide-react"
+import { CurrencyCombobox } from "@/components/ui/currency-combobox"
+import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
+
+import { ChevronDown, ChevronUp } from "lucide-react"
+
+// --- Market Configurations ---
+// Define fee structures and unit preferences for each region
+
+type MarketConfig = {
+    units: { weight: string, dim: string },
+    shippingZone?: boolean, // Some markets have zones (e.g. India)
+    currencyParams: { storagePerCubic: number, storageUnit: string } // NEW: Storage params
+    getFbaFee: (l: number, w: number, h: number, wt: number, price?: number) => number
+    getReferralFee: (price: number, category?: string) => number // UPDATED: Category aware
+    getClosingFee?: (price: number) => number // India specific
+}
+
+// --- Categories & Referral Fees ---
+const categories: Record<string, number> = {
+    "General (Default)": 0.15,
+    "Apparel & Accessories": 0.17,
+    "Baby Products": 0.08, // often 8% or 15% depending on price, simplifying
+    "Books": 0.15,
+    "Consumer Electronics": 0.08,
+    "Home & Garden": 0.15,
+    "Automotive": 0.12,
+    "Beauty": 0.08, // often 8% for <$10, 15% otherwise
+    "Toys & Games": 0.15,
+    "Sports": 0.15,
+}
+
+const markets: Record<string, MarketConfig> = {
+    // === UNITED STATES (Imperial) ===
+    USD: {
+        units: { weight: "lbs", dim: "in" },
+        currencyParams: { storagePerCubic: 0.89, storageUnit: "ft³" }, // 2026 Adjusted Avg
+        getFbaFee: (l, w, h, wt, price) => {
+            // Estimated 2026 US Rates (Base + Inflation Adjustment)
+            if (l === 0 || w === 0 || h === 0 || wt === 0) return 0;
+
+            let baseFee = 0;
+            // Small Standard
+            if (l <= 15 && w <= 12 && h <= 0.75 && wt <= 1) baseFee = 3.30; // +0.08 approx
+            // Large Standard
+            else if (l <= 18 && w <= 14 && h <= 8 && wt <= 20) {
+                if (wt <= 0.25) baseFee = 3.86;
+                else if (wt <= 0.5) baseFee = 3.96;
+                else if (wt <= 0.75) baseFee = 4.15;
+                else if (wt <= 1) baseFee = 4.75;
+                else if (wt <= 1.5) baseFee = 5.57;
+                else if (wt <= 2) baseFee = 5.86;
+                else if (wt <= 3) baseFee = 6.61;
+                else baseFee = 6.61 + ((Math.ceil(wt) - 3) * 0.38);
+            }
+            // Oversize
+            else baseFee = 9.98 + ((Math.ceil(wt) - 1) * 0.44);
+
+            // 2026 Low-Inventory / Inflation Surcharge Logic (Simplified)
+            // If price > 50, add ~$0.31, < 10 add ~$0.12 (Averaged to +0.10 for simplicity in this tool)
+            if (price) {
+                if (price < 10) baseFee += 0.12;
+                else if (price > 50) baseFee += 0.31;
+                else baseFee += 0.08;
+            }
+            return parseFloat(baseFee.toFixed(2));
+        },
+
+        getReferralFee: (price, category) => {
+            if (!price) return 0;
+            const rate = category && categories[category] ? categories[category] : 0.15;
+            return Math.max(0.30, price * rate);
+        },
+    },
+
+    // === INDIA (Metric) ===
+    INR: {
+        units: { weight: "kg", dim: "cm" },
+        currencyParams: { storagePerCubic: 45, storageUnit: "ft³" }, // ~45 INR per cubic foot
+        getFbaFee: (l, w, h, wt, price) => {
+            // India FBA (Easy Ship / FBA National)
+            // Weight handling fees are based on slabs.
+            // First 500g: ~₹44 (National)
+            // Addl 500g: ~₹24
+            // Fixed Closing Fee based on price range
+            if (wt === 0) return 0;
+
+            const weightInGrams = wt * 1000;
+            // Volumetric weight (LxWxH / 5000)
+            const volWeight = (l * w * h) / 5000 * 1000;
+            const chargeableWeight = Math.max(weightInGrams, volWeight);
+
+            // Basic slab calculation (National standard estimate)
+            let fee = 0;
+            if (chargeableWeight <= 500) {
+                fee = 44; // First 500g
+            } else if (chargeableWeight <= 1000) {
+                fee = 44 + 24; // First 500 + Next 500
+            } else if (chargeableWeight <= 5000) {
+                // > 1kg
+                const extra500s = Math.ceil((chargeableWeight - 1000) / 500);
+                fee = 68 + (extra500s * 24);
+            } else {
+                // Heavy
+                const extraKg = Math.ceil((chargeableWeight - 5000) / 1000);
+                fee = 68 + (8 * 24) + (extraKg * 12); // rough estimate
+            }
+            return fee;
+        },
+        getClosingFee: (price) => {
+            if (price <= 250) return 4; // roughly
+            if (price <= 500) return 9;
+            if (price <= 1000) return 30;
+            return 61; // > 1000
+        },
+
+        getReferralFee: (price, category) => {
+            if (!price) return 0;
+            // In India, electronics can be very low, apparel can be high.
+            // We'll use the passed category % if available, else 12% default
+            const rate = category && categories[category] ? categories[category] : 0.12;
+            return Math.max(3, price * rate);
+        }
+    },
+
+    // === UK (Metric) ===
+    GBP: {
+        units: { weight: "kg", dim: "cm" },
+        currencyParams: { storagePerCubic: 0.88, storageUnit: "ft³" }, // ~£0.88
+        getFbaFee: (l, w, h, wt) => {
+            // 2024 UK Rates (rough estimates)
+            const weightG = wt * 1000;
+            if (l <= 35 && w <= 25 && h <= 12 && weightG <= 1000) {
+                // Small/Standard envelope/parcel
+                if (weightG <= 100) return 1.63; // Small envelope
+                if (weightG <= 500) return 2.27; // Standard envelope
+                if (weightG <= 1000) return 2.76;
+            }
+            if (l <= 45 && w <= 34 && h <= 26 && weightG <= 11900) {
+                // Standard Parcel
+                if (weightG <= 500) return 2.91;
+                if (weightG <= 1000) return 3.49;
+                if (weightG <= 2000) return 4.05;
+                return 5.50; // estimate for heavier
+            }
+            return 7.00 + (Math.ceil(wt) * 0.40); // Oversize estimate
+        },
+
+        getReferralFee: (price, category) => price > 0 ? Math.max(0.25, price * (category ? categories[category] : 0.153)) : 0
+    },
+
+    // === EUROPE (Metric - Generic EUR) ===
+    EUR: {
+        units: { weight: "kg", dim: "cm" },
+        currencyParams: { storagePerCubic: 26, storageUnit: "m³" }, // ~26 EUR per cubic METER
+        getFbaFee: (l, w, h, wt) => {
+            // Generic Pan-EU estimate (DE rates often baseline)
+            const weightG = wt * 1000;
+            if (weightG <= 100) return 1.95;
+            if (weightG <= 500) return 3.48;
+            if (weightG <= 1000) return 4.63;
+            if (weightG <= 1500) return 5.46;
+            if (weightG <= 2000) return 5.99;
+            return 7.00 + (Math.ceil(wt - 2) * 0.5);
+        },
+
+        getReferralFee: (price, category) => {
+            if (price <= 0) return 0;
+            // 2026 EU Rate Updates for Low Price Items
+            if (price <= 20 && (category === "Home & Garden" || category === "Beauty" || category === "Grocery")) {
+                return price * 0.08; // Reduced to 8% (some 5%, simplifying)
+            }
+            return Math.max(0.30, price * (category ? categories[category] : 0.15));
+        }
+    },
+
+    // === CANADA (Metric) ===
+    CAD: {
+        units: { weight: "kg", dim: "cm" },
+        currencyParams: { storagePerCubic: 35, storageUnit: "m³" }, // Approx
+        getFbaFee: (l, w, h, wt) => {
+            const weightG = wt * 1000;
+            // CA Rates 2024
+            if (weightG <= 100) return 4.59;
+            if (weightG <= 500) return 5.51;
+            if (weightG <= 1000) return 6.95; // large standard
+            if (weightG <= 2000) return 8.78;
+            if (weightG <= 3000) return 10.37;
+            return 11.00 + (Math.ceil(wt - 3) * 0.40);
+        },
+
+        getReferralFee: (price, category) => price > 0 ? Math.max(1.00, price * (category ? categories[category] : 0.15)) : 0
+    }
+}
+
+// Fallback for others
+const defaultMarket = markets.USD;
+
+export function FBACalculator() {
+    // State for inputs
+    const [currency, setCurrency] = useState("USD")
+    const [salesPrice, setSalesPrice] = useState<number | "">("")
+    // Ensure inputs are reset or logically handled when units change?
+    // For now, we keep values but let user know units changed via label.
+    const [weight, setWeight] = useState<number | "">("")
+    const [length, setLength] = useState<number | "">("")
+    const [width, setWidth] = useState<number | "">("")
+    const [height, setHeight] = useState<number | "">("")
+
+    // Advanced State
+    const [showAdvanced, setShowAdvanced] = useState(false)
+    const [category, setCategory] = useState("General (Default)")
+    const [storageMonths, setStorageMonths] = useState<number | "">("")
+
+    const market = markets[currency] || defaultMarket;
+    const units = market.units;
+
+    // Helper to safely get number for calculation
+    const val = (v: number | "") => (v === "" ? 0 : v)
+
+    // Currency symbols map
+    const currencySymbols: Record<string, string> = {
+        USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
+        AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
+        RUB: '₽', ZAR: 'R', SEK: 'kr', NOK: 'kr', DKK: 'kr', PLN: 'zł', THB: '฿',
+        IDR: 'Rp', MYR: 'RM', PHP: '₱', VND: '₫', TRY: '₺', SAR: '﷼', NZD: 'NZ$',
+        EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
+    }
+    const getSymbol = () => currencySymbols[currency] || "$"
+
+    const scrollToGuide = () => {
+        const element = document.getElementById('how-to-use');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    const salesPriceVal = val(salesPrice)
+    const weightVal = val(weight)
+    const lengthVal = val(length)
+    const widthVal = val(width)
+    const heightVal = val(height)
+
+    // Calculate Fees
+    // Calculate Fees
+    const fbaFee = market.getFbaFee(lengthVal, widthVal, heightVal, weightVal, salesPriceVal)
+    const referralFee = market.getReferralFee(salesPriceVal, category)
+    const closingFee = market.getClosingFee ? market.getClosingFee(salesPriceVal) : 0;
+
+    // Storage Fee Calculation
+    const getStorageFee = () => {
+        if (lengthVal === 0 || widthVal === 0 || heightVal === 0) return 0;
+        const months = val(storageMonths) || 0;
+        if (months === 0) return 0;
+
+        // Calculate Volume
+        let volume = lengthVal * widthVal * heightVal; // base unit volume (e.g. in³ or cm³)
+        let volumeInFeeUnits = 0;
+
+        if (market.units.dim === "in" && market.currencyParams.storageUnit === "ft³") {
+            // in³ to ft³ => / 1728
+            volumeInFeeUnits = volume / 1728;
+        } else if (market.units.dim === "cm" && market.currencyParams.storageUnit === "ft³") {
+            // cm³ to ft³ => / 28316.8
+            volumeInFeeUnits = volume / 28316.8;
+        } else if (market.units.dim === "cm" && market.currencyParams.storageUnit === "m³") {
+            // cm³ to m³ => / 1,000,000
+            volumeInFeeUnits = volume / 1000000;
+        } else {
+            // Fallback approximation
+            return 0;
+        }
+
+        return volumeInFeeUnits * market.currencyParams.storagePerCubic * months;
+    }
+
+    const storageFee = getStorageFee();
+    const totalFees = fbaFee + referralFee + closingFee + storageFee;
+
+    // Size Tier Display (Rough Logic)
+    const getSizeTier = () => {
+        if (lengthVal === 0 || widthVal === 0 || heightVal === 0 || weightVal === 0) return "Unknown"
+        // Rough universal logic for display text
+        if (market.units.dim === "in") {
+            if (lengthVal <= 15 && widthVal <= 12 && heightVal <= 0.75 && weightVal <= 1) return "Small Standard"
+            if (lengthVal <= 18 && widthVal <= 14 && heightVal <= 8 && weightVal <= 20) return "Large Standard"
+        } else {
+            // Metric approximation
+            // 38 x 30 x 2 cm ~ Small ? 
+            // 45 x 34 x 26 cm ~ Standard
+            if (lengthVal <= 45 && widthVal <= 34 && heightVal <= 26 && weightVal <= 12) return "Standard Parcel"
+        }
+        return "Oversize / Heavy"
+    }
+
+    // Currency formatter
+    const formatCurrency = (val: number) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currency,
+            maximumFractionDigits: 2
+        }).format(val)
+    }
+
+    const symbol = getSymbol()
+
+    return (
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                {/* Left Column: Inputs (Col Span 7) */}
+                <div className="lg:col-span-7">
+                    <FadeIn delay={0.2} direction="right" className="h-full">
+                        <Card className="border border-slate-200 shadow-sm bg-white">
+                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-3">
+                                        <CardTitle className="text-2xl font-bold text-blue-600 flex items-baseline gap-2">
+                                            Calculator <span className="text-slate-400 font-medium text-lg">Inputs</span>
+                                        </CardTitle>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={scrollToGuide}
+                                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
+                                                    >
+                                                        <HelpCircle className="w-4 h-4" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                    How to use this calculator
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
+                                    <CardDescription>
+                                        Using <strong>{currency}</strong> rates ({units.weight}/{units.dim}).
+                                    </CardDescription>
+                                </div>
+                                <div className="w-[180px]">
+                                    <CurrencyCombobox value={currency} onValueChange={setCurrency} />
+                                </div>
+                            </CardHeader>
+                            <CardContent className="space-y-4 pt-6">
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label={`Selling Price (${symbol})`}
+                                        value={salesPrice}
+                                        onChange={setSalesPrice}
+                                        placeholder="29.99"
+                                        max={100000}
+                                        tooltip="The price you list your product for on Amazon."
+                                    />
+
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <CalculatorInput
+                                            label={`Packaged Weight (${units.weight})`}
+                                            value={weight}
+                                            onChange={setWeight}
+                                            placeholder={units.weight === "lbs" ? "1.5" : "0.5"}
+                                            max={150}
+                                            tooltip={`Total weight including packaging in ${units.weight}.`}
+                                        />
+
+                                        <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-3">
+                                            <div className="space-y-1">
+                                                <label className="text-base font-semibold text-slate-700 flex items-center justify-between">
+                                                    <span>Dimensions ({units.dim})</span>
+                                                    <span className="text-[11px] font-medium text-slate-400/80 bg-slate-50 px-2 py-0.5 rounded">L x W x H</span>
+                                                </label>
+                                                <div className="grid grid-cols-3 gap-3">
+                                                    <div className="relative group">
+                                                        <Input
+                                                            type="number"
+                                                            value={length}
+                                                            onChange={(e) => {
+                                                                const val = e.target.value;
+                                                                if (val === "") setLength("");
+                                                                else {
+                                                                    const num = parseFloat(val);
+                                                                    if (!isNaN(num)) setLength(num);
+                                                                }
+                                                            }}
+                                                            placeholder="Length"
+                                                            max={1000}
+                                                            className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full text-center hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                        />
+                                                        <div className="absolute -bottom-5 inset-x-0 text-center text-[10px] text-slate-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Length</div>
+                                                    </div>
+                                                    <div className="relative group">
+                                                        <Input
+                                                            type="number"
+                                                            value={width}
+                                                            onChange={(e) => {
+                                                                const val = e.target.value;
+                                                                if (val === "") setWidth("");
+                                                                else {
+                                                                    const num = parseFloat(val);
+                                                                    if (!isNaN(num)) setWidth(num);
+                                                                }
+                                                            }}
+                                                            placeholder="Width"
+                                                            max={1000}
+                                                            className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full text-center hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                        />
+                                                        <div className="absolute -bottom-5 inset-x-0 text-center text-[10px] text-slate-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Width</div>
+                                                    </div>
+                                                    <div className="relative group">
+                                                        <Input
+                                                            type="number"
+                                                            value={height}
+                                                            onChange={(e) => {
+                                                                const val = e.target.value;
+                                                                if (val === "") setHeight("");
+                                                                else {
+                                                                    const num = parseFloat(val);
+                                                                    if (!isNaN(num)) setHeight(num);
+                                                                }
+                                                            }}
+                                                            placeholder="Height"
+                                                            max={1000}
+                                                            className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full text-center hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                        />
+                                                        <div className="absolute -bottom-5 inset-x-0 text-center text-[10px] text-slate-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Height</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                {/* Advanced Toggle */}
+                                <div className="pt-6 mt-2 border-t border-slate-100/60">
+                                    <button
+                                        onClick={() => setShowAdvanced(!showAdvanced)}
+                                        className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors w-full justify-between group"
+                                    >
+                                        <span className="flex items-center gap-2">
+                                            Advanced Settings
+                                            <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold">OPTIONAL</span>
+                                        </span>
+                                        {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                    </button>
+
+                                    {showAdvanced && (
+                                        <FadeIn className="pt-4 space-y-4">
+                                            {/* Category Selector */}
+                                            <div className="flex items-center justify-between gap-2">
+                                                <div className="flex items-center gap-2">
+                                                    <label className="text-base font-semibold text-slate-700">Product Category</label>
+                                                    <TooltipProvider delayDuration={100}>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <button
+                                                                    type="button"
+                                                                    tabIndex={-1}
+                                                                    className="text-slate-500 hover:text-blue-600 transition-colors cursor-default"
+                                                                >
+                                                                    <Info className="h-3.5 w-3.5" />
+                                                                </button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                                Referral fee percentage varies by product category.
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                    </TooltipProvider>
+                                                </div>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            className="h-10 w-44 md:w-52 justify-between border-slate-300 bg-white text-base shadow-sm hover:border-blue-600 hover:bg-white focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 transition-all"
+                                                        >
+                                                            <span className="truncate">{category}</span>
+                                                            <span className="ml-1 shrink-0 text-xs text-slate-400 font-medium">{Math.round(categories[category] * 100)}%</span>
+                                                            <ChevronsUpDown className="ml-1 h-3.5 w-3.5 shrink-0 opacity-40" />
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-[260px] p-0" align="end">
+                                                        <Command>
+                                                            <CommandInput placeholder="Search category..." className="text-sm" />
+                                                            <CommandList>
+                                                                <CommandEmpty>No category found.</CommandEmpty>
+                                                                <CommandGroup>
+                                                                    {Object.keys(categories).map(cat => (
+                                                                        <CommandItem
+                                                                            key={cat}
+                                                                            value={cat}
+                                                                            onSelect={(val) => {
+                                                                                const match = Object.keys(categories).find(k => k.toLowerCase() === val.toLowerCase());
+                                                                                if (match) setCategory(match);
+                                                                            }}
+                                                                            className="flex items-center justify-between py-2.5 px-3 cursor-pointer"
+                                                                        >
+                                                                            <div className="flex items-center gap-2">
+                                                                                <Check className={cn("h-3.5 w-3.5 text-blue-600", category === cat ? "opacity-100" : "opacity-0")} />
+                                                                                <span className="text-sm">{cat}</span>
+                                                                            </div>
+                                                                            <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded", category === cat ? "bg-blue-50 text-blue-600" : "text-slate-400")}>
+                                                                                {Math.round(categories[cat] * 100)}%
+                                                                            </span>
+                                                                        </CommandItem>
+                                                                    ))}
+                                                                </CommandGroup>
+                                                            </CommandList>
+                                                        </Command>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </div>
+
+                                            {/* Storage Input */}
+                                            <div>
+                                                <CalculatorInput
+                                                    label={`Avg. Storage (Months)`}
+                                                    value={storageMonths}
+                                                    onChange={setStorageMonths}
+                                                    placeholder="0"
+                                                    max={12}
+                                                    tooltip="How long you expect the item to sit in Amazon's warehouse on average."
+                                                />
+                                                <p className="text-[10px] text-slate-400 text-right mt-1">
+                                                    * {market.currencyParams.storagePerCubic} {symbol}/{market.currencyParams.storageUnit} / mo
+                                                </p>
+                                            </div>
+                                        </FadeIn>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </FadeIn>
+                </div >
+
+                {/* Right Column: Results (Col Span 5) - Sticky & Dark Theme */}
+                < div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8" >
+                    <FadeIn delay={0.4} direction="left" className="space-y-4">
+
+                        {/* Main Fees Card */}
+                        <Card className="border-0 shadow-2xl overflow-hidden relative transition-colors duration-300 bg-[#0f172a] text-white">
+                            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-blue-600/10" />
+
+                            <CardHeader className="pb-2 relative z-10">
+                                <div className="flex items-center justify-between">
+                                    <CardTitle className="text-sm font-medium uppercase tracking-wider text-blue-200">Total Amazon Fees</CardTitle>
+                                    <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400">
+                                        <div className="relative flex h-2 w-2">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                        </div>
+                                        Estimated (2026 Rates)
+                                    </div>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="relative z-10">
+                                <div className="flex items-baseline gap-3 mb-6">
+                                    <span className="text-4xl font-bold tracking-tight text-white">
+                                        <Counter value={totalFees} formatter={formatCurrency} key={currency} />
+                                    </span>
+                                </div>
+
+                                <div className="space-y-3 pt-4 border-t border-slate-700/50">
+                                    <Row label={`FBA Fee (${market === markets.INR ? 'Weight Handling' : 'Fulfillment'})`} value={<Counter value={fbaFee} formatter={formatCurrency} key={currency} />} className="text-slate-300" />
+                                    <Row label={`Referral Fee (Est.)`} value={<Counter value={referralFee} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
+                                    {closingFee > 0 && (
+                                        <Row label="Closing Fee" value={<Counter value={closingFee} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
+                                    )}
+                                    {storageFee > 0 && (
+                                        <Row label="Storage Fee (Est.)" value={<Counter value={storageFee} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Metrics Grid */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <ResultCard
+                                title="Size Tier"
+                                value={getSizeTier()}
+                                tooltip="Based on your dimensions and weight. Impacts your FBA fee significantly."
+                            />
+
+                            <ResultCard
+                                title="Referral Fee %"
+                                value={`${(categories?.[category] || (currency === 'INR' ? 0.12 : 0.15)) * 100}%`}
+                                tooltip="Platform fee percentage based on your selected category."
+                            />
+                        </div>
+
+
+                    </FadeIn>
+                </div >
+            </div >
+
+
+        </FadeIn >
+    )
+}
+
+function ResultCard({ title, value, darkwarning, tooltip }: { title: string, value: React.ReactNode, darkwarning?: boolean, tooltip?: string }) {
+    return (
+        <div className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default ${darkwarning
+            ? 'bg-orange-50/50 border-orange-100'
+            : 'bg-white border-slate-200 shadow-sm'
+            }`}>
+            <div className="flex items-center gap-1.5 mb-1">
+                <p className="text-xs font-semibold text-slate-500">{title}</p>
+                {tooltip && (
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                    <Info className="h-3 w-3" />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                {tooltip}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
+            </div>
+            <p className="text-xl font-bold text-slate-800">{value}</p>
+        </div>
+    )
+}
+
+function Row({ label, value, isNegative, className }: { label: string, value: React.ReactNode, isNegative?: boolean, className?: string }) {
+    return (
+        <div className={`flex justify-between items-center text-sm ${className}`}>
+            <span>{label}</span>
+            <span className="font-medium tracking-wide">
+                {isNegative ? '-' : ''}{value}
+            </span>
+        </div>
+    )
+}
