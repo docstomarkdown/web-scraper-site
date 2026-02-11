@@ -32,8 +32,16 @@ export const toolsGroups = [
     icon: "shopping-cart",
     items: [
       {
+        title: "Amazon FBA Fee Calculator",
+        href: "/tools/amazon-fba-fee-calculator",
+      },
+      {
         title: "Dropshipping Profit Calculator",
         href: "/tools/dropshipping-profit-calculator",
+      },
+      {
+        title: "Profit Margin Calculator",
+        href: "/tools/profit-margin-calculator",
       },
     ],
   },

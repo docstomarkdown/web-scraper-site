@@ -19,39 +19,16 @@ const iconMap: Record<string, React.ElementType> = {
 
 // Full descriptions for tools
 const toolDescriptions: Record<string, string> = {
-    "Goods and Services Tax Invoice Generator": "Create GST-compliant tax invoices with automatic CGST, SGST, and IGST calculations",
-    "Invoice Generator": "Professional invoices with customizable templates and multi-currency support",
-    "Proforma Invoice Maker": "Generate pro-forma invoices for quotes and advance payments",
-    "Sales Receipt Generator": "Quick sales receipts for retail and point-of-sale transactions",
-    "Credit Note Generator": "Issue credit notes for returns, discounts, and adjustments",
-    "Debit Note Generator": "Create debit notes for additional charges and corrections",
-    "Purchase Order Generator": "Streamlined purchase orders for vendor and supplier management",
-    "Work Order Generator": "Detailed work orders for projects and service requests",
-    "Purchase Return Generator": "Document purchase returns with proper credit tracking",
-    "Sales Return Generator": "Process customer returns with comprehensive documentation",
-    "Stock Keeping Unit Generator": "Generate structured SKUs for inventory management",
-    "Packing Slip Generator": "Create packing slips for shipments and deliveries",
-    "Goods Received Note Generator": "Document incoming goods with quantity verification",
-    "Stock Transfer Note Generator": "Track inter-warehouse stock movements",
-    "Free Barcode Generator": "Generate barcodes in multiple formats for products",
-    "Quotation Generator": "Professional quotes with itemized pricing",
-    "Project Cost Quote Calculator": "Calculate and quote project costs accurately",
-    "Budget Calculator": "Plan and track budgets with category breakdowns",
-    "Tax Deducted at Source Calculator": "Calculate TDS for salary, contracts, and payments",
-    "Expense Report Generator": "Organize and report business expenses",
-    "Petty Cash Voucher Generator": "Track small cash transactions",
-    "Appointment Letter Generator": "Create professional appointment letters and employment offer letters",
-    "Experience Letter Generator": "Generate professional experience letters",
-    "Salary Slip Generator": "Create detailed payslips with deductions and earnings",
-    "Checklist Generator": "Build custom checklists for any workflow",
+    "Amazon FBA Fee Calculator": "Estimate Amazon FBA fees, referral fees, and net profit based on product size and weight.",
     "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
+    "Profit Margin Calculator": "Instantly calculate gross margin, markup percentage, and profit per unit for any product.",
 };
 
 export default function ToolsPage() {
     const groups = toolsGroups || [];
 
-    // Featured tools (first 3 from first group)
-    const featuredTools = groups[0]?.items.slice(0, 3) || [];
+    // Featured tools (all from first group for now)
+    const featuredTools = groups[0]?.items || [];
 
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden">
@@ -66,28 +43,28 @@ export default function ToolsPage() {
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm mb-6">
                     <Sparkles className="w-4 h-4 text-[#2772ed]" />
-                    <span className="text-sm font-medium text-slate-600">20+ Free Business Tools</span>
+                    <span className="text-sm font-medium text-slate-600">Free E-commerce Tools</span>
                 </div>
 
                 <h1 className="text-5xl sm:text-6xl font-bold mb-6 leading-tight">
-                    <span className="text-slate-900">Powerful Tools for </span>
-                    <span className="text-[#2772ed]">Modern Businesses</span>
+                    <span className="text-slate-900">Essential Tools for </span>
+                    <span className="text-[#2772ed]">Online Sellers</span>
                 </h1>
 
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-                    From invoicing to inventory management — streamline your workflow with our suite of premium, completely free tools.
+                    From FBA fee estimation to dropshipping profitability — streamline your e-commerce workflow with our suite of premium, completely free tools.
                 </p>
 
                 {/* Quick Stats */}
                 <div className="flex items-center justify-center gap-8 md:gap-16">
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-[#2772ed]">20+</div>
+                        <div className="text-3xl font-bold text-[#2772ed]">3+</div>
                         <div className="text-sm text-slate-500 mt-1">Free Tools</div>
                     </div>
                     <div className="w-px h-10 bg-slate-200" />
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-[#2772ed]">7</div>
-                        <div className="text-sm text-slate-500 mt-1">Categories</div>
+                        <div className="text-3xl font-bold text-[#2772ed]">24/7</div>
+                        <div className="text-sm text-slate-500 mt-1">Available</div>
                     </div>
                     <div className="w-px h-10 bg-slate-200" />
                     <div className="text-center">
@@ -114,7 +91,7 @@ export default function ToolsPage() {
                             <div className="absolute inset-0 bg-[#2772ed]/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300" />
                             <div className="relative">
                                 <div className="w-12 h-12 rounded-xl bg-[#2772ed] flex items-center justify-center mb-4 shadow-lg shadow-[#2772ed]/25 group-hover:scale-110 transition-transform duration-300">
-                                    <Receipt className="w-6 h-6 text-white" />
+                                    <Calculator className="w-6 h-6 text-white" />
                                 </div>
                                 <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#2772ed] transition-colors">
                                     {tool.title}
