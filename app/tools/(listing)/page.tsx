@@ -22,6 +22,7 @@ const toolDescriptions: Record<string, string> = {
     "Amazon FBA Fee Calculator": "Estimate Amazon FBA fees, referral fees, and net profit based on product size and weight.",
     "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
     "Profit Margin Calculator": "Instantly calculate gross margin, markup percentage, and profit per unit for any product.",
+    "ROI Calculator": "Calculate return on investment for any product to measure profitability and make smarter sourcing decisions.",
 };
 
 export default function ToolsPage() {

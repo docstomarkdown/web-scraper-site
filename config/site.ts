@@ -43,6 +43,10 @@ export const toolsGroups = [
         title: "Profit Margin Calculator",
         href: "/tools/profit-margin-calculator",
       },
+      {
+        title: "ROI Calculator",
+        href: "/tools/roi-calculator",
+      },
     ],
   },
 ];
