@@ -19,6 +19,8 @@ const iconMap: Record<string, React.ElementType> = {
 
 // Full descriptions for tools
 const toolDescriptions: Record<string, string> = {
+  
+    "Dimension Converter": "Convert product dimensions between inches, cm, and mm with volume and dimensional weight calculations.",
     "Amazon FBA Fee Calculator": "Estimate Amazon FBA fees, referral fees, and net profit based on product size and weight.",
     "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
     "Profit Margin Calculator": "Instantly calculate gross margin, markup percentage, and profit per unit for any product.",
