@@ -40,8 +40,8 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                             Step {stepNumber}
                                         </span>
                                     </div>
-                                    <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">{step.title}</h3>
-                                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: step.description }} />
+                                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1.5">{step.title}</h3>
+                                    <p className="text-sm sm:text-[15px] text-slate-500 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: step.description }} />
                                 </div>
                             </div>
                         )

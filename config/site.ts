@@ -91,6 +91,10 @@ export const toolsGroups = [
         title: "Price Elasticity Calculator",
         href: "/tools/price-elasticity-calculator",
       },
+      {
+        title: "Bundle Profit Calculator",
+        href: "/tools/bundle-profit-calculator",
+      },
     ],
   },
 ];
