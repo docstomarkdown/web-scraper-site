@@ -55,32 +55,36 @@ export function ResultFeedbackCard({
             <CardContent className="relative z-10">
                 {/* Main Big Number */}
                 <div className="flex items-baseline gap-3 mb-6">
-                    <span className={cn("text-5xl font-bold tracking-tight", valueColor)}>
+                    <div className={cn("text-5xl font-bold tracking-tight", valueColor)}>
                         {mainValue}
-                    </span>
+                    </div>
                 </div>
 
-                {/* Secondary Metrics Grid */}
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
-                    {/* Primary Supporting Metric (Left) */}
+                {/* Metrics Section */}
+                <div className="pt-4 border-t border-white/10 space-y-4">
+                    {/* Primary Supporting Metric (Full Width) */}
                     {mainMetricLabel && (
-                        <div>
+                        <div className="pb-3 border-b border-white/5">
                             <p className="text-xs text-slate-300 mb-1">{mainMetricLabel}</p>
-                            <p className={cn("text-2xl font-bold", mainMetricColor)}>
+                            <div className={cn("text-2xl font-bold break-words", mainMetricColor)}>
                                 {mainMetricValue}
-                            </p>
+                            </div>
                         </div>
                     )}
 
-                    {/* Secondary Supporting Metrics (Right/Grid) */}
-                    {secondaryMetrics.map((metric, index) => (
-                        <div key={index}>
-                            <p className="text-xs text-slate-300 mb-1">{metric.label}</p>
-                            <p className={cn("text-2xl font-bold", metric.color || "text-emerald-400")}>
-                                {metric.value}
-                            </p>
+                    {/* Secondary Supporting Metrics Grid */}
+                    {secondaryMetrics.length > 0 && (
+                        <div className="grid grid-cols-2 gap-4">
+                            {secondaryMetrics.map((metric, index) => (
+                                <div key={index}>
+                                    <p className="text-xs text-slate-300 mb-1">{metric.label}</p>
+                                    <div className={cn("text-xl font-bold break-all", metric.color || "text-emerald-400")}>
+                                        {metric.value}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    )}
                 </div>
             </CardContent>
         </Card>

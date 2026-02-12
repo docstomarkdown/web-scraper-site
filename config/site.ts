@@ -87,6 +87,10 @@ export const toolsGroups = [
         title: "Promo Code Generator",
         href: "/tools/promo-code-generator",
       },
+      {
+        title: "Price Elasticity Calculator",
+        href: "/tools/price-elasticity-calculator",
+      },
     ],
   },
 ];
