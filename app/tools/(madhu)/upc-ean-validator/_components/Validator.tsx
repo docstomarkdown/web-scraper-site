@@ -361,9 +361,6 @@ export function Validator() {
                             <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100 flex flex-row items-center justify-between space-y-0">
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <div className="p-2 bg-blue-50/50 rounded-lg text-blue-600 border border-blue-100">
-                                            <ScanLine className="h-5 w-5" />
-                                        </div>
                                         <CardTitle className="text-2xl font-bold text-blue-600">
                                             Validator Inputs
                                         </CardTitle>
@@ -459,7 +456,7 @@ export function Validator() {
                                         disabled={!inputCode}
                                         className="flex-1 h-11 px-6 shadow-sm border-slate-300 hover:bg-slate-50 transition-all font-bold text-slate-950 disabled:opacity-30"
                                     >
-                                        <Copy className="w-4 h-4 mr-2" /> Copy
+                                        <Copy className="w-4 h-4 mr-2" /> Copy Results
                                     </Button>
                                 </div>
                             </CardContent>
@@ -588,24 +585,25 @@ export function Validator() {
                                 </CardContent>
                             </Card>
 
-                            {/* Barcode Visualization / Placeholder (Always Visible) */}
-                            <Card className="bg-white border border-slate-200 shadow-sm p-6 flex justify-center items-center overflow-hidden min-h-[160px]">
+                            {/* Barcode Preview */}
+                            <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">
                                 {result && result.isValid && isMounted ? (
-                                    <div className="relative w-full flex justify-center py-6">
-                                        <div className="scale-110 sm:scale-125 origin-center">
-                                            <Barcode
-                                                value={inputCode}
-                                                format={getBarcodeFormat(result.format)}
-                                                width={2}
-                                                height={80}
-                                                fontSize={18}
-                                                background="transparent"
-                                                marginTop={10}
-                                                marginBottom={10}
-                                            />
-                                        </div>
-                                        <div className="absolute top-0 left-0 text-xs font-medium text-slate-400">
-                                            Identified as <span className="text-slate-600 font-bold">{result.format}</span>
+                                    <div className="flex flex-col items-center w-full animate-in fade-in zoom-in-95 duration-200 fill-mode-forwards">
+                                        <h3 className="text-base font-bold text-slate-900 mb-2">Identified {result.format} Barcode</h3>
+
+                                        <div className="p-4 bg-white rounded-lg border border-slate-100 shadow-sm w-full flex justify-center overflow-hidden mb-4">
+                                            <div className="scale-110 sm:scale-125 origin-center">
+                                                <Barcode
+                                                    value={inputCode}
+                                                    format={getBarcodeFormat(result.format)}
+                                                    width={2}
+                                                    height={80}
+                                                    fontSize={16}
+                                                    background="transparent"
+                                                    marginTop={10}
+                                                    marginBottom={10}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 ) : (

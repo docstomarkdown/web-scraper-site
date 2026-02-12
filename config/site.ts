@@ -52,6 +52,10 @@ export const toolsGroups = [
         href: "/tools/upc-ean-validator",
       },
       {
+        title: "GTIN Converter",
+        href: "/tools/gtin-converter",
+      },
+      {
         title: "ROI Calculator",
         href: "/tools/roi-calculator",
       },
