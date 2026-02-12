@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { HelpCircle, TrendingDown, DollarSign, Percent, ArrowRight, RefreshCw } from "lucide-react"
 import { CurrencyCombobox } from "@/components/ui/currency-combobox"
-import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { motion } from "framer-motion"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -87,7 +87,7 @@ export function DiscountCalculator() {
     }
 
     return (
-        <FadeIn className="w-full max-w-5xl mx-auto py-8 px-4" duration={0.6}>
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="flex justify-center mb-8">
                 <div className="bg-slate-100 p-1.5 rounded-xl inline-flex relative shadow-inner">
                     <TooltipProvider>
@@ -136,9 +136,9 @@ export function DiscountCalculator() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
-                <div className="md:col-span-5 space-y-6">
+                <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
@@ -206,49 +206,34 @@ export function DiscountCalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="md:col-span-7 space-y-6">
+                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     {/* Main Result Card */}
-                    <Card className="border-0 shadow-xl overflow-hidden relative transition-colors duration-300 bg-slate-900 text-white">
-                        <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-emerald-500/10" />
-
-                        <CardHeader className="pb-2 relative z-10">
-                            <CardTitle className="text-sm font-medium uppercase tracking-wider text-slate-400">
-                                {mode === "find-price" ? "Final Price" : "Discount Percentage"}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="relative z-10">
-                            <div className="flex items-baseline gap-3 mb-6">
-                                <span className="text-5xl font-bold tracking-tight text-white">
-                                    {mode === "find-price" ? (
-                                        <Counter value={finalPrice} formatter={formatCurrency} key={currency} />
-                                    ) : (
-                                        <Counter value={calculatedDiscount} formatter={(v) => `${v.toFixed(2)}%`} />
-                                    )}
-                                </span>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700/50">
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">You Save</p>
-                                    <p className="text-2xl font-bold text-emerald-400">
-                                        <Counter value={savings} formatter={formatCurrency} key={currency} />
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">
-                                        {mode === "find-price" ? "Discount %" : "Original Price"}
-                                    </p>
-                                    <p className="text-2xl font-bold text-blue-400">
-                                        {mode === "find-price" ? (
-                                            <Counter value={Number(discountValue) || 0} formatter={(v) => `${v}%`} />
-                                        ) : (
-                                            <Counter value={Number(originalPrice) || 0} formatter={formatCurrency} key={currency} />
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <ResultFeedbackCard
+                        title={mode === "find-price" ? "Final Price" : "Discount Percentage"}
+                        mainValue={
+                            mode === "find-price" ? (
+                                <Counter value={finalPrice} formatter={formatCurrency} key={currency} />
+                            ) : (
+                                <Counter value={calculatedDiscount} formatter={(v) => `${v.toFixed(2)}%`} />
+                            )
+                        }
+                        secondaryMetrics={[
+                            {
+                                label: "You Save",
+                                value: <Counter value={savings} formatter={formatCurrency} key={currency} />,
+                                color: "text-emerald-400"
+                            },
+                            {
+                                label: mode === "find-price" ? "Discount %" : "Original Price",
+                                value: mode === "find-price" ? (
+                                    <Counter value={Number(discountValue) || 0} formatter={(v) => `${v}%`} />
+                                ) : (
+                                    <Counter value={Number(originalPrice) || 0} formatter={formatCurrency} key={currency} />
+                                ),
+                                color: "text-blue-400"
+                            }
+                        ]}
+                    />
 
                     {/* Additional Info / Comparison */}
                     <div className="grid grid-cols-1 gap-4">

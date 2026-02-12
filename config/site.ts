@@ -59,6 +59,50 @@ export const toolsGroups = [
         title: "ROI Calculator",
         href: "/tools/roi-calculator",
       },
+      {
+        title: "Discount Percentage Calculator",
+        href: "/tools/discount-percentage-calculator",
+      },
+      {
+        title: "ROAS Calculator",
+        href: "/tools/return-on-ad-spend-calculator",
+      },
+      {
+        title: "CPA Calculator",
+        href: "/tools/cpa-calculator",
+      },
+      {
+        title: "Dimensional Weight Calculator",
+        href: "/tools/dimensional-weight-calculator",
+      },
+      {
+        title: "Free Shipping Calculator",
+        href: "/tools/free-shipping-calculator",
+      },
+      {
+        title: "Inventory Reorder Calculator",
+        href: "/tools/inventory-reorder-calculator",
+      },
+      {
+        title: "Safety Stock Calculator",
+        href: "/tools/safety-stock-calculator",
+      },
+      {
+        title: "Sales Velocity Calculator",
+        href: "/tools/sales-velocity-calculator",
+      },
+      {
+        title: "Promo Code Generator",
+        href: "/tools/promo-code-generator",
+      },
+      {
+        title: "Price Elasticity Calculator",
+        href: "/tools/price-elasticity-calculator",
+      },
+      {
+        title: "Bundle Profit Calculator",
+        href: "/tools/bundle-profit-calculator",
+      },
     ],
   },
 ];

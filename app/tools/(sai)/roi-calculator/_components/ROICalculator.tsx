@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HelpCircle, TrendingUp, DollarSign, Percent, BarChart3 } from "lucide-react"
 import { CurrencyCombobox } from "@/components/ui/currency-combobox"
-import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function ROICalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -51,11 +51,11 @@ export function ROICalculator() {
     }
 
     return (
-        <FadeIn className="w-full max-w-5xl mx-auto py-8 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
                 {/* Inputs Section */}
-                <div className="md:col-span-5 space-y-6">
+                <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
@@ -109,39 +109,27 @@ export function ROICalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="md:col-span-7 space-y-6">
+                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     {/* Main ROI Card */}
-                    <Card className={`border-0 shadow-xl overflow-hidden relative transition-colors duration-300 ${netProfit >= 0 ? 'bg-slate-900' : 'bg-red-900'} text-white`}>
-                        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none ${netProfit >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/20'}`} />
-
-                        <CardHeader className="pb-2 relative z-10">
-                            <CardTitle className="text-sm font-medium uppercase tracking-wider text-slate-400">
-                                Return on Investment
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="relative z-10">
-                            <div className="flex items-baseline gap-3 mb-6">
-                                <span className={`text-5xl font-bold tracking-tight ${netProfit >= 0 ? 'text-white' : 'text-red-200'}`}>
-                                    <Counter value={roiPercent} formatter={(v) => `${v.toFixed(2)}%`} />
-                                </span>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700/50">
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">Net Profit</p>
-                                    <p className={`text-2xl font-bold ${netProfit >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                                        <Counter value={netProfit} formatter={formatCurrency} key={currency} />
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">Profit Ratio</p>
-                                    <p className="text-2xl font-bold text-blue-400">
-                                        <Counter value={profitRatio} formatter={(v) => `${v.toFixed(2)}x`} />
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <ResultFeedbackCard
+                        title="Return on Investment"
+                        mainValue={
+                            <Counter value={roiPercent} formatter={(v) => `${v.toFixed(2)}%`} />
+                        }
+                        valueColor={netProfit > 0 ? "text-emerald-400" : (netProfit < 0 ? "text-red-400" : "text-white")}
+                        secondaryMetrics={[
+                            {
+                                label: "Net Profit",
+                                value: <Counter value={netProfit} formatter={formatCurrency} key={currency} />,
+                                color: netProfit >= 0 ? 'text-emerald-400' : 'text-red-400'
+                            },
+                            {
+                                label: "Profit Ratio",
+                                value: <Counter value={profitRatio} formatter={(v) => `${v.toFixed(2)}x`} />,
+                                color: "text-blue-400"
+                            }
+                        ]}
+                    />
 
                     {/* Breakdown Cards */}
                     <div className="grid grid-cols-2 gap-4">

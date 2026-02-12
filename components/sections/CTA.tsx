@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ShoppingBag, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -39,9 +40,11 @@ export function CTA({ withSectionWrapper = true }: CTAProps) {
 
                         {/* Chrome Badge - Left Aligned on Desktop */}
                         <div className="mt-10 flex justify-center lg:justify-start">
-                            <img
+                            <Image
                                 src="/Chromeweb store badge.png"
                                 alt="Chrome Web Store"
+                                width={206}
+                                height={64}
                                 className="h-[64px] w-auto contrast-[1.1] saturate-[1.1] drop-shadow-sm hover:scale-105 transition-transform duration-300 cursor-pointer"
                             />
                         </div>

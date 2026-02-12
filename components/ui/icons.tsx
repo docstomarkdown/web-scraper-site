@@ -9,7 +9,7 @@ import {
   File,
   FileText,
   HelpCircle,
-  Image,
+  Image as LucideImage,
   Laptop,
   Loader2,
   LucideProps,
@@ -28,6 +28,8 @@ import {
   type Icon as LucideIcon,
 } from "lucide-react"
 
+import Image from "next/image"
+
 export type Icon = typeof LucideIcon
 
 export const Icons = {
@@ -38,7 +40,7 @@ export const Icons = {
   trash: Trash,
   post: FileText,
   page: File,
-  media: Image,
+  media: LucideImage,
   settings: Settings,
   billing: CreditCard,
   ellipsis: MoreVertical,
@@ -57,10 +59,12 @@ export const Icons = {
     // For now we just pass className and standard HTML props.
     // The lint error suggests 'ref' mismatch among others.
     return (
-      <img
+      <Image
         src="/logo.svg"
         alt="Logo"
         className={className}
+        width={40}
+        height={40}
         style={{ width: "40px", height: "40px" }}
       />
     )

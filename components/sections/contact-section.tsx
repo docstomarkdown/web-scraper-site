@@ -65,11 +65,11 @@ export default function ContactSection() {
               </div>
 
               <h2 className="text-4xl font-bold text-slate-900 mb-6 tracking-tight">
-                Let's start a conversation
+                Let&apos;s start a conversation
               </h2>
 
               <p className="text-lg text-slate-600 leading-relaxed mb-12">
-                Have questions about enterprise plans, custom scraping needs, or just want to say hello? We're ready to help.
+                Have questions about enterprise plans, custom scraping needs, or just want to say hello? We&apos;re ready to help.
               </p>
 
               <div className="space-y-6">
@@ -175,8 +175,8 @@ export default function ContactSection() {
                     <span>Send Message</span>
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
-                  <p className="mt-4 text-xs text-slate-400 text-center">
-                    Secure form sending via your email client.
+                  <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+                    Have a question or need a custom solution? We&apos;re here to help.
                   </p>
                 </div>
               </form>

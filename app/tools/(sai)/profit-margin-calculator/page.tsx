@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { MarginCalculator } from "./_components/MarginCalculator"
 import { MarginGuide } from "./_components/MarginGuide"
-import { HowToUse } from "./_components/HowToUse"
+import { MarginHowToUse } from "./_components/MarginHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 
@@ -29,7 +29,7 @@ export default function ProfitMarginCalculatorPage() {
 
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <HowToUse />
+                        <MarginHowToUse />
                     </FadeIn>
 
                     <FadeIn delay={0.2}>

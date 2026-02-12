@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from "next/image";
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -82,10 +83,10 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                 >
                     {selectedCurrency ? (
                         <div className="flex items-center gap-2">
-                            <img
+                            <Image
                                 src={`https://flagcdn.com/w20/${selectedCurrency.flag.toLowerCase()}.png`}
-                                srcSet={`https://flagcdn.com/w40/${selectedCurrency.flag.toLowerCase()}.png 2x`}
-                                width="20"
+                                width={20}
+                                height={15}
                                 alt={selectedCurrency.name}
                                 className="object-contain"
                             />
@@ -113,10 +114,10 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                                     }}
                                 >
                                     <div className="flex items-center gap-2">
-                                        <img
+                                        <Image
                                             src={`https://flagcdn.com/w20/${currency.flag.toLowerCase()}.png`}
-                                            srcSet={`https://flagcdn.com/w40/${currency.flag.toLowerCase()}.png 2x`}
-                                            width="20"
+                                            width={20}
+                                            height={15}
                                             alt={currency.name}
                                             className="object-contain"
                                         />

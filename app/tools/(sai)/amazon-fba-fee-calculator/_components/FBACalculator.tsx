@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { HelpCircle, Info, Check, ChevronsUpDown } from "lucide-react"
 import { CurrencyCombobox } from "@/components/ui/currency-combobox"
-import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 
 import { ChevronDown, ChevronUp } from "lucide-react"
@@ -550,41 +550,36 @@ export function FBACalculator() {
                 < div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8" >
                     <FadeIn delay={0.4} direction="left" className="space-y-4">
 
-                        {/* Main Fees Card */}
-                        <Card className="border-0 shadow-2xl overflow-hidden relative transition-colors duration-300 bg-[#0f172a] text-white">
-                            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-blue-600/10" />
-
-                            <CardHeader className="pb-2 relative z-10">
-                                <div className="flex items-center justify-between">
-                                    <CardTitle className="text-sm font-medium uppercase tracking-wider text-blue-200">Total Amazon Fees</CardTitle>
-                                    <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400">
-                                        <div className="relative flex h-2 w-2">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                        </div>
-                                        Estimated (2026 Rates)
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="relative z-10">
-                                <div className="flex items-baseline gap-3 mb-6">
-                                    <span className="text-4xl font-bold tracking-tight text-white">
-                                        <Counter value={totalFees} formatter={formatCurrency} key={currency} />
-                                    </span>
-                                </div>
-
-                                <div className="space-y-3 pt-4 border-t border-slate-700/50">
-                                    <Row label={`FBA Fee (${market === markets.INR ? 'Weight Handling' : 'Fulfillment'})`} value={<Counter value={fbaFee} formatter={formatCurrency} key={currency} />} className="text-slate-300" />
-                                    <Row label={`Referral Fee (Est.)`} value={<Counter value={referralFee} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
-                                    {closingFee > 0 && (
-                                        <Row label="Closing Fee" value={<Counter value={closingFee} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
-                                    )}
-                                    {storageFee > 0 && (
-                                        <Row label="Storage Fee (Est.)" value={<Counter value={storageFee} formatter={formatCurrency} key={currency} />} className="text-slate-400" />
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <ResultFeedbackCard
+                            title="Total Amazon Fees"
+                            titleLabel="Estimated (2026 Rates)"
+                            labelClassName="text-emerald-400 bg-slate-800/50 border-slate-700/50"
+                            mainValue={
+                                <Counter value={totalFees} formatter={formatCurrency} key={currency} />
+                            }
+                            secondaryMetrics={[
+                                {
+                                    label: `FBA Fee (${market === markets.INR ? 'Weight Handling' : 'Fulfillment'})`,
+                                    value: <Counter value={fbaFee} formatter={formatCurrency} key={currency} />,
+                                    color: "text-slate-300"
+                                },
+                                {
+                                    label: "Referral Fee (Est.)",
+                                    value: <Counter value={referralFee} formatter={formatCurrency} key={currency} />,
+                                    color: "text-slate-400"
+                                },
+                                ...(closingFee > 0 ? [{
+                                    label: "Closing Fee",
+                                    value: <Counter value={closingFee} formatter={formatCurrency} key={currency} />,
+                                    color: "text-slate-400"
+                                }] : []),
+                                ...(storageFee > 0 ? [{
+                                    label: "Storage Fee (Est.)",
+                                    value: <Counter value={storageFee} formatter={formatCurrency} key={currency} />,
+                                    color: "text-slate-400"
+                                }] : [])
+                            ]}
+                        />
 
                         {/* Metrics Grid */}
                         <div className="grid grid-cols-2 gap-3">

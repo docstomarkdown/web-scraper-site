@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HelpCircle, Info, TrendingUp, DollarSign, Percent } from "lucide-react"
 import { CurrencyCombobox } from "@/components/ui/currency-combobox"
-import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function MarginCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -54,11 +54,11 @@ export function MarginCalculator() {
     }
 
     return (
-        <FadeIn className="w-full max-w-5xl mx-auto py-8 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
                 {/* Inputs Section */}
-                <div className="md:col-span-5 space-y-6">
+                <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
@@ -111,39 +111,28 @@ export function MarginCalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="md:col-span-7 space-y-6">
+                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     {/* Main Profit Card */}
-                    <Card className={`border-0 shadow-xl overflow-hidden relative transition-colors duration-300 ${totalProfit >= 0 ? 'bg-slate-900' : 'bg-red-900'} text-white`}>
-                        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none ${totalProfit >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/20'}`} />
-
-                        <CardHeader className="pb-2 relative z-10">
-                            <CardTitle className="text-sm font-medium uppercase tracking-wider text-slate-400">
-                                {quantity ? 'Total Profit' : 'Profit per Unit'}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="relative z-10">
-                            <div className="flex items-baseline gap-3 mb-6">
-                                <span className={`text-5xl font-bold tracking-tight ${totalProfit >= 0 ? 'text-white' : 'text-red-200'}`}>
-                                    <Counter value={totalProfit} formatter={formatCurrency} key={currency} />
-                                </span>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700/50">
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">Gross Margin</p>
-                                    <p className={`text-2xl font-bold ${totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                                        <Counter value={marginPercent} formatter={(v) => `${v.toFixed(2)}%`} />
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">Markup</p>
-                                    <p className="text-2xl font-bold text-blue-400">
-                                        <Counter value={markupPercent} formatter={(v) => `${v.toFixed(2)}%`} />
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <ResultFeedbackCard
+                        title={quantity ? 'Total Profit' : 'Profit per Unit'}
+                        mainValue={
+                            <Counter value={totalProfit} formatter={formatCurrency} key={currency} />
+                        }
+                        valueColor={totalProfit > 0 ? "text-emerald-400" : (totalProfit < 0 ? "text-red-400" : "text-white")}
+                        mainMetricColor={totalProfit >= 0 ? 'text-white' : 'text-red-200'}
+                        secondaryMetrics={[
+                            {
+                                label: "Gross Margin",
+                                value: <Counter value={marginPercent} formatter={(v) => `${v.toFixed(2)}%`} />,
+                                color: totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'
+                            },
+                            {
+                                label: "Markup",
+                                value: <Counter value={markupPercent} formatter={(v) => `${v.toFixed(2)}%`} />,
+                                color: "text-blue-400"
+                            }
+                        ]}
+                    />
 
                     {/* Simple Breakdown */}
                     <div className="grid grid-cols-2 gap-4">

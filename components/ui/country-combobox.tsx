@@ -19,6 +19,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { countryCodes } from '@/app/tools/_data/countryCodes';
+import Image from "next/image";
 
 interface CountryComboboxProps {
     value: string;
@@ -46,10 +47,10 @@ export function CountryCombobox({ value, onValueChange, className }: CountryComb
                 >
                     {selectedCountry ? (
                         <div className="flex items-center gap-2">
-                            <img
+                            <Image
                                 src={`https://flagcdn.com/w20/${selectedCountry.code.toLowerCase()}.png`}
-                                srcSet={`https://flagcdn.com/w40/${selectedCountry.code.toLowerCase()}.png 2x`}
-                                width="20"
+                                width={20}
+                                height={15}
                                 alt={selectedCountry.code}
                                 className="object-contain"
                             />
@@ -77,10 +78,10 @@ export function CountryCombobox({ value, onValueChange, className }: CountryComb
                                     }}
                                 >
                                     <div className="flex items-center gap-2">
-                                        <img
+                                        <Image
                                             src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
-                                            srcSet={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png 2x`}
-                                            width="20"
+                                            width={20}
+                                            height={15}
                                             alt={country.code}
                                             className="object-contain"
                                         />
