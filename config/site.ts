@@ -79,6 +79,10 @@ export const toolsGroups = [
         title: "Safety Stock Calculator",
         href: "/tools/safety-stock-calculator",
       },
+      {
+        title: "Sales Velocity Calculator",
+        href: "/tools/sales-velocity-calculator",
+      },
     ],
   },
 ];
