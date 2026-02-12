@@ -123,7 +123,7 @@ export function ReturnOnAdSpendCalculator() {
                                                 <HelpCircle className="w-4 h-4 text-slate-400 cursor-help hover:text-slate-600 transition-colors" />
                                             </TooltipTrigger>
                                             <TooltipContent className="max-w-[200px] text-xs">
-                                                <p>Switch to "No" if you want to calculate the revenue needed to hit a specific Target ROAS.</p>
+                                                <p>Switch to &quot;No&quot; if you want to calculate the revenue needed to hit a specific Target ROAS.</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
@@ -155,13 +155,13 @@ export function ReturnOnAdSpendCalculator() {
                                 />
                             ) : (
                                 <CalculatorInput
-                                    label="Target ROAS (x)"
+                                    label="Target ROAS"
                                     value={targetROAS}
                                     onChange={setTargetROAS}
                                     placeholder="4.0"
                                     max={100}
                                     step={0.1}
-                                    tooltip="Your desired Return on Ad Spend (e.g., 4.0 means $4 revenue for every $1 spent)."
+                                    tooltip="ROAS (Return on Ad Spend): The money you make for every $1 spent on ads. Aim for 4X or more. Calculated as: Revenue / Ad Spend."
                                 />
                             )}
                         </CardContent>

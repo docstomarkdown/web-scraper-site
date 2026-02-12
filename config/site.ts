@@ -63,6 +63,10 @@ export const toolsGroups = [
         title: "CPA Calculator",
         href: "/tools/cpa-calculator",
       },
+      {
+        title: "Dimensional Weight Calculator",
+        href: "/tools/dimensional-weight-calculator",
+      },
     ],
   },
 ];
