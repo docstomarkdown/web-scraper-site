@@ -87,7 +87,7 @@ export function DiscountCalculator() {
     }
 
     return (
-        <FadeIn className="w-full max-w-5xl mx-auto py-8 px-4" duration={0.6}>
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="flex justify-center mb-8">
                 <div className="bg-slate-100 p-1.5 rounded-xl inline-flex relative shadow-inner">
                     <TooltipProvider>
@@ -136,9 +136,9 @@ export function DiscountCalculator() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
-                <div className="md:col-span-5 space-y-6">
+                <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
@@ -206,7 +206,7 @@ export function DiscountCalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="md:col-span-7 space-y-6">
+                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     {/* Main Result Card */}
                     <ResultFeedbackCard
                         title={mode === "find-price" ? "Final Price" : "Discount Percentage"}

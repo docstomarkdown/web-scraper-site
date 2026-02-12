@@ -39,9 +39,7 @@ export default function Page() {
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
                             Dimensional Weight Calculator
                         </h1>
-                        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                            Calculate DIM weight and determine the billable weight for your shipments instantly.
-                        </p>
+
                     </div>
                 </FadeIn>
 

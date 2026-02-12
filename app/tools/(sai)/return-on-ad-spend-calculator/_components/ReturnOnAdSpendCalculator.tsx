@@ -75,11 +75,11 @@ export function ReturnOnAdSpendCalculator() {
     const currentHealth = mode === "calculate-roas" ? getROASHealth(roas) : getROASHealth(targetRoasVal)
 
     return (
-        <FadeIn className="w-full max-w-5xl mx-auto py-8 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
                 {/* Inputs Section */}
-                <div className="md:col-span-5 space-y-6">
+                <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
@@ -169,7 +169,7 @@ export function ReturnOnAdSpendCalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="md:col-span-7 space-y-6">
+                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     {/* Main Card */}
                     <ResultFeedbackCard
                         title={mode === "calculate-roas" ? "Return on Ad Spend (ROAS)" : "Target Revenue Required"}
