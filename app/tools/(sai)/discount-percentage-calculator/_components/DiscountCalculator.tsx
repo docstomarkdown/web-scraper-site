@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { HelpCircle, TrendingDown, DollarSign, Percent, ArrowRight, RefreshCw } from "lucide-react"
 import { CurrencyCombobox } from "@/components/ui/currency-combobox"
-import { FadeIn, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { motion } from "framer-motion"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -208,47 +208,32 @@ export function DiscountCalculator() {
                 {/* Results Section */}
                 <div className="md:col-span-7 space-y-6">
                     {/* Main Result Card */}
-                    <Card className="border-0 shadow-xl overflow-hidden relative transition-colors duration-300 bg-slate-900 text-white">
-                        <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-emerald-500/10" />
-
-                        <CardHeader className="pb-2 relative z-10">
-                            <CardTitle className="text-sm font-medium uppercase tracking-wider text-slate-400">
-                                {mode === "find-price" ? "Final Price" : "Discount Percentage"}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="relative z-10">
-                            <div className="flex items-baseline gap-3 mb-6">
-                                <span className="text-5xl font-bold tracking-tight text-white">
-                                    {mode === "find-price" ? (
-                                        <Counter value={finalPrice} formatter={formatCurrency} key={currency} />
-                                    ) : (
-                                        <Counter value={calculatedDiscount} formatter={(v) => `${v.toFixed(2)}%`} />
-                                    )}
-                                </span>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700/50">
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">You Save</p>
-                                    <p className="text-2xl font-bold text-emerald-400">
-                                        <Counter value={savings} formatter={formatCurrency} key={currency} />
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-xs text-slate-400 mb-1">
-                                        {mode === "find-price" ? "Discount %" : "Original Price"}
-                                    </p>
-                                    <p className="text-2xl font-bold text-blue-400">
-                                        {mode === "find-price" ? (
-                                            <Counter value={Number(discountValue) || 0} formatter={(v) => `${v}%`} />
-                                        ) : (
-                                            <Counter value={Number(originalPrice) || 0} formatter={formatCurrency} key={currency} />
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <ResultFeedbackCard
+                        title={mode === "find-price" ? "Final Price" : "Discount Percentage"}
+                        mainValue={
+                            mode === "find-price" ? (
+                                <Counter value={finalPrice} formatter={formatCurrency} key={currency} />
+                            ) : (
+                                <Counter value={calculatedDiscount} formatter={(v) => `${v.toFixed(2)}%`} />
+                            )
+                        }
+                        secondaryMetrics={[
+                            {
+                                label: "You Save",
+                                value: <Counter value={savings} formatter={formatCurrency} key={currency} />,
+                                color: "text-emerald-400"
+                            },
+                            {
+                                label: mode === "find-price" ? "Discount %" : "Original Price",
+                                value: mode === "find-price" ? (
+                                    <Counter value={Number(discountValue) || 0} formatter={(v) => `${v}%`} />
+                                ) : (
+                                    <Counter value={Number(originalPrice) || 0} formatter={formatCurrency} key={currency} />
+                                ),
+                                color: "text-blue-400"
+                            }
+                        ]}
+                    />
 
                     {/* Additional Info / Comparison */}
                     <div className="grid grid-cols-1 gap-4">

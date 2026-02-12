@@ -19,19 +19,20 @@ const iconMap: Record<string, React.ElementType> = {
 
 // Full descriptions for tools
 const toolDescriptions: Record<string, string> = {
-  
+
     "Dimension Converter": "Convert product dimensions between inches, cm, and mm with volume and dimensional weight calculations.",
     "Amazon FBA Fee Calculator": "Estimate Amazon FBA fees, referral fees, and net profit based on product size and weight.",
     "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
     "Profit Margin Calculator": "Instantly calculate gross margin, markup percentage, and profit per unit for any product.",
     "ROI Calculator": "Calculate return on investment for any product to measure profitability and make smarter sourcing decisions.",
+    "Discount Percentage Calculator": "Quickly calculate original price, discount percentage, or final price with this easy-to-use tool.",
+    "CPA Calculator": "Determine your cost to acquire a customer. Calculate from campaign data or estimate based on CPC and conversion rate.",
 };
 
 export default function ToolsPage() {
     const groups = toolsGroups || [];
 
-    // Featured tools (all from first group for now)
-    const featuredTools = groups[0]?.items || [];
+
 
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden">
@@ -77,40 +78,7 @@ export default function ToolsPage() {
                 </div>
             </div>
 
-            {/* Featured Tools */}
-            <div className="relative w-full max-w-[1180px] mx-auto px-4 md:px-0 mb-16">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-1 h-6 bg-[#2772ed] rounded-full" />
-                    <h2 className="text-lg font-semibold text-slate-800">Most Popular</h2>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {featuredTools.map((tool, index) => (
-                        <Link
-                            key={index}
-                            href={tool.href}
-                            className="group relative p-6 bg-white rounded-2xl border border-slate-200 hover:border-[#2772ed]/50 shadow-sm hover:shadow-xl hover:shadow-[#2772ed]/10 transition-all duration-300"
-                        >
-                            <div className="absolute inset-0 bg-[#2772ed]/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300" />
-                            <div className="relative">
-                                <div className="w-12 h-12 rounded-xl bg-[#2772ed] flex items-center justify-center mb-4 shadow-lg shadow-[#2772ed]/25 group-hover:scale-110 transition-transform duration-300">
-                                    <Calculator className="w-6 h-6 text-white" />
-                                </div>
-                                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#2772ed] transition-colors">
-                                    {tool.title}
-                                </h3>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-4">
-                                    {toolDescriptions[tool.title] || "Streamline your workflow with this powerful tool."}
-                                </p>
-                                <div className="flex items-center text-[#2772ed] font-medium text-sm">
-                                    <span>Try Now</span>
-                                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            </div>
 
             {/* All Tools Grid */}
             <div className="relative w-full max-w-[1180px] mx-auto px-4 md:px-0 pb-24">

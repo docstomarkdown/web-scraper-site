@@ -42,12 +42,26 @@ export const toolsGroups = [
       {
         title: "Dimension Converter",
         href: "/tools/dimension-converter",
+      },
+      {
         title: "Profit Margin Calculator",
         href: "/tools/profit-margin-calculator",
       },
       {
         title: "ROI Calculator",
         href: "/tools/roi-calculator",
+      },
+      {
+        title: "Discount Percentage Calculator",
+        href: "/tools/discount-percentage-calculator",
+      },
+      {
+        title: "ROAS Calculator",
+        href: "/tools/return-on-ad-spend-calculator",
+      },
+      {
+        title: "CPA Calculator",
+        href: "/tools/cpa-calculator",
       },
     ],
   },
