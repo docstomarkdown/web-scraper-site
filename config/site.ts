@@ -67,6 +67,14 @@ export const toolsGroups = [
         title: "Dimensional Weight Calculator",
         href: "/tools/dimensional-weight-calculator",
       },
+      {
+        title: "Free Shipping Calculator",
+        href: "/tools/free-shipping-calculator",
+      },
+      {
+        title: "Inventory Reorder Calculator",
+        href: "/tools/inventory-reorder-calculator",
+      },
     ],
   },
 ];
