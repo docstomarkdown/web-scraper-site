@@ -3,7 +3,7 @@
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { MousePointerClick, Calculator, TrendingUp } from "lucide-react"
 
-export function HowToUse() {
+export function CPAHowToUse() {
     return (
         <ToolSteps
             steps={[

@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { DiscountCalculator } from "./_components/DiscountCalculator"
 import { DiscountGuide } from "./_components/DiscountGuide"
-import { HowToUse } from "./_components/HowToUse"
+import { DiscountHowToUse } from "./_components/DiscountHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 
@@ -29,7 +29,7 @@ export default function DiscountCalculatorPage() {
 
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <HowToUse />
+                        <DiscountHowToUse />
                     </FadeIn>
 
                     <FadeIn delay={0.2}>

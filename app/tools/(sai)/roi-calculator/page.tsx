@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { ROICalculator } from "./_components/ROICalculator"
 import { ROIGuide } from "./_components/ROIGuide"
-import { HowToUse } from "./_components/HowToUse"
+import { ROIHowToUse } from "./_components/ROIHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 
@@ -29,7 +29,7 @@ export default function ROICalculatorPage() {
 
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <HowToUse />
+                        <ROIHowToUse />
                     </FadeIn>
 
                     <FadeIn delay={0.2}>

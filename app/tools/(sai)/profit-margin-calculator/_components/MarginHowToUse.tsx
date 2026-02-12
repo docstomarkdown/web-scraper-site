@@ -3,7 +3,7 @@
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { CircleDollarSign, Calculator, TrendingUp } from "lucide-react"
 
-export function HowToUse() {
+export function MarginHowToUse() {
     return (
         <ToolSteps
             steps={[

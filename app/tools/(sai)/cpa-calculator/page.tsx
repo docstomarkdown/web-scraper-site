@@ -1,5 +1,5 @@
 import { CPACalculator } from "./_components/CPACalculator"
-import { HowToUse } from "./_components/HowToUse"
+import { CPAHowToUse } from "./_components/CPAHowToUse"
 import { CPAGuide } from "./_components/CPAGuide"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
@@ -28,7 +28,7 @@ export default function CPACalculatorPage() {
 
                 <div className="max-w-4xl mx-auto space-y-16" id="cpa-guide">
                     <FadeIn delay={0.2}>
-                        <HowToUse />
+                        <CPAHowToUse />
                     </FadeIn>
 
                     <FadeIn delay={0.2}>

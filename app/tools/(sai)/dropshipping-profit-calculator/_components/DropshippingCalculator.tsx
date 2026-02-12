@@ -10,7 +10,7 @@ import { CurrencyCombobox } from "@/components/ui/currency-combobox"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 
-export function Calculator() {
+export function DropshippingCalculator() {
     // State for inputs - initialized as empty for placeholder effect
     const [currency, setCurrency] = useState("USD")
     const [purchasePrice, setPurchasePrice] = useState<number | "">("")

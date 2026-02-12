@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { ReturnOnAdSpendCalculator } from "./_components/ReturnOnAdSpendCalculator"
 import { ROASGuide } from "./_components/ROASGuide"
-import { HowToUse } from "./_components/HowToUse"
+import { ROASHowToUse } from "./_components/ROASHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 
@@ -29,7 +29,7 @@ export default function ROASCalculatorPage() {
 
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <HowToUse />
+                        <ROASHowToUse />
                     </FadeIn>
 
                     <FadeIn delay={0.2}>
