@@ -42,8 +42,14 @@ export const toolsGroups = [
       {
         title: "Dimension Converter",
         href: "/tools/dimension-converter",
+      },
+      {
         title: "Profit Margin Calculator",
         href: "/tools/profit-margin-calculator",
+      },
+      {
+        title: "UPC/EAN Validator",
+        href: "/tools/upc-ean-validator",
       },
       {
         title: "ROI Calculator",
