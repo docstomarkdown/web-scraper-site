@@ -83,6 +83,10 @@ export const toolsGroups = [
         title: "Sales Velocity Calculator",
         href: "/tools/sales-velocity-calculator",
       },
+      {
+        title: "Promo Code Generator",
+        href: "/tools/promo-code-generator",
+      },
     ],
   },
 ];
