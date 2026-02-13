@@ -60,6 +60,10 @@ export const toolsGroups = [
         href: "/tools/roi-calculator",
       },
       {
+        title: "Break-Even Calculator",
+        href: "/tools/break-even-calculator",
+      },
+      {
         title: "Discount Percentage Calculator",
         href: "/tools/discount-percentage-calculator",
       },
