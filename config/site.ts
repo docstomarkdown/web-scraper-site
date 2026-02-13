@@ -111,6 +111,10 @@ export const toolsGroups = [
         title: "Bundle Profit Calculator",
         href: "/tools/bundle-profit-calculator",
       },
+      {
+        title: "Pallet Configuration Calculator",
+        href: "/tools/pallet-configuration-calculator",
+      },
     ],
   },
 ];
