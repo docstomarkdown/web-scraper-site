@@ -101,6 +101,7 @@
     "@types/jsbarcode": "^3.11.4",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25.2.0",
+    "jsbarcode": "^3.12.3",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "jsbarcode": "^3.12.3"

@@ -104,6 +104,14 @@ export const toolsGroups = [
         href: "/tools/price-elasticity-calculator",
       },
       {
+        title: "Product Weight Converter",
+        href: "/tools/weight-converter",
+      },
+      {
+        title: "Cubic Feet Calculator",
+        href: "/tools/cubic-feet-calculator",
+      },
+      {
         title: "Bundle Profit Calculator",
         href: "/tools/bundle-profit-calculator",
       },
@@ -160,6 +168,9 @@ export const toolsGroups = [
         href: "/tools/mercari-fee-calculator",
       },
 
+        title: "Pallet Configuration Calculator",
+        href: "/tools/pallet-configuration-calculator",
+      },
     ],
   },
 ];
