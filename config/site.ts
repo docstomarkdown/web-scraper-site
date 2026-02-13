@@ -104,6 +104,10 @@ export const toolsGroups = [
         href: "/tools/weight-converter",
       },
       {
+        title: "Cubic Feet Calculator",
+        href: "/tools/cubic-feet-calculator",
+      },
+      {
         title: "Bundle Profit Calculator",
         href: "/tools/bundle-profit-calculator",
       },

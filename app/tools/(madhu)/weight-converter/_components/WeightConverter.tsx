@@ -297,13 +297,13 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                     <Card className="border-slate-800 bg-slate-900 text-slate-50 overscroll-y-none">
                         <CardHeader className="pb-2 relative z-10">
                             <CardTitle className="text-sm font-medium tracking-wider text-slate-300/80 flex justify-between items-center">
-                                <span>Conversion matrix</span>
+                                <span>CONVERSION MATRIX</span>
                                 <span className="bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400 flex items-center gap-2">
                                     <div className="relative flex h-2 w-2">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                     </div>
-                                    Live
+                                    Live Calculation
                                 </span>
                             </CardTitle>
                         </CardHeader>
