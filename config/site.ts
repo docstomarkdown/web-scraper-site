@@ -139,6 +139,19 @@ export const toolsGroups = [
         title: "Ad Spend Budget Planner",
         href: "/tools/ad-spend-budget-planner",
       },
+      {
+        title: "Return Rate Calculator",
+        href: "/tools/return-rate-calculator",
+      },
+      {
+        title: "CLV Calculator",
+        href: "/tools/customer-lifetime-value-calculator",
+      },
+      {
+        title: "PayPal Fee Calculator",
+        href: "/tools/paypal-fee-calculator",
+      },
+
     ],
   },
 ];
