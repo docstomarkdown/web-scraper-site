@@ -151,7 +151,7 @@ export function ReorderCalculator() {
                                         </>
                                     ) : (
                                         <>
-                                            You have sufficient stock. Based on your daily sales, you won't need to reorder for approximately <strong>{daysUntilReorder} days</strong>.
+                                            You have sufficient stock. Based on your daily sales, you won&apos;t need to reorder for approximately <strong>{daysUntilReorder} days</strong>.
                                         </>
                                     )}
                                 </p>

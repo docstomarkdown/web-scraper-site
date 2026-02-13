@@ -165,7 +165,7 @@ export function MercariFeeCalculator() {
                         </div>
 
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
-                            Selling at <strong>{formatCurrency(price)}</strong> with costs of <strong>{formatCurrency(cost + ship + other)}</strong> leaves you with a net profit of <strong>{formatCurrency(netProfit)}</strong> after Mercari's fees.
+                            Selling at <strong>{formatCurrency(price)}</strong> with costs of <strong>{formatCurrency(cost + ship + other)}</strong> leaves you with a net profit of <strong>{formatCurrency(netProfit)}</strong> after Mercari&apos;s fees.
                         </div>
                     </FadeIn>
                 </div>
