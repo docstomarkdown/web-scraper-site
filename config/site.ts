@@ -107,6 +107,10 @@ export const toolsGroups = [
         title: "MOQ Cost Calculator",
         href: "/tools/moq-cost-calculator",
       },
+      {
+        title: "Landed Cost Calculator",
+        href: "/tools/landed-cost-calculator",
+      },
     ],
   },
 ];
