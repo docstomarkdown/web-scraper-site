@@ -155,6 +155,10 @@ export const toolsGroups = [
         title: "Time Zone Meeting Planner",
         href: "/tools/time-zone-meeting-planner",
       },
+      {
+        title: "Mercari Fee Calculator",
+        href: "/tools/mercari-fee-calculator",
+      },
 
     ],
   },
