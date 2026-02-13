@@ -131,6 +131,14 @@ export const toolsGroups = [
         title: "ACoS Calculator",
         href: "/tools/acos-calculator",
       },
+      {
+        title: "TACoS Calculator",
+        href: "/tools/tacos-calculator",
+      },
+      {
+        title: "Ad Spend Budget Planner",
+        href: "/tools/ad-spend-budget-planner",
+      },
     ],
   },
 ];
