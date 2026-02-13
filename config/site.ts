@@ -60,6 +60,10 @@ export const toolsGroups = [
         href: "/tools/roi-calculator",
       },
       {
+        title: "Break-Even Calculator",
+        href: "/tools/break-even-calculator",
+      },
+      {
         title: "Discount Percentage Calculator",
         href: "/tools/discount-percentage-calculator",
       },
@@ -112,6 +116,58 @@ export const toolsGroups = [
         href: "/tools/bundle-profit-calculator",
       },
       {
+        title: "MOQ Cost Calculator",
+        href: "/tools/moq-cost-calculator",
+      },
+      {
+        title: "Landed Cost Calculator",
+        href: "/tools/landed-cost-calculator",
+      },
+      {
+        title: "Wholesale Price Calculator",
+        href: "/tools/wholesale-price-calculator",
+      },
+      {
+        title: "SKU Generator",
+        href: "/tools/sku-generator",
+      },
+      {
+        title: "PPC Bid Calculator",
+        href: "/tools/ppc-bid-calculator",
+      },
+      {
+        title: "ACoS Calculator",
+        href: "/tools/acos-calculator",
+      },
+      {
+        title: "TACoS Calculator",
+        href: "/tools/tacos-calculator",
+      },
+      {
+        title: "Ad Spend Budget Planner",
+        href: "/tools/ad-spend-budget-planner",
+      },
+      {
+        title: "Return Rate Calculator",
+        href: "/tools/return-rate-calculator",
+      },
+      {
+        title: "CLV Calculator",
+        href: "/tools/customer-lifetime-value-calculator",
+      },
+      {
+        title: "PayPal Fee Calculator",
+        href: "/tools/paypal-fee-calculator",
+      },
+      {
+        title: "Time Zone Meeting Planner",
+        href: "/tools/time-zone-meeting-planner",
+      },
+      {
+        title: "Mercari Fee Calculator",
+        href: "/tools/mercari-fee-calculator",
+      },
+
         title: "Pallet Configuration Calculator",
         href: "/tools/pallet-configuration-calculator",
       },

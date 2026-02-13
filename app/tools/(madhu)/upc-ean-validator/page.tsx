@@ -83,7 +83,7 @@ export default function UPCEANValidatorPage() {
                                             </div>
                                             <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Verify Calculation</h3>
                                             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                                                Click the <b>? icon</b> near the Check Digit to see the mathematical breakdown (Modulo 10) used to verify your code's integrity.
+                                                Click the <b>? icon</b> near the Check Digit to see the mathematical breakdown (Modulo 10) used to verify your code&apos;s integrity.
                                             </p>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@ export default function UPCEANValidatorPage() {
                                             </div>
                                             <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Instant Verification</h3>
                                             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                                                Get a clear "Valid" or "Invalid" status, view your barcode visualization, and copy the clean results to use in your inventory system.
+                                                Get a clear &quot;Valid&quot; or &quot;Invalid&quot; status, view your barcode visualization, and copy the clean results to use in your inventory system.
                                             </p>
                                         </div>
                                     </div>

@@ -1,0 +1,484 @@
+"use client"
+
+import React, { useState, useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { HelpCircle, Copy, Check, RotateCcw, Hash, Tag, Layers, Palette, Maximize2, Settings2, ChevronDown, ChevronUp, Plus, Download, Trash2, List } from "lucide-react"
+import { FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { toast } from "sonner"
+
+interface SKUEntry {
+    id: string
+    productName: string
+    brand: string
+    category: string
+    color: string
+    size: string
+    sku: string
+}
+
+export function SKUGenerator() {
+    // Component States
+    const [brand, setBrand] = useState("")
+    const [category, setCategory] = useState("")
+    const [product, setProduct] = useState("")
+    const [attribute1, setAttribute1] = useState("")
+    const [attribute2, setAttribute2] = useState("")
+    const [sequentialStart, setSequentialStart] = useState("001")
+    const [charLimit, setCharLimit] = useState("3")
+    const [separator, setSeparator] = useState("-")
+    const [caseType, setCaseType] = useState("uppercase")
+    const [generatedSKU, setGeneratedSKU] = useState("")
+    const [copied, setCopied] = useState(false)
+    const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
+    const [entries, setEntries] = useState<SKUEntry[]>([])
+
+    // Handle SKU generation logic (pulling X characters from each part)
+    useEffect(() => {
+        const limit = parseInt(charLimit) || 3
+        const parts = [brand, category, product, attribute1, attribute2]
+            .map(p => p.trim().substring(0, limit))
+            .filter(p => p !== "")
+
+        if (sequentialStart) {
+            parts.push(sequentialStart)
+        }
+
+        const sep = separator === "none" ? "" : separator
+        let sku = parts.join(sep)
+
+        if (caseType === "uppercase") {
+            sku = sku.toUpperCase()
+        } else if (caseType === "lowercase") {
+            sku = sku.toLowerCase()
+        }
+
+        setGeneratedSKU(sku)
+    }, [brand, category, product, attribute1, attribute2, sequentialStart, separator, caseType, charLimit])
+
+    const copyToClipboard = () => {
+        if (!generatedSKU) return
+        navigator.clipboard.writeText(generatedSKU)
+        setCopied(true)
+        toast.success("SKU copied to clipboard!")
+        setTimeout(() => setCopied(false), 2000)
+    }
+
+    const resetFields = () => {
+        setBrand("")
+        setCategory("")
+        setProduct("")
+        setAttribute1("")
+        setAttribute2("")
+        setSequentialStart("001")
+        setSeparator("-")
+        setCaseType("uppercase")
+        setCharLimit("3")
+    }
+
+    const addItemToList = (retain: boolean = false) => {
+        if (!generatedSKU) {
+            toast.error("Please enter item information first")
+            return
+        }
+
+        const newEntry: SKUEntry = {
+            id: Math.random().toString(36).substr(2, 9),
+            productName: product || "Unnamed Product",
+            brand,
+            category,
+            color: attribute1,
+            size: attribute2,
+            sku: generatedSKU
+        }
+
+        setEntries([newEntry, ...entries])
+        toast.success("Item added to list")
+
+        if (!retain) {
+            setProduct("")
+            setAttribute1("")
+            setAttribute2("")
+            // Increment sequence
+            const seq = parseInt(sequentialStart)
+            if (!isNaN(seq)) {
+                setSequentialStart((seq + 1).toString().padStart(sequentialStart.length, '0'))
+            }
+        }
+    }
+
+    const removeEntry = (id: string) => {
+        setEntries(entries.filter(e => e.id !== id))
+    }
+
+    const downloadCSV = () => {
+        if (entries.length === 0) return
+
+        const headers = ["Product Name", "Brand", "Category", "Color", "Size", "SKU"]
+        const data = entries.map(e => [
+            `"${e.productName}"`,
+            `"${e.brand}"`,
+            `"${e.category}"`,
+            `"${e.color}"`,
+            `"${e.size}"`,
+            `"${e.sku}"`
+        ].join(","))
+
+        const csvContent = [headers.join(","), ...data].join("\n")
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.setAttribute("href", url)
+        link.setAttribute("download", `skus_${new Date().toISOString().split('T')[0]}.csv`)
+        link.style.visibility = 'hidden'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    }
+
+    const scrollToGuide = () => {
+        const element = document.getElementById('sku-guide');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    return (
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                {/* Inputs Section */}
+                <div className="lg:col-span-7 space-y-6">
+                    <Card className="border border-slate-200 shadow-sm bg-white">
+                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                        SKU Components
+                                    </CardTitle>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={scrollToGuide}
+                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                    >
+                                        <HelpCircle className="w-4 h-4" />
+                                    </Button>
+                                </div>
+                                <CardDescription>Enter the data to build your SKU structure.</CardDescription>
+                            </div>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={resetFields}
+                                className="text-slate-500 hover:text-red-600 border-slate-200"
+                            >
+                                <RotateCcw className="w-4 h-4 mr-2" />
+                                Reset
+                            </Button>
+                        </CardHeader>
+                        <CardContent className="space-y-5 pt-6">
+                            <SKUInput
+                                label="Brand Prefix"
+                                value={brand}
+                                onChange={setBrand}
+                                placeholder="NIKE"
+                                icon={Tag}
+                                tooltip="A short code for the brand name (e.g., NK for Nike)."
+                            />
+                            <SKUInput
+                                label="Category"
+                                value={category}
+                                onChange={setCategory}
+                                placeholder="SHO"
+                                icon={Layers}
+                                tooltip="A code for the product category (e.g., SHO for Shoes)."
+                            />
+                            <SKUInput
+                                label="Product Name"
+                                value={product}
+                                onChange={setProduct}
+                                placeholder="AF1"
+                                icon={Maximize2}
+                                tooltip="A short identifier for the model (e.g., AF1 for Air Force 1)."
+                            />
+
+                            <div className="grid grid-cols-2 gap-4 pt-2">
+                                <Button
+                                    onClick={() => addItemToList(false)}
+                                    className="bg-blue-600 hover:bg-blue-700 h-12 font-bold"
+                                >
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    Add Item to List
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => addItemToList(true)}
+                                    className="border-blue-200 text-blue-600 hover:bg-blue-50 h-12 font-bold"
+                                >
+                                    Add & Retain
+                                </Button>
+                            </div>
+
+                            {/* Advanced Settings Toggle */}
+                            <div className="pt-2">
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                                    className="w-full flex items-center justify-between py-6 border-2 border-dashed border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all rounded-xl group"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <div className={`p-2 rounded-lg ${isAdvancedOpen ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'} group-hover:scale-110 transition-transform`}>
+                                            <Settings2 className="w-4 h-4" />
+                                        </div>
+                                        <div className="text-left">
+                                            <div className="text-sm font-bold text-slate-800">Advanced Settings</div>
+                                            <div className="text-xs text-slate-500 font-medium">Extra attributes & formatting</div>
+                                        </div>
+                                    </div>
+                                    {isAdvancedOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                                </Button>
+                            </div>
+
+                            {/* Collapsible Advanced Content */}
+                            <div className={`space-y-5 overflow-hidden transition-all duration-300 ease-in-out ${isAdvancedOpen ? 'max-h-[1000px] opacity-100 pt-2' : 'max-h-0 opacity-0'}`}>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <SKUInput
+                                        label="Color"
+                                        value={attribute1}
+                                        onChange={setAttribute1}
+                                        placeholder="WHT"
+                                        icon={Palette}
+                                        tooltip="Color code."
+                                    />
+                                    <SKUInput
+                                        label="Size"
+                                        value={attribute2}
+                                        onChange={setAttribute2}
+                                        placeholder="10"
+                                        icon={Maximize2}
+                                        tooltip="Size identifier."
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                                            Char Count Pull
+                                            <TooltipProvider delayDuration={100}>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <HelpCircle className="h-3 w-3 text-slate-400" />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent className="text-xs">
+                                                        Number of characters to take from each text field.
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </Label>
+                                        <Input
+                                            type="number"
+                                            value={charLimit}
+                                            onChange={(e) => setCharLimit(e.target.value)}
+                                            className="bg-white border-slate-200"
+                                            min="1"
+                                            max="10"
+                                        />
+                                    </div>
+                                    <SKUInput
+                                        label="Sequential #"
+                                        value={sequentialStart}
+                                        onChange={setSequentialStart}
+                                        placeholder="001"
+                                        icon={Hash}
+                                        tooltip="Unique numeric identifier."
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-semibold text-slate-700">Separator</Label>
+                                        <Select value={separator} onValueChange={setSeparator}>
+                                            <SelectTrigger className="bg-white border-slate-300">
+                                                <SelectValue placeholder="Select separator" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="-">Dash (-)</SelectItem>
+                                                <SelectItem value="_">Underscore (_)</SelectItem>
+                                                <SelectItem value="none">None (None)</SelectItem>
+                                                <SelectItem value=".">Dot (.)</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-semibold text-slate-700">Letter Case</Label>
+                                        <Select value={caseType} onValueChange={setCaseType}>
+                                            <SelectTrigger className="bg-white border-slate-300">
+                                                <SelectValue placeholder="Select case" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="uppercase">UPPERCASE</SelectItem>
+                                                <SelectItem value="lowercase">lowercase</SelectItem>
+                                                <SelectItem value="original">Original</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Results Section */}
+                <div className="lg:col-span-5 space-y-6">
+                    <ResultFeedbackCard
+                        title="Generated SKU"
+                        mainValue={
+                            <div className="flex flex-col items-center gap-4">
+                                <div className="text-2xl md:text-3xl font-mono font-bold tracking-wider break-all text-center">
+                                    {generatedSKU || "---"}
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 w-full">
+                                    <Button
+                                        onClick={copyToClipboard}
+                                        disabled={!generatedSKU}
+                                        className={`py-6 text-sm transition-all duration-300 ${copied ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-slate-800 hover:bg-slate-900'}`}
+                                    >
+                                        {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+                                        {copied ? 'Copied' : 'Copy'}
+                                    </Button>
+                                    <Button
+                                        onClick={() => addItemToList(false)}
+                                        disabled={!generatedSKU}
+                                        className="py-6 text-sm bg-blue-600 hover:bg-blue-700"
+                                    >
+                                        <Plus className="w-4 h-4 mr-2" />
+                                        Add to List
+                                    </Button>
+                                </div>
+                            </div>
+                        }
+                    />
+
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
+                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
+                            <div className="space-y-1">
+                                <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                    <List className="w-5 h-5 text-blue-600" />
+                                    Live Preview ({entries.length})
+                                </CardTitle>
+                                <CardDescription>Your generated SKU list.</CardDescription>
+                            </div>
+                            {entries.length > 0 && (
+                                <Button
+                                    size="sm"
+                                    onClick={downloadCSV}
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                                >
+                                    <Download className="w-4 h-4 mr-2" />
+                                    CSV
+                                </Button>
+                            )}
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="text-xs uppercase bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
+                                        <tr>
+                                            <th className="px-4 py-3">Item</th>
+                                            <th className="px-4 py-3">SKU</th>
+                                            <th className="px-4 py-3 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100">
+                                        {entries.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={3} className="px-4 py-8 text-center text-slate-400 italic">
+                                                    No items added yet. Fill the form to add items.
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            entries.map((entry) => (
+                                                <tr key={entry.id} className="hover:bg-slate-50 transition-colors">
+                                                    <td className="px-4 py-3">
+                                                        <div className="font-medium text-slate-800">{entry.productName}</div>
+                                                        <div className="text-[10px] text-slate-400 truncate max-w-[100px]">
+                                                            {entry.brand}/{entry.category}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-3 font-mono font-bold text-blue-600 uppercase">
+                                                        {entry.sku}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() => removeEntry(entry.id)}
+                                                            className="text-slate-300 hover:text-red-600 h-8 w-8"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </FadeIn>
+    )
+}
+
+interface SKUInputProps {
+    label: string
+    value: string
+    onChange: (value: string) => void
+    placeholder: string
+    icon: any
+    tooltip?: string
+}
+
+function SKUInput({ label, value, onChange, placeholder, icon: Icon, tooltip }: SKUInputProps) {
+    return (
+        <div className="flex flex-col space-y-2">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <Label className="text-sm font-semibold text-slate-700">{label}</Label>
+                    {tooltip && (
+                        <TooltipProvider delayDuration={100}>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                        <HelpCircle className="h-3 w-3" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" className="max-w-xs text-xs">
+                                    {tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                </div>
+            </div>
+            <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <Icon className="w-4 h-4" />
+                </div>
+                <Input
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    placeholder={`Ex: ${placeholder}`}
+                    className="pl-10 bg-white border-slate-200 focus:border-blue-500 focus:ring-blue-500/10 transition-all uppercase"
+                />
+            </div>
+        </div>
+    )
+}
