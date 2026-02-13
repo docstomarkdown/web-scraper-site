@@ -209,7 +209,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                 type="number"
                                                 value={inputs[field.id]}
                                                 onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                                className="h-12 w-full text-lg border border-slate-300 rounded-md bg-white shadow-sm pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-12 w-full text-lg border border-slate-300 rounded-md bg-white shadow-sm placeholder:italic text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                                 placeholder={field.label}
                                             />
                                             <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
@@ -243,8 +243,8 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         type="number"
                                         value={inputs.quantity}
                                         onChange={(e) => handleInputChange('quantity', e.target.value)}
-                                        className="h-12 w-full text-lg border border-slate-300 rounded-md bg-white shadow-sm px-4 hover:border-blue-600 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                        placeholder="Qty: 1"
+                                        className="h-12 w-full text-lg border border-slate-300 rounded-md bg-white shadow-sm placeholder:italic px-4 hover:border-blue-600 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                        placeholder="Ex: 1"
                                     />
                                 </div>
                             </div>
