@@ -119,6 +119,18 @@ export const toolsGroups = [
         title: "Wholesale Price Calculator",
         href: "/tools/wholesale-price-calculator",
       },
+      {
+        title: "SKU Generator",
+        href: "/tools/sku-generator",
+      },
+      {
+        title: "PPC Bid Calculator",
+        href: "/tools/ppc-bid-calculator",
+      },
+      {
+        title: "ACoS Calculator",
+        href: "/tools/acos-calculator",
+      },
     ],
   },
 ];

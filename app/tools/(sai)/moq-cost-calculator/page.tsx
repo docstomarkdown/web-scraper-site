@@ -44,10 +44,7 @@ export default function MOQValidatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
                             MOQ Cost Calculator
                         </h1>
-                        <p className="text-lg text-slate-600">
-                            Calculate upfront investment, landed cost per unit, and assess if an
-                            MOQ is too risky for your current sales velocity.
-                        </p>
+
                     </div>
                 </FadeIn>
 
