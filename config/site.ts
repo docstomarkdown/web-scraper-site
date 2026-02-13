@@ -151,6 +151,10 @@ export const toolsGroups = [
         title: "PayPal Fee Calculator",
         href: "/tools/paypal-fee-calculator",
       },
+      {
+        title: "Time Zone Meeting Planner",
+        href: "/tools/time-zone-meeting-planner",
+      },
 
     ],
   },
