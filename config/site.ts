@@ -103,6 +103,10 @@ export const toolsGroups = [
         title: "Bundle Profit Calculator",
         href: "/tools/bundle-profit-calculator",
       },
+      {
+        title: "MOQ Cost Calculator",
+        href: "/tools/moq-cost-calculator",
+      },
     ],
   },
 ];

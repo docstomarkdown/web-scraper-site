@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, ChevronUp, ChevronDown } from "lucide-react"
+import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
 import { CTA } from "@/components/sections/CTA"
@@ -40,12 +40,6 @@ export function DimensionConverterContent() {
     }
 
     const parseValue = (val: string) => parseFloat(val) || 0
-
-    const adjustDimension = (name: keyof Dimensions, step: number) => {
-        const current = parseValue(dimensions[name])
-        const newValue = Math.max(0, current + step).toString()
-        setDimensions((prev: Dimensions) => ({ ...prev, [name]: newValue }))
-    }
 
     useEffect(() => {
         const l = parseValue(dimensions.length)
@@ -199,24 +193,8 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                                 placeholder={unit === "in" ? (dim === "length" ? "Ex: 12.00" : dim === "width" ? "Ex: 8.00" : "Ex: 6.00") : (dim === "length" ? "Ex: 30.00" : dim === "width" ? "Ex: 20.00" : "Ex: 15.00")}
                                                 value={dimensions[dim]}
                                                 onChange={handleInputChange}
-                                                className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                             />
-                                            <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => adjustDimension(dim, 1)}
-                                                    className="flex items-center justify-center px-2 flex-1 hover:text-blue-600 text-slate-400 transition-colors"
-                                                >
-                                                    <ChevronUp className="h-3 w-3" />
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => adjustDimension(dim, -1)}
-                                                    className="flex items-center justify-center px-2 flex-1 hover:text-blue-600 text-slate-400 transition-colors border-t border-slate-200"
-                                                >
-                                                    <ChevronDown className="h-3 w-3" />
-                                                </button>
-                                            </div>
                                         </div>
                                     </div>
                                 ))}
