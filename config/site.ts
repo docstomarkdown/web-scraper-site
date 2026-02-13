@@ -115,6 +115,10 @@ export const toolsGroups = [
         title: "Landed Cost Calculator",
         href: "/tools/landed-cost-calculator",
       },
+      {
+        title: "Wholesale Price Calculator",
+        href: "/tools/wholesale-price-calculator",
+      },
     ],
   },
 ];
