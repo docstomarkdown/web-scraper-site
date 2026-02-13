@@ -1,10 +1,18 @@
+// update the components according to the current updation of the tool 
+// 1.How to Use This Tool.
+// 2.The Hidden Truth About This Process
+// 3.Frequently Asked Questions
+
+
 "use client"
 
 import React from "react"
 import { HelpCircle, BookOpen, LucideIcon, Info } from "lucide-react"
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+
+export { ResultFeedbackCard }
 
 export interface Step {
     title: string
@@ -36,6 +44,11 @@ interface MadhuToolTemplateProps {
     // How to Use Section
     howToUseTitle?: string
     howToUseSteps: Step[]
+    howToUseGoal?: {
+        title: string
+        description: string
+        icon: LucideIcon | React.ElementType
+    }
 
     // Hidden Truth Section
     hiddenTruthTitle?: string
@@ -50,6 +63,7 @@ export function MadhuToolTemplate({
     toolComponent,
     howToUseTitle = "How to Use This Tool",
     howToUseSteps,
+    howToUseGoal,
     hiddenTruthTitle = "The Hidden Truth About This Process",
     hiddenTruthInsights,
     faqs
@@ -106,6 +120,27 @@ export function MadhuToolTemplate({
                                             </div>
                                         )
                                     })}
+
+                                    {/* Goal Step */}
+                                    {howToUseGoal && (
+                                        <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/40 p-5 sm:p-6 rounded-2xl border-2 border-blue-200 shadow-sm shadow-blue-100/20 hover:shadow-md hover:shadow-blue-200/25 transition-all duration-300 scale-[1.02] origin-left">
+                                            {(() => {
+                                                const GoalIcon = howToUseGoal.icon
+                                                return (
+                                                    <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-500 border border-blue-400 rounded-xl flex items-center justify-center text-white z-10 shadow-sm transition-transform duration-300 group-hover:scale-110">
+                                                        <GoalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                                    </div>
+                                                )
+                                            })()}
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[10px] font-bold text-white bg-blue-600 px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">The Goal</span>
+                                                </div>
+                                                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">{howToUseGoal.title}</h3>
+                                                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: howToUseGoal.description }} />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </section>
