@@ -27,6 +27,7 @@ const toolDescriptions: Record<string, string> = {
     "ROI Calculator": "Calculate return on investment for any product to measure profitability and make smarter sourcing decisions.",
     "Discount Percentage Calculator": "Quickly calculate original price, discount percentage, or final price with this easy-to-use tool.",
     "CPA Calculator": "Determine your cost to acquire a customer. Calculate from campaign data or estimate based on CPC and conversion rate.",
+    "Product Weight Converter": "Convert weights between oz, lbs, g, and kg with real-time shipping cost impact analysis for e-commerce.",
 };
 
 export default function ToolsPage() {

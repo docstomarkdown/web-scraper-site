@@ -100,6 +100,10 @@ export const toolsGroups = [
         href: "/tools/price-elasticity-calculator",
       },
       {
+        title: "Product Weight Converter",
+        href: "/tools/weight-converter",
+      },
+      {
         title: "Bundle Profit Calculator",
         href: "/tools/bundle-profit-calculator",
       },
