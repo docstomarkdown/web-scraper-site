@@ -6,7 +6,7 @@ import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
 import { CTA } from "@/components/sections/CTA";
 
 export const metadata: Metadata = {
-    title: "TACoS Calculator - Total Advertising Cost of Sales",
+    title: "Total Advertising Cost of Sales (TACoS) Calculator",
     description: "Calculate your Total Advertising Cost of Sales (TACoS) to measure the long-term health of your e-commerce brand.",
 };
 
@@ -17,7 +17,7 @@ export default function TACoSPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
-                            TACoS Calculator
+                            Total Advertising Cost of Sales (TACoS) Calculator
                         </h1>
                     </FadeIn>
                 </div>
@@ -39,15 +39,15 @@ export default function TACoSPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is a good TACoS?",
-                                    answer: "Healthy TACoS depends on your business stage. For mature brands, <strong>10-15%</strong> is often considered healthy. For new launches, it might spike to <strong>20-30%</strong> as you invest in growth."
+                                    question: "What is a good Total Advertising Cost of Sales (TACoS)?",
+                                    answer: "Healthy Total Advertising Cost of Sales (TACoS) depends on your business stage. For mature brands, <strong>10-15%</strong> is often considered healthy. For new launches, it might spike to <strong>20-30%</strong> as you invest in growth."
                                 },
                                 {
-                                    question: "What if my TACoS is rising?",
-                                    answer: "A rising TACoS means your ad spend is growing faster than your total revenue. This could indicate that your ads are becoming less effective or your organic sales are dropping."
+                                    question: "What if my Total Advertising Cost of Sales (TACoS) is rising?",
+                                    answer: "A rising Total Advertising Cost of Sales (TACoS) means your ad spend is growing faster than your total revenue. This could indicate that your ads are becoming less effective or your organic sales are dropping."
                                 },
                                 {
-                                    question: "How often should I check TACoS?",
+                                    question: "How often should I check Total Advertising Cost of Sales (TACoS)?",
                                     answer: "Weekly and monthly monitoring is best. Daily fluctuations are normal and might not reflect true trends."
                                 }
                             ]}

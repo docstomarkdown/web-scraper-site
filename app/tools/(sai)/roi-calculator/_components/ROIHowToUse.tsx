@@ -18,8 +18,8 @@ export function ROIHowToUse() {
                     icon: TrendingUp
                 },
                 {
-                    title: "See Your ROI",
-                    description: "View your ROI percentage, net profit, and profit-to-investment ratio instantly.",
+                    title: "See Your Return on Investment (ROI)",
+                    description: "View your Return on Investment (ROI) percentage, net profit, and profit-to-investment ratio instantly.",
                     icon: BarChart3
                 }
             ]}

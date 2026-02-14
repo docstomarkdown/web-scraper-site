@@ -32,7 +32,7 @@ export const toolsGroups = [
     icon: "shopping-cart",
     items: [
       {
-        title: "Amazon FBA Fee Calculator",
+        title: "Amazon Fulfillment by Amazon (FBA) Fee Calculator",
         href: "/tools/amazon-fba-fee-calculator",
       },
       {
@@ -48,15 +48,15 @@ export const toolsGroups = [
         href: "/tools/profit-margin-calculator",
       },
       {
-        title: "UPC/EAN Validator",
+        title: "Universal Product Code (UPC) / European Article Number (EAN) Validator",
         href: "/tools/upc-ean-validator",
       },
       {
-        title: "GTIN Converter",
+        title: "Global Trade Item Number (GTIN) Converter",
         href: "/tools/gtin-converter",
       },
       {
-        title: "ROI Calculator",
+        title: "Return on Investment (ROI) Calculator",
         href: "/tools/roi-calculator",
       },
       {
@@ -68,11 +68,11 @@ export const toolsGroups = [
         href: "/tools/discount-percentage-calculator",
       },
       {
-        title: "ROAS Calculator",
+        title: "Return on Ad Spend (ROAS) Calculator",
         href: "/tools/return-on-ad-spend-calculator",
       },
       {
-        title: "CPA Calculator",
+        title: "Cost Per Acquisition (CPA) Calculator",
         href: "/tools/cpa-calculator",
       },
       {
@@ -116,7 +116,7 @@ export const toolsGroups = [
         href: "/tools/bundle-profit-calculator",
       },
       {
-        title: "MOQ Cost Calculator",
+        title: "Minimum Order Quantity (MOQ) Cost Calculator",
         href: "/tools/moq-cost-calculator",
       },
       {
@@ -132,15 +132,15 @@ export const toolsGroups = [
         href: "/tools/sku-generator",
       },
       {
-        title: "PPC Bid Calculator",
+        title: "Pay-Per-Click (PPC) Bid Calculator",
         href: "/tools/ppc-bid-calculator",
       },
       {
-        title: "ACoS Calculator",
+        title: "Advertising Cost of Sales (ACoS) Calculator",
         href: "/tools/acos-calculator",
       },
       {
-        title: "TACoS Calculator",
+        title: "Total Advertising Cost of Sales (TACoS) Calculator",
         href: "/tools/tacos-calculator",
       },
       {
@@ -152,7 +152,7 @@ export const toolsGroups = [
         href: "/tools/return-rate-calculator",
       },
       {
-        title: "CLV Calculator",
+        title: "Customer Lifetime Value (CLV) Calculator",
         href: "/tools/customer-lifetime-value-calculator",
       },
       {

@@ -91,7 +91,7 @@ export function ACoSCalculator() {
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     <FadeIn delay={0.4} direction="left" className="space-y-6">
                         <ResultFeedbackCard
-                            title="ACoS Percentage"
+                            title="Advertising Cost of Sales (ACoS) Percentage"
                             mainValue={<div className="flex items-baseline gap-1">
                                 <Counter value={acos} formatter={(v) => v.toFixed(2)} />
                                 <span className="text-2xl font-bold">%</span>
@@ -123,7 +123,7 @@ export function ACoSCalculator() {
                         </div>
 
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
-                            With a spend of <strong>{formatCurrency(spend)}</strong> generating <strong>{formatCurrency(revenue)}</strong> in sales, your ACoS is <strong>{acos.toFixed(2)}%</strong>. This means you spend {acos.toFixed(0)} cents to earn every $1.
+                            With a spend of <strong>{formatCurrency(spend)}</strong> generating <strong>{formatCurrency(revenue)}</strong> in sales, your Advertising Cost of Sales (ACoS) is <strong>{acos.toFixed(2)}%</strong>. This means you spend {acos.toFixed(0)} cents to earn every $1.
                         </div>
                     </FadeIn>
                 </div>

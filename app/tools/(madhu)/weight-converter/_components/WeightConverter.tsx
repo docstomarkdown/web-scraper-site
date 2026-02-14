@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { ResultFeedbackCard, Counter } from "../../../_shared/components"
 
@@ -36,7 +37,7 @@ export function WeightConverter() {
             }
             setTargetUnit(defaults[inputUnit])
         }
-    }, [inputUnit])
+    }, [inputUnit, targetUnit])
 
     const conversions = useMemo((): ConversionResult => {
         const val = parseFloat(inputValue || "0")
@@ -188,11 +189,11 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </label>
                                 <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
                                     <div className="relative group flex-1">
-                                        <input
+                                        <Input
                                             type="number"
                                             value={inputValue}
                                             onChange={(e) => setInputValue(e.target.value)}
-                                            className="h-12 text-lg border border-slate-300 rounded-md bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                            className="h-12 text-lg border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                             placeholder="Ex: 12.00"
                                         />
                                         <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
@@ -294,49 +295,36 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                 {/* Right Column: Results (Col Span 5) */}
                 <div className="lg:col-span-5 relative space-y-8">
                     {/* Conversion Results */}
-                    <Card className="border-slate-800 bg-slate-900 text-slate-50 overscroll-y-none">
-                        <CardHeader className="pb-2 relative z-10">
-                            <CardTitle className="text-sm font-medium tracking-wider text-slate-300/80 flex justify-between items-center">
-                                <span>CONVERSION MATRIX</span>
-                                <span className="bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400 flex items-center gap-2">
-                                    <div className="relative flex h-2 w-2">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                    </div>
-                                    Live Calculation
+                    <ResultFeedbackCard
+                        title="CONVERSION MATRIX"
+                        titleLabel="Live Calculation"
+                        mainValue={
+                            <div className="flex items-baseline gap-2">
+                                <Counter
+                                    value={conversions[targetUnit]}
+                                />
+                                <span className="text-lg font-medium opacity-50">
+                                    {targetUnit}
                                 </span>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-6 pt-6">
-                            <div className="space-y-1">
-                                <div className="text-5xl font-black tracking-tight text-white">
-                                    <div className="flex items-baseline gap-2">
-                                        <Counter
-                                            value={conversions[targetUnit]}
-                                        />
-                                        <span className="text-lg font-medium opacity-50">
-                                            {targetUnit}
-                                        </span>
-                                    </div>
-                                </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800/60">
-                                {secondaryUnits.map(unit => (
-                                    <div key={unit} className="space-y-1">
-                                        <p className="text-xs font-medium tracking-wider text-slate-400">
-                                            {unit === 'lbs' ? 'pounds' : unit === 'oz' ? 'ounces' : unit === 'kg' ? 'kilograms' : 'grams'}
-                                        </p>
-                                        <div className="text-xl font-bold tracking-tight text-white break-words">
-                                            <div className="flex items-baseline gap-1">
-                                                <Counter value={conversions[unit]} />
-                                                <span className="text-xs opacity-40 ml-1 font-medium">{unit}</span>
-                                            </div>
+                        }
+                    >
+                        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 mt-2">
+                            {secondaryUnits.map(unit => (
+                                <div key={unit} className="space-y-1">
+                                    <p className="text-xs font-medium tracking-wider text-slate-400">
+                                        {unit === 'lbs' ? 'pounds' : unit === 'oz' ? 'ounces' : unit === 'kg' ? 'kilograms' : 'grams'}
+                                    </p>
+                                    <div className="text-xl font-bold tracking-tight text-white break-words">
+                                        <div className="flex items-baseline gap-1">
+                                            <Counter value={conversions[unit]} />
+                                            <span className="text-xs opacity-40 ml-1 font-medium">{unit}</span>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                                </div>
+                            ))}
+                        </div>
+                    </ResultFeedbackCard>
 
                     {/* Shipping Impact Section - MOVED HERE */}
                     <div className="space-y-2">

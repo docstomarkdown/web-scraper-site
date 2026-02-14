@@ -6,8 +6,9 @@ import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Counter } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 type DimensionUnit = "in" | "cm"
 type PalletType = "standard-us" | "euro" | "custom"
@@ -56,9 +57,9 @@ export function PalletConfigurationCalculator() {
     }
 
     // Convert dimensions to inches for calculation
-    const convertToInches = (value: number): number => {
+    const convertToInches = React.useCallback((value: number): number => {
         return unit === "cm" ? value / 2.54 : value
-    }
+    }, [unit])
 
     const results = useMemo(() => {
         const boxL = parseFloat(boxDimensions.length || "0")
@@ -147,7 +148,7 @@ export function PalletConfigurationCalculator() {
             warnings.push("Low pallet efficiency - consider adjusting box dimensions")
         }
         if ((bestConfig.layers * bestConfig.boxH) + PALLET_HEIGHT > 96) {
-            warnings.push("Height exceeds standard 96\" limit")
+            warnings.push("Height exceeds standard 96&quot; limit")
         }
         if (bestConfig.totalUnits === 0) {
             warnings.push("Box dimensions too large for selected pallet")
@@ -156,11 +157,11 @@ export function PalletConfigurationCalculator() {
         // Check for unrealistically large dimensions
         const maxDimension = Math.max(boxLengthIn, boxWidthIn, boxHeightIn)
         if (maxDimension > 100) {
-            warnings.push(`Box dimension of ${maxDimension.toFixed(1)}" seems unusually large. Typical boxes are 6-24 inches.`)
+            warnings.push(`Box dimension of ${maxDimension.toFixed(1)}&quot; seems unusually large. Typical boxes are 6-24 inches.`)
         }
 
         return { ...bestConfig, warnings, pallet }
-    }, [boxDimensions, unit, palletType, customPallet])
+    }, [boxDimensions, unit, palletType, customPallet, convertToInches])
 
     const copyResults = () => {
         if (!results) return
@@ -260,11 +261,11 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                                         { id: 'height' as const, label: 'Height' }
                                     ].map((field) => (
                                         <div key={field.id} className="relative group">
-                                            <input
+                                            <Input
                                                 type="number"
                                                 value={boxDimensions[field.id]}
                                                 onChange={(e) => handleBoxChange(field.id, e.target.value)}
-                                                className="h-12 w-full text-lg border border-slate-300 rounded-md bg-white shadow-sm placeholder:italic text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-12 w-full text-lg border-slate-300 bg-white shadow-sm placeholder:italic text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                                 placeholder={field.label}
                                             />
                                             <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
@@ -296,8 +297,8 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                                 </label>
                                 <div className="grid grid-cols-1 gap-3">
                                     {[
-                                        { id: 'standard-us' as const, label: 'Standard US', dimensions: '48" × 40"' },
-                                        { id: 'euro' as const, label: 'Euro Pallet', dimensions: '47.2" × 39.4"' },
+                                        { id: 'standard-us' as const, label: 'Standard US', dimensions: '48&quot; × 40&quot;' },
+                                        { id: 'euro' as const, label: 'Euro Pallet', dimensions: '47.2&quot; × 39.4&quot;' },
                                         { id: 'custom' as const, label: 'Custom Size', dimensions: 'Set your own' }
                                     ].map((type) => (
                                         <button
@@ -336,29 +337,29 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                                     <div className="grid grid-cols-3 gap-3">
                                         <div>
                                             <label className="text-xs text-slate-500 mb-1 block">Length</label>
-                                            <input
+                                            <Input
                                                 type="number"
                                                 value={customPallet.length}
                                                 onChange={(e) => handleCustomPalletChange('length', e.target.value)}
-                                                className="h-10 w-full text-sm border border-slate-300 rounded-md bg-white px-3 font-bold"
+                                                className="h-10 w-full text-sm border-slate-300 bg-white px-3 font-bold"
                                             />
                                         </div>
                                         <div>
                                             <label className="text-xs text-slate-500 mb-1 block">Width</label>
-                                            <input
+                                            <Input
                                                 type="number"
                                                 value={customPallet.width}
                                                 onChange={(e) => handleCustomPalletChange('width', e.target.value)}
-                                                className="h-10 w-full text-sm border border-slate-300 rounded-md bg-white px-3 font-bold"
+                                                className="h-10 w-full text-sm border-slate-300 bg-white px-3 font-bold"
                                             />
                                         </div>
                                         <div>
                                             <label className="text-xs text-slate-500 mb-1 block">Max Height</label>
-                                            <input
+                                            <Input
                                                 type="number"
                                                 value={customPallet.maxHeight}
                                                 onChange={(e) => handleCustomPalletChange('maxHeight', e.target.value)}
-                                                className="h-10 w-full text-sm border border-slate-300 rounded-md bg-white px-3 font-bold"
+                                                className="h-10 w-full text-sm border-slate-300 bg-white px-3 font-bold"
                                             />
                                         </div>
                                     </div>
@@ -395,107 +396,65 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 flex flex-col space-y-6 h-full">
                     {/* Primary Result Card */}
-                    <Card className="border-slate-800 bg-slate-900 text-slate-50 overflow-hidden relative">
-                        {/* Decorative Background */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -mr-16 -mt-16 blur-3xl pointer-events-none" />
-
-                        <CardHeader className="pb-1">
-                            <CardTitle className="text-sm font-medium tracking-wider text-slate-400 flex justify-between items-center">
-                                <span>OPTIMAL CONFIGURATION</span>
-                                <span className="bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-medium text-emerald-400 flex items-center gap-2">
-                                    <div className="relative flex h-2 w-2">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                    </div>
-                                    Live Calculation
+                    <ResultFeedbackCard
+                        title="OPTIMAL CONFIGURATION"
+                        titleLabel="Live Calculation"
+                        mainValue={results ? (
+                            <div className="flex items-baseline gap-2">
+                                <Counter
+                                    value={results.totalUnits}
+                                    formatter={(val) => Math.round(val).toString()}
+                                />
+                                <span className="text-lg font-medium opacity-50">units</span>
+                            </div>
+                        ) : "0"}
+                        mainMetricLabel={results ? "Per pallet" : undefined}
+                        mainMetricValue={null}
+                        secondaryMetrics={results ? [
+                            {
+                                label: "Units per layer",
+                                value: <span className="flex items-baseline gap-1">
+                                    {results.unitsPerLayer} <span className="text-xs opacity-40">({results.unitsAlongLength}×{results.unitsAlongWidth})</span>
                                 </span>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4 pt-4">
-                            {results ? (
-                                <>
-                                    <div className="flex justify-between items-end">
-                                        <div className="text-5xl font-black tracking-tight text-white flex items-baseline gap-2">
-                                            <Counter
-                                                value={results.totalUnits}
-                                                formatter={(val) => Math.round(val).toString()}
-                                            />
-                                            <span className="text-lg font-medium opacity-50">units</span>
-                                        </div>
-                                        <p className="text-xs font-medium tracking-wider text-slate-500">Per pallet</p>
-                                    </div>
-
-                                    <div className="h-px bg-slate-800/80 w-full" />
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-1">
-                                            <p className="text-xs font-medium tracking-wider text-slate-500">Units per layer</p>
-                                            <div className="text-xl font-bold text-white flex items-baseline gap-1">
-                                                <Counter
-                                                    value={results.unitsPerLayer}
-                                                    formatter={(val) => Math.round(val).toString()}
-                                                />
-                                                <span className="text-xs opacity-40">({results.unitsAlongLength}×{results.unitsAlongWidth})</span>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-xs font-medium tracking-wider text-slate-500">Total layers</p>
-                                            <div className="text-xl font-bold text-white flex items-baseline gap-1">
-                                                <Counter
-                                                    value={results.layers}
-                                                    formatter={(val) => Math.round(val).toString()}
-                                                />
-                                                <span className="text-xs opacity-40">layers</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="h-px bg-slate-800/80 w-full" />
-
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs text-slate-400">Orientation</span>
-                                            <span className="text-sm font-bold text-white">{results.orientation}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs text-slate-400">Pallet efficiency</span>
-                                            <span className={cn(
-                                                "text-sm font-bold",
-                                                results.efficiency >= 80 ? "text-emerald-400" :
-                                                    results.efficiency >= 70 ? "text-amber-400" : "text-red-400"
-                                            )}>
-                                                {results.efficiency.toFixed(1)}%
-                                            </span>
-                                        </div>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="py-8 text-center space-y-2">
-                                    <Package className="w-12 h-12 mx-auto text-slate-600 mb-3" />
-                                    <p className="text-sm font-bold text-slate-700">Enter box dimensions to calculate</p>
-                                    <p className="text-xs text-slate-500 max-w-[200px] mx-auto">Try the example button for a 12"×10"×8" box</p>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
+                            },
+                            {
+                                label: "Total layers",
+                                value: `${results.layers} layers`
+                            },
+                            {
+                                label: "Orientation",
+                                value: results.orientation
+                            },
+                            {
+                                label: "Efficiency",
+                                value: `${results.efficiency.toFixed(1)}%`,
+                                color: results.efficiency >= 80 ? "text-emerald-400" : results.efficiency >= 70 ? "text-amber-400" : "text-red-400"
+                            }
+                        ] : []}
+                    >
+                        {!results && (
+                            <div className="py-4 text-center space-y-2 border-t border-white/10 pt-6 mt-2">
+                                <Package className="w-12 h-12 mx-auto text-slate-600 mb-3" />
+                                <p className="text-sm font-bold text-slate-400">Enter box dimensions to calculate</p>
+                                <p className="text-xs text-slate-600 max-w-[200px] mx-auto">Try the example button for a 12&quot;×10&quot;×8&quot; box</p>
+                            </div>
+                        )}
+                    </ResultFeedbackCard>
 
                     {/* Visual Layout Card */}
-                    <div className="space-y-2 flex-1 flex flex-col">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
-                                <Grid3x3 className="w-4 h-4" />
-                            </div>
-                            <h3 className="text-lg font-bold text-slate-900 font-sans">Pallet Layout</h3>
-                        </div>
-
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col">
+                    <ResultFeedbackCard
+                        title="Pallet Layout"
+                        variant="compact"
+                        mainValue={null} // No main value, just content
+                    >
+                        <div className="space-y-4 relative group flex-1 flex flex-col min-h-[300px]">
                             {results && results.totalUnits > 0 ? (
                                 <>
                                     {/* Visual Grid Representation */}
                                     <div className="space-y-3">
                                         <div className="aspect-square max-w-[280px] mx-auto border-2 border-slate-300 rounded-lg p-2 bg-amber-50/30 relative">
                                             <div className="absolute top-1 left-1 text-[10px] text-slate-400 font-bold">
-                                                {results.pallet.length}" × {results.pallet.width}"
+                                                {results.pallet.length}&quot; × {results.pallet.width}&quot;
                                             </div>
                                             <div className="grid gap-0.5 h-full w-full p-4"
                                                 style={{
@@ -523,13 +482,13 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm text-slate-600">Unused edge space</span>
                                             <span className="text-sm font-bold text-slate-900">
-                                                {results.overhangLength.toFixed(1)}" × {results.overhangWidth.toFixed(1)}"
+                                                {results.overhangLength.toFixed(1)}&quot; × {results.overhangWidth.toFixed(1)}&quot;
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm text-slate-600">Unused height</span>
                                             <span className="text-sm font-bold text-slate-900">
-                                                {results.unusedHeight.toFixed(1)}"
+                                                {results.unusedHeight.toFixed(1)}&quot;
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
@@ -538,7 +497,7 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                                                 "text-sm font-bold",
                                                 (results.layers * results.boxH + PALLET_HEIGHT) > 96 ? "text-red-600" : "text-slate-900"
                                             )}>
-                                                {(results.layers * results.boxH + PALLET_HEIGHT).toFixed(1)}"
+                                                {(results.layers * results.boxH + PALLET_HEIGHT).toFixed(1)}&quot;
                                             </span>
                                         </div>
                                     </div>
@@ -588,7 +547,7 @@ Pallet Efficiency: ${results.efficiency.toFixed(1)}%
                                 </>
                             )}
                         </div>
-                    </div>
+                    </ResultFeedbackCard>
                 </div>
             </div>
         </div>

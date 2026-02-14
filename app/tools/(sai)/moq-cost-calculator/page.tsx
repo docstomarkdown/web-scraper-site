@@ -7,14 +7,14 @@ import { MOQHowToUse } from "./_components/MOQHowToUse";
 import { MOQGuide } from "./_components/MOQGuide";
 
 export const metadata: Metadata = {
-    title: "MOQ Cost Calculator | Web Scraper Pro",
+    title: "Minimum Order Quantity (MOQ) Cost Calculator | Web Scraper Pro",
     description:
         "Calculate the total investment required for Minimum Order Quantities (MOQ), effective cost per unit, and inventory risk.",
 };
 
 const faqs = [
     {
-        question: "What is MOQ in manufacturing?",
+        question: "What is Minimum Order Quantity (MOQ) in manufacturing?",
         answer:
             "MOQ stands for Minimum Order Quantity. It is the minimum number of units a supplier requires you to purchase in a single order to make their production run profitable.",
     },
@@ -29,7 +29,7 @@ const faqs = [
             "Generally, 3-4 months of inventory is considered healthy for most e-commerce businesses. Anything above 6 months is risky because it ties up cash and incurs long-term storage fees. Anything under 1 month risks stockouts.",
     },
     {
-        question: "Can I negotiate MOQ?",
+        question: "Can I negotiate Minimum Order Quantity (MOQ)?",
         answer:
             "Yes! Suppliers often set high MOQs for new clients but are willing to lower them for a 'test order' if you negotiate. You might pay a slightly higher unit price, but it reduces your upfront risk significantly.",
     },
@@ -42,7 +42,7 @@ export default function MOQValidatorPage() {
                 <FadeIn>
                     <div className="max-w-3xl mx-auto text-center mb-10">
                         <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
-                            MOQ Cost Calculator
+                            Minimum Order Quantity (MOQ) Cost Calculator
                         </h1>
 
                     </div>

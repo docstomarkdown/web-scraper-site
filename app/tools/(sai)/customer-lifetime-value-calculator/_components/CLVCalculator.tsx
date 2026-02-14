@@ -42,7 +42,7 @@ export function CLVCalculator() {
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-3">
                                         <CardTitle className="text-2xl font-bold text-blue-600">
-                                            LTV Variables
+                                            Customer Lifetime Value (LTV) Variables
                                         </CardTitle>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
@@ -93,10 +93,10 @@ export function CLVCalculator() {
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     <FadeIn delay={0.4} direction="left" className="space-y-6">
                         <ResultFeedbackCard
-                            title="Lifetime Value (LTV)"
+                            title="Customer Lifetime Value (LTV)"
                             mainValue={<Counter value={clv} formatter={formatCurrency} />}
                             valueColor="text-white"
-                            mainMetricLabel="Max CPA Tip"
+                            mainMetricLabel="Max Cost Per Acquisition (CPA) Tip"
                             mainMetricValue={formatCurrency(clv / 3)}
                             mainMetricColor="text-blue-200"
                             secondaryMetrics={[

@@ -218,25 +218,29 @@ export function DropshippingCalculator() {
 
                         {/* Metrics Grid */}
                         <div className="grid grid-cols-2 gap-3">
-                            <ResultCard
+                            <ResultFeedbackCard
+                                variant="compact"
                                 title="Margin per Sale"
-                                value={<Counter value={marginPerOrder} formatter={formatCurrency} key={currency} />}
+                                mainValue={<Counter value={marginPerOrder} formatter={formatCurrency} key={currency} />}
                                 tooltip="The profit you make on each sale before advertising and RTO costs. Calculated as: Selling Price - Product Cost."
                             />
-                            <ResultCard
-                                title="Return on Ad Spend (ROAS)"
-                                value={<><Counter value={totalAdsCost > 0 ? (revenueGenerated / totalAdsCost) : 0} formatter={(v) => v.toFixed(2)} />X</>}
+                            <ResultFeedbackCard
+                                variant="compact"
+                                title="ROAS"
+                                mainValue={<><Counter value={totalAdsCost > 0 ? (revenueGenerated / totalAdsCost) : 0} formatter={(v) => v.toFixed(2)} />X</>}
                                 tooltip="ROAS (Return on Ad Spend): The money you make for every $1 spent on ads. Aim for 4X or more."
                             />
-                            <ResultCard
+                            <ResultFeedbackCard
+                                variant="compact"
                                 title="Delivered"
-                                value={<Counter value={deliveredOrders} />}
+                                mainValue={<Counter value={deliveredOrders} />}
                                 tooltip="Delivered Orders: Total orders that successfully reached your customers."
                             />
-                            <ResultCard
-                                title="Return to Origin Orders (RTO)"
-                                value={<Counter value={rtoQty} />}
-                                darkwarning
+                            <ResultFeedbackCard
+                                variant="compact"
+                                title="RTO Orders"
+                                mainValue={<Counter value={rtoQty} />}
+                                valueColor="text-orange-600"
                                 tooltip="RTO (Return to Origin): Orders sent back to you. This costs you double shipping plus wasted ad money."
                             />
                         </div>

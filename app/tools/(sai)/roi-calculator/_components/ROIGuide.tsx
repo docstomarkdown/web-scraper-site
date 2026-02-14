@@ -32,10 +32,10 @@ const insights = [
         iconBg: "bg-amber-50",
         iconColor: "text-amber-500",
         statColor: "text-amber-600",
-        title: "ROI Percentage",
-        stat: "ROI %",
+        title: "Return on Investment (ROI) Percentage",
+        stat: "Return on Investment (ROI) %",
         statLabel: "The key profitability metric",
-        description: "Return on Investment expressed as a percentage. Calculated as: ((Revenue - Investment) / Investment) × 100. A positive ROI means you made money; a negative ROI means you lost money.",
+        description: "Return on Investment (ROI) expressed as a percentage. Calculated as: ((Revenue - Investment) / Investment) × 100. A positive Return on Investment (ROI) means you made money; a negative Return on Investment (ROI) means you lost money.",
         tooltip: "How much profit you made relative to what you invested."
     },
     {
@@ -55,7 +55,7 @@ export function ROIGuide() {
     return (
         <section id="roi-guide">
 
-            <ToolSectionHeader icon={BookOpen} title="Understanding ROI" />
+            <ToolSectionHeader icon={BookOpen} title="Understanding Return on Investment (ROI)" />
 
             <div className="space-y-6">
                 {insights.map((insight, index) => {

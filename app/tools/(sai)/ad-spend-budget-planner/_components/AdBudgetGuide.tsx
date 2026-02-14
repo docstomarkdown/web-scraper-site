@@ -11,15 +11,15 @@ export function AdBudgetGuide() {
             items={[
                 {
                     title: "The Logic",
-                    description: "Budget planning is simple reverse engineering. If you know how much you want to make (Goal) and how efficient your ads are (ROAS), the math tells you exactly what to spend.",
+                    description: "Budget planning is simple reverse engineering. If you know how much you want to make (Goal) and how efficient your ads are (Return on Ad Spend (ROAS)), the math tells you exactly what to spend.",
                     icon: Calculator,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
-                    tooltip: "Formula: Revenue Goal / ROAS"
+                    tooltip: "Formula: Revenue Goal / Return on Ad Spend (ROAS)"
                 },
                 {
-                    title: "Realistic ROAS",
-                    description: "Setting an impossibly high ROAS (e.g., 10x) will give you a tiny recommended budget that likely won't generate meaningful traffic. Use your store's average ROAS.",
+                    title: "Realistic Return on Ad Spend (ROAS)",
+                    description: "Setting an impossibly high Return on Ad Spend (ROAS) (e.g., 10x) will give you a tiny recommended budget that likely won't generate meaningful traffic. Use your store's average Return on Ad Spend (ROAS).",
                     icon: AlertTriangle,
                     iconBg: "bg-orange-50",
                     iconColor: "text-orange-500",

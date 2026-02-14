@@ -19,7 +19,7 @@ export function ACoSHowToUse() {
                 },
                 {
                     title: "View Result",
-                    description: "See your ACoS percentage instantly to evaluate campaign efficiency.",
+                    description: "See your Advertising Cost of Sales (ACoS) percentage instantly to evaluate campaign efficiency.",
                     icon: BarChart2
                 }
             ]}

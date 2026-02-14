@@ -123,7 +123,7 @@ export function ReturnOnAdSpendCalculator() {
                                                 <HelpCircle className="w-4 h-4 text-slate-400 cursor-help hover:text-slate-600 transition-colors" />
                                             </TooltipTrigger>
                                             <TooltipContent className="max-w-[200px] text-xs">
-                                                <p>Switch to &quot;No&quot; if you want to calculate the revenue needed to hit a specific Target ROAS.</p>
+                                                <p>Switch to &quot;No&quot; if you want to calculate the revenue needed to hit a specific Target Return on Ad Spend (ROAS).</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
@@ -155,13 +155,13 @@ export function ReturnOnAdSpendCalculator() {
                                 />
                             ) : (
                                 <CalculatorInput
-                                    label="Target ROAS"
+                                    label="Target Return on Ad Spend (ROAS)"
                                     value={targetROAS}
                                     onChange={setTargetROAS}
                                     placeholder="4.0"
                                     max={100}
                                     step={0.1}
-                                    tooltip="ROAS (Return on Ad Spend): The money you make for every $1 spent on ads. Aim for 4X or more. Calculated as: Revenue / Ad Spend."
+                                    tooltip="Return on Ad Spend (ROAS): The money you make for every $1 spent on ads. Aim for 4X or more. Calculated as: Revenue / Ad Spend."
                                 />
                             )}
                         </CardContent>
@@ -185,7 +185,7 @@ export function ReturnOnAdSpendCalculator() {
                         valueColor={mode === "calculate-roas" ? (roas > 1 ? "text-emerald-400" : (roas < 1 ? "text-red-400" : "text-white")) : "text-white"}
                         secondaryMetrics={[
                             {
-                                label: mode === "calculate-roas" ? "ROAS %" : "Target ROAS",
+                                label: mode === "calculate-roas" ? "Return on Ad Spend (ROAS) %" : "Target Return on Ad Spend (ROAS)",
                                 value: mode === "calculate-roas" ? (
                                     <Counter value={roasPercent} formatter={(v) => `${v.toFixed(0)}%`} />
                                 ) : (
@@ -209,7 +209,7 @@ export function ReturnOnAdSpendCalculator() {
                             icon={DollarSign}
                         />
                         <ResultCard
-                            title={mode === "calculate-roas" ? "Revenue Generated" : "Target ROAS"}
+                            title={mode === "calculate-roas" ? "Revenue Generated" : "Target Return on Ad Spend (ROAS)"}
                             value={mode === "calculate-roas" ?
                                 <Counter value={revenue} formatter={formatCurrency} key={`rev-${currency}`} /> :
                                 <Counter value={val(targetROAS)} formatter={(v) => `${v.toFixed(2)}x`} />
@@ -223,8 +223,8 @@ export function ReturnOnAdSpendCalculator() {
                             <h4 className="text-sm font-semibold text-blue-900 mb-1">Pro Tip</h4>
                             <p className="text-sm text-blue-700 leading-relaxed">
                                 {mode === "calculate-roas" ?
-                                    "A ROAS of 4.0x (400%) means for every $1 you spend on ads, you get $4 back in revenue. Aim for at least 2.5x - 3.0x to cover product costs and other expenses." :
-                                    "To define a target ROAS, consider your profit margins. If your break-even ROAS is 2.0x, aim for a target of 3.0x or higher to ensure profitability."
+                                    "A Return on Ad Spend (ROAS) of 4.0x (400%) means for every $1 you spend on ads, you get $4 back in revenue. Aim for at least 2.5x - 3.0x to cover product costs and other expenses." :
+                                    "To define a target Return on Ad Spend (ROAS), consider your profit margins. If your break-even Return on Ad Spend (ROAS) is 2.0x, aim for a target of 3.0x or higher to ensure profitability."
                                 }
                             </p>
                         </div>

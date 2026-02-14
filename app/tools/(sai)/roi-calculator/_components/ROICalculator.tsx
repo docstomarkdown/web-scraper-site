@@ -102,7 +102,7 @@ export function ROICalculator() {
                                 placeholder="3"
                                 max={120}
                                 suffix="mo"
-                                tooltip="Optional. Number of months over which the ROI was realized. Used to calculate monthly ROI."
+                                tooltip="Optional. Number of months over which the Return on Investment (ROI) was realized. Used to calculate monthly Return on Investment (ROI)."
                             />
                         </CardContent>
                     </Card>
@@ -112,7 +112,7 @@ export function ROICalculator() {
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     {/* Main ROI Card */}
                     <ResultFeedbackCard
-                        title="Return on Investment"
+                        title="Return on Investment (ROI)"
                         mainValue={
                             <Counter value={roiPercent} formatter={(v) => `${v.toFixed(2)}%`} />
                         }
@@ -139,7 +139,7 @@ export function ROICalculator() {
                             icon={DollarSign}
                         />
                         <ResultCard
-                            title={months > 0 ? "Monthly ROI" : "Total Revenue"}
+                            title={months > 0 ? "Monthly Return on Investment (ROI)" : "Total Revenue"}
                             value={
                                 months > 0
                                     ? <Counter value={monthlyROI} formatter={(v) => `${v.toFixed(2)}%`} />

@@ -6,8 +6,8 @@ import { ACoSGuide } from "./_components/ACoSGuide"
 import { CTA } from "@/components/sections/CTA"
 
 export const metadata: Metadata = {
-    title: "ACoS Calculator | Calculate Advertising Cost of Sales",
-    description: "Calculate your ACoS (Advertising Cost of Sales) to measure the efficiency and profitability of your Amazon PPC campaigns.",
+    title: "Advertising Cost of Sales (ACoS) Calculator | Calculate Advertising Cost of Sales",
+    description: "Calculate your Advertising Cost of Sales (ACoS) to measure the efficiency and profitability of your Amazon PPC campaigns.",
 }
 
 export default function ACoSCalculatorPage() {
@@ -17,7 +17,7 @@ export default function ACoSCalculatorPage() {
                 <div className="text-center mb-12">
                     <FadeIn>
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
-                            ACoS Calculator
+                            Advertising Cost of Sales (ACoS) Calculator
                         </h1>
 
                     </FadeIn>
@@ -40,15 +40,15 @@ export default function ACoSCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is a good ACoS?",
+                                    question: "What is a good Advertising Cost of Sales (ACoS)?",
                                     answer: "A good ACoS depends on your profit margin. If your profit margin is 40% before ads, then an ACoS below 40% means you are profitable."
                                 },
                                 {
-                                    question: "How do I lower my ACoS?",
+                                    question: "How do I lower my Advertising Cost of Sales (ACoS)?",
                                     answer: "You can lower your ACoS by optimizing your bids, adding negative keywords, improving your product listing conversion rate, or targeting more relevant keywords."
                                 },
                                 {
-                                    question: "What is the difference between ACoS and ROAS?",
+                                    question: "What is the difference between Advertising Cost of Sales (ACoS) and Return on Ad Spend (ROAS)?",
                                     answer: "ACoS is ad spend divided by revenue (lower is better), while ROAS (Return on Ad Spend) is revenue divided by ad spend (higher is better). They are inverse metrics."
                                 }
                             ]}

@@ -93,7 +93,7 @@ export function TACoSCalculator() {
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     <FadeIn delay={0.4} direction="left" className="space-y-6">
                         <ResultFeedbackCard
-                            title="Total ACoS (TACoS)"
+                            title="Total Advertising Cost of Sales (TACoS)"
                             mainValue={<div className="flex items-baseline gap-1">
                                 <Counter value={tacos} formatter={(v) => v.toFixed(2)} />
                                 <span className="text-2xl font-bold">%</span>
@@ -114,7 +114,7 @@ export function TACoSCalculator() {
                         </div>
 
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
-                            Your TACoS is <strong>{tacos.toFixed(2)}%</strong>. This means that for every $1 you earn, you spend {tacos.toFixed(0)} cents on advertising.
+                            Your Total Advertising Cost of Sales (TACoS) is <strong>{tacos.toFixed(2)}%</strong>. This means that for every $1 you earn, you spend {tacos.toFixed(0)} cents on advertising.
                         </div>
                     </FadeIn>
                 </div>

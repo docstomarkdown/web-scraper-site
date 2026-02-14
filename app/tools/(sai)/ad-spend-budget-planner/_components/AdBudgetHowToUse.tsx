@@ -13,8 +13,8 @@ export function AdBudgetHowToUse() {
                     icon: Target,
                 },
                 {
-                    title: "Define Target ROAS",
-                    description: "Input your expected Return on Ad Spend. Be realistic based on your historical performance (e.g., 3.0 to 5.0).",
+                    title: "Define Target Return on Ad Spend (ROAS)",
+                    description: "Input your expected Return on Ad Spend (ROAS). Be realistic based on your historical performance (e.g., 3.0 to 5.0).",
                     icon: TrendingUp,
                 },
                 {

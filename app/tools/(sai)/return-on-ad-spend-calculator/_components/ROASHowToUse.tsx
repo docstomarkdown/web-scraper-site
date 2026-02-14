@@ -13,13 +13,13 @@ export function ROASHowToUse() {
                     icon: DollarSign
                 },
                 {
-                    title: "Enter Revenue or Target",
-                    description: "Enter your generated revenue to see ROAS, or your Target ROAS to see the revenue needed.",
+                    title: "Enter Revenue or Target Return on Ad Spend (ROAS)",
+                    description: "Enter your generated revenue to see Return on Ad Spend (ROAS), or your Target Return on Ad Spend (ROAS) to see the revenue needed.",
                     icon: TrendingUp
                 },
                 {
                     title: "Get Your Results",
-                    description: "Instantly see your ROAS performance or the revenue target you need to hit to be profitable.",
+                    description: "Instantly see your Return on Ad Spend (ROAS) performance or the revenue target you need to hit to be profitable.",
                     icon: BarChart3
                 }
             ]}

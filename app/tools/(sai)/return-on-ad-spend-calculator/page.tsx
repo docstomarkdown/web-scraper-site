@@ -6,8 +6,8 @@ import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 
 export const metadata: Metadata = {
-    title: 'ROAS Calculator - Return on Ad Spend | Web Scraper Pro',
-    description: 'Free ROAS calculator to instantly measure the return on your advertising spend. Calculate ROAS percentage, ratio, and net profit from ads.',
+    title: 'Return on Ad Spend (ROAS) Calculator - Return on Ad Spend | Web Scraper Pro',
+    description: 'Free Return on Ad Spend (ROAS) calculator to instantly measure the return on your advertising spend. Calculate ROAS percentage, ratio, and net profit from ads.',
 }
 
 export default function ROASCalculatorPage() {
@@ -17,7 +17,7 @@ export default function ROASCalculatorPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
-                            ROAS Calculator
+                            Return on Ad Spend (ROAS) Calculator
                         </h1>
 
                     </FadeIn>
@@ -41,19 +41,19 @@ export default function ROASCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is ROAS?",
+                                    question: "What is Return on Ad Spend (ROAS)?",
                                     answer: "ROAS stands for Return on Ad Spend. It is a marketing metric that measures the efficacy of a digital advertising campaign. It helps online businesses evaluate which methods are working and how they can improve future advertising efforts."
                                 },
                                 {
-                                    question: "How is ROAS calculated?",
+                                    question: "How is Return on Ad Spend (ROAS) calculated?",
                                     answer: "ROAS is calculated by dividing the revenue generated from ads by the cost of those ads. Formula: Revenue from Ads / Cost of Ads. For example, if you spent $100 and made $500, your ROAS is 5:1 or 500%."
                                 },
                                 {
-                                    question: "What is a good ROAS?",
+                                    question: "What is a good Return on Ad Spend (ROAS)?",
                                     answer: "A good ROAS varies by industry and profit margins. Generally, a ROAS of 4:1 (or 400%) is considered strong for e-commerce. A ROAS below 2:1 might mean you're barely breaking even after accounting for product costs."
                                 },
                                 {
-                                    question: "What's the difference between ROAS and ROI?",
+                                    question: "What's the difference between Return on Ad Spend (ROAS) and Return on Investment (ROI)?",
                                     answer: "ROAS measures revenue generated specifically from advertising spend. ROI (Return on Investment) measures overall profit relative to all costs (including product, shipping, operations, etc.). ROAS is a component of overall ROI."
                                 }
                             ]}

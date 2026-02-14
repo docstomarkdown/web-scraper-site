@@ -32,10 +32,10 @@ const insights = [
         iconBg: "bg-amber-50",
         iconColor: "text-amber-500",
         statColor: "text-amber-600",
-        title: "ROAS (Return on Ad Spend)",
+        title: "Return on Ad Spend (ROAS)",
         stat: "ROAS",
         statLabel: "Efficiency metric",
-        description: "Calculated as Revenue / Ad Spend. A ROAS of 4.0 means you earn $4 for every $1 spent. It measures the effectiveness of your advertising campaigns.",
+        description: "Calculated as Revenue / Ad Spend. A Return on Ad Spend (ROAS) of 4.0 means you earn $4 for every $1 spent. It measures the effectiveness of your advertising campaigns.",
         tooltip: "Revenue divided by Ad Spend."
     },
     {
@@ -55,7 +55,7 @@ export function ROASGuide() {
     return (
         <section id="roas-guide">
 
-            <ToolSectionHeader icon={BookOpen} title="Understanding ROAS" />
+            <ToolSectionHeader icon={BookOpen} title="Understanding Return on Ad Spend (ROAS)" />
 
             <div className="space-y-6">
                 {insights.map((insight, index) => {

@@ -71,7 +71,7 @@ export function AdBudgetCalculator() {
                                     tooltip="The total revenue amount you want to achieve this month."
                                 />
                                 <CalculatorInput
-                                    label="Target ROAS"
+                                    label="Target Return on Ad Spend (ROAS)"
                                     value={targetROAS}
                                     onChange={setTargetROAS}
                                     placeholder="4.0"
@@ -93,7 +93,7 @@ export function AdBudgetCalculator() {
                             mainMetricColor="text-blue-200"
                             secondaryMetrics={[
                                 { label: "Daily Budget", value: formatCurrency(dailySpend), color: "text-slate-300" },
-                                { label: "Target ROAS", value: `${roasVal}x`, color: "text-slate-400" }
+                                { label: "Target Return on Ad Spend (ROAS)", value: `${roasVal}x`, color: "text-slate-400" }
                             ]}
                         />
 

@@ -200,9 +200,9 @@ export function MOQCalculator() {
                                 </h4>
                                 <p className="text-sm text-slate-600 leading-relaxed">
                                     {riskAssessment.level === "bad"
-                                        ? <>This MOQ of <strong>{moq} units</strong> covers <strong>{monthsInventory.toFixed(1)} months</strong> of sales. This ties up cash and increases storage fees. Consider negotiating a lower MOQ.</>
+                                        ? <>This Minimum Order Quantity (MOQ) of <strong>{moq} units</strong> covers <strong>{monthsInventory.toFixed(1)} months</strong> of sales. This ties up cash and increases storage fees. Consider negotiating a lower Minimum Order Quantity (MOQ).</>
                                         : riskAssessment.level === "good"
-                                            ? <>This MOQ of <strong>{moq || 0} units</strong> is a healthy order size at <strong>{monthsInventory.toFixed(1)} months</strong> of coverage. Your cash flow turnover looks efficient.</>
+                                            ? <>This Minimum Order Quantity (MOQ) of <strong>{moq || 0} units</strong> is a healthy order size at <strong>{monthsInventory.toFixed(1)} months</strong> of coverage. Your cash flow turnover looks efficient.</>
                                             : <>Enter your supplier costs and estimated monthly sales to see a full investment risk analysis.</>
                                     }
                                 </p>

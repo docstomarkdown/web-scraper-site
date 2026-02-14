@@ -61,7 +61,7 @@ export function PPCBidCalculator() {
                                 tooltip="Your average conversion rate (orders / clicks * 100)."
                             />
                             <CalculatorInput
-                                label="Target ACoS"
+                                label="Target Advertising Cost of Sales (ACoS)"
                                 value={targetACoS}
                                 onChange={setTargetACoS}
                                 placeholder="30.0"

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { FadeIn } from "@/app/tools/_shared/components";
+import { FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components";
 import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -274,60 +274,52 @@ export function TimeZonePlanner() {
 
                             return (
                                 <FadeIn key={zoneId}>
-                                    <Card className={cn(
-                                        "group border-2 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl",
-                                        result.status.border,
-                                        result.status.bg
-                                    )}>
-                                        <CardContent className="p-6 relative">
-                                            {/* Delete Button */}
-                                            <button
-                                                onClick={() => removeZone(zoneId)}
-                                                className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-white hover:text-red-500 rounded-full text-slate-300 shadow-sm"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </button>
-
-                                            {/* Status Badge */}
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <div className={cn("p-1.5 rounded-lg", result.status.color, "bg-white shadow-sm ring-1 ring-slate-100")}>
-                                                    <StatusIcon className="h-4 w-4" />
-                                                </div>
-                                                <span className={cn("text-[10px] font-black uppercase tracking-widest", result.status.color)}>
-                                                    {result.status.label}
-                                                </span>
+                                    <ResultFeedbackCard
+                                        variant="compact"
+                                        title={result.zone.name}
+                                        titleLabel={
+                                            <div className={cn("flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide", result.status.bg, result.status.color, "border", result.status.border)}>
+                                                <StatusIcon className="h-3 w-3" />
+                                                {result.status.label}
                                             </div>
-
-                                            {/* Time Display */}
-                                            <div className="flex items-baseline gap-2 mb-1">
-                                                <h4 className="text-4xl font-black text-slate-900 tracking-tight">
-                                                    {result.time}
-                                                </h4>
+                                        }
+                                        className={cn(
+                                            "group transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl",
+                                            result.status.bg, // Apply background tint to whole card
+                                            result.status.border
+                                        )}
+                                        mainValue={
+                                            <div className="flex items-baseline gap-2">
+                                                <span>{result.time}</span>
                                                 {result.dayOffset !== 0 && (
-                                                    <span className={cn("text-xs font-bold px-2 py-0.5 rounded-full",
+                                                    <span className={cn("text-sm font-bold px-2 py-0.5 rounded-full align-middle ml-2",
                                                         result.dayOffset > 0 ? "bg-amber-100 text-amber-600" : "bg-blue-100 text-blue-600"
                                                     )}>
-                                                        {result.dayOffset > 0 ? "+1 Day" : "-1 Day"}
+                                                        {result.dayOffset > 0 ? "+1d" : "-1d"}
                                                     </span>
                                                 )}
                                             </div>
+                                        }
+                                    >
+                                        <button
+                                            onClick={() => removeZone(zoneId)}
+                                            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-white/80 hover:text-red-500 rounded-full text-slate-400"
+                                            title="Remove Time Zone"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </button>
 
-                                            {/* Zone Name */}
-                                            <div className="text-lg font-bold text-slate-700 leading-tight">
-                                                {result.zone.name}
+                                        {/* Metadata */}
+                                        <div className="mt-4 flex items-center justify-between text-xs font-medium text-slate-500">
+                                            <div className="flex items-center gap-1.5">
+                                                <Globe className="h-3.5 w-3.5 opacity-50" />
+                                                <span>{result.zone.id.split('/')[0]}</span>
                                             </div>
-
-                                            {/* Metadata */}
-                                            <div className="mt-6 pt-6 border-t border-slate-100 flex items-center justify-between">
-                                                <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-tight">
-                                                    <Globe className="h-3 w-3" /> {result.zone.id.split('/')[0]}
-                                                </div>
-                                                <div className="text-[10px] font-bold text-slate-400 bg-white px-2 py-1 rounded border border-slate-100">
-                                                    {result.zone.offsetStr}
-                                                </div>
+                                            <div className="bg-white/50 px-2 py-1 rounded border border-slate-200/50 font-mono text-[10px]">
+                                                {result.zone.offsetStr}
                                             </div>
-                                        </CardContent>
-                                    </Card>
+                                        </div>
+                                    </ResultFeedbackCard>
                                 </FadeIn>
                             );
                         })}

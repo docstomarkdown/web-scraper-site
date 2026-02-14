@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Counter } from "../../../_shared/components"
+import { Counter, ResultFeedbackCard } from "../../../_shared/components"
 
 type Unit = "in" | "cm"
 
@@ -225,35 +225,28 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     <FadeIn delay={0.4} direction="left" className="space-y-6">
                         {/* Main Volume Card (Dark Theme) */}
-                        <Card className="border-0 shadow-2xl overflow-hidden relative bg-[#0f172a] text-white">
-                            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-blue-600/10" />
-
-                            <CardHeader className="pb-2 relative z-10">
-                                <div className="flex items-center justify-between">
-                                    <CardTitle className="text-sm font-medium uppercase tracking-wider text-blue-200">Total Volume</CardTitle>
-                                    <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400">
-                                        <div className="relative flex h-2 w-2">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                        </div>
-                                        Live
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="relative z-10">
-                                <div className="flex items-baseline gap-3 mb-6">
-                                    <span className="text-4xl font-bold tracking-tight text-white">
-                                        <Counter value={unit === "in" ? (volume?.in3 || 0) : (volume?.cm3 || 0)} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} key={unit} />
-                                    </span>
-                                    <span className="text-lg font-normal text-slate-500">{unit}³</span>
-                                </div>
-
-                                <div className="space-y-3 pt-4 border-t border-slate-700/50">
-                                    <Row label="Cubic Inches" value={<Counter value={volume?.in3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} />} className="text-slate-400" />
-                                    <Row label="Cubic Centimeters" value={<Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />} className="text-slate-400" />
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <ResultFeedbackCard
+                            title="Total Volume"
+                            titleLabel="Live"
+                            mainValue={
+                                <>
+                                    <Counter value={unit === "in" ? (volume?.in3 || 0) : (volume?.cm3 || 0)} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} key={unit} />
+                                    <span className="text-lg font-normal text-slate-400 ml-2">{unit}³</span>
+                                </>
+                            }
+                            secondaryMetrics={[
+                                {
+                                    label: "Cubic Inches",
+                                    value: <Counter value={volume?.in3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} />,
+                                    color: "text-slate-300"
+                                },
+                                {
+                                    label: "Cubic Centimeters",
+                                    value: <Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />,
+                                    color: "text-slate-300"
+                                }
+                            ]}
+                        />
 
                         {/* Conversion Results Table Card */}
                         <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">

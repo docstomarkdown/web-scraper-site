@@ -8,8 +8,8 @@ import { Info } from "lucide-react"
 
 interface CalculatorInputProps {
     label: string
-    value: number | ""
-    onChange: (value: number | "") => void
+    value: number | string | ""
+    onChange: (value: any) => void
     min?: number
     max?: number
     step?: number
@@ -17,6 +17,7 @@ interface CalculatorInputProps {
     suffix?: string
     placeholder?: string
     tooltip?: string
+    type?: "number" | "text"
 }
 
 export function CalculatorInput({
@@ -30,16 +31,21 @@ export function CalculatorInput({
     suffix,
     placeholder,
     tooltip,
+    type = "number"
 }: CalculatorInputProps) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        if (value === "") {
-            onChange("")
-        } else {
-            const val = parseFloat(value)
-            if (!isNaN(val)) {
-                onChange(val)
+        const val = e.target.value
+        if (type === "number") {
+            if (val === "") {
+                onChange("")
+            } else {
+                const parsed = parseFloat(val)
+                if (!isNaN(parsed)) {
+                    onChange(parsed)
+                }
             }
+        } else {
+            onChange(val)
         }
     }
 
@@ -67,14 +73,14 @@ export function CalculatorInput({
                 )}
             </div>
             <Input
-                type="number"
+                type={type}
                 value={value}
                 onChange={handleInputChange}
-                className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
-                min={min}
-                max={max}
-                step={step}
-                placeholder={placeholder ? `Ex: ${placeholder}` : undefined}
+                className={`h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all ${type === 'text' ? 'text-sm' : ''}`}
+                min={type === "number" ? min : undefined}
+                max={type === "number" ? max : undefined}
+                step={type === "number" ? step : undefined}
+                placeholder={placeholder ? (type === "number" ? `Ex: ${placeholder}` : placeholder) : undefined}
             />
         </div>
     )

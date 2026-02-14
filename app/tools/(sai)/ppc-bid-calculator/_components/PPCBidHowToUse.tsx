@@ -18,8 +18,8 @@ export function PPCBidHowToUse() {
                     icon: BarChart2
                 },
                 {
-                    title: "Define Target ACoS",
-                    description: "Set your target Advertising Cost of Sales percentage.",
+                    title: "Define Target Advertising Cost of Sales (ACoS)",
+                    description: "Set your target Advertising Cost of Sales (ACoS) percentage.",
                     icon: Target
                 }
             ]}

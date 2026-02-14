@@ -7,7 +7,7 @@ import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 
 export const metadata: Metadata = {
-    title: "Amazon FBA Fee Calculator - Estimate Fees & Profit",
+    title: "Amazon Fulfillment by Amazon (FBA) Fee Calculator - Estimate Fees & Profit",
     description: "Free tool to estimate Amazon FBA fees, referral fees, and net profit based on product size, weight, and price.",
 }
 
@@ -18,7 +18,7 @@ export default function FbaCalculatorPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
-                            Amazon FBA Fee Calculator
+                            Amazon Fulfillment by Amazon (FBA) Fee Calculator
                         </h1>
                     </FadeIn>
                 </div>
@@ -40,7 +40,7 @@ export default function FbaCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "Are these FBA fees exact?",
+                                    question: "Are these Fulfillment by Amazon (FBA) fees exact?",
                                     answer: "These are estimates based on standard 2024 rate cards. Actual fees may vary slightly due to dimensional weight calculations, dangerous goods classification, or apparel surcharges."
                                 },
                                 {

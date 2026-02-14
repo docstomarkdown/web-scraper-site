@@ -6,7 +6,7 @@ import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "CPA Calculator | Web Scraper Pro",
+    title: "Cost Per Acquisition (CPA) Calculator | Web Scraper Pro",
     description: "Calculate your Cost Per Acquisition (CPA) from campaign data or estimate it based on CPC and Conversion Rate.",
 }
 
@@ -17,7 +17,7 @@ export default function CPACalculatorPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
-                            CPA Calculator
+                            Cost Per Acquisition (CPA) Calculator
                         </h1>
                     </FadeIn>
                 </div>
@@ -39,15 +39,15 @@ export default function CPACalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is the difference between CPA and CPC?",
+                                    question: "What is the difference between Cost Per Acquisition (CPA) and Cost Per Click (CPC)?",
                                     answer: "CPC (Cost Per Click) is what you pay for a click, while CPA (Cost Per Acquisition) is what you pay for an actual customer or result. CPA is usually higher than CPC because not every click results in a sale."
                                 },
                                 {
-                                    question: "How can I lower my CPA?",
+                                    question: "How can I lower my Cost Per Acquisition (CPA)?",
                                     answer: "You can lower your CPA by either decreasing your Cost Per Click (CPC) or increasing your Conversion Rate (CR). Improving your ad relevance, landing page experience, and targeting can helps with both."
                                 },
                                 {
-                                    question: "Does CPA include overhead costs?",
+                                    question: "Does Cost Per Acquisition (CPA) include overhead costs?",
                                     answer: "Typically, no. Ad platform CPA only accounts for ad spend. To calculate a 'True CPA', you should factor in agency fees, creative costs, and tool subscriptions manually."
                                 }
                             ]}

@@ -1,0 +1,113 @@
+﻿
+> web-scraper-pro@0.1.0 lint
+> next lint
+
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" "C:
+\Users\sai\AppData\Ro
+aming\np ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (:String   
+ ) [], RemoteExce    
+ption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+./app/tools/(madhu)/p
+allet-configuration-c
+alculator/_components
+/PalletConfigurationC
+alculator.tsx
+164:8  Warning: 
+React Hook useMemo 
+has a missing 
+dependency: 
+'convertToInches'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+439:124  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+439:128  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+439:131  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+457:72  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+457:98  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+485:84  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+485:122  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+491:82  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+500:109  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/tools/(madhu)/w
+eight-converter/_comp
+onents/WeightConverte
+r.tsx
+40:8  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'targetUnit'. Either 
+include it or remove 
+the dependency 
+array.  react-hooks/e
+xhaustive-deps
+
+info  - Need to 
+disable some ESLint 
+rules? Learn more 
+here: https://nextjs.
+org/docs/app/api-refe
+rence/config/eslint#d
+isabling-rules

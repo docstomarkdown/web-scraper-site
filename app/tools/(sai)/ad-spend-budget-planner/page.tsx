@@ -39,7 +39,7 @@ export default function AdBudgetPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What should my Target ROAS be?",
+                                    question: "What should my Target Return on Ad Spend (ROAS) be?",
                                     answer: "If you're breaking even at 2.0, aim for 3.0 or 4.0 for profitability. Check your ad account's historical average."
                                 },
                                 {

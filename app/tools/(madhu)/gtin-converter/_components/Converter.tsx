@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -21,7 +21,8 @@ import {
     ScanLine
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { FadeIn } from "../../../_shared/components"
+import { FadeIn, ResultFeedbackCard, ScannerModal } from "../../../_shared/components"
+import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import bwipjs from 'bwip-js'
 import Barcode from 'react-barcode'
 import {
@@ -90,8 +91,6 @@ export function Converter() {
     const [results, setResults] = useState<ConversionResult | null>(null)
     const [isMounted, setIsMounted] = useState(false)
     const [canvasError, setCanvasError] = useState(false)
-    const [isScanning, setIsScanning] = useState(false)
-    const [scannerError, setScannerError] = useState<string | null>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
     useEffect(() => {
@@ -112,7 +111,7 @@ export function Converter() {
         return (nextTen - sum) % 10
     }
 
-    const validateAndConvert = (code: string) => {
+    const validateAndConvert = useCallback((code: string) => {
         const clean = code.replace(/[\s-]/g, "")
 
         if (!clean) {
@@ -178,11 +177,11 @@ export function Converter() {
             gtin13: base14.slice(-13),
             gtin14: base14,
         })
-    }
+    }, [])
 
     useEffect(() => {
         validateAndConvert(inputCode)
-    }, [inputCode])
+    }, [inputCode, validateAndConvert])
 
     // Render Barcode Effect
     useEffect(() => {
@@ -239,83 +238,13 @@ export function Converter() {
         }
     }
 
-    // Camera Scan Logic
-    useEffect(() => {
-        let textScanner: any = null;
-
-        if (isScanning) {
-            import("html5-qrcode").then(({ Html5QrcodeScanner, Html5QrcodeSupportedFormats }) => {
-                textScanner = new Html5QrcodeScanner(
-                    "reader",
-                    {
-                        fps: 10,
-                        qrbox: { width: 250, height: 150 },
-                        aspectRatio: 1.0,
-                        formatsToSupport: [
-                            Html5QrcodeSupportedFormats.UPC_A,
-                            Html5QrcodeSupportedFormats.EAN_13,
-                        ]
-                    },
-                    /* verbose= */ false
-                );
-
-                textScanner.render(
-                    (decodedText: string) => {
-                        setInputCode(decodedText);
-                        setIsScanning(false);
-                        toast({
-                            title: "Barcode Scanned",
-                            description: `Detected: ${decodedText}`,
-                        });
-                        textScanner.clear();
-                    },
-                    (errorMessage: string) => {
-                        // ignore frame errors
-                    }
-                );
-            }).catch(err => {
-                console.error("Failed to load scanner", err);
-                setScannerError("Failed to load camera scanner.");
-            });
+    // useBarcodeScanner Hook
+    const { isScanning, setIsScanning, scannerError, handleFileUpload } = useBarcodeScanner({
+        onScan: (decodedText) => {
+            setInputCode(decodedText)
+            // No need to call validateAndConvert here if it's triggered by inputCode change effect
         }
-
-        return () => {
-            if (textScanner) {
-                textScanner.clear().catch((error: any) => {
-                    console.error("Failed to clear html5-qrcode scanner. ", error);
-                });
-            }
-        };
-    }, [isScanning]);
-
-    // File Upload Logic
-    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        try {
-            const { Html5Qrcode } = await import("html5-qrcode");
-            const html5QrCode = new Html5Qrcode("gtin-file-reader");
-
-            const response = await html5QrCode.scanFileV2(file, true);
-            if (response && response.decodedText) {
-                setInputCode(response.decodedText);
-                toast({
-                    title: "Image Scanned",
-                    description: `Detected: ${response.decodedText}`,
-                });
-            }
-        } catch (err) {
-            console.error("Error scanning file", err);
-            toast({
-                variant: "destructive",
-                title: "Scan Failed",
-                description: "Could not detect a valid barcode in this image.",
-            });
-        } finally {
-            if (e.target) e.target.value = '';
-        }
-    };
+    })
 
 
 
@@ -429,18 +358,12 @@ GTIN-14: ${results.gtin14}
             <div id="gtin-file-reader" className="hidden"></div>
 
             {/* Scanner Modal */}
-            <Dialog open={isScanning} onOpenChange={setIsScanning}>
-                <DialogContent className="max-w-md bg-white border-slate-200">
-                    <DialogHeader>
-                        <DialogTitle>Scan Barcode</DialogTitle>
-                        <DialogDescription>Point your camera at a UPC or EAN barcode.</DialogDescription>
-                    </DialogHeader>
-                    <div className="flex flex-col items-center justify-center min-h-[300px] bg-slate-50 rounded-lg overflow-hidden border border-slate-100">
-                        <div id="reader" className="w-full"></div>
-                        {scannerError && <p className="text-rose-500 text-sm p-4">{scannerError}</p>}
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <ScannerModal
+                isOpen={isScanning}
+                onOpenChange={setIsScanning}
+                error={scannerError}
+                readerId="reader"
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
@@ -478,7 +401,7 @@ GTIN-14: ${results.gtin14}
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center text-sm font-bold text-slate-600">
                                     <Label htmlFor="gtin-input">Barcode Number</Label>
-                                    <span className="text-[10px] font-mono opacity-50">UPC / EAN</span>
+                                    <span className="text-[10px] font-mono opacity-50">Universal Product Code (UPC) / European Article Number (EAN)</span>
                                 </div>
                                 <Input
                                     id="gtin-input"
@@ -489,7 +412,7 @@ GTIN-14: ${results.gtin14}
                                     autoComplete="off"
                                 />
                                 <p className="text-xs text-slate-400">
-                                    Supports UPC-A (12), EAN-13 (13), GTIN-14 (14).
+                                    Supports Universal Product Code (UPC)-A (12), European Article Number (EAN)-13 (13), Global Trade Item Number (GTIN)-14 (14).
                                 </p>
 
 
@@ -619,77 +542,67 @@ GTIN-14: ${results.gtin14}
                 <div className="lg:col-span-7">
                     <div className="space-y-6 flex flex-col h-full">
                         {/* Summary Visualization Card */}
-                        <Card className={`border-0 shadow-2xl overflow-hidden relative transition-all duration-500 ${inputCode && !status.isValid ? 'bg-gradient-to-br from-red-950 to-red-900' : 'bg-[#0f172a]'} text-white`}>
-                            <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none ${inputCode && !status.isValid ? 'bg-red-600/20' : 'bg-blue-600/10'}`} />
-
-                            <CardHeader className="pb-2 relative z-10">
-                                <div className="flex items-center justify-between">
-                                    <CardTitle className={`text-sm font-medium uppercase tracking-wider ${inputCode && !status.isValid ? 'text-red-200' : 'text-blue-200'}`}>
-                                        {inputCode && !status.isValid ? 'Validation Status' : 'Live Conversion Map'}
-                                    </CardTitle>
-                                    <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full text-xs font-medium text-emerald-400">
-                                        <div className="relative flex h-2 w-2">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                        </div>
-                                        Live
+                        <ResultFeedbackCard
+                            variant={inputCode && !status.isValid ? "warning" : "default"}
+                            title={inputCode && !status.isValid ? 'Validation Status' : 'Live Conversion Map'}
+                            titleLabel="Live"
+                            // If invalid, show large text here. If valid, show nothing in mainValue and use children.
+                            mainValue={inputCode && !status.isValid ? (
+                                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                    <div className="flex items-baseline gap-3 mb-1">
+                                        <span className="text-3xl sm:text-4xl font-bold tracking-tight text-red-100 break-all">
+                                            {inputCode}
+                                        </span>
+                                        <span className="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full bg-red-500/30 text-red-200 border border-red-500/30">
+                                            INVALID
+                                        </span>
                                     </div>
                                 </div>
-                            </CardHeader>
-                            <CardContent className="relative z-10 pt-4">
-                                {inputCode && !status.isValid ? (
-                                    // INVALID STATE (Validator Style)
-                                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                                        <div className="flex items-baseline gap-3 mb-4">
-                                            <span className="text-3xl sm:text-4xl font-bold tracking-tight text-red-100 break-all">
-                                                {inputCode}
-                                            </span>
-                                            <span className="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full bg-red-500/30 text-red-200 border border-red-500/30">
-                                                INVALID
-                                            </span>
-                                        </div>
-                                        <div className="space-y-3 pt-4 border-t border-red-800/50">
-                                            <div className="flex justify-between items-center text-sm text-red-200/80">
-                                                <span>Analysis</span>
-                                                <span className="font-medium text-white text-right">
-                                                    {status.correctedCode
-                                                        ? "Check Digit Invalid"
-                                                        : typeof status.message === 'string' && status.message.includes("numeric")
-                                                            ? "Invalid Characters"
-                                                            : "Incorrect Length"
-                                                    }
-                                                </span>
-                                            </div>
-                                        </div>
+                            ) : undefined}
+                        >
+                            {/* Validation Analysis or Results List */}
+                            {inputCode && !status.isValid ? (
+                                // INVALID STATE SUB-CONTENT
+                                <div className="space-y-3 border-t border-red-800/50 pt-3">
+                                    <div className="flex justify-between items-center text-sm text-red-200/80">
+                                        <span>Analysis</span>
+                                        <span className="font-medium text-white text-right">
+                                            {status.correctedCode
+                                                ? "Check Digit Invalid"
+                                                : typeof status.message === 'string' && status.message.includes("numeric")
+                                                    ? "Invalid Characters"
+                                                    : "Incorrect Length"
+                                            }
+                                        </span>
                                     </div>
-                                ) : (
-                                    // VALID OR EMPTY STATE
-                                    <div className="space-y-4">
-                                        <ResultRow
-                                            label="GTIN-14"
-                                            value={results?.gtin14 || "00000000000000"}
-                                            onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
-                                            disabled={!results}
-                                            tooltip="Used for shipping cases and outer packaging containing multiple units of the same product."
-                                        />
-                                        <ResultRow
-                                            label="GTIN-13 (EAN)"
-                                            value={results?.gtin13 || "0000000000000"}
-                                            onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
-                                            disabled={!results}
-                                            tooltip="Global standard for individual product identification, required for international marketplaces."
-                                        />
-                                        <ResultRow
-                                            label="GTIN-12 (UPC)"
-                                            value={results?.gtin12 || "000000000000"}
-                                            onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
-                                            disabled={!results}
-                                            tooltip="Standard product barcode for North America (US and Canada retail)."
-                                        />
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
+                                </div>
+                            ) : (
+                                // VALID OR EMPTY STATE - Custom Result Rows
+                                <div className="space-y-4">
+                                    <ResultRow
+                                        label="GTIN-14"
+                                        value={results?.gtin14 || "00000000000000"}
+                                        onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
+                                        disabled={!results}
+                                        tooltip="Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                    />
+                                    <ResultRow
+                                        label="GTIN-13 (EAN)"
+                                        value={results?.gtin13 || "0000000000000"}
+                                        onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
+                                        disabled={!results}
+                                        tooltip="Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
+                                    />
+                                    <ResultRow
+                                        label="GTIN-12 (UPC)"
+                                        value={results?.gtin12 || "000000000000"}
+                                        onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
+                                        disabled={!results}
+                                        tooltip="Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
+                                    />
+                                </div>
+                            )}
+                        </ResultFeedbackCard>
 
                         {/* Barcode Preview */}
                         <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">

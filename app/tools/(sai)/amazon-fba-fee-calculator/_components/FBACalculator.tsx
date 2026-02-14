@@ -564,7 +564,7 @@ export function FBACalculator() {
                                                             onChange={setStorageMonths}
                                                             placeholder="0"
                                                             max={12}
-                                                            tooltip="Average months inventory stays in FBA warehouses."
+                                                            tooltip="Average months inventory stays in Fulfillment by Amazon (FBA) warehouses."
                                                         />
                                                         <div className="flex justify-end mt-1.5">
                                                             <span className="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
@@ -580,23 +580,21 @@ export function FBACalculator() {
                             </CardContent>
                         </Card>
                     </FadeIn>
-                </div >
+                </div>
 
                 {/* Right Column: Results (Col Span 5) - Sticky & Dark Theme */}
-                < div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8" >
+                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
                     <FadeIn delay={0.4} direction="left" className="space-y-4">
 
                         <ResultFeedbackCard
                             title="Total Amazon Fees"
                             titleLabel="Estimated (2026 Rates)"
-                            labelClassName="text-emerald-400 bg-slate-800/50 border-slate-700/50"
-                            className="bg-slate-800"
                             mainValue={
                                 <Counter value={totalFees} formatter={formatCurrency} key={currency} />
                             }
                             secondaryMetrics={[
                                 {
-                                    label: `FBA Fee (${market === markets.INR ? 'Weight Handling' : 'Fulfillment'})`,
+                                    label: `Fulfillment by Amazon (FBA) Fee (${market === markets.INR ? 'Weight Handling' : 'Fulfillment'})`,
                                     value: <Counter value={fbaFee} formatter={formatCurrency} key={currency} />,
                                     color: "text-slate-300"
                                 },
@@ -623,7 +621,7 @@ export function FBACalculator() {
                             <ResultCard
                                 title="Size Tier"
                                 value={getSizeTier()}
-                                tooltip="Based on your dimensions and weight. Impacts your FBA fee significantly."
+                                tooltip="Based on your dimensions and weight. Impacts your Fulfillment by Amazon (FBA) fee significantly."
                             />
 
                             <ResultCard

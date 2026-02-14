@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { HelpCircle, RefreshCw, Copy, Check, Ticket, Settings2, ChevronDown, ChevronUp } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { toast } from "sonner"
@@ -146,11 +145,12 @@ export function PromoCodeCalculator() {
                                                         </Tooltip>
                                                     </TooltipProvider>
                                                 </div>
-                                                <Input
+                                                <CalculatorInput
+                                                    label=""
                                                     value={prefix}
-                                                    onChange={(e) => setPrefix(e.target.value)}
+                                                    onChange={setPrefix}
                                                     placeholder="SAVE-"
-                                                    className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                    type="text"
                                                 />
                                             </div>
                                             <div className="flex items-center justify-between gap-2">
@@ -169,11 +169,12 @@ export function PromoCodeCalculator() {
                                                         </Tooltip>
                                                     </TooltipProvider>
                                                 </div>
-                                                <Input
+                                                <CalculatorInput
+                                                    label=""
                                                     value={suffix}
-                                                    onChange={(e) => setSuffix(e.target.value)}
+                                                    onChange={setSuffix}
                                                     placeholder="-2024"
-                                                    className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                    type="text"
                                                 />
                                             </div>
                                         </div>

@@ -6,7 +6,7 @@ import { PPCBidGuide } from "./_components/PPCBidGuide"
 import { CTA } from "@/components/sections/CTA"
 
 export const metadata: Metadata = {
-    title: "PPC Bid Calculator | Calculate Max Cost Per Click",
+    title: "Pay-Per-Click (PPC) Bid Calculator | Calculate Max Cost Per Click",
     description: "Calculate your maximum profitable PPC bid based on your product price, conversion rate, and target ACoS.",
 }
 
@@ -17,7 +17,7 @@ export default function PPCBidCalculatorPage() {
                 <div className="text-center mb-12">
                     <FadeIn>
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
-                            PPC Bid Calculator
+                            Pay-Per-Click (PPC) Bid Calculator
                         </h1>
 
                     </FadeIn>
@@ -40,7 +40,7 @@ export default function PPCBidCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is a good target ACoS?",
+                                    question: "What is a good target Advertising Cost of Sales (ACoS)?",
                                     answer: "A good target ACoS depends on your profit margins and campaign goals. Generally, you want your ACoS to be lower than your profit margin to be profitable."
                                 },
                                 {
