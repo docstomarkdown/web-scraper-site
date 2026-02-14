@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { HelpCircle, TrendingUp, DollarSign, Percent, AlertTriangle, CheckCircle2 } from "lucide-react"
-import { CurrencyCombobox } from "@/components/ui/currency-combobox"
+import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function FreeShippingCalculator() {

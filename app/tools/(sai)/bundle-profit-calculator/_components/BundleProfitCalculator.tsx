@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { HelpCircle, DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
-import { CurrencyCombobox } from "@/components/ui/currency-combobox"
+import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 

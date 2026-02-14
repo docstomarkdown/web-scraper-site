@@ -11,7 +11,7 @@ import {
 import { CalculatorInput } from "@/app/tools/_shared/components/CalculatorInput";
 import { ResultFeedbackCard } from "@/app/tools/_shared/components/ResultFeedbackCard";
 import { FadeIn } from "@/app/tools/_shared/components/FadeIn";
-import { CurrencyCombobox } from "@/components/ui/currency-combobox";
+import { CurrencyCombobox } from "@/app/tools/_shared/components";
 import { HelpCircle, AlertTriangle } from "lucide-react";
 import {
     Tooltip,

@@ -34,7 +34,7 @@ const insights = [
         title: "Inbound Shipping",
         stat: "Ship",
         statLabel: "Cost to Warehouse",
-        description: "The oft-overlooked cost of sending inventory to Amazon's fulfillment centers. Rates vary by carrier and distance.",
+        description: "The cost of shipping your inventory to Amazon's warehouses. Prices depend on the carrier and distance.",
         tooltip: "Inbound Shipping: The cost you pay to ship your inventory from your supplier or home to Amazon's fulfillment centers."
     },
 ]

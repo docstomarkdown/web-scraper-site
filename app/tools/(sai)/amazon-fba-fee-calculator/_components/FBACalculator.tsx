@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { HelpCircle, Info, Check, ChevronsUpDown } from "lucide-react"
-import { CurrencyCombobox } from "@/components/ui/currency-combobox"
+import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 
@@ -445,54 +445,84 @@ export function FBACalculator() {
 
 
                                 {/* Advanced Toggle */}
-                                <div className="pt-6 mt-2 border-t border-slate-100/60">
-                                    <button
+                                <div className="pt-6 mt-4 border-t border-slate-100">
+                                    <div
                                         onClick={() => setShowAdvanced(!showAdvanced)}
-                                        className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors w-full justify-between group"
+                                        className={cn(
+                                            "flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-200 group select-none",
+                                            showAdvanced
+                                                ? "bg-blue-50/50 border-blue-200 shadow-sm"
+                                                : "bg-slate-50 border-slate-200 hover:border-blue-300 hover:bg-slate-100"
+                                        )}
                                     >
-                                        <span className="flex items-center gap-2">
-                                            Advanced Settings
-                                            <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold">OPTIONAL</span>
-                                        </span>
-                                        {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                    </button>
+                                        <div className="flex items-center gap-3">
+                                            <div className={cn(
+                                                "w-8 h-8 rounded-full flex items-center justify-center transition-colors",
+                                                showAdvanced ? "bg-blue-100 text-blue-600" : "bg-white text-slate-400 group-hover:text-blue-500"
+                                            )}>
+                                                <ChevronsUpDown className="w-4 h-4" />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className={cn("text-sm font-semibold transition-colors", showAdvanced ? "text-blue-700" : "text-slate-700")}>
+                                                    Advanced Settings
+                                                </span>
+                                                <span className="text-[11px] text-slate-400 font-medium">
+                                                    Category & Storage details
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <span className={cn(
+                                                "text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wide uppercase transition-colors",
+                                                showAdvanced ? "bg-blue-100 text-blue-700" : "bg-slate-200 text-slate-500"
+                                            )}>
+                                                Optional
+                                            </span>
+                                            {showAdvanced ? <ChevronUp className="w-4 h-4 text-blue-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                                        </div>
+                                    </div>
 
                                     {showAdvanced && (
-                                        <FadeIn className="pt-4 space-y-4">
+                                        <FadeIn className="mt-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-6">
                                             {/* Category Selector */}
-                                            <div className="flex items-center justify-between gap-2">
-                                                <div className="flex items-center gap-2">
-                                                    <label className="text-base font-semibold text-slate-700">Product Category</label>
-                                                    <TooltipProvider delayDuration={100}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <button
-                                                                    type="button"
-                                                                    tabIndex={-1}
-                                                                    className="text-slate-500 hover:text-blue-600 transition-colors cursor-default"
-                                                                >
-                                                                    <Info className="h-3.5 w-3.5" />
-                                                                </button>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                                Referral fee percentage varies by product category.
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
+                                            <div className="space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <label className="text-sm font-semibold text-slate-700">Product Category</label>
+                                                        <TooltipProvider delayDuration={100}>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <button
+                                                                        type="button"
+                                                                        tabIndex={-1}
+                                                                        className="text-slate-400 hover:text-blue-600 transition-colors cursor-default"
+                                                                    >
+                                                                        <Info className="h-3.5 w-3.5" />
+                                                                    </button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                                    Referral fee percentage varies by product category.
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    </div>
+                                                    <span className="text-xs font-medium text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200 shadow-sm">
+                                                        Fee: <span className="text-blue-600 font-bold">{Math.round(categories[category] * 100)}%</span>
+                                                    </span>
                                                 </div>
+
                                                 <Popover>
                                                     <PopoverTrigger asChild>
                                                         <Button
                                                             variant="outline"
                                                             role="combobox"
-                                                            className="h-10 w-44 md:w-52 justify-between border-slate-300 bg-white text-base shadow-sm hover:border-blue-600 hover:bg-white focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 transition-all"
+                                                            className="w-full justify-between h-11 bg-white border-slate-200 text-slate-700 hover:border-blue-400 hover:text-slate-900 shadow-sm transition-all"
                                                         >
                                                             <span className="truncate">{category}</span>
-                                                            <span className="ml-1 shrink-0 text-xs text-slate-400 font-medium">{Math.round(categories[category] * 100)}%</span>
-                                                            <ChevronsUpDown className="ml-1 h-3.5 w-3.5 shrink-0 opacity-40" />
+                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                         </Button>
                                                     </PopoverTrigger>
-                                                    <PopoverContent className="w-[260px] p-0" align="end">
+                                                    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
                                                         <Command>
                                                             <CommandInput placeholder="Search category..." className="text-sm" />
                                                             <CommandList>
@@ -508,13 +538,13 @@ export function FBACalculator() {
                                                                             }}
                                                                             className="flex items-center justify-between py-2.5 px-3 cursor-pointer"
                                                                         >
-                                                                            <div className="flex items-center gap-2">
-                                                                                <Check className={cn("h-3.5 w-3.5 text-blue-600", category === cat ? "opacity-100" : "opacity-0")} />
-                                                                                <span className="text-sm">{cat}</span>
+                                                                            <span className="text-sm truncate mr-2">{cat}</span>
+                                                                            <div className="flex items-center gap-2 shrink-0">
+                                                                                <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded", category === cat ? "bg-blue-50 text-blue-600" : "text-slate-400")}>
+                                                                                    {Math.round(categories[cat] * 100)}%
+                                                                                </span>
+                                                                                {category === cat && <Check className="h-3.5 w-3.5 text-blue-600" />}
                                                                             </div>
-                                                                            <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded", category === cat ? "bg-blue-50 text-blue-600" : "text-slate-400")}>
-                                                                                {Math.round(categories[cat] * 100)}%
-                                                                            </span>
                                                                         </CommandItem>
                                                                     ))}
                                                                 </CommandGroup>
@@ -525,18 +555,24 @@ export function FBACalculator() {
                                             </div>
 
                                             {/* Storage Input */}
-                                            <div>
-                                                <CalculatorInput
-                                                    label={`Avg. Storage (Months)`}
-                                                    value={storageMonths}
-                                                    onChange={setStorageMonths}
-                                                    placeholder="0"
-                                                    max={12}
-                                                    tooltip="How long you expect the item to sit in Amazon's warehouse on average."
-                                                />
-                                                <p className="text-[10px] text-slate-400 text-right mt-1">
-                                                    * {market.currencyParams.storagePerCubic} {symbol}/{market.currencyParams.storageUnit} / mo
-                                                </p>
+                                            <div className="pt-2 border-t border-slate-200/50">
+                                                <div className="grid grid-cols-1 gap-4">
+                                                    <div>
+                                                        <CalculatorInput
+                                                            label="Avg. Storage Duration"
+                                                            value={storageMonths}
+                                                            onChange={setStorageMonths}
+                                                            placeholder="0"
+                                                            max={12}
+                                                            tooltip="Average months inventory stays in FBA warehouses."
+                                                        />
+                                                        <div className="flex justify-end mt-1.5">
+                                                            <span className="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+                                                                Est. Cost: {market.currencyParams.storagePerCubic} {symbol}/{market.currencyParams.storageUnit} / mo
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </FadeIn>
                                     )}
@@ -554,6 +590,7 @@ export function FBACalculator() {
                             title="Total Amazon Fees"
                             titleLabel="Estimated (2026 Rates)"
                             labelClassName="text-emerald-400 bg-slate-800/50 border-slate-700/50"
+                            className="bg-slate-800"
                             mainValue={
                                 <Counter value={totalFees} formatter={formatCurrency} key={currency} />
                             }

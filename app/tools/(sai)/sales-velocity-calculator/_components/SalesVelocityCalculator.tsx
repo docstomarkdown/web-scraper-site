@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { HelpCircle, TrendingUp, AlertTriangle } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
-import { CurrencyCombobox } from "@/components/ui/currency-combobox"
+import { CurrencyCombobox } from "@/app/tools/_shared/components"
 
 export function SalesVelocityCalculator() {
     const [currency, setCurrency] = useState("USD")

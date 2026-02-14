@@ -168,6 +168,7 @@ export const toolsGroups = [
         href: "/tools/mercari-fee-calculator",
       },
 
+      {
         title: "Pallet Configuration Calculator",
         href: "/tools/pallet-configuration-calculator",
       },
