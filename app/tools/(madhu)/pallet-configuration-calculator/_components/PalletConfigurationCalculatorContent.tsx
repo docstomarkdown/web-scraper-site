@@ -33,8 +33,8 @@ export function PalletConfigurationCalculatorContent() {
 
     const hiddenTruthInsights: Insight[] = [
         {
-            title: "The 'Air' Shipping Tax",
-            description: "Shipping 'air' costs as much as shipping product. A 2-inch gap at the top of a pallet might seem small, but across a 20-pallet shipment, it equals 40 unused inches of truck space you're still paying for.",
+            title: "The &apos;Dead Space&apos; Tax",
+            description: "Poor pallet configuration can waste 20-40% of available space. Every inch of unused pallet space is money lost on freight, storage, and handling fees.",
             icon: TrendingDown,
             stat: "15-25%",
             statLabel: "Average logistics waste",

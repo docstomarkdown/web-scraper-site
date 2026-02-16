@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HelpCircle, TrendingUp, DollarSign, Percent, BarChart3, Scale } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
@@ -129,11 +130,13 @@ export function BreakEvenCalculator() {
                             title="Contribution Margin"
                             value={<Counter value={contributionMargin} formatter={formatCurrency} key={`cm-${currency}`} />}
                             icon={Scale}
+                            tooltip="The amount of each sale that contributes to covering your fixed costs. (Price - Variable Cost)"
                         />
                         <ResultCard
                             title="Total Fixed Costs"
                             value={<Counter value={fixed} formatter={formatCurrency} key={`fix-${currency}`} />}
                             icon={DollarSign}
+                            tooltip="All the overhead costs that must be paid regardless of sales volume."
                         />
                     </div>
                 </div>
@@ -142,12 +145,28 @@ export function BreakEvenCalculator() {
     )
 }
 
-function ResultCard({ title, value, icon: Icon }: { title: string, value: React.ReactNode, icon: any }) {
+function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
     return (
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-                <p className="text-xs font-medium text-slate-500 mb-1">{title}</p>
-                <p className="text-lg font-bold text-slate-800">{value}</p>
+                <div className="flex items-center gap-1.5 mb-1">
+                    <p className="text-xs font-medium text-slate-500">{title}</p>
+                    {tooltip && (
+                        <TooltipProvider delayDuration={100}>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button type="button" className="text-slate-300 hover:text-slate-500 transition-colors">
+                                        <HelpCircle className="h-3 w-3" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                    {tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                </div>
+                <div className="text-lg font-bold text-slate-800">{value}</div>
             </div>
             <div className="bg-slate-50 p-2 rounded-lg text-slate-400">
                 <Icon className="w-5 h-5" />

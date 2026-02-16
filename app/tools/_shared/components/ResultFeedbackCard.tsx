@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
 interface SecondaryMetric {
@@ -12,7 +12,7 @@ interface SecondaryMetric {
 
 interface ResultFeedbackCardProps {
     title: string
-    titleLabel?: string // e.g. "High Performance"
+    titleLabel?: string | React.ReactNode // e.g. "High Performance"
     labelClassName?: string // e.g. "text-emerald-400"
     mainValue?: React.ReactNode
     valueColor?: string // e.g. "text-emerald-400"
@@ -90,8 +90,12 @@ export function ResultFeedbackCard({
                 </>
             )}
 
-            <CardHeader className="pb-2 relative z-10">
-                <CardTitle className={cn(
+            {/* Header Section */}
+            <div className={cn(
+                "p-6 pb-2 relative z-10 flex flex-col space-y-1.5",
+                variant === "compact" && "p-4 pb-2"
+            )}>
+                <div className={cn(
                     "text-sm font-medium uppercase tracking-wider flex justify-between items-center",
                     variant === "compact" ? "text-slate-500" : "text-slate-300/80"
                 )}>
@@ -120,16 +124,20 @@ export function ResultFeedbackCard({
                             {titleLabel}
                         </span>
                     )}
-                </CardTitle>
-            </CardHeader>
+                </div>
+            </div>
 
-            <CardContent className="relative z-10">
+            {/* Content Section */}
+            <div className={cn(
+                "p-6 pt-0 relative z-10",
+                variant === "compact" && "p-4 pt-0"
+            )}>
                 {/* Main Big Number */}
                 {mainValue && (
-                    <div className="flex items-baseline gap-3 mb-6">
+                    <div className={cn("flex items-baseline gap-3", variant === "compact" ? "mb-4" : "mb-6")}>
                         <div className={cn(
                             "font-bold tracking-tight",
-                            variant === "compact" ? "text-3xl" : "text-5xl",
+                            variant === "compact" ? "text-2xl" : "text-5xl",
                             getValueColor()
                         )}>
                             {mainValue}
@@ -158,8 +166,8 @@ export function ResultFeedbackCard({
                             <div className="grid grid-cols-2 gap-4">
                                 {secondaryMetrics.map((metric, index) => (
                                     <div key={index}>
-                                        <p className={cn("text-xs mb-1", variant === "compact" ? "text-slate-500" : "text-slate-300")}>{metric.label}</p>
-                                        <div className={cn("text-xl font-bold break-all", metric.color || "text-emerald-400")}>
+                                        <p className={cn("text-sm mb-1", variant === "compact" ? "text-slate-500" : "text-slate-300")}>{metric.label}</p>
+                                        <div className={cn("text-2xl font-bold break-all", metric.color || "text-emerald-400")}>
                                             {metric.value}
                                         </div>
                                     </div>
@@ -178,7 +186,7 @@ export function ResultFeedbackCard({
                         {children}
                     </div>
                 )}
-            </CardContent>
+            </div>
         </Card>
     )
 }

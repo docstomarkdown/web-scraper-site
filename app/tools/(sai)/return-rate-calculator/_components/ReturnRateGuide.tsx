@@ -12,17 +12,23 @@ export function ReturnRateGuide() {
       items={[
         {
           title: "Industry Benchmarks",
-          description: "Return rates vary wildly by category. Electronics might see 5-8%, while Fashion/Apparel often deals with 20-30% returns due to sizing issues.",
+          description: "Return rates vary by category. Electronics: 5-8%, Fashion: 20-30%. Understanding your segment is key to setting goals.",
           icon: Shirt,
           iconBg: "bg-purple-50",
           iconColor: "text-purple-500",
+          stat: "2-25%",
+          statColor: "text-purple-500",
+          statLabel: "Typical Range"
         },
         {
           title: "The 'Hidden' Cost",
-          description: "A return isn't just a lost sale. You lose: Packaging cost, Shipping (both ways often), Payment processing fees, and Staff time.",
+          description: "A return costs more than you think: shipping (both ways), labor, packaging, and non-refundable payment fees.",
           icon: AlertTriangle,
           iconBg: "bg-red-50",
           iconColor: "text-red-500",
+          stat: "$15+",
+          statColor: "text-red-500",
+          statLabel: "Est. Cost/Unit"
         },
       ]}
     />

@@ -3,10 +3,12 @@
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, DollarSign, MousePointerClick, Users, Target } from "lucide-react"
+import { HelpCircle, DollarSign, MousePointerClick, Users, Target, Info, BarChart3 } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export function CPACalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -120,20 +122,76 @@ export function CPACalculator() {
                         </CardHeader>
                         <CardContent className="space-y-5 pt-6">
 
-                            {/* Mode Toggle */}
-                            <div className="bg-slate-50 p-1 rounded-lg border border-slate-200 flex gap-1">
-                                <button
-                                    onClick={() => setMode("campaign-data")}
-                                    className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 ${mode === "campaign-data" ? "bg-white text-blue-700 shadow-sm ring-1 ring-slate-200" : "text-slate-500 hover:text-slate-700"}`}
-                                >
-                                    Campaign Data
-                                </button>
-                                <button
-                                    onClick={() => setMode("estimation")}
-                                    className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 ${mode === "estimation" ? "bg-white text-blue-700 shadow-sm ring-1 ring-slate-200" : "text-slate-500 hover:text-slate-700"}`}
-                                >
-                                    Estimation
-                                </button>
+                            {/* Simplified Mode Toggle */}
+                            <div className="relative flex bg-slate-100/80 p-1.5 rounded-xl border border-slate-200/60 w-full mb-4 shadow-sm">
+                                {/* Animated Background Pill */}
+                                <motion.div
+                                    className="absolute bg-white rounded-lg shadow-sm border border-slate-200/50"
+                                    initial={false}
+                                    animate={{
+                                        x: mode === "campaign-data" ? 0 : "100%",
+                                    }}
+                                    transition={{ type: "spring", stiffness: 350, damping: 35 }}
+                                    style={{
+                                        top: 6,
+                                        bottom: 6,
+                                        left: 6,
+                                        width: 'calc(50% - 6px)',
+                                        zIndex: 0
+                                    }}
+                                />
+
+                                {/* Campaign Data Button */}
+                                <div className="relative z-10 flex-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setMode("campaign-data")}
+                                        className={cn(
+                                            "w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-all duration-200",
+                                            mode === "campaign-data" ? "text-blue-600 font-bold" : "text-slate-500 hover:text-slate-700"
+                                        )}
+                                    >
+                                        <span className="text-sm">Campaign Data</span>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <div className="opacity-40 hover:opacity-100 transition-opacity">
+                                                        <Info className="h-3.5 w-3.5" />
+                                                    </div>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                                    Analyze existing results using total spend and conversions.
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </button>
+                                </div>
+
+                                {/* Estimation Button */}
+                                <div className="relative z-10 flex-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setMode("estimation")}
+                                        className={cn(
+                                            "w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-all duration-200",
+                                            mode === "estimation" ? "text-blue-600 font-bold" : "text-slate-500 hover:text-slate-700"
+                                        )}
+                                    >
+                                        <span className="text-sm">Estimation</span>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <div className="opacity-40 hover:opacity-100 transition-opacity">
+                                                        <Info className="h-3.5 w-3.5" />
+                                                    </div>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                                    Forecast costs based on CPC and Conversion Rate.
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </button>
+                                </div>
                             </div>
 
                             {mode === "campaign-data" ? (

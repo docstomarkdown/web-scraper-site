@@ -270,7 +270,7 @@ export function TimeZonePlanner() {
                             const result = calculateTargetTime(zoneId);
                             if (!result) return null;
 
-                            const StatusIcon = result.status.icon;
+                            const StatusIcon = result.status.icon as React.ElementType;
 
                             return (
                                 <FadeIn key={zoneId}>
@@ -278,11 +278,18 @@ export function TimeZonePlanner() {
                                         variant="compact"
                                         title={result.zone.name}
                                         titleLabel={
-                                            <div className={cn("flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide", result.status.bg, result.status.color, "border", result.status.border)}>
+                                            <>
                                                 <StatusIcon className="h-3 w-3" />
                                                 {result.status.label}
-                                            </div>
+                                            </>
                                         }
+                                        labelClassName={cn(
+                                            "flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide",
+                                            result.status.bg,
+                                            result.status.color,
+                                            "border",
+                                            result.status.border
+                                        )}
                                         className={cn(
                                             "group transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl",
                                             result.status.bg, // Apply background tint to whole card
