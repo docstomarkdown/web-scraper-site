@@ -9,98 +9,99 @@ import { Package, Grid3x3, Target, Layers, TrendingDown, AlertTriangle, Truck, D
 export function PalletConfigurationCalculatorContent() {
     const howToUseSteps: Step[] = [
         {
-            title: "Enter product box dimensions",
-            description: "Input the <b>Length, Width, and Height</b> of your product box. Choose between <b>Inches or Centimeters</b> for precise measurements.",
+            title: "Enter carton dimensions",
+            description: "Input your box <b>Length, Width, Height, and Weight</b>. Switch between <b>inches and centimeters</b> for global accuracy.",
             icon: Package
         },
         {
-            title: "Select pallet type",
-            description: "Choose from <b>Standard US (48\"×40\")</b>, <b>Euro (47.2\"×39.4\")</b>, or <b>Custom</b> pallet sizes. The calculator automatically adjusts for optimal configuration.",
+            title: "Choose pallet & preset",
+            description: "Select from <b>Standard US, Euro, or Custom</b> pallets. Use presets like <b>Amazon FBA</b> or <b>Standard LTL</b> to auto-set safety height limits.",
             icon: Grid3x3
         },
         {
-            title: "Review optimal configuration",
-            description: "See the <b>maximum units per layer</b>, <b>total layers</b>, and <b>units per pallet</b>. Visual layout shows exactly how boxes fit on the pallet.",
+            title: "Check 3D layout & export",
+            description: "Analyze the <b>3D isometric visualization</b> to see exactly how boxes stack. Use the <b>Copy</b> button to save your loading plan for warehouse teams.",
             icon: Layers
         }
     ]
 
     const howToUseGoal = {
-        title: "Maximize shipping efficiency & reduce costs",
-        description: "By optimizing pallet configuration, you can reduce shipping costs by up to 30%, minimize wasted space, and improve warehouse handling efficiency.",
+        title: "Pack smarter, ship cheaper",
+        description: "Maximize your pallet real estate to lower costs by fitting more units into every shipment. Perfect for e-commerce brands looking to optimize FBA and LTL logistics.",
         icon: Target
     }
 
     const hiddenTruthInsights: Insight[] = [
         {
-            title: "The 'Dead Space' Tax",
-            description: "Poor pallet configuration can waste 20-40% of available space. Every inch of unused pallet space is money lost on freight, storage, and handling fees.",
+            title: "The 'Air' Shipping Tax",
+            description: "Shipping 'air' costs as much as shipping product. A 2-inch gap at the top of a pallet might seem small, but across a 20-pallet shipment, it equals 40 unused inches of truck space you're still paying for.",
             icon: TrendingDown,
-            stat: "20-40%",
-            statLabel: "Wasted pallet space",
+            stat: "15-25%",
+            statLabel: "Average logistics waste",
             iconBg: "bg-red-50",
             iconColor: "text-red-600",
             statColor: "text-red-700",
-            tooltip: "Optimizing box dimensions by even 1 inch can dramatically increase units per pallet."
+            tooltip: "Rotating your box orientation can often reclaim 10% more pallet surface area."
         },
         {
-            title: "The Height Limit Trap",
-            description: "Most LTL carriers have a 96-108 inch height limit. Exceeding this triggers oversized fees or requires dedicated freight, doubling your shipping costs.",
+            title: "The 72-Inch Safety Wall",
+            description: "Most LTL (Less Than Truckload) shipments are optimized for 72 inches. Going higher often prevents 'double stacking,' leading to premium surcharges or height rejections at the terminal.",
             icon: AlertTriangle,
-            stat: "96-108\"",
-            statLabel: "Standard height limit",
+            stat: "72 inches",
+            statLabel: "Ideal stack height",
             iconBg: "bg-amber-50",
             iconColor: "text-amber-600",
             statColor: "text-amber-700",
-            tooltip: "Always account for pallet height (5-6 inches) when calculating total stack height."
+            tooltip: "Standard trailer height is ~110\", allowing two 48-52\" pallets or one 72-96\" pallet."
         },
         {
-            title: "The Overhang Penalty",
-            description: "Boxes overhanging the pallet edge by more than 3 inches are rejected by most carriers or incur damage fees. Proper configuration prevents costly rejections.",
+            title: "Weight Capacity Pitfall",
+            description: "Pallets have physical weight limits (standard wood pallets: ~2,500 lbs). Overloading the base layer causes the wood to warp, leading to stack collapse during transit.",
             icon: Truck,
-            stat: "3 inches",
-            statLabel: "Max overhang allowed",
+            stat: "2,500 lb",
+            statLabel: "Safe wood load limit",
             iconBg: "bg-orange-50",
             iconColor: "text-orange-600",
-            statColor: "text-orange-700"
+            statColor: "text-orange-700",
+            tooltip: "Check your box crush strength (ECT rating) before stacking high with heavy items."
         },
         {
-            title: "The Per-Pallet Cost Reality",
-            description: "LTL freight is charged per pallet. Increasing units per pallet from 40 to 60 reduces your per-unit shipping cost by 33% without negotiating rates.",
+            title: "The FBA 'Perfect' Pallet",
+            description: "Amazon FBA has strict 72\" and 1,500 lb limits. Exceeding these triggers 'Manual Processing' fees or stock rejections. Always leave a 2-3 inch safety buffer for stretch wrap.",
             icon: DollarSign,
-            stat: "33%",
-            statLabel: "Cost reduction potential",
+            stat: "1,500 lb",
+            statLabel: "Amazon FBA Max Weight",
             iconBg: "bg-emerald-50",
             iconColor: "text-emerald-600",
             statColor: "text-emerald-700",
-            tooltip: "Optimizing pallet configuration is the fastest way to reduce shipping costs."
+            tooltip: "Use our Amazon FBA preset to ensure compliance with warehouse standards."
         }
     ]
 
     const faqs: FAQ[] = [
         {
-            question: "What is the standard pallet size?",
-            answer: "The most common pallet size in North America is 48\" × 40\" (known as GMA or Standard US pallet). In Europe, the standard is 47.2\" × 39.4\" (Euro pallet). Our calculator supports both plus custom sizes."
+            question: "How does the 'Amazon FBA' preset differ from Standard LTL?",
+            answer: "While standard LTL allows for heavier loads (up to 2,500lb+), Amazon FBA strictly caps pallets at 72 inches and 1,500 lbs. Our Amazon preset applies these safety limits automatically to prevent warehouse rejections."
         },
         {
-            question: "How do I calculate units per pallet?",
-            answer: "Divide the pallet length and width by your box dimensions to find units per layer. Then divide the maximum stack height by box height to find total layers. Multiply units per layer by layers for total units per pallet."
+            question: "Why should I use the 3D visualization?",
+            answer: "The 3D view helps you visualize the 'Interlocked' vs 'Column' stacking potential. It also identifies if a box size is inefficient for a specific pallet type (Standard US vs Euro) before you start physical labor."
         },
         {
-            question: "What is the maximum pallet height for shipping?",
-            answer: "Most LTL carriers allow 96-108 inches total height (including the pallet itself, which is typically 5-6 inches). Exceeding this triggers oversized surcharges or requires dedicated freight."
+            question: "What is 'Space Efficiency' in the results?",
+            answer: "This percentage measures how much of the pallet's 2D surface area is covered by boxes. A 100% efficiency means the pallet floor is perfectly covered with no overhang or wasted gaps."
         },
         {
-            question: "Can boxes overhang the pallet edge?",
-            answer: "Most carriers allow up to 3 inches of overhang, but it's not recommended. Overhang increases damage risk and may be rejected. Our calculator warns you if overhang exceeds safe limits."
+            question: "How do I account for the pallet's own weight and height?",
+            answer: "A standard wood pallet adds about 5.5 inches to the height and roughly 35-50 lbs to the total weight. Our calculator focuses on the 'Load Height' (the boxes), but carriers measure the 'Total Height' including the pallet."
         },
         {
-            question: "How does pallet configuration affect shipping costs?",
-            answer: "LTL freight is charged per pallet, not per unit. Maximizing units per pallet directly reduces your per-unit shipping cost. Increasing from 40 to 60 units per pallet reduces shipping cost by 33% per unit."
+            question: "Can I stack different size boxes on one pallet?",
+            answer: "This calculator is designed for uniform carton sizes (Single SKU stacking). For mixed SKUs, it's best to calculate the footprint of your largest items first and use that as the base layer."
         },
         {
-            question: "Should I optimize for length, width, or height?",
-            answer: "Prioritize optimizing the base footprint (length × width) first to maximize units per layer. Then optimize height to fit the maximum number of layers within carrier height limits."
+            question: "What is the best way to prevent overhang?",
+            answer: "Ensure your box length/width dimensions are factors of the pallet dimensions (48x40). If the calculator shows an overhang warning, try rotating the orientation or using a larger pallet size."
         }
     ]
 
