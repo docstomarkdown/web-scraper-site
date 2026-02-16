@@ -110,7 +110,8 @@ export function PalletConfigurationCalculator() {
         const boxH = parseFloat(boxDimensions.height || "0")
         const boxWt = parseFloat(boxDimensions.weight || "0")
 
-        if (boxL === 0 || boxW === 0 || boxH === 0) {
+        // Require at least Length and Width to show ANY result
+        if (boxL === 0 || boxW === 0) {
             return null
         }
 
@@ -166,6 +167,9 @@ export function PalletConfigurationCalculator() {
         }
 
         for (const orientation of orientations) {
+            // Skip invalid orientations (dim <= 0)
+            if (orientation.l <= 0 || orientation.w <= 0) continue
+
             const unitsAlongLength = Math.floor(pallet.length / orientation.l)
             const unitsAlongWidth = Math.floor(pallet.width / orientation.w)
             const unitsPerLayer = unitsAlongLength * unitsAlongWidth
@@ -173,13 +177,18 @@ export function PalletConfigurationCalculator() {
             if (unitsPerLayer === 0) continue
 
             const availableHeight = pallet.maxHeight - PALLET_HEIGHT
-            let layers = Math.floor(availableHeight / orientation.h)
 
-            // Adjust layers if weight limit is reached
-            if (boxWt > 0) {
-                const maxUnitsByWeight = Math.floor(weightLimit / boxWt)
-                const maxLayersByWeight = Math.floor(maxUnitsByWeight / unitsPerLayer)
-                layers = Math.min(layers, maxLayersByWeight)
+            // If height is 0 (missing input), we can't calculate vertical stacking
+            let layers = 0
+            if (orientation.h > 0) {
+                layers = Math.floor(availableHeight / orientation.h)
+
+                // Adjust layers if weight limit is reached
+                if (boxWt > 0) {
+                    const maxUnitsByWeight = Math.floor(weightLimit / boxWt)
+                    const maxLayersByWeight = Math.floor(maxUnitsByWeight / unitsPerLayer)
+                    layers = Math.min(layers, maxLayersByWeight)
+                }
             }
 
             const totalUnits = unitsPerLayer * layers
@@ -192,14 +201,24 @@ export function PalletConfigurationCalculator() {
 
             const usedVolume = totalUnits * (orientation.l * orientation.w * orientation.h)
             const palletVolume = pallet.length * pallet.width * (pallet.maxHeight - PALLET_HEIGHT)
-            const volumeEfficiency = (usedVolume / palletVolume) * 100
+            // Prevent NaN if no volume
+            const volumeEfficiency = palletVolume > 0 && totalUnits > 0 ? (usedVolume / palletVolume) * 100 : 0
 
             const usedArea = unitsPerLayer * (orientation.l * orientation.w)
             const palletArea = pallet.length * pallet.width
             const areaEfficiency = (usedArea / palletArea) * 100
             const unusedArea = palletArea - usedArea
 
-            if (totalUnits > bestConfig.totalUnits) {
+            // Selection Logic:
+            // 1. Prefer configuration with more TOTAL units
+            // 2. If same total units, prefer better Area Efficiency
+            // 3. Fallback: If Total Units is 0 (incomplete input), pick best Units Per Layer
+            const isBetter =
+                totalUnits > bestConfig.totalUnits ||
+                (totalUnits === bestConfig.totalUnits && totalUnits > 0 && areaEfficiency > bestConfig.areaEfficiency) ||
+                (bestConfig.totalUnits === 0 && totalUnits === 0 && unitsPerLayer > bestConfig.unitsPerLayer)
+
+            if (isBetter) {
                 bestConfig = {
                     orientation: orientation.name,
                     unitsPerLayer,
@@ -227,17 +246,17 @@ export function PalletConfigurationCalculator() {
         if (bestConfig.overhangLength > 3 || bestConfig.overhangWidth > 3) {
             warnings.push("Significant unused edge space detected")
         }
-        if (bestConfig.efficiency < 70) {
+        if (bestConfig.efficiency < 70 && bestConfig.totalUnits > 0) {
             warnings.push("Low volume efficiency - consider adjusting stack height")
         }
-        if (bestConfig.areaEfficiency < 80) {
+        if (bestConfig.areaEfficiency < 80 && bestConfig.unitsPerLayer > 0) {
             warnings.push("Low area utilization - try a different pallet size")
         }
         if (bestConfig.loadHeight > 96) {
             warnings.push("Height exceeds standard 96&quot; limit")
         }
-        if (bestConfig.totalUnits === 0) {
-            warnings.push("Box dimensions too large or weight limit too low for selected pallet")
+        if (bestConfig.totalUnits === 0 && boxH > 0) {
+            warnings.push("Configuration not possible with given limits")
         }
 
         // Check for unrealistically large dimensions
@@ -254,15 +273,22 @@ export function PalletConfigurationCalculator() {
 
         const text = `
 Pallet Configuration Calculator Result:
-Box Dimensions: ${boxDimensions.length}×${boxDimensions.width}×${boxDimensions.height} ${unit} (${boxDimensions.weight} lb)
-Pallet Type: ${palletType === "custom" ? "Custom" : palletType === "standard-us" ? "Standard US (48\"×40\")" : "Euro (47.2\"×39.4\")"}
-Stack Limits: Max Height ${stackLimits.maxHeight}", Weight Limit ${stackLimits.weightLimit} lb
+
+Box Dimensions:
+Length: ${boxDimensions.length} ${unit}
+Width: ${boxDimensions.width} ${unit}
+Height: ${boxDimensions.height} ${unit}
+Weight: ${boxDimensions.weight} lb
+
+Pallet Details:
+Type: ${palletType === "custom" ? "Custom" : palletType === "standard-us" ? "Standard US (48\"×40\")" : "Euro (47.2\"×39.4\")"}
+Max Height: ${stackLimits.maxHeight}"
+Weight Limit: ${stackLimits.weightLimit} lb
 
 Optimal Configuration:
-Orientation: ${results.orientation}
+Total Units: ${results.totalUnits}
 Units per Layer: ${results.unitsPerLayer} (${results.unitsAlongLength} × ${results.unitsAlongWidth})
-Layers: ${results.layers}
-Total Units per Pallet: ${results.totalUnits}
+Total Layers: ${results.layers}
 Total Weight: ${results.totalWeight.toFixed(1)} lb
 Load Height: ${results.loadHeight.toFixed(1)}"
 Space Efficiency: ${results.areaEfficiency.toFixed(1)}%
@@ -272,7 +298,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
         navigator.clipboard.writeText(text)
         toast({
             title: "Results Copied",
-            description: "Configuration data copied to clipboard.",
+            description: "Configuration data copied to your clipboard.",
         })
     }
 
@@ -351,28 +377,30 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                         { id: 'height' as const, label: `Height (${unit})`, placeholder: "8" },
                                         { id: 'weight' as const, label: 'Weight (lb)', placeholder: "5" }
                                     ] as const).map((field) => (
-                                        <div key={field.id} className="relative group">
+                                        <div key={field.id}>
                                             <label className="text-[10px] font-bold text-slate-400 mb-1 block pl-1">{field.label}</label>
-                                            <Input
-                                                type="number"
-                                                value={boxDimensions[field.id]}
-                                                onChange={(e) => handleBoxChange(field.id, e.target.value)}
-                                                className="h-10 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                                placeholder={field.placeholder}
-                                            />
-                                            <div className="absolute right-0 top-[19px] bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
-                                                <button
-                                                    onClick={() => handleBoxChange(field.id, (parseFloat(boxDimensions[field.id] || "0") + 1).toString())}
-                                                    className="flex items-center justify-center px-1.5 flex-1 hover:text-blue-600 text-slate-400 transition-colors"
-                                                >
-                                                    <ChevronUp className="h-3 w-3" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleBoxChange(field.id, Math.max(0, (parseFloat(boxDimensions[field.id] || "0") - 1)).toString())}
-                                                    className="flex items-center justify-center px-1.5 flex-1 hover:text-blue-600 text-slate-400 transition-colors border-t border-slate-200"
-                                                >
-                                                    <ChevronDown className="h-3 w-3" />
-                                                </button>
+                                            <div className="relative">
+                                                <Input
+                                                    type="number"
+                                                    value={boxDimensions[field.id]}
+                                                    onChange={(e) => handleBoxChange(field.id, e.target.value)}
+                                                    className="h-10 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-12 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                    placeholder={field.placeholder}
+                                                />
+                                                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md w-[22px]">
+                                                    <button
+                                                        onClick={() => handleBoxChange(field.id, (parseFloat(boxDimensions[field.id] || "0") + 1).toString())}
+                                                        className="flex items-center justify-center flex-1 hover:text-blue-600 text-slate-400 transition-colors"
+                                                    >
+                                                        <ChevronUp className="h-3 w-3" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleBoxChange(field.id, Math.max(0, (parseFloat(boxDimensions[field.id] || "0") - 1)).toString())}
+                                                        className="flex items-center justify-center flex-1 hover:text-blue-600 text-slate-400 transition-colors border-t border-slate-200"
+                                                    >
+                                                        <ChevronDown className="h-3 w-3" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
@@ -599,7 +627,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                     onClick={copyResults}
                                     className="flex-1 h-11 shadow-sm border-slate-300 hover:bg-slate-50 text-slate-900 transition-all font-bold"
                                 >
-                                    <Copy className="w-4 h-4 mr-2" /> Copy
+                                    <Copy className="w-4 h-4 mr-2" /> Copy Results
                                 </Button>
                             </div>
                         </CardContent>
@@ -610,8 +638,8 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                 <div className="lg:col-span-5 flex flex-col space-y-4 h-full">
                     {/* Primary Result Card */}
                     <ResultFeedbackCard
-                        title="Optimal configuration"
-                        titleLabel="Live calculation"
+                        title="OPTIMAL CONFIGURATION"
+                        titleLabel="Live Calculation"
                     >
                         <div className="space-y-4">
                             {/* Compact Main Value Row */}
@@ -675,23 +703,15 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                             <div className="grid grid-cols-2 gap-4 mt-1 tracking-tight">
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] opacity-40 font-bold text-slate-300">Total weight</p>
-                                    <div className={cn("text-base font-bold leading-none flex items-baseline gap-1", results ? "text-white" : "text-white/20")}>
-                                        <Counter
-                                            value={results ? results.totalWeight : 0}
-                                            formatter={(v) => v.toFixed(1)}
-                                        />
-                                        <span className="text-xs opacity-50">lb</span>
-                                    </div>
+                                    <p className={cn("text-base font-bold leading-none", results ? "text-white" : "text-white/20")}>
+                                        {results ? results.totalWeight.toFixed(1) : "0.0"} <span className="text-xs opacity-50">lb</span>
+                                    </p>
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] opacity-40 font-bold text-slate-300">Load height</p>
-                                    <div className={cn("text-base font-bold leading-none flex items-baseline gap-1", results ? "text-white" : "text-white/20")}>
-                                        <Counter
-                                            value={results ? results.loadHeight : 0}
-                                            formatter={(v) => v.toFixed(1)}
-                                        />
-                                        <span className="text-xs opacity-50">in</span>
-                                    </div>
+                                    <p className={cn("text-base font-bold leading-none", results ? "text-white" : "text-white/20")}>
+                                        {results ? results.loadHeight.toFixed(1) : "0.0"} <span className="text-xs opacity-50">in</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -704,141 +724,150 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                         mainValue={null}
                     >
                         <div className="space-y-4 relative group flex-1 flex flex-col min-h-[300px]">
-                            {results && results.totalUnits > 0 ? (
-                                <>
-                                    {/* Isometric 3D Visualization */}
-                                    <div className="flex-1 flex flex-col items-center justify-center py-6 min-h-[260px] bg-slate-50/50 rounded-xl border border-slate-200/50 overflow-hidden relative group">
-                                        {/* Background Grid Pattern */}
-                                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                                            style={{ backgroundImage: `radial-gradient(#3b82f6 1px, transparent 0)`, backgroundSize: '24px 24px' }}
-                                        />
+                            {(() => {
+                                const isDummy = !results;
+                                const displayResults = isDummy ? {
+                                    orientation: "Standard",
+                                    unitsPerLayer: 12,
+                                    layers: 4,
+                                    totalUnits: 48,
+                                    unitsAlongLength: 4,
+                                    unitsAlongWidth: 3,
+                                } : results;
 
-                                        <div className="relative perspective-[1200px] w-full h-full flex items-center justify-center pointer-events-none">
-                                            {/* Isometric Container - Now Centered */}
-                                            <div
-                                                className="relative transition-all duration-1000 ease-out group-hover:scale-[1.05]"
-                                                style={{
-                                                    transform: 'rotateX(60deg) rotateZ(-45deg)',
-                                                    transformStyle: 'preserve-3d',
-                                                    width: '240px', // Slightly larger since gauge is gone
-                                                    height: '200px'
-                                                }}
-                                            >
-                                                {/* Wood Pallet Shadow */}
-                                                <div className="absolute inset-[-15%] bg-slate-900/10 blur-3xl rounded-full transform translate-z-[-30px]" />
+                                return (
+                                    <>
+                                        {/* Isometric 3D Visualization */}
+                                        <div className={cn(
+                                            "flex-1 flex flex-col items-center justify-center py-6 min-h-[260px] rounded-xl border overflow-hidden relative group transition-all duration-500",
+                                            isDummy ? "bg-slate-50 border-slate-100" : "bg-slate-50/50 border-slate-200/50"
+                                        )}>
+                                            {/* Background Grid Pattern */}
+                                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                                                style={{ backgroundImage: `radial-gradient(#3b82f6 1px, transparent 0)`, backgroundSize: '24px 24px' }}
+                                            />
 
-                                                {/* Pallet Base (Wooden Look) */}
-                                                <div className="absolute inset-0 bg-[#d4a373] border-b-8 border-r-8 border-[#bc8a5f] shadow-2xl rounded-sm transform translate-z-[-10px]">
-                                                    <div className="absolute inset-0 flex flex-col gap-2 p-1 opacity-30">
-                                                        {Array.from({ length: 5 }).map((_, i) => (
-                                                            <div key={i} className="h-full border-b-2 border-[#8b5e34]" />
+                                            {/* Ghost Overlay for Dummy State */}
+                                            {isDummy && (
+                                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/40 backdrop-blur-[1px]">
+                                                    <div className="bg-white/90 px-4 py-2 rounded-lg shadow-sm border border-slate-200 text-sm font-semibold text-slate-500 flex items-center gap-2">
+                                                        <Grid3x3 className="w-4 h-4" />
+                                                        Enter dimensions to update
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className={cn(
+                                                "relative perspective-[1200px] w-full h-full flex items-center justify-center pointer-events-none transition-all duration-700",
+                                                isDummy ? "opacity-30 scale-95 grayscale" : "opacity-100 scale-100"
+                                            )}>
+                                                {/* Isometric Container */}
+                                                <div
+                                                    className="relative transition-all duration-1000 ease-out group-hover:scale-[1.05]"
+                                                    style={{
+                                                        transform: 'rotateX(60deg) rotateZ(-45deg)',
+                                                        transformStyle: 'preserve-3d',
+                                                        width: '240px',
+                                                        height: '200px'
+                                                    }}
+                                                >
+                                                    {/* Wood Pallet Shadow */}
+                                                    <div className="absolute inset-[-15%] bg-slate-900/10 blur-3xl rounded-full transform translate-z-[-30px]" />
+
+                                                    {/* Pallet Base (Wooden Look) */}
+                                                    <div className="absolute inset-0 bg-[#d4a373] border-b-8 border-r-8 border-[#bc8a5f] shadow-2xl rounded-sm transform translate-z-[-10px]">
+                                                        <div className="absolute inset-0 flex flex-col gap-2 p-1 opacity-30">
+                                                            {Array.from({ length: 5 }).map((_, i) => (
+                                                                <div key={i} className="h-full border-b-2 border-[#8b5e34]" />
+                                                            ))}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Stacking Boxes (Pseudo-3D) */}
+                                                    <div className="absolute inset-0 grid gap-1.5 pt-1.5 pl-1.5"
+                                                        style={{
+                                                            gridTemplateColumns: `repeat(${displayResults.unitsAlongLength}, 1fr)`,
+                                                            gridTemplateRows: `repeat(${displayResults.unitsAlongWidth}, 1fr)`
+                                                        }}
+                                                    >
+                                                        {Array.from({ length: Math.min(displayResults.unitsPerLayer, 100) }).map((_, i) => (
+                                                            <div
+                                                                key={i}
+                                                                className="relative transition-all duration-500"
+                                                                style={{ transformStyle: 'preserve-3d' }}
+                                                            >
+                                                                {/* Base Layer */}
+                                                                <div className="absolute inset-0 bg-blue-500 border border-blue-600/50 shadow-sm" />
+
+                                                                {/* Top Face */}
+                                                                <div
+                                                                    className="absolute inset-0 bg-gradient-to-br from-blue-300 to-blue-500 border border-blue-400 shadow-[inset_0_0_10px_rgba(255,255,255,0.2)]"
+                                                                    style={{
+                                                                        transform: `translateZ(${Math.min(displayResults.layers * 8, 80)}px)`,
+                                                                        transition: 'transform 1s ease-out'
+                                                                    }}
+                                                                >
+                                                                    <div className="absolute top-1/2 left-1 right-1 h-0.5 bg-white/20" />
+                                                                </div>
+
+                                                                {/* Side faces */}
+                                                                <div
+                                                                    className="absolute left-full top-0 h-full bg-[#1e40af] origin-left border-y border-r border-[#1e3a8a]"
+                                                                    style={{
+                                                                        width: `${Math.min(displayResults.layers * 8, 80)}px`,
+                                                                        transform: 'rotateY(90deg)',
+                                                                        transition: 'width 1s ease-out'
+                                                                    }}
+                                                                />
+                                                                <div
+                                                                    className="absolute left-0 top-full w-full bg-[#1e3a8a] origin-top border-x border-b border-[#172554]"
+                                                                    style={{
+                                                                        height: `${Math.min(displayResults.layers * 8, 80)}px`,
+                                                                        transform: 'rotateX(-90deg)',
+                                                                        transition: 'height 1s ease-out'
+                                                                    }}
+                                                                />
+                                                            </div>
                                                         ))}
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                {/* Stacking Boxes (Pseudo-3D) */}
-                                                <div className="absolute inset-0 grid gap-1.5 pt-1.5 pl-1.5"
-                                                    style={{
-                                                        gridTemplateColumns: `repeat(${results.unitsAlongLength}, 1fr)`,
-                                                        gridTemplateRows: `repeat(${results.unitsAlongWidth}, 1fr)`
-                                                    }}
-                                                >
-                                                    {Array.from({ length: Math.min(results.unitsPerLayer, 100) }).map((_, i) => (
-                                                        <div
-                                                            key={i}
-                                                            className="relative transition-all duration-500"
-                                                            style={{ transformStyle: 'preserve-3d' }}
-                                                        >
-                                                            {/* Base Layer */}
-                                                            <div className="absolute inset-0 bg-blue-500 border border-blue-600/50 shadow-sm" />
-
-                                                            {/* Top Face */}
-                                                            <div
-                                                                className="absolute inset-0 bg-gradient-to-br from-blue-300 to-blue-500 border border-blue-400 shadow-[inset_0_0_10px_rgba(255,255,255,0.2)]"
-                                                                style={{
-                                                                    transform: `translateZ(${Math.min(results.layers * 8, 80)}px)`,
-                                                                    transition: 'transform 1s ease-out'
-                                                                }}
-                                                            >
-                                                                <div className="absolute top-1/2 left-1 right-1 h-0.5 bg-white/20" />
-                                                            </div>
-
-                                                            {/* Side faces */}
-                                                            <div
-                                                                className="absolute left-full top-0 h-full bg-[#1e40af] origin-left border-y border-r border-[#1e3a8a]"
-                                                                style={{
-                                                                    width: `${Math.min(results.layers * 8, 80)}px`,
-                                                                    transform: 'rotateY(90deg)',
-                                                                    transition: 'width 1s ease-out'
-                                                                }}
-                                                            />
-                                                            <div
-                                                                className="absolute left-0 top-full w-full bg-[#1e3a8a] origin-top border-x border-b border-[#172554]"
-                                                                style={{
-                                                                    height: `${Math.min(results.layers * 8, 80)}px`,
-                                                                    transform: 'rotateX(-90deg)',
-                                                                    transition: 'height 1s ease-out'
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    ))}
+                                            {/* Bottom Legend */}
+                                            <div className="absolute bottom-5 left-0 right-0 px-10 flex justify-between items-center text-slate-400">
+                                                <div className="flex flex-col gap-0.5">
+                                                    <span className="text-[10px] font-bold tracking-[0.1em] opacity-60">Arrangement</span>
+                                                    <span className={cn("text-[14px] font-black tracking-tight", isDummy ? "text-slate-400" : "text-slate-900")}>
+                                                        {displayResults.unitsAlongLength} × {displayResults.unitsAlongWidth} Grid
+                                                    </span>
+                                                </div>
+                                                <div className="h-8 w-px bg-slate-200 mx-4" />
+                                                <div className="flex flex-col items-end gap-0.5 text-right">
+                                                    <span className="text-[10px] font-bold tracking-[0.1em] opacity-60">Total stack</span>
+                                                    <span className={cn("text-[14px] font-black tracking-tight", isDummy ? "text-slate-400" : "text-blue-600")}>
+                                                        {displayResults.layers} {displayResults.layers === 1 ? 'Layer' : 'Layers'}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Bottom Legend - Redesigned for more space */}
-                                        <div className="absolute bottom-5 left-0 right-0 px-10 flex justify-between items-center text-slate-400">
-                                            <div className="flex flex-col gap-0.5">
-                                                <span className="text-[10px] font-bold tracking-[0.1em] opacity-60">Arrangement</span>
-                                                <span className="text-[14px] font-black text-slate-900 tracking-tight">{results.unitsAlongLength} × {results.unitsAlongWidth} Grid</span>
-                                            </div>
-                                            <div className="h-8 w-px bg-slate-200 mx-4" />
-                                            <div className="flex flex-col items-end gap-0.5 text-right">
-                                                <span className="text-[10px] font-bold tracking-[0.1em] opacity-60">Total stack</span>
-                                                <span className="text-[14px] font-black text-blue-600 tracking-tight">{results.layers} {results.layers === 1 ? 'Layer' : 'Layers'}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {results.warnings.length > 0 && (
-                                        <>
-                                            <div className="h-px bg-slate-100 w-full mt-2" />
-                                            <div className="space-y-2 mt-4">
-                                                {results.warnings.map((warning, i) => (
-                                                    <div key={i} className="flex gap-2 bg-amber-50 p-3 rounded-lg border border-amber-100 text-amber-800 text-xs font-semibold items-start">
-                                                        <AlertTriangle className="w-4 h-4 flex-shrink-0 text-amber-600 mt-0.5" />
-                                                        <p className="leading-snug">{warning}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                </>
-                            ) : (
-                                <>
-                                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]" />
-                                    <div className="relative z-0 space-y-8 blur-[1px] opacity-[0.08] select-none pointer-events-none">
-                                        <div className="aspect-square max-w-[200px] mx-auto bg-slate-300 rounded-lg" />
-                                        <div className="space-y-3">
-                                            <div className="h-3 w-32 bg-slate-400 rounded-full mx-auto" />
-                                            <div className="h-4 w-48 bg-slate-300 rounded-md mx-auto" />
-                                        </div>
-                                    </div>
-                                    <div className="absolute inset-0 flex items-center justify-center p-6 bg-white/20 backdrop-blur-[0.5px]">
-                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-blue-900/5 border border-slate-100 text-center space-y-3 max-w-[240px]">
-                                            <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-500 mx-auto">
-                                                <Grid3x3 className="w-7 h-7" />
-                                            </div>
-                                            <div className="space-y-1.5">
-                                                <h4 className="text-base font-bold text-slate-900">Unlock Layout</h4>
-                                                <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                                                    Enter box details to see <strong>visual pallet layout</strong> and weight limits.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
+                                        {/* Warnings Section - Only for Real Results */}
+                                        {!isDummy && results.warnings.length > 0 && (
+                                            <>
+                                                <div className="h-px bg-slate-100 w-full mt-2" />
+                                                <div className="space-y-2 mt-4">
+                                                    {results.warnings.map((warning, i) => (
+                                                        <div key={i} className="flex gap-2 bg-amber-50 p-3 rounded-lg border border-amber-100 text-amber-800 text-xs font-semibold items-start">
+                                                            <AlertTriangle className="w-4 h-4 shrink-0 text-amber-500 mt-0.5" />
+                                                            <span>{warning}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+                                    </>
+                                );
+                            })()}
                         </div>
                     </ResultFeedbackCard>
                 </div>
