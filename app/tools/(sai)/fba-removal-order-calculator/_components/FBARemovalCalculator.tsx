@@ -156,21 +156,18 @@ export function FBARemovalCalculator() {
                                     value={length}
                                     onChange={setLength}
                                     placeholder="10"
-                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
                                 />
                                 <CalculatorInput
                                     label="Width"
                                     value={width}
                                     onChange={setWidth}
                                     placeholder="8"
-                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
                                 />
                                 <CalculatorInput
                                     label="Height"
                                     value={height}
                                     onChange={setHeight}
-                                    placeholder="2"
-                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                                    placeholder="6"
                                 />
                             </div>
                         </div>
@@ -190,7 +187,6 @@ export function FBARemovalCalculator() {
                                     onChange={setUnitWeight}
                                     placeholder="0.5"
                                     tooltip="The actual weight of a single unit."
-                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
                                 />
                             </div>
 
@@ -205,41 +201,42 @@ export function FBARemovalCalculator() {
                                     onChange={setQuantity}
                                     placeholder="100"
                                     tooltip="How many units to remove?"
-                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
                                 />
                             </div>
                         </div>
 
                         {/* Size Tier Alert */}
-                        <FadeIn show={Boolean(sizeTier)}>
-                            <div className={cn(
-                                "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
-                                sizeTier === "Standard"
-                                    ? "bg-emerald-50/50 border-emerald-100"
-                                    : "bg-amber-50/50 border-amber-100"
-                            )}>
+                        {Boolean(sizeTier) && (
+                            <FadeIn>
                                 <div className={cn(
-                                    "p-2 rounded-lg bg-white shadow-sm ring-1",
-                                    sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
+                                    "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
+                                    sizeTier === "Standard"
+                                        ? "bg-emerald-50/50 border-emerald-100"
+                                        : "bg-amber-50/50 border-amber-100"
                                 )}>
-                                    <Box className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <p className={cn(
-                                        "text-sm font-semibold",
-                                        sizeTier === "Standard" ? "text-emerald-900" : "text-amber-900"
+                                    <div className={cn(
+                                        "p-2 rounded-lg bg-white shadow-sm ring-1",
+                                        sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
                                     )}>
-                                        {sizeTier} Size Tier Detected
-                                    </p>
-                                    <p className={cn(
-                                        "text-xs mt-0.5",
-                                        sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
-                                    )}>
-                                        Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
-                                    </p>
+                                        <Box className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                        <p className={cn(
+                                            "text-sm font-semibold",
+                                            sizeTier === "Standard" ? "text-emerald-900" : "text-amber-900"
+                                        )}>
+                                            {sizeTier} Size Tier Detected
+                                        </p>
+                                        <p className={cn(
+                                            "text-xs mt-0.5",
+                                            sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
+                                        )}>
+                                            Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </FadeIn>
+                            </FadeIn>
+                        )}
                     </CardContent>
                 </Card>
 

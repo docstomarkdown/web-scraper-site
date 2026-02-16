@@ -16,6 +16,7 @@ export function MOQGuide() {
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
                     stat: "Key Term",
+                    statColor: "text-blue-600",
                     statLabel: "Definition",
                     tooltip: "The hurdle you must clear to buy."
                 },
@@ -26,6 +27,7 @@ export function MOQGuide() {
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
                     stat: "Danger",
+                    statColor: "text-amber-600",
                     statLabel: "Financial Risk",
                     tooltip: "Don't buy 2 years of stock!"
                 },
@@ -36,6 +38,7 @@ export function MOQGuide() {
                     iconBg: "bg-green-50",
                     iconColor: "text-green-500",
                     stat: "Strategy",
+                    statColor: "text-emerald-600",
                     statLabel: "Actionable Tip",
                     tooltip: "Ask for a lower test quantity."
                 }

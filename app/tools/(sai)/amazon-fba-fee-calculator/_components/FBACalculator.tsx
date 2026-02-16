@@ -594,7 +594,7 @@ export function FBACalculator() {
                             }
                             secondaryMetrics={[
                                 {
-                                    label: `Fulfillment by Amazon (FBA) Fee (${market === markets.INR ? 'Weight Handling' : 'Fulfillment'})`,
+                                    label: "Fulfillment by Amazon (FBA) Fee",
                                     value: <Counter value={fbaFee} formatter={formatCurrency} key={currency} />,
                                     color: "text-slate-300"
                                 },

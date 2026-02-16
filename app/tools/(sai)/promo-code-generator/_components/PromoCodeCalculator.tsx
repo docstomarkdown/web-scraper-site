@@ -3,12 +3,14 @@
 import React, { useState, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, RefreshCw, Copy, Check, Ticket, Settings2, ChevronDown, ChevronUp } from "lucide-react"
+import { HelpCircle, RefreshCw, Copy, Check, Ticket, Settings2, ChevronDown, ChevronUp, Type, Binary, Hash } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { toast } from "sonner"
 import { Info } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export function PromoCodeCalculator() {
     // --- State ---
@@ -97,7 +99,6 @@ export function PromoCodeCalculator() {
                                 </div>
                                 <CardDescription>Set your prefix, suffix and randomization rules.</CardDescription>
                             </div>
-                            <Settings2 className="w-5 h-5 text-slate-400" />
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-5">
@@ -117,102 +118,94 @@ export function PromoCodeCalculator() {
                                 />
                             </div>
 
-                            <div className="border-t border-slate-50 pt-4">
+                            <div className="pt-2">
                                 <button
                                     onClick={() => setShowAdvanced(!showAdvanced)}
-                                    className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors mb-4"
+                                    className={cn(
+                                        "w-full flex items-center justify-between p-4 rounded-xl border border-slate-100 transition-all duration-300 group",
+                                        showAdvanced ? "bg-slate-50 shadow-sm border-blue-100" : "bg-white hover:bg-slate-50/50"
+                                    )}
                                 >
-                                    {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                    Advanced Settings
+                                    <div className="flex items-center gap-2.5">
+                                        <div className={cn(
+                                            "w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
+                                            showAdvanced ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500"
+                                        )}>
+                                            <Settings2 className="w-4 h-4" />
+                                        </div>
+                                        <div className="text-left">
+                                            <p className="text-sm font-bold text-slate-800">Advanced Settings</p>
+                                            <p className="text-[10px] text-slate-500 font-medium">Prefix, Suffix, and Character Rules</p>
+                                        </div>
+                                    </div>
+                                    {showAdvanced ? (
+                                        <ChevronUp className="w-5 h-5 text-blue-500" />
+                                    ) : (
+                                        <ChevronDown className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
+                                    )}
                                 </button>
 
-                                {showAdvanced && (
-                                    <FadeIn duration={0.3} className="space-y-5">
-                                        <div className="space-y-5">
-                                            <div className="flex items-center justify-between gap-2">
-                                                <div className="flex items-center gap-2">
-                                                    <Label className="text-base font-semibold text-slate-700">Prefix (Optional)</Label>
-                                                    <TooltipProvider delayDuration={100}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <button type="button" tabIndex={-1} className="text-slate-500 hover:text-blue-600 transition-colors cursor-default">
-                                                                    <Info className="h-3.5 w-3.5" />
-                                                                </button>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                                Text added to the start of every code.
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
+                                <AnimatePresence>
+                                    {showAdvanced && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="pt-6 pb-2 px-1 space-y-6">
+                                                {/* Prefix/Suffix Grid */}
+                                                <div className="space-y-4">
+                                                    <CalculatorInput
+                                                        label="Prefix (Optional)"
+                                                        value={prefix}
+                                                        onChange={setPrefix}
+                                                        placeholder="SAVE-"
+                                                        type="text"
+                                                        tooltip="Text added to the start of every generated code."
+                                                    />
+                                                    <CalculatorInput
+                                                        label="Suffix (Optional)"
+                                                        value={suffix}
+                                                        onChange={setSuffix}
+                                                        placeholder="-2024"
+                                                        type="text"
+                                                        tooltip="Text added to the end of every generated code."
+                                                    />
                                                 </div>
-                                                <CalculatorInput
-                                                    label=""
-                                                    value={prefix}
-                                                    onChange={setPrefix}
-                                                    placeholder="SAVE-"
-                                                    type="text"
-                                                />
-                                            </div>
-                                            <div className="flex items-center justify-between gap-2">
-                                                <div className="flex items-center gap-2">
-                                                    <Label className="text-base font-semibold text-slate-700">Suffix (Optional)</Label>
-                                                    <TooltipProvider delayDuration={100}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <button type="button" tabIndex={-1} className="text-slate-500 hover:text-blue-600 transition-colors cursor-default">
-                                                                    <Info className="h-3.5 w-3.5" />
-                                                                </button>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                                Text added to the end of every code.
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
-                                                </div>
-                                                <CalculatorInput
-                                                    label=""
-                                                    value={suffix}
-                                                    onChange={setSuffix}
-                                                    placeholder="-2024"
-                                                    type="text"
-                                                />
-                                            </div>
-                                        </div>
 
-                                        <div className="pt-2">
-                                            <label className="text-sm font-medium text-slate-700 mb-3 block">Include Characters</label>
-                                            <div className="flex flex-wrap gap-4">
-                                                <label className="flex items-center gap-2 cursor-pointer group">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={useUppercase}
-                                                        onChange={(e) => setUseUppercase(e.target.checked)}
-                                                        className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                    />
-                                                    <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Uppercase (A-Z)</span>
-                                                </label>
-                                                <label className="flex items-center gap-2 cursor-pointer group">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={useNumbers}
-                                                        onChange={(e) => setUseNumbers(e.target.checked)}
-                                                        className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                    />
-                                                    <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Numbers (0-9)</span>
-                                                </label>
-                                                <label className="flex items-center gap-2 cursor-pointer group">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={useSymbols}
-                                                        onChange={(e) => setUseSymbols(e.target.checked)}
-                                                        className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                    />
-                                                    <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Symbols (!@#)</span>
-                                                </label>
+                                                {/* Character Selection Chips */}
+                                                <div className="space-y-3">
+                                                    <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Include Characters</label>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                                        <CharacterChip
+                                                            label="Uppercase"
+                                                            sub="A-Z"
+                                                            icon={Type}
+                                                            checked={useUppercase}
+                                                            onChange={setUseUppercase}
+                                                        />
+                                                        <CharacterChip
+                                                            label="Numbers"
+                                                            sub="0-9"
+                                                            icon={Binary}
+                                                            checked={useNumbers}
+                                                            onChange={setUseNumbers}
+                                                        />
+                                                        <CharacterChip
+                                                            label="Symbols"
+                                                            sub="!@#"
+                                                            icon={Hash}
+                                                            checked={useSymbols}
+                                                            onChange={setUseSymbols}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </FadeIn>
-                                )}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
 
                             <Button
@@ -301,5 +294,39 @@ export function PromoCodeCalculator() {
 
             </div>
         </FadeIn>
+    )
+}
+function ReadOnlyField({ label, value, color = "text-slate-700" }: { label: string, value: string, color?: string }) {
+    return (
+        <div className="flex items-center justify-between gap-4 py-1">
+            <span className="text-sm font-medium text-slate-500">{label}</span>
+            <span className={`text-lg font-bold ${color}`}>{value}</span>
+        </div>
+    )
+}
+
+function CharacterChip({ label, sub, icon: Icon, checked, onChange }: { label: string, sub: string, icon: any, checked: boolean, onChange: (v: boolean) => void }) {
+    return (
+        <button
+            type="button"
+            onClick={() => onChange(!checked)}
+            className={cn(
+                "flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 text-left",
+                checked
+                    ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-200"
+                    : "bg-white border-slate-200 text-slate-600 hover:border-blue-300 hover:bg-slate-50"
+            )}
+        >
+            <div className={cn(
+                "w-8 h-8 rounded-lg flex items-center justify-center",
+                checked ? "bg-white/20" : "bg-slate-100"
+            )}>
+                <Icon className="w-4 h-4" />
+            </div>
+            <div>
+                <p className="text-xs font-bold leading-none mb-1">{label}</p>
+                <p className={cn("text-[10px] font-medium opacity-80", checked ? "text-white" : "text-slate-400")}>{sub}</p>
+            </div>
+        </button>
     )
 }

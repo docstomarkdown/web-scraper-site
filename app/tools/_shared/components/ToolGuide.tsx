@@ -67,15 +67,15 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
 
                                 {/* Right: Takeaway Stat Panel (Optional) */}
                                 {item.stat && (
-                                    <div className="flex md:flex-col items-center justify-center gap-2 p-6 md:w-52 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
-                                        <div className={`text-4xl font-extrabold ${item.statColor || "text-slate-800"} tracking-tight`}>
+                                    <div className="flex md:flex-col items-center justify-center gap-2 p-5 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2 text-center">
+                                        <div className={`text-2xl md:text-3xl font-extrabold ${item.statColor || "text-slate-900"} tracking-tight leading-tight text-center px-1`}>
                                             {item.stat}
                                         </div>
-                                        <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400 bg-white border border-slate-100 px-3 py-1 rounded-full shadow-sm">
+                                        <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400 bg-white border border-slate-100 px-2.5 py-0.5 rounded-full shadow-sm">
                                             Takeaway
                                         </div>
                                         {item.statLabel && (
-                                            <div className="text-xs font-semibold text-slate-500 text-center leading-snug mt-1 max-w-[140px]">
+                                            <div className="text-xs font-semibold text-slate-500 leading-snug mt-1 max-w-[140px]">
                                                 {item.statLabel}
                                             </div>
                                         )}
