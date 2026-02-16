@@ -176,6 +176,10 @@ export const toolsGroups = [
         title: "Container Load Calculator",
         href: "/tools/container-load-calculator",
       },
+      {
+        title: "Lead Time Calculator",
+        href: "/tools/lead-time-calculator",
+      },
     ],
   },
 ];

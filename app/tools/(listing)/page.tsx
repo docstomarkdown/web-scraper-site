@@ -57,6 +57,7 @@ const toolDescriptions: Record<string, string> = {
     "Time Zone Meeting Planner": "Plan meetings across multiple time zones without the confusion.",
     "Mercari Fee Calculator": "Calculate fees and profits for selling items on Mercari.",
     "Pallet Configuration Calculator": "Optimize pallet packing by calculating the best way to stack boxes on a pallet.",
+    "Lead Time Calculator": "Calculate total supply chain lead time from order to delivery, including production, shipping, and customs.",
 };
 
 // Helper to determine category and icon
