@@ -172,6 +172,10 @@ export const toolsGroups = [
         title: "Pallet Configuration Calculator",
         href: "/tools/pallet-configuration-calculator",
       },
+      {
+        title: "Container Load Calculator",
+        href: "/tools/container-load-calculator",
+      },
     ],
   },
 ];

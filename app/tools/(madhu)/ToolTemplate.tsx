@@ -1,3 +1,7 @@
+// create a  new tool under the folder madhu ------- withput using API .
+// the tool should created in a format with thecomponents  following the tooltemplate
+// Update the contents according to my tool ,it should have the optimized version to the other avialble same tools in the website
+
 // update the components according to the current updation of the tool 
 // 1.How to Use This Tool.
 // 2.The Hidden Truth About This Process
@@ -7,12 +11,105 @@
 "use client"
 
 import React from "react"
-import { HelpCircle, BookOpen, LucideIcon, Info } from "lucide-react"
-import { FadeIn, ToolFAQ, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy } from "lucide-react"
+import { FadeIn, ToolFAQ, Counter } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-export { ResultFeedbackCard }
+import { Button } from "@/components/ui/button"
+
+export { Counter, FadeIn }
+
+export interface MadhuSubHeaderProps {
+    title: string
+    icon?: LucideIcon | React.ElementType
+    className?: string
+    withDot?: boolean
+}
+
+export function MadhuSubHeader({ title, icon: Icon, className, withDot = true }: MadhuSubHeaderProps) {
+    return (
+        <div className={cn("flex items-center gap-2 mb-4", className)}>
+            {withDot && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
+            <h3 className="text-base font-bold text-slate-400 tracking-tight">{title}</h3>
+        </div>
+    )
+}
+
+export interface InputCardHeaderProps {
+    title: string
+    subtitle?: string
+    icon?: LucideIcon | React.ElementType
+    onHelpClick?: () => void
+    tooltip?: string
+}
+
+export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, tooltip }: InputCardHeaderProps) {
+    return (
+        <div className="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+                {Icon && (
+                    <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
+                        <Icon className="w-6 h-6" />
+                    </div>
+                )}
+                <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                        <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{title}</h2>
+                        {onHelpClick && (
+                            <TooltipProvider delayDuration={100}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={onHelpClick}
+                                            className="text-slate-300 hover:text-blue-600 transition-colors"
+                                        >
+                                            <HelpCircle className="h-5 w-5" />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                        {tooltip || "How to use this tool"}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
+                    </div>
+                    {subtitle && <p className="text-sm text-slate-500 font-medium">{subtitle}</p>}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+interface ActionButtonsProps {
+    onReset: () => void
+    onCopy: () => void
+    copyDisabled?: boolean
+    className?: string
+}
+
+export function ActionButtons({ onReset, onCopy, copyDisabled, className }: ActionButtonsProps) {
+    return (
+        <div className={cn("flex gap-3", className)}>
+            <Button
+                variant="outline"
+                className="flex-[2] h-11 border-dashed border-slate-200 hover:bg-slate-50 text-slate-500 hover:text-slate-900 transition-all font-medium rounded-xl"
+                onClick={onReset}
+            >
+                <RefreshCw className="w-4 h-4 mr-2" /> Reset Input
+            </Button>
+            <Button
+                onClick={onCopy}
+                variant="outline"
+                disabled={copyDisabled}
+                className="flex-[3] h-11 px-6 shadow-sm border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 transition-all font-bold text-slate-950 disabled:opacity-30 rounded-xl"
+            >
+                <Copy className="w-4 h-4 mr-2" /> Copy Results
+            </Button>
+        </div>
+    )
+}
 
 export interface Step {
     title: string
@@ -81,17 +178,17 @@ export function MadhuToolTemplate({
                 </div>
 
                 {/* Main Tool Component */}
-                {toolComponent}
+                <div className="space-y-24">
+                    {toolComponent}
 
-                <div className="max-w-4xl mx-auto mt-20 space-y-16">
                     {/* How to Use Section */}
                     <FadeIn delay={0.1}>
-                        <section id="how-to-use" className="relative">
-                            <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-200">
-                                <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
+                        <section id="how-to-use" className="relative max-w-4xl mx-auto">
+                            <div className="flex items-center gap-4 mb-10 pb-4 border-b border-slate-200">
+                                <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
                                     <HelpCircle className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-900">{howToUseTitle}</h2>
+                                <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{howToUseTitle}</h2>
                             </div>
 
                             <div className="relative max-w-2xl mx-auto pl-4 sm:pl-8">
@@ -110,7 +207,7 @@ export function MadhuToolTemplate({
                                                 </div>
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-2 mb-1">
-                                                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full tracking-wider">
                                                             Step {stepNumber}
                                                         </span>
                                                     </div>
@@ -123,21 +220,21 @@ export function MadhuToolTemplate({
 
                                     {/* Goal Step */}
                                     {howToUseGoal && (
-                                        <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/40 p-5 sm:p-6 rounded-2xl border-2 border-blue-200 shadow-sm shadow-blue-100/20 hover:shadow-md hover:shadow-blue-200/25 transition-all duration-300 scale-[1.02] origin-left">
+                                        <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
                                             {(() => {
                                                 const GoalIcon = howToUseGoal.icon
                                                 return (
-                                                    <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-500 border border-blue-400 rounded-xl flex items-center justify-center text-white z-10 shadow-sm transition-transform duration-300 group-hover:scale-110">
-                                                        <GoalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                                    <div className="relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white z-10 shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:scale-110">
+                                                        <GoalIcon className="w-6 h-6 sm:w-7 sm:h-7" />
                                                     </div>
                                                 )
                                             })()}
                                             <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-[10px] font-bold text-white bg-blue-600 px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">The Goal</span>
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                                 </div>
-                                                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">{howToUseGoal.title}</h3>
-                                                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: howToUseGoal.description }} />
+                                                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">{howToUseGoal.title}</h3>
+                                                <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: howToUseGoal.description }} />
                                             </div>
                                         </div>
                                     )}
@@ -148,12 +245,12 @@ export function MadhuToolTemplate({
 
                     {/* Hidden Truth Section */}
                     <FadeIn delay={0.2}>
-                        <section id="insights">
-                            <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-100">
-                                <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
+                        <section id="insights" className="max-w-4xl mx-auto">
+                            <div className="flex items-center gap-4 mb-10 pb-4 border-b border-slate-200">
+                                <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
                                     <BookOpen className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-900">{hiddenTruthTitle}</h2>
+                                <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{hiddenTruthTitle}</h2>
                             </div>
 
                             <div className="space-y-6">
@@ -213,15 +310,15 @@ export function MadhuToolTemplate({
                     </FadeIn>
 
                     {/* FAQ Section */}
-                    <FadeIn delay={0.2}>
+                    <FadeIn delay={0.2} className="max-w-4xl mx-auto">
                         <ToolFAQ faqs={faqs} />
                     </FadeIn>
-                </div>
 
-                {/* CTA Section */}
-                <FadeIn delay={0.2} className="mt-24">
-                    <CTA />
-                </FadeIn>
+                    {/* CTA Section */}
+                    <FadeIn delay={0.2} className="mt-24 max-w-7xl mx-auto">
+                        <CTA />
+                    </FadeIn>
+                </div>
             </div>
         </div>
     )
