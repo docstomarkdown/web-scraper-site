@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Trash2, Package, Scale, Info } from "lucide-react"
-import { CalculatorInput, ResultFeedbackCard, Counter, FadeIn } from "@/app/tools/_shared/components"
+
+import { Package, Scale, Info, Box, Truck } from "lucide-react"
+import { CalculatorInput, Counter, FadeIn, CurrencyCombobox, currencies, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 
 export function FBARemovalCalculator() {
     // State
@@ -14,12 +16,16 @@ export function FBARemovalCalculator() {
     const [width, setWidth] = useState<number | "">("")
     const [height, setHeight] = useState<number | "">("")
     const [quantity, setQuantity] = useState<number | "">("")
+    const [currency, setCurrency] = useState("USD")
 
     // Derived State
     const [sizeTier, setSizeTier] = useState<"Standard" | "Large/Bulky" | null>(null)
     const [shippingWeight, setShippingWeight] = useState<number>(0)
     const [removalFeePerUnit, setRemovalFeePerUnit] = useState<number>(0)
     const [totalCost, setTotalCost] = useState<number>(0)
+
+    // Get currency symbol
+    const currencySymbol = currencies.find(c => c.code === currency)?.symbol || "$"
 
     // specific 2025 fee logic
     useEffect(() => {
@@ -99,149 +105,186 @@ export function FBARemovalCalculator() {
 
     }, [unitWeight, length, width, height, quantity])
 
+
+
     return (
-        <div className="w-full max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-6">
-                    <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50">
-                            <div className="space-y-1">
-                                <CardTitle className="text-xl font-bold text-slate-900">
-                                    Product Details
-                                </CardTitle>
-                                <CardDescription className="text-slate-500">
-                                    Enter the specifications for the items you want to remove.
-                                </CardDescription>
-                            </div>
-                        </CardHeader>
-
-                        <CardContent className="space-y-8 pt-8">
-
-                            {/* Dimensions Section */}
-                            <div className="space-y-4">
-                                <label className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
-                                    Dimensions (Inches)
-                                </label>
-                                <div className="grid grid-cols-3 gap-6">
-                                    <CalculatorInput
-                                        label="Length"
-                                        value={length}
-                                        onChange={setLength}
-                                        placeholder="10"
-                                    />
-                                    <CalculatorInput
-                                        label="Width"
-                                        value={width}
-                                        onChange={setWidth}
-                                        placeholder="8"
-                                    />
-                                    <CalculatorInput
-                                        label="Height"
-                                        value={height}
-                                        onChange={setHeight}
-                                        placeholder="2"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Weight & Quantity Section */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-4">
-                                    <label className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
-                                        Weight
-                                    </label>
-                                    <CalculatorInput
-                                        label="Unit Weight (lbs)"
-                                        value={unitWeight}
-                                        onChange={setUnitWeight}
-                                        placeholder="0.5"
-                                        tooltip="The actual weight of a single unit in pounds."
-                                    />
-                                </div>
-
-                                <div className="space-y-4">
-                                    <label className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
-                                        Quantity
-                                    </label>
-                                    <CalculatorInput
-                                        label="Units to Remove"
-                                        value={quantity}
-                                        onChange={setQuantity}
-                                        placeholder="100"
-                                        tooltip="Total number of units to remove or dispose."
-                                    />
-                                </div>
-                            </div>
-
-                        </CardContent>
-                    </Card>
+        <div className="w-full max-w-6xl mx-auto space-y-8">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="space-y-1">
+                    <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                        Removal Order Cost Calculator
+                    </h2>
+                    <p className="text-slate-500">
+                        Calculate the cost to remove or dispose of FBA inventory based on 2025 rates.
+                    </p>
                 </div>
 
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                {/* Left Column: Inputs */}
+                <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
+                    <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 bg-indigo-50 rounded-xl">
+                                <Package className="w-6 h-6 text-indigo-600" />
+                            </div>
+                            <div>
+                                <CardTitle className="text-lg font-semibold text-slate-900">Product Specifications</CardTitle>
+                                <CardDescription>Enter dimensions and weight to auto-determine the size tier.</CardDescription>
+                            </div>
+                        </div>
+                        <div className="w-[140px]">
+                            <CurrencyCombobox value={currency} onValueChange={setCurrency} />
+                        </div>
+                    </CardHeader>
+
+                    <CardContent className="p-6 md:p-8 space-y-8">
+                        {/* Dimensional Data */}
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Box className="w-4 h-4 text-slate-400" />
+                                    Dimensions (Inches)
+                                </label>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4">
+                                <CalculatorInput
+                                    label="Length"
+                                    value={length}
+                                    onChange={setLength}
+                                    placeholder="10"
+                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                                />
+                                <CalculatorInput
+                                    label="Width"
+                                    value={width}
+                                    onChange={setWidth}
+                                    placeholder="8"
+                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                                />
+                                <CalculatorInput
+                                    label="Height"
+                                    value={height}
+                                    onChange={setHeight}
+                                    placeholder="2"
+                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                                />
+                            </div>
+                        </div>
+
+                        <Separator className="bg-slate-100" />
+
+                        {/* Weight & Quantity */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div className="space-y-4">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Scale className="w-4 h-4 text-slate-400" />
+                                    Unit Weight
+                                </label>
+                                <CalculatorInput
+                                    label="Weight (lbs)"
+                                    value={unitWeight}
+                                    onChange={setUnitWeight}
+                                    placeholder="0.5"
+                                    tooltip="The actual weight of a single unit."
+                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                                />
+                            </div>
+
+                            <div className="space-y-4">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Truck className="w-4 h-4 text-slate-400" />
+                                    Removal Quantity
+                                </label>
+                                <CalculatorInput
+                                    label="Total Units"
+                                    value={quantity}
+                                    onChange={setQuantity}
+                                    placeholder="100"
+                                    tooltip="How many units to remove?"
+                                    className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Size Tier Alert */}
+                        <FadeIn show={Boolean(sizeTier)}>
+                            <div className={cn(
+                                "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
+                                sizeTier === "Standard"
+                                    ? "bg-emerald-50/50 border-emerald-100"
+                                    : "bg-amber-50/50 border-amber-100"
+                            )}>
+                                <div className={cn(
+                                    "p-2 rounded-lg bg-white shadow-sm ring-1",
+                                    sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
+                                )}>
+                                    <Box className="w-4 h-4" />
+                                </div>
+                                <div>
+                                    <p className={cn(
+                                        "text-sm font-semibold",
+                                        sizeTier === "Standard" ? "text-emerald-900" : "text-amber-900"
+                                    )}>
+                                        {sizeTier} Size Tier Detected
+                                    </p>
+                                    <p className={cn(
+                                        "text-xs mt-0.5",
+                                        sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
+                                    )}>
+                                        Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
+                                    </p>
+                                </div>
+                            </div>
+                        </FadeIn>
+                    </CardContent>
+                </Card>
+
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6">
+                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Estimated Removal Cost"
                         titleLabel="Total Fees"
-                        mainValue={<Counter value={totalCost} prefix="$" />}
+                        mainValue={<Counter value={totalCost} prefix={currencySymbol} />}
                         secondaryMetrics={[
                             {
                                 label: "Fee Per Unit",
-                                value: <Counter value={removalFeePerUnit} prefix="$" />,
+                                value: <Counter value={removalFeePerUnit} prefix={currencySymbol} />,
                             },
                             {
                                 label: "Billing Weight",
                                 value: `${shippingWeight.toFixed(2)} lbs`,
                             }
                         ]}
-                    />
+                    >
+                        <div className="flex justify-between items-center py-2 border-t border-slate-100 mt-2">
+                            <span className="text-sm text-slate-500 font-medium">Rate Card Year</span>
+                            <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-100">
+                                2025 Rates
+                            </Badge>
+                        </div>
+                    </ResultFeedbackCard>
 
-                    {/* Breakdown */}
-                    {sizeTier && (
-                        <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                            <div className="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center">
-                                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Classification</p>
-                                <div className="flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                                    <span className="text-xs font-medium text-slate-600">Active</span>
-                                </div>
-                            </div>
-                            <div className="p-5 space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm text-slate-600">Size Tier Detected</span>
-                                    <span className={cn(
-                                        "text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide",
-                                        sizeTier === "Standard"
-                                            ? "bg-green-100 text-green-700"
-                                            : "bg-amber-100 text-amber-700"
-                                    )}>
-                                        {sizeTier}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center border-t border-slate-50 pt-3">
-                                    <span className="text-sm text-slate-600">Rate Basis</span>
-                                    <span className="text-sm font-medium text-slate-900">2025 Rate Card</span>
-                                </div>
-                            </div>
-                        </Card>
-                    )}
 
-                    {/* Info Card - Relocated to Right Column */}
-                    <Card className="bg-slate-50 border border-slate-200 shadow-sm">
-                        <div className="p-5 flex gap-4 items-start">
-                            <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-sm shrink-0">
-                                <Info className="w-5 h-5 text-blue-600" />
+
+                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
+                        <div className="flex gap-4">
+                            <div className="p-2.5 bg-blue-50 text-blue-600 rounded-lg h-fit shrink-0">
+                                <Info className="w-5 h-5" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-semibold text-slate-900 text-sm">Automated Fee Detection (2025)</h4>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    We automatically detect if your item is <strong>Standard</strong> or <strong>Large/Bulky</strong> and apply the correct 2025 fee schedule based on the greater of actual or dimensional weight.
+                                <h4 className="text-sm font-semibold text-slate-900">How fees are calculated</h4>
+                                <p className="text-xs text-slate-500 leading-relaxed">
+                                    Fees vary by size tier (Standard vs Large) and weight. We automatically use the greater of unit weight vs dimensional weight to determine the final fee.
                                 </p>
                             </div>
                         </div>
                     </Card>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

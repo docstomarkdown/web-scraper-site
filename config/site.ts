@@ -180,6 +180,26 @@ export const toolsGroups = [
         title: "FBA Removal Order Cost Calculator",
         href: "/tools/fba-removal-order-calculator",
       },
+      {
+        title: "Coupon ROI Calculator",
+        href: "/tools/coupon-roi-calculator",
+      },
+      {
+        title: "Print on Demand Profit Calculator",
+        href: "/tools/print-on-demand-profit-calculator",
+      },
+      {
+        title: "Etsy Fee Calculator",
+        href: "/tools/etsy-fee-calculator",
+      },
+      {
+        title: "eBay Fee Calculator",
+        href: "/tools/ebay-fee-calculator",
+      },
+      {
+        title: "Poshmark Fee Calculator",
+        href: "/tools/poshmark-fee-calculator",
+      },
     ],
   },
 ];
