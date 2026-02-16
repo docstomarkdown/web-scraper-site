@@ -173,6 +173,12 @@ export const toolsGroups = [
         href: "/tools/pallet-configuration-calculator",
       },
       {
+        title: "Container Load Calculator",
+        href: "/tools/container-load-calculator",
+      },
+      {
+        title: "Lead Time Calculator",
+        href: "/tools/lead-time-calculator",
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },
