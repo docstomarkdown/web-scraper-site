@@ -33,7 +33,7 @@ export function PalletConfigurationCalculatorContent() {
 
     const hiddenTruthInsights: Insight[] = [
         {
-            title: "The 'Dead Space' Tax",
+            title: "The &apos;Dead Space&apos; Tax",
             description: "Poor pallet configuration can waste 20-40% of available space. Every inch of unused pallet space is money lost on freight, storage, and handling fees.",
             icon: TrendingDown,
             stat: "20-40%",

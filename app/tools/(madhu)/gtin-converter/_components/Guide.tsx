@@ -30,7 +30,7 @@ const insights = [
         iconBg: "bg-emerald-50",
         iconColor: "text-emerald-500",
         statColor: "text-emerald-600",
-        title: "The 'Nested' Zero Trap",
+        title: "The &apos;Nested&apos; Zero Trap",
         stat: "0",
         statLabel: "Implicit Prefix",
         description: "A common mistake is treating UPC and EAN as separate systems. In reality, a GTIN-12 (UPC) is simply a GTIN-13 (EAN) with a leading zero. Our tool maps these perfectly."
