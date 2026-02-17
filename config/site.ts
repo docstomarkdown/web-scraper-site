@@ -185,6 +185,10 @@ export const toolsGroups = [
         href: "/tools/reorder-point-calculator",
       },
       {
+        title: "Economic Order Quantity (EOQ) Calculator",
+        href: "/tools/economic-order-quantity-calculator",
+      },
+      {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },

@@ -59,6 +59,7 @@ const toolDescriptions: Record<string, string> = {
     "Pallet Configuration Calculator": "Optimize pallet packing by calculating the best way to stack boxes on a pallet.",
     "Lead Time Calculator": "Calculate total supply chain lead time from order to delivery, including production, shipping, and customs.",
     "Reorder Point Calculator": "Calculate when to reorder your products based on lead time, daily sales velocity, and safety stock levels.",
+    "Economic Order Quantity (EOQ) Calculator": "Identify the optimal order size that minimizes the total annual cost of ordering and holding inventory.",
 };
 
 // Helper to determine category and icon
