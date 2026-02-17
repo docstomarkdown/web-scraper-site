@@ -9,7 +9,9 @@ import {
     TrendingDown,
     Calendar,
     AlertTriangle,
-    CheckCircle2
+    CheckCircle2,
+    Factory,
+    Ship
 } from "lucide-react"
 
 export default function LeadTimeCalculatorPage() {
@@ -19,18 +21,18 @@ export default function LeadTimeCalculatorPage() {
             toolComponent={<LeadTimeCalculator />}
             howToUseSteps={[
                 {
-                    title: "Define Production Window",
-                    description: "Enter the time required for manufacturing and quality control. This is usually the largest chunk of your lead time.",
-                    icon: Zap
+                    title: "Enter Supplier Time",
+                    description: "Input the total days your supplier needs for order processing and production. This covers everything from order placement to factory departure.",
+                    icon: Factory
                 },
                 {
-                    title: "Add Logistics & Customs",
-                    description: "Input transit times (Sea/Air) and estimated days for customs clearance. Don't forget documentation prep time!",
-                    icon: Clock
+                    title: "Add Shipping Time",
+                    description: "Enter the estimated days for transit and customs clearance. Whether by sea or air, include the time from factory departure to arrival at your warehouse.",
+                    icon: Ship
                 },
                 {
-                    title: "Apply Safety Buffers",
-                    description: "Always include a buffer for unexpected delays like port congestion, weather, or failed QC reports.",
+                    title: "Set Safety Buffer",
+                    description: "Add a safety margin for unexpected delays. A good rule of thumb is 15-20% of your total estimated time to account for inspections or congestion.",
                     icon: ShieldCheck
                 }
             ]}
@@ -53,7 +55,7 @@ export default function LeadTimeCalculatorPage() {
                 },
                 {
                     title: "Hidden 'QC' Delays",
-                    description: "Most calculators ignore the 'Repair Time' if a Quality Control (QC) check fails. A failed check can add 7-10 days to your production window instantly.",
+                    description: "Most calculators ignore the 'Repair Time' if a Quality Control (QC) check fails. A failed check can add 7-10 days to your Supplier Time instantly.",
                     icon: AlertTriangle,
                     stat: "+10d",
                     statLabel: "QC Fail Risk",
@@ -86,8 +88,8 @@ export default function LeadTimeCalculatorPage() {
                     answer: "Production and shipping often move on weekends, but customs and local courier deliveries might not. This calculator uses total calendar days to give a realistic conservative estimate."
                 },
                 {
-                    question: "What is the difference between production lead time and total lead time?",
-                    answer: "Production lead time only covers manufacturing. Total lead time (which this tool calculates) includes order processing, shipping, customs, and final delivery."
+                    question: "What is the difference between Supplier Time and Total Lead Time?",
+                    answer: "Supplier Time only covers manufacturing and processing. Total Lead Time (which this tool calculates) includes Supplier Time, Shipping Time, and the Safety Buffer for final delivery."
                 }
             ]}
         />
