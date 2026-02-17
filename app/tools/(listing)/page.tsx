@@ -60,6 +60,7 @@ const toolDescriptions: Record<string, string> = {
     "Lead Time Calculator": "Calculate total supply chain lead time from order to delivery, including production, shipping, and customs.",
     "Reorder Point Calculator": "Calculate when to reorder your products based on lead time, daily sales velocity, and safety stock levels.",
     "Economic Order Quantity (EOQ) Calculator": "Identify the optimal order size that minimizes the total annual cost of ordering and holding inventory.",
+    "Days of Inventory Calculator": "Forecast how many days your current stock will last based on your sales velocity to prevent stockouts and optimize turnover.",
 };
 
 // Helper to determine category and icon

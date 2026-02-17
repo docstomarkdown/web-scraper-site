@@ -31,9 +31,9 @@ interface ROPState {
 }
 
 const DEFAULT_STATE: ROPState = {
-    salesVelocity: "10",
-    leadTime: "7",
-    safetyStock: "20"
+    salesVelocity: "",
+    leadTime: "",
+    safetyStock: ""
 }
 
 export function ReorderPointCalculator() {
@@ -171,17 +171,15 @@ Result:
                                 </div>
                             </div>
 
-                            {/* Action Plan - Now at Bottom with Original Message */}
-                            <div className="flex items-start gap-4 bg-white/5 p-5 rounded-2xl border border-white/5">
-                                <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/30 flex-shrink-0 mt-1">
-                                    <CheckCircle2 className="w-5 h-5 text-blue-400" />
+                            {/* Action Plan - Refined Style */}
+                            <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                                    <p className="text-slate-400 text-sm font-bold">Action plan</p>
                                 </div>
-                                <div className="flex-1">
-                                    <p className="text-slate-400 text-xs font-bold mb-1">Action plan</p>
-                                    <p className="text-[13px] font-medium text-slate-200 leading-relaxed">
-                                        Place your next order when inventory reaches <span className="text-blue-400 font-bold">{results.reorderPoint} units</span> to stay ahead of demand and prevent stockouts.
-                                    </p>
-                                </div>
+                                <p className="text-[13px] font-medium text-slate-200 leading-relaxed">
+                                    Place your next order when inventory reaches <span className="text-blue-400 font-bold">{results.reorderPoint} units</span> to stay ahead of demand and prevent stockouts.
+                                </p>
                             </div>
                         </div>
                     </ResultFeedbackCard>

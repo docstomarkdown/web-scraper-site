@@ -189,6 +189,10 @@ export const toolsGroups = [
         href: "/tools/economic-order-quantity-calculator",
       },
       {
+        title: "Days of Inventory Calculator",
+        href: "/tools/days-of-inventory-calculator",
+      },
+      {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },
