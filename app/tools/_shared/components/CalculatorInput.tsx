@@ -50,9 +50,9 @@ export function CalculatorInput({
     }
 
     return (
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-                <Label className="text-base font-semibold text-slate-700">{label}</Label>
+                <Label className="text-base font-semibold text-slate-700 whitespace-nowrap">{label}</Label>
                 {tooltip && (
                     <TooltipProvider delayDuration={100}>
                         <Tooltip>
@@ -76,7 +76,7 @@ export function CalculatorInput({
                 type={type}
                 value={value}
                 onChange={handleInputChange}
-                className={`h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all ${type === 'text' ? 'text-sm' : ''}`}
+                className={`h-11 text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-40 md:w-48 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all`}
                 min={type === "number" ? min : undefined}
                 max={type === "number" ? max : undefined}
                 step={type === "number" ? step : undefined}

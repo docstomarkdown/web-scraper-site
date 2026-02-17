@@ -1,64 +1,125 @@
 "use client";
 
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { HelpCircle, Package, RotateCcw, AlertCircle, CheckCircle2 } from "lucide-react";
+import { HelpCircle, RefreshCw, Package, RotateCcw, AlertTriangle, DollarSign, Calculator } from "lucide-react";
+import { CurrencyCombobox } from "@/app/tools/_shared/components";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 export function ReturnRateCalculator() {
+    const [currency, setCurrency] = useState("USD");
     const [unitsSold, setUnitsSold] = useState<number | "">(1000);
     const [unitsReturned, setUnitsReturned] = useState<number | "">(50);
+
+    // New Financial Inputs
+    const [sellingPrice, setSellingPrice] = useState<number | "">(25.00);
+    const [returnCost, setReturnCost] = useState<number | "">(5.00);
+
+    const [returnRate, setReturnRate] = useState<number>(0);
+    const [lostRevenue, setLostRevenue] = useState<number>(0);
+    const [totalReturnCost, setTotalReturnCost] = useState<number>(0);
+    const [profitLeakage, setProfitLeakage] = useState<number>(0);
 
     const val = (v: number | "") => (v === "" ? 0 : v);
     const sold = val(unitsSold);
     const returned = val(unitsReturned);
+    const price = val(sellingPrice);
+    const cost = val(returnCost);
 
-    const returnRate = sold > 0 ? (returned / sold) * 100 : 0;
+    useEffect(() => {
+        if (sold > 0) {
+            const calculatedRate = (returned / sold) * 100;
+            setReturnRate(calculatedRate);
 
-    let status = "Calculate";
-    let statusColor = "text-slate-400";
-    if (sold > 0) {
-        if (returnRate < 5) { status = "Excellent"; statusColor = "text-emerald-400"; }
-        else if (returnRate < 15) { status = "Healthy"; statusColor = "text-blue-400"; }
-        else { status = "High Risk"; statusColor = "text-orange-400"; }
-    }
+            // Financial Impact
+            const revenueLost = returned * price;
+            const processingFees = returned * cost;
+
+            setLostRevenue(revenueLost);
+            setTotalReturnCost(processingFees);
+            setProfitLeakage(revenueLost + processingFees); // Total financial hit (Revenue Lost + Fees)
+            // Note: "Profit Leakage" definition can vary. 
+            // Often it's (Refund Amount + Return Cost) - (Salvage Value). 
+            // Simplified here as: Revenue Refunded + Processing Cost.
+        } else {
+            setReturnRate(0);
+            setLostRevenue(0);
+            setTotalReturnCost(0);
+            setProfitLeakage(0);
+        }
+    }, [sold, returned, price, cost]);
+
+    const handleReset = () => {
+        setUnitsSold("");
+        setUnitsReturned("");
+        setSellingPrice("");
+        setReturnCost("");
+    };
+
+    const formatCurrency = (val: number) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency', currency: currency, maximumFractionDigits: 0
+        }).format(val);
+    };
 
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) element.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Determine Status
+    let status = "Calculate";
+    let statusColor = "text-slate-400";
+    let statusBg = "bg-slate-100";
+
+    if (sold > 0) {
+        if (returnRate < 5) { status = "Excellent"; statusColor = "text-emerald-600"; statusBg = "bg-emerald-100"; }
+        else if (returnRate < 10) { status = "Healthy"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
+        else if (returnRate < 15) { status = "Warning"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
+        else { status = "High Risk"; statusColor = "text-red-600"; statusBg = "bg-red-100"; }
+    }
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-7">
-                    <FadeIn delay={0.2} direction="right" className="h-full">
-                        <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-3">
-                                        <CardTitle className="text-2xl font-bold text-blue-600">
-                                            Return Metrics
-                                        </CardTitle>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button variant="ghost" size="icon" onClick={scrollToGuide} className="text-slate-400 hover:text-slate-900 h-8 w-8 rounded-full transition-colors">
-                                                        <HelpCircle className="w-4 h-4" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    How to use this calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <CardDescription>Enter your sales and return data.</CardDescription>
+                {/* Left Column: Inputs */}
+                <div className="lg:col-span-7 space-y-6">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
+                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                        Return Metrics
+                                    </CardTitle>
+                                    <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
+                                        <HelpCircle className="w-4 h-4" />
+                                    </button>
                                 </div>
-                            </CardHeader>
-                            <CardContent className="space-y-6 pt-6">
+                                <p className="text-sm text-slate-500 font-medium tracking-tight">Enter sales, returns, and item values.</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
+                                <button
+                                    onClick={handleReset}
+                                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                    title="Reset All"
+                                >
+                                    <RefreshCw className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="space-y-6 pt-6">
+                            {/* Group 1: Volume Data */}
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                                        <Package className="w-4 h-4" />
+                                    </div>
+                                    <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Volume Data</h3>
+                                </div>
                                 <CalculatorInput
                                     label="Total Units Sold"
                                     value={unitsSold}
@@ -73,54 +134,173 @@ export function ReturnRateCalculator() {
                                     placeholder="50"
                                     tooltip="Total items sent back by customers."
                                 />
-                            </CardContent>
-                        </Card>
+                            </div>
+
+                            <Separator />
+
+                            {/* Group 2: Financial Impact */}
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+                                        <DollarSign className="w-4 h-4" />
+                                    </div>
+                                    <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Financial Impact</h3>
+                                </div>
+                                <CalculatorInput
+                                    label={`Avg. Selling Price (${currency})`}
+                                    value={sellingPrice}
+                                    onChange={setSellingPrice}
+                                    placeholder="25.00"
+                                    tooltip="The average revenue lost per return."
+                                />
+                                <CalculatorInput
+                                    label={`Est. Cost per Return (${currency})`}
+                                    value={returnCost}
+                                    onChange={setReturnCost}
+                                    placeholder="5.00"
+                                    tooltip="Shipping labels, restocking fees, and processing costs per item."
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Logic Highlight */}
+                    <FadeIn delay={0.2}>
+                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-red-600 shrink-0 shadow-sm">
+                                <AlertTriangle className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Profit Leakage Alert</h4>
+                                <p className={cn(
+                                    "text-[15px] leading-relaxed max-w-lg transition-colors duration-300 font-medium",
+                                    returned > 0 ? "text-slate-600" : "text-slate-400"
+                                )}>
+                                    Returns aren't just lost sales. Combined with processing costs, these {returned} returns have drained <span className="font-bold text-red-600">{formatCurrency(profitLeakage)}</span> from your bottom line this period.
+                                </p>
+                            </div>
+                        </div>
                     </FadeIn>
                 </div>
 
+                {/* Right Column: Results */}
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-6">
-                        <ResultFeedbackCard
-                            title="Return Rate"
-                            mainValue={<div className="flex items-baseline gap-1">
-                                <Counter value={returnRate} formatter={(v) => v.toFixed(2)} />
-                                <span className="text-2xl font-bold">%</span>
-                            </div>}
-                            valueColor={statusColor}
-                            mainMetricLabel="Status"
-                            mainMetricValue={status}
-                            mainMetricColor={statusColor}
-                            secondaryMetrics={[
-                                { label: "Sold", value: sold.toString(), color: "text-slate-300" },
-                                { label: "Returned", value: returned.toString(), color: "text-slate-400" }
-                            ]}
-                        />
+                    <ResultFeedbackCard
+                        title="Return Rate"
+                        mainValue={
+                            <div className="flex items-baseline gap-1">
+                                <Counter
+                                    value={returnRate}
+                                    formatter={(val) => val.toFixed(2)}
+                                    className="text-5xl font-bold"
+                                />
+                                <span className="text-3xl font-bold text-slate-400">%</span>
+                            </div>
+                        }
+                        secondaryMetrics={[
+                            { label: "Lost Revenue", value: formatCurrency(lostRevenue), color: "text-red-400" },
+                            { label: "Processing Costs", value: formatCurrency(totalReturnCost), color: "text-orange-400" }
+                        ]}
+                    />
 
-                        <div className="grid grid-cols-2 gap-3">
-                            <ResultCard title="Units Sold" value={<Counter value={sold} />} icon={Package} />
-                            <ResultCard title="Returns" value={<Counter value={returned} />} icon={RotateCcw} />
+                    {/* Insight Card */}
+                    <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                                <RotateCcw className="w-5 h-5 text-blue-600" />
+                                Return Health
+                            </h3>
+                            {sold > 0 && (
+                                <span className={cn("text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full", statusBg, statusColor)}>
+                                    {status}
+                                </span>
+                            )}
                         </div>
 
-                        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
-                            Your return rate is <strong>{returnRate.toFixed(2)}%</strong>. {returnRate > 15
-                                ? "This is considered high and may indicate quality or description issues."
-                                : "This is within a healthy range for most e-commerce categories."}
+                        <div className="space-y-4">
+                            <InsightItem
+                                label="Total Profit Leakage"
+                                value={formatCurrency(profitLeakage)}
+                                description="Total financial impact (Refunds + Costs)."
+                                icon={DollarSign}
+                                color="text-red-600"
+                                bg="bg-red-50"
+                            />
+                            <InsightItem
+                                label="Units Returned"
+                                value={returned.toString()}
+                                description={`Out of ${sold} units sold.`}
+                                icon={Package}
+                                color="text-slate-600"
+                                bg="bg-slate-50"
+                            />
                         </div>
-                    </FadeIn>
+
+                        <Separator />
+
+                        <div className="pt-2">
+                            <div className="flex items-center justify-between mb-3">
+                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Rate Benchmarks</p>
+                                {sold > 0 && (
+                                    <span className={cn("text-xs font-bold px-2 py-0.5 rounded-md border",
+                                        returnRate < 5 ? "text-emerald-600 bg-emerald-50 border-emerald-100" :
+                                            returnRate < 10 ? "text-blue-600 bg-blue-50 border-blue-100" :
+                                                "text-red-600 bg-red-50 border-red-100"
+                                    )}>
+                                        {returnRate.toFixed(1)}% Rate
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="relative pt-2 pb-1">
+                                {/* Visual Scale: Green -> Blue -> Red */}
+                                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
+                                    <div className="h-full bg-emerald-400" style={{ width: '25%' }} /> {/* < 5% */}
+                                    <div className="h-full bg-blue-400" style={{ width: '25%' }} /> {/* < 10% */}
+                                    <div className="h-full bg-amber-400" style={{ width: '25%' }} /> {/* < 15% */}
+                                    <div className="h-full bg-red-400" style={{ width: '25%' }} /> {/* > 15% */}
+                                </div>
+
+                                {/* Dynamic Pointer */}
+                                {sold > 0 && (
+                                    <motion.div
+                                        initial={{ left: 0 }}
+                                        animate={{
+                                            // Scale: 0% to 20% Rate. If Rate > 20%, caps at 100%.
+                                            left: `${Math.min((returnRate / 20) * 100, 100)}%`
+                                        }}
+                                        className="absolute top-0 -mt-0.5 w-4 h-4 bg-white border-2 border-slate-800 rounded-full shadow-md z-10 -ml-2 transition-all"
+                                    />
+                                )}
+                            </div>
+                            <div className="flex justify-between mt-2 text-[11px] font-bold text-slate-500 italic">
+                                <span>Excellent</span>
+                                <span>Healthy</span>
+                                <span>High Risk</span>
+                            </div>
+                        </div>
+                    </Card>
                 </div>
             </div>
         </FadeIn>
     );
 }
 
-function ResultCard({ title, value, icon: Icon }: { title: string, value: React.ReactNode, icon: any }) {
+const Separator = () => <div className="h-px w-full bg-slate-100" />
+
+function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
     return (
-        <div className="p-4 rounded-xl border bg-white border-slate-200 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
-            <div className="flex items-center gap-1.5 mb-1">
-                <Icon className="h-3 w-3 text-slate-400" />
-                <p className="text-xs font-semibold text-slate-500">{title}</p>
+        <div className="flex gap-4">
+            <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", bg, color)}>
+                <Icon className="w-6 h-6" />
             </div>
-            <p className="text-xl font-bold text-slate-800">{value}</p>
+            <div>
+                <div className="flex items-baseline gap-2 mb-1">
+                    <h4 className="text-sm font-bold text-slate-900 leading-tight">{label}</h4>
+                    <span className={cn("text-sm font-bold", color)}>{value}</span>
+                </div>
+                <p className="text-[13px] text-slate-600 font-medium leading-relaxed">{description}</p>
+            </div>
         </div>
-    );
+    )
 }

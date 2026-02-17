@@ -22,6 +22,13 @@ export function PriceElasticityCalculator() {
         }
     };
 
+    const handleReset = () => {
+        setInitialPrice("")
+        setFinalPrice("")
+        setInitialQuantity("")
+        setFinalQuantity("")
+    }
+
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     const formatCurrency = (val: number) => {
@@ -87,6 +94,15 @@ export function PriceElasticityCalculator() {
                                     <Button
                                         variant="ghost"
                                         size="icon"
+                                        onClick={handleReset}
+                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        title="Reset Fields"
+                                    >
+                                        <RefreshCw className="w-4 h-4" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
                                         onClick={scrollToGuide}
                                         className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
@@ -100,59 +116,68 @@ export function PriceElasticityCalculator() {
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-5 pt-6">
-                            <CalculatorInput
-                                label="Initial price"
-                                value={initialPrice}
-                                onChange={setInitialPrice}
-                                placeholder="50.00"
-                                min={0}
-                                tooltip="The starting price of the product."
-                            />
-                            <CalculatorInput
-                                label="Initial quantity"
-                                value={initialQuantity}
-                                onChange={setInitialQuantity}
-                                placeholder="1000"
-                                min={0}
-                                tooltip="Units sold at the initial price."
-                            />
-                            <CalculatorInput
-                                label="Final price"
-                                value={finalPrice}
-                                onChange={setFinalPrice}
-                                placeholder="45.00"
-                                min={0}
-                                tooltip="The new price after adjustment."
-                            />
-                            <CalculatorInput
-                                label="Final quantity"
-                                value={finalQuantity}
-                                onChange={setFinalQuantity}
-                                placeholder="1200"
-                                min={0}
-                                tooltip="Units sold at the new price."
-                            />
+                            {/* Group 1: Starting Position */}
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                                    <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-bold">1</span>
+                                    Starting Position
+                                </h3>
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label="Initial Price"
+                                        value={initialPrice}
+                                        onChange={setInitialPrice}
+                                        placeholder="50.00"
+                                        min={0}
+                                    />
+                                    <CalculatorInput
+                                        label="Initial Quantity"
+                                        value={initialQuantity}
+                                        onChange={setInitialQuantity}
+                                        placeholder="1000"
+                                        min={0}
+                                    />
+                                </div>
+                            </div>
 
                             <Separator className="my-2" />
 
-                            <div className="space-y-4 pt-2">
-                                <ReadOnlyField
-                                    label="Price elasticity of demand"
-                                    value={absolutePed.toFixed(2)}
-                                />
-                                <ReadOnlyField
-                                    label="Initial revenue"
-                                    value={formatCurrency(initialRevenue)}
-                                />
-                                <ReadOnlyField
-                                    label="Final revenue"
-                                    value={formatCurrency(finalRevenue)}
-                                />
-                                <ReadOnlyField
-                                    label="Revenue increase"
-                                    value={`${revenueChangePercent >= 0 ? "+" : ""}${revenueChangePercent.toFixed(1)}%`}
-                                    color={revenueChangePercent >= 0 ? "text-emerald-600" : "text-red-500"}
-                                />
+                            {/* Group 2: New Scenario */}
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                                    <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">2</span>
+                                    New Scenario
+                                </h3>
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label="Final Price"
+                                        value={finalPrice}
+                                        onChange={setFinalPrice}
+                                        placeholder="45.00"
+                                        min={0}
+                                    />
+                                    <CalculatorInput
+                                        label="Final Quantity"
+                                        value={finalQuantity}
+                                        onChange={setFinalQuantity}
+                                        placeholder="1200"
+                                        min={0}
+                                    />
+                                </div>
+                            </div>
+
+                            <Separator className="my-2" />
+
+                            {/* Quick Stats */}
+                            <div className="grid grid-cols-2 gap-4 pt-2">
+                                <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <div className="text-xs text-slate-500 font-medium mb-1">Initial Revenue</div>
+                                    <div className="text-lg font-bold text-slate-700">{formatCurrency(initialRevenue)}</div>
+                                </div>
+                                <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-100">
+                                    <div className="text-xs text-blue-600 font-medium mb-1">Final Revenue</div>
+                                    <div className="text-lg font-bold text-blue-700">{formatCurrency(finalRevenue)}</div>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -198,26 +223,57 @@ export function PriceElasticityCalculator() {
                     />
 
                     {/* Interpretation Card */}
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                        <div className="flex items-start gap-4">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${elasticityBg}`}>
-                                {absolutePed > 1 ? (
-                                    <TrendingDown className={`w-5 h-5 ${elasticityColor}`} />
-                                ) : (
-                                    <TrendingUp className={`w-5 h-5 ${elasticityColor}`} />
-                                )}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        {/* Elasticity Visual Scale */}
+                        <div className="p-6 pb-2">
+                            <div className="flex items-center justify-between text-xs font-semibold text-slate-400 mb-2">
+                                <span>Inelastic</span>
+                                <span>Unitary</span>
+                                <span>Elastic</span>
                             </div>
-                            <div>
-                                <h4 className="font-semibold text-slate-800 mb-1">Interpretation</h4>
-                                <p className="text-slate-600 leading-relaxed mb-3">
-                                    {elasticityDescription}
-                                </p>
-                                <div className="text-sm bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-500">
-                                    <strong>Recommendation: </strong>
-                                    {absolutePed > 1
-                                        ? "Lowering prices may significantly increase volume and total revenue."
-                                        : "Increasing prices may increase revenue as volume drop-off is minimal."
-                                    }
+                            <div className="relative h-4 rounded-full bg-gradient-to-r from-emerald-400 via-blue-400 to-orange-400 w-full">
+                                {/* Marker */}
+                                <div
+                                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-slate-600 rounded-full shadow-md transition-all duration-500"
+                                    style={{
+                                        left: `${Math.min(Math.max((absolutePed / 3) * 100, 0), 100)}%`
+                                    }}
+                                />
+                            </div>
+                            <div className="flex justify-between text-[10px] text-slate-300 mt-1 font-mono">
+                                <span>0</span>
+                                <span>1</span>
+                                <span>3+</span>
+                            </div>
+                        </div>
+
+                        <div className="p-6 pt-2">
+                            <div className="flex items-start gap-4">
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${elasticityBg}`}>
+                                    {absolutePed > 1 ? (
+                                        <TrendingDown className={`w-5 h-5 ${elasticityColor}`} />
+                                    ) : (
+                                        <TrendingUp className={`w-5 h-5 ${elasticityColor}`} />
+                                    )}
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="font-semibold text-slate-800 mb-1">Interpretation</h4>
+                                    <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                        {elasticityDescription}
+                                    </p>
+
+                                    <div className={`text-sm p-4 rounded-xl border ${absolutePed > 1 ? "bg-orange-50 border-orange-100 text-orange-800" : "bg-emerald-50 border-emerald-100 text-emerald-800"}`}>
+                                        <div className="flex items-center gap-2 font-bold mb-1">
+                                            <ArrowRight className="w-4 h-4" />
+                                            Recommendation
+                                        </div>
+                                        <p className="opacity-90 leading-snug">
+                                            {absolutePed > 1
+                                                ? "Lowering prices may significantly increase volume and total revenue."
+                                                : "Increasing prices may increase revenue as volume drop-off is minimal."
+                                            }
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

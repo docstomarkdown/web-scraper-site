@@ -8,6 +8,7 @@ import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { motion } from "framer-motion"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
 export function DiscountCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -54,8 +55,6 @@ export function DiscountCalculator() {
         const secondVal = val(discountValue)
 
         if (mode === "find-price") {
-            // Calculate Final Price given Original + Discount %
-            // secondVal is Discount %
             if (price > 0 && secondVal >= 0) {
                 const save = price * (secondVal / 100)
                 setSavings(save)
@@ -65,8 +64,6 @@ export function DiscountCalculator() {
                 setFinalPrice(price)
             }
         } else {
-            // Calculate Discount % given Original + Final Price
-            // secondVal is Final Price
             if (price > 0 && secondVal > 0) {
                 const save = price - secondVal
                 setSavings(Math.max(save, 0))
@@ -88,54 +85,6 @@ export function DiscountCalculator() {
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
-            <div className="flex justify-center mb-8">
-                <div className="bg-slate-100 p-1.5 rounded-xl inline-flex relative shadow-inner">
-                    <TooltipProvider>
-                        <Tooltip delayDuration={300}>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={() => { setMode("find-price"); resetFields(); }}
-                                    className={`relative z-10 px-6 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 ${mode === "find-price" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"}`}
-                                >
-                                    Find Final Price
-                                    {mode === "find-price" && (
-                                        <motion.div
-                                            layoutId="active-pill"
-                                            className="absolute inset-0 bg-white rounded-lg shadow-sm border border-slate-200/50 -z-10"
-                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        />
-                                    )}
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="text-xs max-w-[200px] text-center bg-slate-800 text-white border-slate-700">
-                                Enter Original Price & Discount % to calculate what you pay.
-                            </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip delayDuration={300}>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={() => { setMode("find-discount"); resetFields(); }}
-                                    className={`relative z-10 px-6 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 ${mode === "find-discount" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"}`}
-                                >
-                                    Find Discount %
-                                    {mode === "find-discount" && (
-                                        <motion.div
-                                            layoutId="active-pill"
-                                            className="absolute inset-0 bg-white rounded-lg shadow-sm border border-slate-200/50 -z-10"
-                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        />
-                                    )}
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="text-xs max-w-[200px] text-center bg-slate-800 text-white border-slate-700">
-                                Enter Original & Final Price to see the discount percentage.
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                </div>
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
@@ -163,44 +112,83 @@ export function DiscountCalculator() {
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-5 pt-6">
-                            <CalculatorInput
-                                label={`Original Price (${symbol})`}
-                                value={originalPrice}
-                                onChange={setOriginalPrice}
-                                placeholder="100.00"
-                                max={1000000}
-                                tooltip="The price before any discount is applied."
-                            />
+                        <CardContent className="space-y-6 pt-6">
+                            <div className="space-y-4 mb-2 pb-6 border-b border-slate-50">
+                                <label className="text-sm font-bold text-slate-600">Calculation Mode</label>
+                                <div className="relative flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-fit">
+                                    {/* Animated Background Pill */}
+                                    <motion.div
+                                        className="absolute bg-white rounded-md shadow-sm border border-blue-200"
+                                        initial={false}
+                                        animate={{
+                                            x: mode === "find-price" ? 0 : "100%",
+                                        }}
+                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        style={{ top: 4, bottom: 4, left: 4, width: 'calc(50% - 4px)' }}
+                                    />
 
-                            {mode === "find-price" ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => { setMode("find-price"); resetFields(); }}
+                                        className={cn(
+                                            "relative z-10 px-4 py-1.5 rounded-md text-[10px] font-bold transition-colors uppercase tracking-wider w-32",
+                                            mode === "find-price" ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
+                                        )}
+                                    >
+                                        Find Final Price
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setMode("find-discount"); resetFields(); }}
+                                        className={cn(
+                                            "relative z-10 px-4 py-1.5 rounded-md text-[10px] font-bold transition-colors uppercase tracking-wider w-32",
+                                            mode === "find-discount" ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
+                                        )}
+                                    >
+                                        Find Discount %
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="space-y-5">
                                 <CalculatorInput
-                                    label="Discount Percentage (%)"
-                                    value={discountValue}
-                                    onChange={setDiscountValue}
-                                    placeholder="20"
-                                    max={100}
-                                    tooltip="The percentage to deduct from the original price."
-                                />
-                            ) : (
-                                <CalculatorInput
-                                    label={`Final Price (${symbol})`}
-                                    value={discountValue}
-                                    onChange={setDiscountValue}
-                                    placeholder="80.00"
+                                    label={`Original Price (${symbol})`}
+                                    value={originalPrice}
+                                    onChange={setOriginalPrice}
+                                    placeholder="100.00"
                                     max={1000000}
-                                    tooltip="The price after the discount is applied."
+                                    tooltip="The price before any discount is applied."
                                 />
-                            )}
 
-                            <Button
-                                variant="outline"
-                                onClick={resetFields}
-                                className="w-full text-slate-500 hover:text-slate-700"
-                            >
-                                <RefreshCw className="w-4 h-4 mr-2" />
-                                Reset Calculator
-                            </Button>
+                                <motion.div
+                                    layout
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    key={mode}
+                                >
+                                    {mode === "find-price" ? (
+                                        <CalculatorInput
+                                            label="Discount Percentage (%)"
+                                            value={discountValue}
+                                            onChange={setDiscountValue}
+                                            placeholder="20"
+                                            max={100}
+                                            tooltip="The percentage to deduct from the original price."
+                                        />
+                                    ) : (
+                                        <CalculatorInput
+                                            label={`Final Price (${symbol})`}
+                                            value={discountValue}
+                                            onChange={setDiscountValue}
+                                            placeholder="80.00"
+                                            max={1000000}
+                                            tooltip="The price after the discount is applied."
+                                        />
+                                    )}
+                                </motion.div>
+                            </div>
+
+
                         </CardContent>
                     </Card>
                 </div>
@@ -235,31 +223,54 @@ export function DiscountCalculator() {
                         ]}
                     />
 
-                    {/* Additional Info / Comparison */}
                     <div className="grid grid-cols-1 gap-4">
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className="bg-blue-50 p-2 rounded-lg text-blue-500">
-                                    <TrendingDown className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Summary</p>
-                                    <p className="text-sm font-medium text-slate-800">
-                                        {originalPrice && discountValue ? (
-                                            mode === "find-price" ? (
-                                                <>Original {formatCurrency(Number(originalPrice))} minus {discountValue}% OFF</>
-                                            ) : (
-                                                <>Original {formatCurrency(Number(originalPrice))} discounted to {formatCurrency(Number(discountValue))}</>
-                                            )
-                                        ) : "Enter values to see summary"}
-                                    </p>
-                                </div>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-slate-300" />
-                        </div>
+                        <ResultCard
+                            title="Summary"
+                            value={
+                                originalPrice && discountValue ? (
+                                    mode === "find-price" ? (
+                                        <>Original {formatCurrency(Number(originalPrice))} minus {discountValue}% OFF</>
+                                    ) : (
+                                        <>Original {formatCurrency(Number(originalPrice))} discounted to {formatCurrency(Number(discountValue))}</>
+                                    )
+                                ) : "Enter values to see summary"
+                            }
+                            icon={TrendingDown}
+                            tooltip="A quick overview of your calculation."
+                        />
                     </div>
                 </div>
             </div>
         </FadeIn>
+    )
+}
+
+function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
+    return (
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <div className="flex items-center gap-1.5 mb-1">
+                    <p className="text-xs font-medium text-slate-500">{title}</p>
+                    {tooltip && (
+                        <TooltipProvider delayDuration={100}>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button type="button" className="text-slate-300 hover:text-slate-500 transition-colors cursor-default">
+                                        <HelpCircle className="h-3 w-3" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                    {tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                </div>
+                <div className="text-sm font-medium text-slate-800">{value}</div>
+            </div>
+            <div className="bg-slate-50 p-2 rounded-lg text-slate-400">
+                <Icon className="w-5 h-5" />
+            </div>
+        </div>
     )
 }

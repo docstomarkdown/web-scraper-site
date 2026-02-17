@@ -8,7 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HelpCircle, Copy, Check, RotateCcw, Hash, Tag, Layers, Palette, Maximize2, Settings2, ChevronDown, ChevronUp, Plus, Download, Trash2, List } from "lucide-react"
-import { FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 
 interface SKUEntry {
@@ -226,109 +228,118 @@ export function SKUGenerator() {
 
                             {/* Advanced Settings Toggle */}
                             <div className="pt-2">
-                                <Button
-                                    variant="ghost"
+                                <button
                                     onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-                                    className="w-full flex items-center justify-between py-6 border-2 border-dashed border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all rounded-xl group"
+                                    className={cn(
+                                        "w-full flex items-center justify-between p-4 rounded-xl border border-slate-100 transition-all duration-300 group",
+                                        isAdvancedOpen ? "bg-slate-50 shadow-sm border-blue-100" : "bg-white hover:bg-slate-50/50"
+                                    )}
                                 >
-                                    <div className="flex items-center gap-2">
-                                        <div className={`p-2 rounded-lg ${isAdvancedOpen ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'} group-hover:scale-110 transition-transform`}>
+                                    <div className="flex items-center gap-2.5">
+                                        <div className={cn(
+                                            "w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
+                                            isAdvancedOpen ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500"
+                                        )}>
                                             <Settings2 className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <div className="text-sm font-bold text-slate-800">Advanced Settings</div>
-                                            <div className="text-xs text-slate-500 font-medium">Extra attributes & formatting</div>
+                                            <p className="text-sm font-bold text-slate-800">Advanced Settings</p>
+                                            <p className="text-[10px] text-slate-500 font-medium">Extra attributes & formatting</p>
                                         </div>
                                     </div>
-                                    {isAdvancedOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                                </Button>
+                                    {isAdvancedOpen ? (
+                                        <ChevronUp className="w-5 h-5 text-blue-500" />
+                                    ) : (
+                                        <ChevronDown className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
+                                    )}
+                                </button>
                             </div>
 
                             {/* Collapsible Advanced Content */}
-                            <div className={`space-y-5 overflow-hidden transition-all duration-300 ease-in-out ${isAdvancedOpen ? 'max-h-[1000px] opacity-100 pt-2' : 'max-h-0 opacity-0'}`}>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <SKUInput
-                                        label="Color"
-                                        value={attribute1}
-                                        onChange={setAttribute1}
-                                        placeholder="WHT"
-                                        icon={Palette}
-                                        tooltip="Color code."
-                                    />
-                                    <SKUInput
-                                        label="Size"
-                                        value={attribute2}
-                                        onChange={setAttribute2}
-                                        placeholder="10"
-                                        icon={Maximize2}
-                                        tooltip="Size identifier."
-                                    />
-                                </div>
+                            <AnimatePresence>
+                                {isAdvancedOpen && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="pt-6 pb-2 px-1 space-y-5">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <SKUInput
+                                                    label="Color Part"
+                                                    value={attribute1}
+                                                    onChange={setAttribute1}
+                                                    placeholder="WHT"
+                                                    icon={Palette}
+                                                    tooltip="Color code (e.g., WHT for White)."
+                                                />
+                                                <SKUInput
+                                                    label="Size Part"
+                                                    value={attribute2}
+                                                    onChange={setAttribute2}
+                                                    placeholder="10"
+                                                    icon={Maximize2}
+                                                    tooltip="Size identifier (e.g., 10 for Size 10)."
+                                                />
+                                            </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                                            Char Count Pull
-                                            <TooltipProvider delayDuration={100}>
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <HelpCircle className="h-3 w-3 text-slate-400" />
-                                                    </TooltipTrigger>
-                                                    <TooltipContent className="text-xs">
-                                                        Number of characters to take from each text field.
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </TooltipProvider>
-                                        </Label>
-                                        <Input
-                                            type="number"
-                                            value={charLimit}
-                                            onChange={(e) => setCharLimit(e.target.value)}
-                                            className="bg-white border-slate-200"
-                                            min="1"
-                                            max="10"
-                                        />
-                                    </div>
-                                    <SKUInput
-                                        label="Sequential #"
-                                        value={sequentialStart}
-                                        onChange={setSequentialStart}
-                                        placeholder="001"
-                                        icon={Hash}
-                                        tooltip="Unique numeric identifier."
-                                    />
-                                </div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div className="flex items-center justify-between gap-4">
+                                                    <span className="text-sm font-semibold text-slate-700">Char Pull Count</span>
+                                                    <Input
+                                                        type="number"
+                                                        value={charLimit}
+                                                        onChange={(e) => setCharLimit(e.target.value)}
+                                                        className="w-32 bg-white border-slate-200 h-10 text-right font-medium"
+                                                        min="1"
+                                                        max="10"
+                                                    />
+                                                </div>
+                                                <SKUInput
+                                                    label="Sequential #"
+                                                    value={sequentialStart}
+                                                    onChange={setSequentialStart}
+                                                    placeholder="001"
+                                                    icon={Hash}
+                                                    tooltip="Unique numeric identifier."
+                                                />
+                                            </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-semibold text-slate-700">Separator</Label>
-                                        <Select value={separator} onValueChange={setSeparator}>
-                                            <SelectTrigger className="bg-white border-slate-300">
-                                                <SelectValue placeholder="Select separator" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="-">Dash (-)</SelectItem>
-                                                <SelectItem value="_">Underscore (_)</SelectItem>
-                                                <SelectItem value="none">None (None)</SelectItem>
-                                                <SelectItem value=".">Dot (.)</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-semibold text-slate-700">Letter Case</Label>
-                                        <Select value={caseType} onValueChange={setCaseType}>
-                                            <SelectTrigger className="bg-white border-slate-300">
-                                                <SelectValue placeholder="Select case" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="uppercase">UPPERCASE</SelectItem>
-                                                <SelectItem value="lowercase">lowercase</SelectItem>
-                                                <SelectItem value="original">Original</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                </div>
-                            </div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div className="flex items-center justify-between gap-4">
+                                                    <span className="text-sm font-semibold text-slate-700">Separator</span>
+                                                    <Select value={separator} onValueChange={setSeparator}>
+                                                        <SelectTrigger className="w-32 bg-white border-slate-200 h-10">
+                                                            <SelectValue placeholder="Select" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="-">Dash (-)</SelectItem>
+                                                            <SelectItem value="_">Underscore (_)</SelectItem>
+                                                            <SelectItem value="none">None</SelectItem>
+                                                            <SelectItem value=".">Dot (.)</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                                <div className="flex items-center justify-between gap-4">
+                                                    <span className="text-sm font-semibold text-slate-700">Letter Case</span>
+                                                    <Select value={caseType} onValueChange={setCaseType}>
+                                                        <SelectTrigger className="w-32 bg-white border-slate-200 h-10">
+                                                            <SelectValue placeholder="Select" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="uppercase">UPPER</SelectItem>
+                                                            <SelectItem value="lowercase">lower</SelectItem>
+                                                            <SelectItem value="original">Original</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </CardContent>
                     </Card>
                 </div>
@@ -338,31 +349,33 @@ export function SKUGenerator() {
                     <ResultFeedbackCard
                         title="Generated SKU"
                         mainValue={
-                            <div className="flex flex-col items-center gap-4">
-                                <div className="text-2xl md:text-3xl font-mono font-bold tracking-wider break-all text-center">
-                                    {generatedSKU || "---"}
-                                </div>
-                                <div className="grid grid-cols-2 gap-2 w-full">
-                                    <Button
-                                        onClick={copyToClipboard}
-                                        disabled={!generatedSKU}
-                                        className={`py-6 text-sm transition-all duration-300 ${copied ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-slate-800 hover:bg-slate-900'}`}
-                                    >
-                                        {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-                                        {copied ? 'Copied' : 'Copy'}
-                                    </Button>
-                                    <Button
-                                        onClick={() => addItemToList(false)}
-                                        disabled={!generatedSKU}
-                                        className="py-6 text-sm bg-blue-600 hover:bg-blue-700"
-                                    >
-                                        <Plus className="w-4 h-4 mr-2" />
-                                        Add to List
-                                    </Button>
-                                </div>
+                            <div className="font-mono font-bold tracking-[0.2em] break-all text-center leading-tight">
+                                {generatedSKU || "---"}
                             </div>
                         }
-                    />
+                    >
+                        <div className="grid grid-cols-2 gap-3 w-full">
+                            <Button
+                                onClick={copyToClipboard}
+                                disabled={!generatedSKU}
+                                className={cn(
+                                    "py-6 text-sm font-bold transition-all duration-300",
+                                    copied ? "bg-emerald-500 hover:bg-emerald-600" : "bg-slate-800 hover:bg-slate-900"
+                                )}
+                            >
+                                {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+                                {copied ? 'Copied' : 'Copy'}
+                            </Button>
+                            <Button
+                                onClick={() => addItemToList(false)}
+                                disabled={!generatedSKU}
+                                className="py-6 text-sm font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20"
+                            >
+                                <Plus className="w-4 h-4 mr-2" />
+                                Add to List
+                            </Button>
+                        </div>
+                    </ResultFeedbackCard>
 
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
@@ -448,35 +461,33 @@ interface SKUInputProps {
 
 function SKUInput({ label, value, onChange, placeholder, icon: Icon, tooltip }: SKUInputProps) {
     return (
-        <div className="flex flex-col space-y-2">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Label className="text-sm font-semibold text-slate-700">{label}</Label>
-                    {tooltip && (
-                        <TooltipProvider delayDuration={100}>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                        <HelpCircle className="h-3 w-3" />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent side="top" className="max-w-xs text-xs">
-                                    {tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                </div>
+        <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+                <Label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{label}</Label>
+                {tooltip && (
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                    <HelpCircle className="h-3.5 w-3.5" />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white p-2 rounded-lg">
+                                {tooltip}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
             </div>
-            <div className="relative">
+            <div className="relative w-40 sm:w-48">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-3.5 h-3.5" />
                 </div>
                 <Input
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    placeholder={`Ex: ${placeholder}`}
-                    className="pl-10 bg-white border-slate-200 focus:border-blue-500 focus:ring-blue-500/10 transition-all uppercase"
+                    placeholder={placeholder}
+                    className="pl-9 h-10 bg-white border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all uppercase text-right font-medium placeholder:italic placeholder:text-slate-300"
                 />
             </div>
         </div>
