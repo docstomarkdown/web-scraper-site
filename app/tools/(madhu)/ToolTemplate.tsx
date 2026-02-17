@@ -11,7 +11,7 @@
 "use client"
 
 import React from "react"
-import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy } from "lucide-react"
+import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy, Check } from "lucide-react"
 import { FadeIn, ToolFAQ, Counter } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { CTA } from "@/components/sections/CTA"
@@ -42,10 +42,31 @@ export interface InputCardHeaderProps {
     subtitle?: string
     icon?: LucideIcon | React.ElementType
     onHelpClick?: () => void
+    scrollId?: string
     tooltip?: string
 }
 
-export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, tooltip }: InputCardHeaderProps) {
+export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scrollId, tooltip }: InputCardHeaderProps) {
+    const handleHelp = () => {
+        if (onHelpClick) {
+            onHelpClick()
+        } else if (scrollId) {
+            const element = document.getElementById(scrollId)
+            if (element) {
+                const offset = 100 // Adjust this value for desired top spacing
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY
+                const offsetPosition = elementPosition - offset
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                })
+            }
+        }
+    }
+
+    const showHelp = !!onHelpClick || !!scrollId
+
     return (
         <div className="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -57,13 +78,13 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, tool
                 <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                         <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{title}</h2>
-                        {onHelpClick && (
+                        {showHelp && (
                             <TooltipProvider delayDuration={100}>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <button
-                                            onClick={onHelpClick}
-                                            className="text-slate-300 hover:text-blue-600 transition-colors"
+                                            onClick={handleHelp}
+                                            className="text-slate-400 hover:text-blue-600 transition-colors"
                                         >
                                             <HelpCircle className="h-5 w-5" />
                                         </button>
@@ -86,10 +107,11 @@ interface ActionButtonsProps {
     onReset: () => void
     onCopy: () => void
     copyDisabled?: boolean
+    isCopied?: boolean
     className?: string
 }
 
-export function ActionButtons({ onReset, onCopy, copyDisabled, className }: ActionButtonsProps) {
+export function ActionButtons({ onReset, onCopy, copyDisabled, isCopied, className }: ActionButtonsProps) {
     return (
         <div className={cn("flex gap-3", className)}>
             <Button
@@ -103,9 +125,20 @@ export function ActionButtons({ onReset, onCopy, copyDisabled, className }: Acti
                 onClick={onCopy}
                 variant="outline"
                 disabled={copyDisabled}
-                className="flex-[3] h-11 px-6 shadow-sm border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 transition-all font-bold text-slate-950 disabled:opacity-30 rounded-xl"
+                className={cn(
+                    "flex-[3] h-11 px-6 shadow-sm border-slate-200 transition-all font-bold text-slate-950 disabled:opacity-30 rounded-xl",
+                    isCopied ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-100" : "hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
+                )}
             >
-                <Copy className="w-4 h-4 mr-2" /> Copy Results
+                {isCopied ? (
+                    <>
+                        <Check className="w-4 h-4 mr-2" /> Copied!
+                    </>
+                ) : (
+                    <>
+                        <Copy className="w-4 h-4 mr-2" /> Copy Results
+                    </>
+                )}
             </Button>
         </div>
     )
