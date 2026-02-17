@@ -1,0 +1,336 @@
+"use client"
+
+import React, { useState, useMemo, useEffect } from "react"
+import {
+    TrendingUp,
+    Clock,
+    ShieldCheck,
+    CheckCircle2,
+    Zap,
+    LucideIcon,
+    Info,
+    ShoppingCart,
+    BarChart,
+    Timer,
+    ChevronUp,
+    ChevronDown
+} from "lucide-react"
+import {
+    InputCardHeader,
+    ActionButtons
+} from "../../ToolTemplate"
+import { FadeIn, Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card, CardContent } from "@/components/ui/card"
+
+interface ROPState {
+    salesVelocity: string
+    leadTime: string
+    safetyStock: string
+}
+
+const DEFAULT_STATE: ROPState = {
+    salesVelocity: "10",
+    leadTime: "7",
+    safetyStock: "20"
+}
+
+export function ReorderPointCalculator() {
+    const [values, setValues] = useState<ROPState>(DEFAULT_STATE)
+    const [isCopying, setIsCopying] = useState(false)
+
+    const handleInputChange = (field: keyof ROPState, value: string) => {
+        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
+            setValues(prev => ({ ...prev, [field]: value }))
+        }
+    }
+
+    const hasInputs = useMemo(() => {
+        return values.salesVelocity !== "" && values.leadTime !== ""
+    }, [values])
+
+    const results = useMemo(() => {
+        const velocity = parseFloat(values.salesVelocity) || 0
+        const leadTime = parseFloat(values.leadTime) || 0
+        const safetyStock = parseFloat(values.safetyStock) || 0
+
+        const leadTimeDemand = velocity * leadTime
+        const reorderPoint = leadTimeDemand + safetyStock
+
+        return {
+            leadTimeDemand,
+            reorderPoint: Math.ceil(reorderPoint),
+            safetyStock,
+            totalCoverage: velocity > 0 ? Math.floor(reorderPoint / velocity) : 0
+        }
+    }, [values])
+
+    const handleReset = () => setValues({
+        salesVelocity: "",
+        leadTime: "",
+        safetyStock: ""
+    })
+
+    const handleCopy = async () => {
+        setIsCopying(true)
+        const text = `
+Reorder Point Analysis:
+-----------------------
+- Daily Sales: ${values.salesVelocity} units
+- Lead Time: ${values.leadTime} days
+- Safety Stock: ${values.safetyStock} units
+
+Result:
+- REORDER POINT: ${results.reorderPoint} units
+- Inventory Coverage: ${results.totalCoverage} days
+        `.trim()
+
+        await navigator.clipboard.writeText(text)
+        setTimeout(() => setIsCopying(false), 2000)
+    }
+
+    return (
+        <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
+
+                {/* Left Column: Smart Inputs */}
+                <div className="lg:col-span-7">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
+                        <InputCardHeader
+                            title="Calculator Inputs"
+                            subtitle="Configure your inventory restock triggers."
+                            scrollId="how-to-use"
+                        />
+
+                        <CardContent className="p-8 space-y-10 flex-1 flex flex-col">
+                            <div className="space-y-8">
+                                <ROPInput
+                                    label="Daily Sales Velocity"
+                                    value={values.salesVelocity}
+                                    onChange={(v) => handleInputChange('salesVelocity', v)}
+                                    icon={TrendingUp}
+                                    placeholder="e.g. 25"
+                                    tooltip="How many units do you sell on average each day?"
+                                />
+                                <ROPInput
+                                    label="Lead Time (Days)"
+                                    value={values.leadTime}
+                                    onChange={(v) => handleInputChange('leadTime', v)}
+                                    icon={Clock}
+                                    placeholder="e.g. 14"
+                                    tooltip="How many days does it take from order to delivery?"
+                                />
+                                <ROPInput
+                                    label="Safety Stock (Units)"
+                                    value={values.safetyStock}
+                                    onChange={(v) => handleInputChange('safetyStock', v)}
+                                    icon={ShieldCheck}
+                                    placeholder="e.g. 50"
+                                    tooltip="How many units do you want to keep as an emergency buffer?"
+                                />
+                            </div>
+
+                            <div className="mt-auto pt-8 border-t border-slate-50">
+                                <ActionButtons
+                                    onReset={handleReset}
+                                    onCopy={handleCopy}
+                                    copyDisabled={!hasInputs || isCopying}
+                                    isCopied={isCopying}
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Right Column: Results */}
+                <div className="lg:col-span-5 space-y-6">
+                    <ResultFeedbackCard
+                        title="REORDER POINT"
+                        titleLabel="Live calculation"
+                        mainValue={
+                            <div className="flex flex-col">
+                                <div className="flex items-baseline gap-2">
+                                    <Counter value={results.reorderPoint} />
+                                    <span className="text-2xl font-medium opacity-50">Units</span>
+                                </div>
+                                <p className="text-slate-400 text-sm font-bold mt-2">Units to trigger restock</p>
+                            </div>
+                        }
+                    >
+                        <div className="space-y-6">
+                            {/* Secondary Metrics Grid - Now on Top */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">Stock coverage</p>
+                                    <p className="text-xl font-bold text-indigo-400">{results.totalCoverage} <span className="text-xs font-normal opacity-50">Days</span></p>
+                                </div>
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">Lead time demand</p>
+                                    <p className="text-xl font-bold text-emerald-400">{Math.round(results.leadTimeDemand)}</p>
+                                </div>
+                            </div>
+
+                            {/* Action Plan - Now at Bottom with Original Message */}
+                            <div className="flex items-start gap-4 bg-white/5 p-5 rounded-2xl border border-white/5">
+                                <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/30 flex-shrink-0 mt-1">
+                                    <CheckCircle2 className="w-5 h-5 text-blue-400" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-slate-400 text-xs font-bold mb-1">Action plan</p>
+                                    <p className="text-[13px] font-medium text-slate-200 leading-relaxed">
+                                        Place your next order when inventory reaches <span className="text-blue-400 font-bold">{results.reorderPoint} units</span> to stay ahead of demand and prevent stockouts.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </ResultFeedbackCard>
+
+                    {/* Timeline Analysis - Premium Minimalist Style */}
+                    {/* Restock Journey - Always Visible */}
+                    <FadeIn delay={0.1}>
+                        <div className="relative group/journey overflow-hidden rounded-[2rem] border border-slate-100 shadow-sm transition-all duration-500 bg-white/40 backdrop-blur-md">
+                            {/* Card Content - Visible as skeleton when no inputs */}
+                            <div className={cn(
+                                "p-7 transition-all duration-700 min-h-[220px] flex flex-col",
+                                !hasInputs && "opacity-40 pointer-events-none"
+                            )}>
+                                <div className="mb-10 flex items-center justify-between">
+                                    <h2 className="text-sm font-medium uppercase tracking-wider text-slate-500">RESTOCK JOURNEY</h2>
+                                </div>
+
+                                <div className="px-2">
+                                    <div className={cn(
+                                        "relative h-1 rounded-full mb-10 transition-colors duration-500",
+                                        !hasInputs ? "bg-slate-200/50 border border-dashed border-slate-300 h-[3px]" : "bg-slate-100 h-1"
+                                    )}>
+                                        {/* Progress Bar (Visible only when has inputs) */}
+                                        <div
+                                            className={cn(
+                                                "absolute left-0 h-full bg-blue-600 rounded-full transition-all duration-1000",
+                                                !hasInputs ? "w-0 opacity-0" : "w-[70%] opacity-100"
+                                            )}
+                                        />
+
+                                        {/* Start Node */}
+                                        <div className={cn(
+                                            "absolute left-0 -top-1.5 w-4 h-4 bg-white border-2 rounded-full transition-all",
+                                            !hasInputs ? "border-slate-300 shadow-sm" : "border-slate-200"
+                                        )}>
+                                            <div className="absolute top-7 left-0 -translate-x-1/2 flex flex-col items-center">
+                                                <span className="text-[10px] font-bold text-slate-500 tracking-tighter whitespace-nowrap">Order sent</span>
+                                                <span className="text-[8px] font-medium text-slate-500 whitespace-nowrap">Day 0</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Reorder Point Hub */}
+                                        <div
+                                            className={cn(
+                                                "absolute -top-2 w-5 h-5 bg-white border-4 rounded-full shadow-sm z-10 transition-all duration-700",
+                                                !hasInputs
+                                                    ? "left-1/2 -translate-x-1/2 border-slate-300 opacity-60"
+                                                    : "left-[70%] border-blue-600"
+                                            )}
+                                        >
+                                            <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                                <div className={cn(
+                                                    "px-2 py-0.5 rounded text-[9px] font-black whitespace-nowrap mb-1 transition-all duration-500",
+                                                    !hasInputs ? "bg-slate-100 text-slate-400 border border-slate-200" : "bg-blue-600 text-white"
+                                                )}>
+                                                    {hasInputs ? `${results.reorderPoint} Units` : "Restock Point"}
+                                                </div>
+                                                <div className={cn("w-px h-3 transition-colors", !hasInputs ? "bg-slate-300" : "bg-blue-600/30")} />
+                                            </div>
+                                            <div className="absolute top-7 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                                <span className={cn(
+                                                    "text-[10px] font-bold tracking-tighter whitespace-nowrap transition-colors",
+                                                    !hasInputs ? "text-slate-400" : "text-blue-600"
+                                                )}>Order point</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Arrival Node */}
+                                        <div className={cn(
+                                            "absolute right-0 -top-1.5 w-4 h-4 bg-white border-2 rounded-full transition-all",
+                                            !hasInputs ? "border-slate-300 shadow-sm" : "border-slate-200"
+                                        )}>
+                                            <div className="absolute top-7 right-0 translate-x-1/2 flex flex-col items-center">
+                                                <span className="text-[10px] font-bold text-slate-500 tracking-tighter whitespace-nowrap">Delivery</span>
+                                                <span className="text-[8px] font-medium text-slate-500 whitespace-nowrap">Day {hasInputs ? values.leadTime : "—"}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Floating Overlay for Empty State - Transparent Background */}
+                            {!hasInputs && (
+                                <div className="absolute inset-0 z-20 flex items-start justify-end p-7 pointer-events-none">
+                                    <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-white shadow-xl shadow-blue-500/10 px-3 py-1.5 rounded-full border border-blue-100 animate-in fade-in zoom-in duration-500 pointer-events-auto">
+                                        Awaiting Data
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    </FadeIn>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function ROPInput({
+    label,
+    value,
+    onChange,
+    icon: Icon,
+    tooltip,
+    placeholder
+}: {
+    label: string,
+    value: string,
+    onChange: (v: string) => void,
+    icon: any,
+    tooltip: string,
+    placeholder: string
+}) {
+    return (
+        <div className="space-y-2 group/input">
+            <div className="flex items-center gap-2 mb-1 pl-1">
+                <Icon className="w-4 h-4 text-slate-400 group-focus-within/input:text-blue-600 transition-colors" />
+                <label className="text-base font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
+                    {label}
+                </label>
+            </div>
+
+            <div className="relative group">
+                <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    className="h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-xl px-5 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
+                    placeholder={placeholder}
+                />
+
+                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
+                    <button
+                        onClick={() => onChange((parseFloat(value || "0") + 1).toString())}
+                        className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"
+                    >
+                        <ChevronUp className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                        onClick={() => onChange(Math.max(0, (parseFloat(value || "0") - 1)).toString())}
+                        className="flex items-center justify-center px-2 flex-1 hover:bg-red-50 hover:text-red-600 text-slate-400 transition-all"
+                    >
+                        <ChevronDown className="h-3.5 w-3.5" />
+                    </button>
+                </div>
+            </div>
+
+            <p className="text-[11px] text-slate-400 font-bold pl-1 leading-relaxed">
+                {tooltip}
+            </p>
+        </div>
+    )
+}

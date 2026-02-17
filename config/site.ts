@@ -181,6 +181,10 @@ export const toolsGroups = [
         href: "/tools/lead-time-calculator",
       },
       {
+        title: "Reorder Point Calculator",
+        href: "/tools/reorder-point-calculator",
+      },
+      {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },
