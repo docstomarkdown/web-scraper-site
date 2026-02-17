@@ -159,7 +159,7 @@ export function CPACalculator() {
                                                         <Info className="h-3.5 w-3.5" />
                                                     </div>
                                                 </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
                                                     Analyze existing results using total spend and conversions.
                                                 </TooltipContent>
                                             </Tooltip>
@@ -185,7 +185,7 @@ export function CPACalculator() {
                                                         <Info className="h-3.5 w-3.5" />
                                                     </div>
                                                 </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
                                                     Forecast costs based on CPC and Conversion Rate.
                                                 </TooltipContent>
                                             </Tooltip>

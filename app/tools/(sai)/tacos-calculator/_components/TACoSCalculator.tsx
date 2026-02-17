@@ -181,7 +181,7 @@ export function TACoSCalculator() {
                             <div>
                                 <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Net Margin Impact</h4>
                                 <p className={cn(
-                                    "text-[15px] leading-relaxed max-w-lg transition-colors duration-300 font-medium",
+                                    "text-base leading-relaxed max-w-lg transition-colors duration-300 font-medium",
                                     margin > 0 ? "text-slate-600" : "text-slate-400"
                                 )}>
                                     Advertising is consuming <span className="font-bold text-slate-900">{tacos.toFixed(1)}%</span> of your revenue.
@@ -304,10 +304,10 @@ function InsightItem({ label, value, description, icon: Icon, color, bg }: { lab
             </div>
             <div>
                 <div className="flex items-baseline gap-2 mb-1">
-                    <h4 className="text-sm font-bold text-slate-900 leading-tight">{label}</h4>
-                    <span className={cn("text-sm font-bold", color)}>{value}</span>
+                    <h4 className="text-base font-bold text-slate-900 leading-tight">{label}</h4>
+                    <span className={cn("text-base font-bold", color)}>{value}</span>
                 </div>
-                <p className="text-[13px] text-slate-600 font-medium leading-relaxed">{description}</p>
+                <p className="text-sm text-slate-600 font-medium leading-relaxed">{description}</p>
             </div>
         </div>
     )

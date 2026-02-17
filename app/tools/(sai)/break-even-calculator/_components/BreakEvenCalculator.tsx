@@ -150,7 +150,7 @@ function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, valu
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
                 <div className="flex items-center gap-1.5 mb-1">
-                    <p className="text-xs font-medium text-slate-500">{title}</p>
+                    <p className="text-sm font-semibold text-slate-500">{title}</p>
                     {tooltip && (
                         <TooltipProvider delayDuration={100}>
                             <Tooltip>
@@ -159,7 +159,7 @@ function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, valu
                                         <HelpCircle className="h-3 w-3" />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
                                     {tooltip}
                                 </TooltipContent>
                             </Tooltip>

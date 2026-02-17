@@ -166,7 +166,7 @@ export function ACoSCalculator() {
                             <div>
                                 <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Net Profit Analysis</h4>
                                 <p className={cn(
-                                    "text-[15px] leading-relaxed max-w-sm transition-colors duration-300 font-medium",
+                                    "text-base leading-relaxed max-w-sm transition-colors duration-300 font-medium",
                                     netProfit !== 0 ? "text-slate-600" : "text-slate-400"
                                 )}>
                                     After deducting ad spend from your gross profit, your net return is <span className={cn("font-bold", netProfit > 0 ? "text-emerald-600" : netProfit < 0 ? "text-red-500" : "text-slate-900")}>${netProfit.toFixed(2)}</span>.
@@ -299,10 +299,10 @@ function InsightItem({ label, value, description, icon: Icon, color, bg }: { lab
             </div>
             <div>
                 <div className="flex items-baseline gap-2 mb-1">
-                    <h4 className="text-sm font-bold text-slate-900 leading-tight">{label}</h4>
-                    <span className={cn("text-sm font-bold", color)}>{value}</span>
+                    <h4 className="text-base font-bold text-slate-900 leading-tight">{label}</h4>
+                    <span className={cn("text-base font-bold", color)}>{value}</span>
                 </div>
-                <p className="text-[13px] text-slate-600 font-medium leading-relaxed">{description}</p>
+                <p className="text-sm text-slate-600 font-medium leading-relaxed">{description}</p>
             </div>
         </div>
     )

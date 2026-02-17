@@ -40,11 +40,19 @@ export default function CLVPage() {
                             faqs={[
                                 {
                                     question: "How much should I spend to acquire a customer?",
-                                    answer: "A common rule of thumb is a 3:1 ratio. Your Customer Lifetime Value (CLV) should be 3 times your Cost Per Acquisition (CPA). If Customer Lifetime Value (CLV) is $150, aim for a Cost Per Acquisition (CPA) of $50."
+                                    answer: "A healthy Target Ratio is 3:1. This means your Customer Lifetime Value (LTV) Profit should be 3 times your Cost Per Acquisition (CAC). If your LTV Profit is $300, you can spend up to $100 to acquire that customer while staying profitable."
                                 },
                                 {
-                                    question: "How do I increase Customer Lifetime Value (CLV)?",
-                                    answer: "Increase Average Order Value (Upsells, Bundles), Increase Frequency (Email marketing, New drops), or Increase Lifespan (Subscription models, Loyalty programs)."
+                                    question: "What is a 'good' LTV/CAC ratio?",
+                                    answer: "A ratio of 1:1 means you're just breaking even on acquisition costs. 3:1 is considered healthy for most businesses, while 5:1 or higher is considered 'Elite' and indicates highly efficient growth."
+                                },
+                                {
+                                    question: "How do I increase my Customer Lifetime Value (CLV)?",
+                                    answer: "You can increase CLV by: 1. Raising Average Order Value (upsells/bundling), 2. Improving Purchase Frequency (email marketing/loyalty programs), and 3. Extending Lifespan (better customer support/subscription models)."
+                                },
+                                {
+                                    question: "Why should I include Gross Margin in CLV?",
+                                    answer: "Revenue-based CLV can be misleading. Including Gross Margin shows you the actual PROFIT you keep after product and shipping costs, which is what you actually use to pay for marketing and overhead."
                                 }
                             ]}
                         />

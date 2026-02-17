@@ -149,7 +149,7 @@ function ResultCard({ title, value, icon: Icon }: { title: string, value: React.
     return (
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-                <p className="text-xs font-medium text-slate-500 mb-1">{title}</p>
+                <p className="text-sm font-semibold text-slate-500 mb-1">{title}</p>
                 <p className="text-lg font-bold text-slate-800">{value}</p>
             </div>
             <div className="bg-slate-50 p-2 rounded-lg text-slate-400">

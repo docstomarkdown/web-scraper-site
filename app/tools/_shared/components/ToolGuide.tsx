@@ -60,7 +60,7 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="text-[15px] text-slate-600 leading-relaxed font-medium opacity-90">
+                                    <div className="text-base text-slate-600 leading-relaxed font-medium opacity-90">
                                         {item.description}
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                                         <div className={`text-2xl md:text-3xl font-extrabold ${item.statColor || "text-slate-900"} tracking-tight leading-tight text-center px-1`}>
                                             {item.stat}
                                         </div>
-                                        <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400 bg-white border border-slate-100 px-2.5 py-0.5 rounded-full shadow-sm">
+                                        <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400 bg-white border border-slate-100 px-2.5 py-0.5 rounded-full shadow-sm">
                                             Takeaway
                                         </div>
                                         {item.statLabel && (
