@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, type ChangeEvent, type ElementType } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,126 +8,144 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components";
-import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe, ArrowRight } from "lucide-react";
+import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // --- Constants ---
-const PRIORITY_ZONES = [
-    "America/New_York", "America/Los_Angeles", "America/Chicago",
-    "Europe/London", "Europe/Berlin", "Asia/Shanghai",
-    "Asia/Kolkata", "Asia/Dubai", "Australia/Sydney", "Asia/Singapore"
+
+// Each country maps to one representative IANA timezone
+const COUNTRY_LIST: { name: string; flag: string; code: string; timezone: string; isPriority?: boolean }[] = [
+    // Priority countries (E-commerce hubs)
+    { name: "United States", flag: "🇺🇸", code: "us", timezone: "America/New_York", isPriority: true },
+    { name: "United Kingdom", flag: "🇬🇧", code: "gb", timezone: "Europe/London", isPriority: true },
+    { name: "Germany", flag: "🇩🇪", code: "de", timezone: "Europe/Berlin", isPriority: true },
+    { name: "China", flag: "🇨🇳", code: "cn", timezone: "Asia/Shanghai", isPriority: true },
+    { name: "India", flag: "🇮🇳", code: "in", timezone: "Asia/Kolkata", isPriority: true },
+    { name: "United Arab Emirates", flag: "🇦🇪", code: "ae", timezone: "Asia/Dubai", isPriority: true },
+    { name: "Australia", flag: "🇦🇺", code: "au", timezone: "Australia/Sydney", isPriority: true },
+    { name: "Singapore", flag: "🇸🇬", code: "sg", timezone: "Asia/Singapore", isPriority: true },
+    { name: "Japan", flag: "🇯🇵", code: "jp", timezone: "Asia/Tokyo", isPriority: true },
+    { name: "Canada", flag: "🇨🇦", code: "ca", timezone: "America/Toronto", isPriority: true },
+
+    // Expanded Database (A-Z)
+    { name: "Afghanistan", flag: "🇦🇫", code: "af", timezone: "Asia/Kabul" },
+    { name: "Albania", flag: "🇦🇱", code: "al", timezone: "Europe/Tirane" },
+    { name: "Algeria", flag: "🇩🇿", code: "dz", timezone: "Africa/Algiers" },
+    { name: "Argentina", flag: "🇦🇷", code: "ar", timezone: "America/Argentina/Buenos_Aires" },
+    { name: "Armenia", flag: "🇦🇲", code: "am", timezone: "Asia/Yerevan" },
+    { name: "Austria", flag: "🇦🇹", code: "at", timezone: "Europe/Vienna" },
+    { name: "Azerbaijan", flag: "🇦🇿", code: "az", timezone: "Asia/Baku" },
+    { name: "Bangladesh", flag: "🇧🇩", code: "bd", timezone: "Asia/Dhaka" },
+    { name: "Belarus", flag: "🇧🇾", code: "by", timezone: "Europe/Minsk" },
+    { name: "Belgium", flag: "🇧🇪", code: "be", timezone: "Europe/Brussels" },
+    { name: "Bhutan", flag: "🇧🇹", code: "bt", timezone: "Asia/Thimphu" },
+    { name: "Bolivia", flag: "🇧🇴", code: "bo", timezone: "America/La_Paz" },
+    { name: "Brazil", flag: "🇧🇷", code: "br", timezone: "America/Sao_Paulo" },
+    { name: "Bulgaria", flag: "🇧🇬", code: "bg", timezone: "Europe/Sofia" },
+    { name: "Cambodia", flag: "🇰🇭", code: "kh", timezone: "Asia/Phnom_Penh" },
+    { name: "Chile", flag: "🇨🇱", code: "cl", timezone: "America/Santiago" },
+    { name: "Colombia", flag: "🇨🇴", code: "co", timezone: "America/Bogota" },
+    { name: "Costa Rica", flag: "🇨🇷", code: "cr", timezone: "America/Costa_Rica" },
+    { name: "Croatia", flag: "🇭🇷", code: "hr", timezone: "Europe/Zagreb" },
+    { name: "Czech Republic", flag: "🇨🇿", code: "cz", timezone: "Europe/Prague" },
+    { name: "Denmark", flag: "🇩🇰", code: "dk", timezone: "Europe/Copenhagen" },
+    { name: "Ecuador", flag: "🇪🇨", code: "ec", timezone: "America/Guayaquil" },
+    { name: "Egypt", flag: "🇪🇬", code: "eg", timezone: "Africa/Cairo" },
+    { name: "Estonia", flag: "🇪🇪", code: "ee", timezone: "Europe/Tallinn" },
+    { name: "Ethiopia", flag: "🇪🇹", code: "et", timezone: "Africa/Addis_Ababa" },
+    { name: "Finland", flag: "🇫🇮", code: "fi", timezone: "Europe/Helsinki" },
+    { name: "France", flag: "🇫🇷", code: "fr", timezone: "Europe/Paris" },
+    { name: "Georgia", flag: "🇬🇪", code: "ge", timezone: "Asia/Tbilisi" },
+    { name: "Ghana", flag: "🇬🇭", code: "gh", timezone: "Africa/Accra" },
+    { name: "Greece", flag: "🇬🇷", code: "gr", timezone: "Europe/Athens" },
+    { name: "Guatemala", flag: "🇬🇹", code: "gt", timezone: "America/Guatemala" },
+    { name: "Hong Kong", flag: "🇭🇰", code: "hk", timezone: "Asia/Hong_Kong" },
+    { name: "Hungary", flag: "🇭🇺", code: "hu", timezone: "Europe/Budapest" },
+    { name: "Iceland", flag: "🇮🇸", code: "is", timezone: "Atlantic/Reykjavik" },
+    { name: "Indonesia", flag: "🇮🇩", code: "id", timezone: "Asia/Jakarta" },
+    { name: "Iran", flag: "🇮🇷", code: "ir", timezone: "Asia/Tehran" },
+    { name: "Iraq", flag: "🇮🇶", code: "iq", timezone: "Asia/Baghdad" },
+    { name: "Ireland", flag: "🇮🇪", code: "ie", timezone: "Europe/Dublin" },
+    { name: "Israel", flag: "🇮🇱", code: "il", timezone: "Asia/Jerusalem" },
+    { name: "Italy", flag: "🇮🇹", code: "it", timezone: "Europe/Rome" },
+    { name: "Jamaica", flag: "🇯🇲", code: "jm", timezone: "America/Jamaica" },
+    { name: "Jordan", flag: "🇯🇴", code: "jo", timezone: "Asia/Amman" },
+    { name: "Kazakhstan", flag: "🇰🇿", code: "kz", timezone: "Asia/Almaty" },
+    { name: "Kenya", flag: "🇰🇪", code: "ke", timezone: "Africa/Nairobi" },
+    { name: "Kuwait", flag: "🇰🇼", code: "kw", timezone: "Asia/Kuwait" },
+    { name: "Lebanon", flag: "🇱🇧", code: "lb", timezone: "Asia/Beirut" },
+    { name: "Lithuania", flag: "🇱🇹", code: "lt", timezone: "Europe/Vilnius" },
+    { name: "Luxembourg", flag: "🇱🇺", code: "lu", timezone: "Europe/Luxembourg" },
+    { name: "Malaysia", flag: "🇲🇾", code: "my", timezone: "Asia/Kuala_Lumpur" },
+    { name: "Maldives", flag: "🇲🇻", code: "mv", timezone: "Indian/Maldives" },
+    { name: "Mexico", flag: "🇲🇽", code: "mx", timezone: "America/Mexico_City" },
+    { name: "Morocco", flag: "🇲🇦", code: "ma", timezone: "Africa/Casablanca" },
+    { name: "Myanmar", flag: "🇲🇲", code: "mm", timezone: "Asia/Yangon" },
+    { name: "Nepal", flag: "🇳🇵", code: "np", timezone: "Asia/Kathmandu" },
+    { name: "Netherlands", flag: "🇳🇱", code: "nl", timezone: "Europe/Amsterdam" },
+    { name: "New Zealand", flag: "🇳🇿", code: "nz", timezone: "Pacific/Auckland" },
+    { name: "Nigeria", flag: "🇳🇬", code: "ng", timezone: "Africa/Lagos" },
+    { name: "Norway", flag: "🇳🇴", code: "no", timezone: "Europe/Oslo" },
+    { name: "Oman", flag: "🇴🇲", code: "om", timezone: "Asia/Muscat" },
+    { name: "Pakistan", flag: "🇵🇰", code: "pk", timezone: "Asia/Karachi" },
+    { name: "Panama", flag: "🇵🇦", code: "pa", timezone: "America/Panama" },
+    { name: "Peru", flag: "🇵🇪", code: "pe", timezone: "America/Lima" },
+    { name: "Philippines", flag: "🇵🇭", code: "ph", timezone: "Asia/Manila" },
+    { name: "Poland", flag: "🇵🇱", code: "pl", timezone: "Europe/Warsaw" },
+    { name: "Portugal", flag: "🇵🇹", code: "pt", timezone: "Europe/Lisbon" },
+    { name: "Qatar", flag: "🇶🇦", code: "qa", timezone: "Asia/Qatar" },
+    { name: "Romania", flag: "🇷🇴", code: "ro", timezone: "Europe/Bucharest" },
+    { name: "Russia", flag: "🇷🇺", code: "ru", timezone: "Europe/Moscow" },
+    { name: "Saudi Arabia", flag: "🇸🇦", code: "sa", timezone: "Asia/Riyadh" },
+    { name: "Serbia", flag: "🇷🇸", code: "rs", timezone: "Europe/Belgrade" },
+    { name: "Slovakia", flag: "🇸🇰", code: "sk", timezone: "Europe/Bratislava" },
+    { name: "Slovenia", flag: "🇸🇮", code: "si", timezone: "Europe/Ljubljana" },
+    { name: "South Africa", flag: "🇿🇦", code: "za", timezone: "Africa/Johannesburg" },
+    { name: "South Korea", flag: "🇰🇷", code: "kr", timezone: "Asia/Seoul" },
+    { name: "Spain", flag: "🇪🇸", code: "es", timezone: "Europe/Madrid" },
+    { name: "Sri Lanka", flag: "🇱🇰", code: "lk", timezone: "Asia/Colombo" },
+    { name: "Sweden", flag: "🇸🇪", code: "se", timezone: "Europe/Stockholm" },
+    { name: "Switzerland", flag: "🇨🇭", code: "ch", timezone: "Europe/Zurich" },
+    { name: "Taiwan", flag: "🇹🇼", code: "tw", timezone: "Asia/Taipei" },
+    { name: "Thailand", flag: "🇹🇭", code: "th", timezone: "Asia/Bangkok" },
+    { name: "Turkey", flag: "🇹🇷", code: "tr", timezone: "Europe/Istanbul" },
+    { name: "Ukraine", flag: "🇺🇦", code: "ua", timezone: "Europe/Kyiv" },
+    { name: "Uruguay", flag: "🇺🇾", code: "uy", timezone: "America/Montevideo" },
+    { name: "Uzbekistan", flag: "🇺🇿", code: "uz", timezone: "Asia/Tashkent" },
+    { name: "Venezuela", flag: "🇻🇪", code: "ve", timezone: "America/Caracas" },
+    { name: "Vietnam", flag: "🇻🇳", code: "vn", timezone: "Asia/Ho_Chi_Minh" },
 ];
 
-const COUNTRY_MAP: Record<string, string> = {
-    "America/New_York": "United States", "America/Los_Angeles": "United States", "America/Chicago": "United States", "America/Denver": "United States", "America/Phoenix": "United States", "America/Anchorage": "United States", "Pacific/Honolulu": "United States",
-    "Europe/London": "United Kingdom",
-    "Asia/Shanghai": "China", "Asia/Urumqi": "China",
-    "Asia/Kolkata": "India",
-    "America/Toronto": "Canada", "America/Vancouver": "Canada", "America/Edmonton": "Canada", "America/Winnipeg": "Canada", "America/Halifax": "Canada",
-    "Australia/Sydney": "Australia", "Australia/Melbourne": "Australia", "Australia/Brisbane": "Australia", "Australia/Adelaide": "Australia", "Australia/Perth": "Australia",
-    "Europe/Berlin": "Germany",
-    "Europe/Paris": "France",
-    "Asia/Tokyo": "Japan",
-    "Asia/Singapore": "Singapore",
-    "Asia/Dubai": "United Arab Emirates",
-    "Europe/Moscow": "Russia",
-    "America/Sao_Paulo": "Brazil",
-    "Asia/Seoul": "South Korea",
-    "Asia/Calcutta": "India", // Important: Many systems still use Calcutta
-    "Asia/Colombo": "Sri Lanka",
-    "Asia/Dhaka": "Bangladesh",
-    "Asia/Karachi": "Pakistan",
-    "Asia/Kathmandu": "Nepal",
-    "Asia/Thimphu": "Bhutan",
-    "Asia/Rangoon": "Myanmar",
-    "Asia/Bangkok": "Thailand",
-    "Asia/Ho_Chi_Minh": "Vietnam",
-    "Asia/Jakarta": "Indonesia",
-    "Asia/Kuala_Lumpur": "Malaysia",
-    "Asia/Manila": "Philippines",
-    "Asia/Taipei": "Taiwan",
-    "Europe/Amsterdam": "Netherlands",
-    "Europe/Brussels": "Belgium",
-    "Europe/Madrid": "Spain",
-    "Europe/Rome": "Italy",
-    "Europe/Zurich": "Switzerland",
-    "Europe/Warsaw": "Poland",
-    "Europe/Vienna": "Austria",
-    "Europe/Stockholm": "Sweden",
-    "Europe/Oslo": "Norway",
-    "Europe/Copenhagen": "Denmark",
-    "Europe/Helsinki": "Finland",
-    "Europe/Dublin": "Ireland",
-    "Europe/Lisbon": "Portugal",
-    "Europe/Athens": "Greece",
-    "Europe/Istanbul": "Turkey",
-    "Africa/Cairo": "Egypt",
-    "Africa/Johannesburg": "South Africa",
-    "Africa/Lagos": "Nigeria",
-    "Africa/Nairobi": "Kenya",
-    "Pacific/Auckland": "New Zealand",
-    "America/Mexico_City": "Mexico",
-    "America/Bogota": "Colombia",
-    "America/Lima": "Peru",
-    "America/Santiago": "Chile",
-    "America/Buenos_Aires": "Argentina"
-};
-
-const getCountryName = (id: string, region: string): string => {
-    if (COUNTRY_MAP[id]) return COUNTRY_MAP[id];
-    if (id.startsWith("US/") || id.startsWith("America/Indiana/") || id.startsWith("America/Kentucky/") || id.startsWith("America/North_Dakota/")) return "United States";
-    if (id.startsWith("Canada/")) return "Canada";
-    if (id.startsWith("Australia/")) return "Australia";
-    if (id.startsWith("Brazil/")) return "Brazil";
-    if (id.startsWith("Mexico/")) return "Mexico";
-    return region; // Fallback to continent if specific country not found
-};
-
-const getCountryFlag = (countryName: string): string => {
-    const flags: Record<string, string> = {
-        "United States": "🇺🇸", "United Kingdom": "🇬🇧", "China": "🇨🇳", "India": "🇮🇳",
-        "Canada": "🇨🇦", "Australia": "🇦🇺", "Germany": "🇩🇪", "France": "🇫🇷",
-        "Japan": "🇯🇵", "Singapore": "🇸🇬", "United Arab Emirates": "🇦🇪", "Russia": "🇷🇺",
-        "Brazil": "🇧🇷", "South Korea": "🇰🇷", "Mexico": "🇲🇽", "Spain": "🇪🇸",
-        "Italy": "🇮🇹", "Netherlands": "🇳🇱", "Switzerland": "🇨🇭", "Sweden": "🇸🇪",
-        "Poland": "🇵🇱", "Turkey": "🇹🇷", "Thailand": "🇹🇭", "Vietnam": "🇻🇳",
-        "Indonesia": "🇮🇩", "Malaysia": "🇲🇾", "Philippines": "🇵🇭", "Taiwan": "🇹🇼",
-        "South Africa": "🇿🇦", "Egypt": "🇪🇬", "Nigeria": "🇳🇬", "Kenya": "🇰🇪",
-        "Argentina": "🇦🇷", "Chile": "🇨🇱", "Colombia": "🇨🇴", "Peru": "🇵🇪",
-        "New Zealand": "🇳🇿", "Ireland": "🇮🇪", "Pakistan": "🇵🇰", "Bangladesh": "🇧🇩",
-        "Sri Lanka": "🇱🇰", "Nepal": "🇳🇵", "Saudi Arabia": "🇸🇦", "Israel": "🇮🇱"
-    };
-    return flags[countryName] || "🌐";
-};
-
 // --- Types ---
-type TimeZoneInfo = {
-    id: string; // IANA ID: e.g. "America/New_York"
-    name: string; // Display name: e.g. "New York"
-    region: string; // Continent/Region
-    country: string; // New field for grouping
-    flag: string; // New: Emoji Flag
+type CountryInfo = {
+    name: string;
+    flag: string;
+    code: string;
+    timezone: string; // IANA timezone ID
     isPriority?: boolean;
     offset: number; // Current offset in minutes
-    offsetStr: string; // e.g. "UTC-5"
-    label: string; // Full label for search
+    offsetStr: string; // e.g. "UTC+5:30"
+    label: string; // Full label for search: "🇮🇳 India (UTC+5:30)"
 };
+
+const Flag = ({ code, className }: { code: string; className?: string }) => (
+    <div className={cn("inline-flex items-center justify-center shrink-0 overflow-hidden rounded-[2px] shadow-sm ring-1 ring-slate-200/50", className)}>
+        <img
+            src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
+            alt={code}
+            className="w-full h-full object-cover"
+        />
+    </div>
+);
 
 // --- Helpers ---
 
-// Get all supported IANA time zones and their details
-const getTimeZones = (): TimeZoneInfo[] => {
-    const ids = (Intl as any).supportedValuesOf("timeZone") as string[];
+// Compute offsets for all countries
+const getCountries = (): CountryInfo[] => {
     const now = new Date();
 
-    return ids.map(id => {
-        const parts = id.split("/");
-        const region = parts[0];
-        const city = parts[parts.length - 1].replace(/_/g, " ");
-        const country = getCountryName(id, region);
-        const flag = getCountryFlag(country);
-
-        const tzDate = new Date(now.toLocaleString("en-US", { timeZone: id }));
+    return COUNTRY_LIST.map(c => {
+        const tzDate = new Date(now.toLocaleString("en-US", { timeZone: c.timezone }));
         const utcDate = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
         const offsetMinutes = (tzDate.getTime() - utcDate.getTime()) / 60000;
 
@@ -137,27 +155,15 @@ const getTimeZones = (): TimeZoneInfo[] => {
         const offsetStr = `UTC${sign}${h}${m ? ":" + m : ""}`;
 
         return {
-            id,
-            name: city,
-            region,
-            country,
-            flag,
-            isPriority: PRIORITY_ZONES.includes(id),
+            name: c.name,
+            flag: c.flag,
+            code: c.code,
+            timezone: c.timezone,
+            isPriority: c.isPriority,
             offset: offsetMinutes,
             offsetStr,
-            label: `${flag} ${country} - ${city} (${offsetStr})`
+            label: `${c.flag} ${c.name} (${offsetStr})`
         };
-    }).sort((a, b) => {
-        // 1. Priority first
-        if (a.isPriority && !b.isPriority) return -1;
-        if (!a.isPriority && b.isPriority) return 1;
-
-        // 2. Country alphabetical
-        const countryCompare = a.country.localeCompare(b.country);
-        if (countryCompare !== 0) return countryCompare;
-
-        // 3. City alphabetical
-        return a.name.localeCompare(b.name);
     });
 };
 
@@ -183,28 +189,33 @@ const getTimeOfDayStatus = (hour: number) => {
 export function TimeZonePlanner() {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
     const [baseTime, setBaseTime] = useState("09:00");
-    const [baseZoneId, setBaseZoneId] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
-    const [compareZoneIds, setCompareZoneIds] = useState<string[]>(["UTC", "America/London", "Asia/Tokyo"]);
 
-    const [allZones, setAllZones] = useState<TimeZoneInfo[]>([]);
+    // Find initial country from browser timezone
+    const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const initialCountry = COUNTRY_LIST.find(c => c.timezone === browserTz);
+    const [baseTimezone, setBaseTimezone] = useState(initialCountry?.timezone || "Asia/Kolkata");
+    const [compareTimezones, setCompareTimezones] = useState<string[]>(["Europe/London", "Asia/Tokyo", "America/New_York"]);
+    const [activeCompareIndex, setActiveCompareIndex] = useState(0);
+
+    const [countries, setCountries] = useState<CountryInfo[]>([]);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
-        setAllZones(getTimeZones());
+        setCountries(getCountries());
     }, []);
 
-    const baseZone = useMemo(() => allZones.find(z => z.id === baseZoneId), [allZones, baseZoneId]);
+    const baseCountry = useMemo(() => countries.find((c: CountryInfo) => c.timezone === baseTimezone), [countries, baseTimezone]);
 
-    const calculateTargetTime = (targetId: string) => {
-        if (!baseZone) return null;
-        const targetZone = allZones.find(z => z.id === targetId);
-        if (!targetZone) return null;
+    const calculateTargetTime = (targetTimezone: string) => {
+        if (!baseCountry) return null;
+        const targetCountry = countries.find((c: CountryInfo) => c.timezone === targetTimezone);
+        if (!targetCountry) return null;
 
         const [h, m] = baseTime.split(":").map(Number);
         const baseTotalMinutes = h * 60 + m;
 
         // Offset difference
-        const diff = targetZone.offset - baseZone.offset;
+        const diff = targetCountry.offset - baseCountry.offset;
         const targetTotalMinutes = baseTotalMinutes + diff;
 
         // Day offset
@@ -226,19 +237,19 @@ export function TimeZonePlanner() {
             time: formatTime(normalizedMinutes),
             dayOffset,
             status,
-            zone: targetZone
+            country: targetCountry
         };
     };
 
-    const addZone = (id: string) => {
-        if (!compareZoneIds.includes(id) && id !== baseZoneId) {
-            setCompareZoneIds(prev => [...prev, id]);
+    const addCountry = (timezone: string) => {
+        if (!compareTimezones.includes(timezone) && timezone !== baseTimezone) {
+            setCompareTimezones((prev: string[]) => [...prev, timezone]);
         }
         setIsMenuOpen(false);
     };
 
-    const removeZone = (id: string) => {
-        setCompareZoneIds(prev => prev.filter(zid => zid !== id));
+    const removeCountry = (timezone: string) => {
+        setCompareTimezones((prev: string[]) => prev.filter((tz: string) => tz !== timezone));
     };
 
     return (
@@ -268,7 +279,7 @@ export function TimeZonePlanner() {
                                 <Input
                                     type="date"
                                     value={selectedDate}
-                                    onChange={(e) => setSelectedDate(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedDate(e.target.value)}
                                     className="h-12 bg-slate-50 border-slate-200 focus:ring-blue-500 rounded-lg font-bold text-slate-800"
                                 />
                             </div>
@@ -281,62 +292,65 @@ export function TimeZonePlanner() {
                                 <Input
                                     type="time"
                                     value={baseTime}
-                                    onChange={(e) => setBaseTime(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setBaseTime(e.target.value)}
                                     className="h-12 bg-slate-50 border-slate-200 focus:ring-blue-500 rounded-lg font-bold text-slate-800"
                                 />
                             </div>
 
-                            {/* Base Zone Search */}
+                            {/* My Location - Country Dropdown */}
                             <div className="space-y-3">
                                 <Label className="text-xs font-black uppercase text-slate-400 tracking-widest flex items-center gap-2">
                                     <MapPin className="h-3 w-3" /> My Location
                                 </Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant="outline" role="combobox" className="w-full h-12 justify-between bg-white border-slate-200 hover:bg-slate-50 rounded-lg px-4 font-bold text-slate-800 shadow-sm border-b-2">
-                                            {baseZone ? baseZone.label : "Select Zone..."}
+                                        <Button {...({ variant: "outline", role: "combobox", className: "w-full h-12 justify-between bg-white border-slate-200 hover:bg-slate-50 rounded-lg px-4 font-bold text-slate-800 shadow-sm border-b-2" } as any)}>
+                                            <div className="flex items-center gap-2">
+                                                {baseCountry && <Flag code={baseCountry.code} className="w-5 h-3.5" />}
+                                                {baseCountry ? baseCountry.name : "Select Country..."}
+                                            </div>
                                             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50 text-blue-500" />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[300px] p-0 shadow-2xl border-none">
+                                    <PopoverContent className="w-[320px] p-0 shadow-2xl border-none">
                                         <Command className="border border-slate-200">
-                                            <CommandInput placeholder="Search country or city..." className="h-12" />
+                                            <CommandInput placeholder="Search country..." className="h-12" />
                                             <CommandList>
-                                                <CommandEmpty>No location found.</CommandEmpty>
+                                                <CommandEmpty>No country found.</CommandEmpty>
                                                 <CommandGroup heading="E-commerce Hubs">
-                                                    {allZones.filter(z => z.isPriority).map((zone) => (
+                                                    {countries.filter((c: CountryInfo) => c.isPriority).map((country: CountryInfo) => (
                                                         <CommandItem
-                                                            key={zone.id}
-                                                            value={zone.label}
-                                                            onSelect={() => setBaseZoneId(zone.id)}
+                                                            key={country.timezone}
+                                                            value={country.label}
+                                                            onSelect={() => setBaseTimezone(country.timezone)}
                                                             className="py-3 px-4 aria-selected:bg-blue-50"
                                                         >
-                                                            <Check className={cn("mr-2 h-4 w-4 text-blue-600", baseZoneId === zone.id ? "opacity-100" : "opacity-0")} />
-                                                            <div className="flex flex-col">
-                                                                <span className="font-bold text-slate-900">{zone.flag} {zone.country}</span>
-                                                                <span className="text-xs text-slate-400 font-medium">{zone.name} • {zone.offsetStr}</span>
+                                                            <Check className={cn("mr-2 h-4 w-4 text-blue-600", baseTimezone === country.timezone ? "opacity-100" : "opacity-0")} />
+                                                            <div className="flex items-center gap-2">
+                                                                <Flag code={country.code} className="w-5 h-3.5" />
+                                                                <span className="font-bold text-slate-900">{country.name}</span>
                                                             </div>
+                                                            <span className="ml-auto text-xs text-slate-400 font-medium">{country.offsetStr}</span>
                                                         </CommandItem>
                                                     ))}
                                                 </CommandGroup>
-                                                {Array.from(new Set(allZones.filter(z => !z.isPriority).map(z => z.country))).sort().map(country => (
-                                                    <CommandGroup key={country} heading={country}>
-                                                        {allZones.filter(z => !z.isPriority && z.country === country).map((zone) => (
-                                                            <CommandItem
-                                                                key={zone.id}
-                                                                value={zone.label}
-                                                                onSelect={() => setBaseZoneId(zone.id)}
-                                                                className="py-3 px-4 aria-selected:bg-blue-50"
-                                                            >
-                                                                <Check className={cn("mr-2 h-4 w-4 text-blue-600", baseZoneId === zone.id ? "opacity-100" : "opacity-0")} />
-                                                                <div className="flex flex-col">
-                                                                    <span className="font-bold text-slate-900">{zone.flag} {zone.country}</span>
-                                                                    <span className="text-xs text-slate-400 font-medium">{zone.name} • {zone.offsetStr}</span>
-                                                                </div>
-                                                            </CommandItem>
-                                                        ))}
-                                                    </CommandGroup>
-                                                ))}
+                                                <CommandGroup heading="All Countries">
+                                                    {countries.filter((c: CountryInfo) => !c.isPriority).map((country: CountryInfo) => (
+                                                        <CommandItem
+                                                            key={country.timezone}
+                                                            value={country.label}
+                                                            onSelect={() => setBaseTimezone(country.timezone)}
+                                                            className="py-3 px-4 aria-selected:bg-blue-50"
+                                                        >
+                                                            <Check className={cn("mr-2 h-4 w-4 text-blue-600", baseTimezone === country.timezone ? "opacity-100" : "opacity-0")} />
+                                                            <div className="flex items-center gap-2">
+                                                                <Flag code={country.code} className="w-5 h-3.5" />
+                                                                <span className="font-bold text-slate-900">{country.name}</span>
+                                                            </div>
+                                                            <span className="ml-auto text-xs text-slate-400 font-medium">{country.offsetStr}</span>
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
                                             </CommandList>
                                         </Command>
                                     </PopoverContent>
@@ -344,56 +358,56 @@ export function TimeZonePlanner() {
                             </div>
                         </div>
 
-                        {/* Add Location Search Bar */}
+                        {/* Add Country Search Bar */}
                         <div className="mt-8 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
                             <div className="flex items-center gap-2 text-slate-400 font-medium text-sm italic">
-                                💡 Tip: Add your supplier or VA's location to check their local status.
+                                💡 Tip: Add your supplier or VA&apos;s country to check their local status.
                             </div>
                             <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                                 <PopoverTrigger asChild>
                                     <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50 px-8 h-12 rounded-xl font-bold flex gap-2 transition-all hover:scale-105 active:scale-95">
-                                        <Plus className="h-4 w-4" /> Add City / Region
+                                        <Plus className="h-4 w-4" /> Add Country
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-[300px] p-0 shadow-2xl border border-slate-100">
+                                <PopoverContent className="w-[320px] p-0 shadow-2xl border border-slate-100">
                                     <Command>
-                                        <CommandInput placeholder="Search country or city..." className="h-12" />
+                                        <CommandInput placeholder="Search country..." className="h-12" />
                                         <CommandList className="max-h-[300px] overflow-y-auto">
-                                            <CommandEmpty>No location found.</CommandEmpty>
+                                            <CommandEmpty>No country found.</CommandEmpty>
                                             <CommandGroup heading="E-commerce Hubs">
-                                                {allZones.filter(z => z.isPriority && z.id !== baseZoneId && !compareZoneIds.includes(z.id)).map((zone) => (
+                                                {countries.filter((c: CountryInfo) => c.isPriority && c.timezone !== baseTimezone && !compareTimezones.includes(c.timezone)).map((country: CountryInfo) => (
                                                     <CommandItem
-                                                        key={zone.id}
-                                                        value={zone.label}
-                                                        onSelect={() => addZone(zone.id)}
+                                                        key={country.timezone}
+                                                        value={country.label}
+                                                        onSelect={() => addCountry(country.timezone)}
                                                         className="py-3 px-4 aria-selected:bg-blue-50 cursor-pointer"
                                                     >
                                                         <Plus className="mr-2 h-4 w-4 text-slate-300" />
-                                                        <div className="flex flex-col">
-                                                            <span className="font-bold text-slate-900">{zone.flag} {zone.country}</span>
-                                                            <span className="text-xs text-slate-400 font-medium">{zone.name} • {zone.offsetStr}</span>
+                                                        <div className="flex items-center gap-2">
+                                                            <Flag code={country.code} className="w-5 h-3.5" />
+                                                            <span className="font-bold text-slate-900">{country.name}</span>
                                                         </div>
+                                                        <span className="ml-auto text-xs text-slate-400 font-medium">{country.offsetStr}</span>
                                                     </CommandItem>
                                                 ))}
                                             </CommandGroup>
-                                            {Array.from(new Set(allZones.filter(z => !z.isPriority && z.id !== baseZoneId && !compareZoneIds.includes(z.id)).map(z => z.country))).sort().map(country => (
-                                                <CommandGroup key={country} heading={country}>
-                                                    {allZones.filter(z => !z.isPriority && z.country === country && z.id !== baseZoneId && !compareZoneIds.includes(z.id)).map((zone) => (
-                                                        <CommandItem
-                                                            key={zone.id}
-                                                            value={zone.label}
-                                                            onSelect={() => addZone(zone.id)}
-                                                            className="py-3 px-4 aria-selected:bg-blue-50 cursor-pointer"
-                                                        >
-                                                            <Plus className="mr-2 h-4 w-4 text-slate-300" />
-                                                            <div className="flex flex-col">
-                                                                <span className="font-bold text-slate-900">{zone.flag} {zone.country}</span>
-                                                                <span className="text-xs text-slate-400 font-medium">{zone.name} • {zone.offsetStr}</span>
-                                                            </div>
-                                                        </CommandItem>
-                                                    ))}
-                                                </CommandGroup>
-                                            ))}
+                                            <CommandGroup heading="All Countries">
+                                                {countries.filter((c: CountryInfo) => !c.isPriority && c.timezone !== baseTimezone && !compareTimezones.includes(c.timezone)).map((country: CountryInfo) => (
+                                                    <CommandItem
+                                                        key={country.timezone}
+                                                        value={country.label}
+                                                        onSelect={() => addCountry(country.timezone)}
+                                                        className="py-3 px-4 aria-selected:bg-blue-50 cursor-pointer"
+                                                    >
+                                                        <Plus className="mr-2 h-4 w-4 text-slate-300" />
+                                                        <div className="flex items-center gap-2">
+                                                            <Flag code={country.code} className="w-5 h-3.5" />
+                                                            <span className="font-bold text-slate-900">{country.name}</span>
+                                                        </div>
+                                                        <span className="ml-auto text-xs text-slate-400 font-medium">{country.offsetStr}</span>
+                                                    </CommandItem>
+                                                ))}
+                                            </CommandGroup>
                                         </CommandList>
                                     </Command>
                                 </PopoverContent>
@@ -412,12 +426,14 @@ export function TimeZonePlanner() {
                             </h3>
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Global Status Tracking</p>
                         </div>
-                        {compareZoneIds.length > 0 && (
+                        {compareTimezones.length > 0 && (
                             <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setCompareZoneIds([])}
-                                className="text-xs font-bold text-slate-500 hover:text-red-500 border-slate-200 bg-white"
+                                {...({
+                                    variant: "outline",
+                                    size: "sm",
+                                    onClick: () => setCompareTimezones([]),
+                                    className: "text-xs font-bold text-slate-500 hover:text-red-500 border-slate-200 bg-white"
+                                } as any)}
                             >
                                 Reset View
                             </Button>
@@ -425,17 +441,23 @@ export function TimeZonePlanner() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {compareZoneIds.map((zoneId) => {
-                            const result = calculateTargetTime(zoneId);
+                        {compareTimezones.map((tz: string) => {
+                            const result = calculateTargetTime(tz);
                             if (!result) return null;
 
-                            const StatusIcon = result.status.icon as React.ElementType;
+                            const StatusIcon = result.status.icon as ElementType;
 
                             return (
-                                <FadeIn key={zoneId}>
+                                <FadeIn key={tz}>
                                     <ResultFeedbackCard
                                         variant="compact"
-                                        title={result.zone.name}
+                                        hideChildrenBorder={true}
+                                        title={
+                                            <div className="flex items-center gap-2">
+                                                <Flag code={result.country.code} className="w-5 h-3.5" />
+                                                <span className="font-bold text-slate-900">{result.country.name}</span>
+                                            </div>
+                                        }
                                         titleLabel={
                                             <>
                                                 <StatusIcon className="h-3.5 w-3.5" />
@@ -450,12 +472,14 @@ export function TimeZonePlanner() {
                                             result.status.border
                                         )}
                                         className={cn(
-                                            "group transition-all duration-500 hover:translate-y-[-8px] hover:shadow-2xl relative border-b-4 overflow-hidden",
-                                            result.status.bg + "/30", // Lighter tint
-                                            result.status.border
+                                            "group transition-all duration-500 hover:translate-y-[-8px] hover:shadow-2xl relative overflow-hidden",
+                                            result.status.label === "Business Hours" ? "bg-emerald-50/50 border-emerald-200" :
+                                                result.status.label === "Morning" ? "bg-amber-50/50 border-amber-200" :
+                                                    result.status.label === "Evening" ? "bg-blue-50/50 border-blue-200" :
+                                                        "bg-slate-50/50 border-slate-200"
                                         )}
                                         mainValue={
-                                            <div className="space-y-4">
+                                            <div className="space-y-8">
                                                 <div className="flex items-baseline gap-2">
                                                     <span className="font-black tracking-tighter text-4xl text-slate-900">{result.time}</span>
                                                     {result.dayOffset !== 0 && (
@@ -467,58 +491,26 @@ export function TimeZonePlanner() {
                                                     )}
                                                 </div>
 
-                                                {/* 24h Timeline Visualizer */}
-                                                <div className="space-y-1.5">
-                                                    <div className="flex items-center justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                        <span>00:00</span>
-                                                        <span>12:00</span>
-                                                        <span>23:59</span>
+                                                {/* Metadata inside mainValue to avoid automatic children border */}
+                                                <div className="flex items-center justify-between pt-4 opacity-60">
+                                                    <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
+                                                        <Globe className="h-3.5 w-3.5 opacity-40 text-blue-500" />
+                                                        <span className="uppercase tracking-widest truncate max-w-[120px]">{result.country.timezone}</span>
                                                     </div>
-                                                    <div className="h-1.5 w-full bg-slate-200/50 rounded-full flex overflow-hidden border border-slate-100/50">
-                                                        {/* Morning (0-9) */}
-                                                        <div className="h-full bg-slate-300/30 w-[37.5%]" />
-                                                        {/* Business (9-17) */}
-                                                        <div className="h-full bg-emerald-400/80 w-[33.3%]" />
-                                                        {/* Night (17-24) */}
-                                                        <div className="h-full bg-slate-400/50 w-[29.2%]" />
-                                                    </div>
-                                                    {/* Current Indicator Dot */}
-                                                    <div className="relative w-full h-1">
-                                                        {(() => {
-                                                            const [h, m] = result.time.split(' ')[0].split(':').map(Number);
-                                                            const ampm = result.time.split(' ')[1];
-                                                            const hour24 = ampm === 'PM' ? (h === 12 ? 12 : h + 12) : (h === 12 ? 0 : h);
-                                                            const pos = ((hour24 * 60 + m) / 1440) * 100;
-                                                            return (
-                                                                <div
-                                                                    className="absolute top-[-8px] w-2.5 h-2.5 bg-blue-600 rounded-full border-2 border-white shadow-md z-10 transition-all duration-1000"
-                                                                    style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}
-                                                                />
-                                                            );
-                                                        })()}
+                                                    <div className="bg-slate-50 px-3 py-1 rounded-lg border border-slate-200 font-black text-slate-600 text-[10px] shadow-sm tracking-tighter">
+                                                        {result.country.offsetStr}
                                                     </div>
                                                 </div>
                                             </div>
                                         }
                                     >
                                         <button
-                                            onClick={() => removeZone(zoneId)}
+                                            onClick={() => removeCountry(tz)}
                                             className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all p-2 bg-white/90 hover:bg-red-500 hover:text-white shadow-md rounded-xl text-slate-400 z-20 hover:scale-110 active:scale-90"
-                                            title="Remove Time Zone"
+                                            title="Remove Country"
                                         >
                                             <Trash2 className="h-4 w-4" />
                                         </button>
-
-                                        {/* Metadata */}
-                                        <div className="mt-8 flex items-center justify-between">
-                                            <div className="flex items-center gap-2 text-xs font-black text-slate-400">
-                                                <MapPin className="h-3.5 w-3.5 opacity-40 text-blue-500" />
-                                                <span className="uppercase tracking-widest">{result.zone.id.split('/')[0]}</span>
-                                            </div>
-                                            <div className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-lg border border-slate-200/60 font-black text-blue-600 text-[10px] shadow-sm tracking-tighter">
-                                                {result.zone.offsetStr}
-                                            </div>
-                                        </div>
                                     </ResultFeedbackCard>
                                 </FadeIn>
                             );
@@ -529,4 +521,5 @@ export function TimeZonePlanner() {
         </FadeIn>
     );
 }
+
 
