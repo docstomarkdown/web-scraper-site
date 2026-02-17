@@ -218,60 +218,55 @@ export function MadhuToolTemplate({
                     <FadeIn delay={0.1}>
                         <section id="how-to-use" className="relative max-w-4xl mx-auto">
                             <div className="flex items-center gap-4 mb-10 pb-4 border-b border-slate-200">
-                                <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
+                                <div className="p-2 bg-blue-50 rounded-full text-blue-600">
                                     <HelpCircle className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{howToUseTitle}</h2>
+                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{howToUseTitle}</h2>
                             </div>
 
-                            <div className="relative max-w-2xl mx-auto pl-4 sm:pl-8">
-                                {/* Vertical Connector Line */}
-                                <div className="absolute left-[34px] sm:left-[54px] top-8 bottom-8 w-0.5 bg-blue-100 -z-10" />
+                            <div className="max-w-3xl mx-auto space-y-6">
+                                {howToUseSteps.map((step, index) => {
+                                    const Icon = step.icon
+                                    const stepNumber = (index + 1).toString().padStart(2, '0')
 
-                                <div className="space-y-6">
-                                    {howToUseSteps.map((step, index) => {
-                                        const Icon = step.icon
-                                        const stepNumber = (index + 1).toString().padStart(2, '0')
-
-                                        return (
-                                            <div key={index} className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
-                                                <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
-                                                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    return (
+                                        <div key={index} className="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
+                                            <div className="flex items-start gap-4 sm:gap-6">
+                                                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 transition-transform duration-300 group-hover:scale-110">
+                                                    <Icon className="w-6 h-6" />
                                                 </div>
                                                 <div className="flex-1">
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full tracking-wider">
+                                                    <div className="mb-1">
+                                                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
                                                             Step {stepNumber}
                                                         </span>
                                                     </div>
                                                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">{step.title}</h3>
-                                                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: step.description }} />
+                                                    <p className="text-sm text-slate-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: step.description }} />
                                                 </div>
-                                            </div>
-                                        )
-                                    })}
-
-                                    {/* Goal Step */}
-                                    {howToUseGoal && (
-                                        <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
-                                            {(() => {
-                                                const GoalIcon = howToUseGoal.icon
-                                                return (
-                                                    <div className="relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white z-10 shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:scale-110">
-                                                        <GoalIcon className="w-6 h-6 sm:w-7 sm:h-7" />
-                                                    </div>
-                                                )
-                                            })()}
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
-                                                </div>
-                                                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">{howToUseGoal.title}</h3>
-                                                <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: howToUseGoal.description }} />
                                             </div>
                                         </div>
-                                    )}
-                                </div>
+                                    )
+                                })}
+
+                                {/* Goal Step */}
+                                {howToUseGoal && (
+                                    <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
+                                        <div className="relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white z-10 shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:scale-110">
+                                            {(() => {
+                                                const GoalIcon = howToUseGoal.icon
+                                                return <GoalIcon className="w-6 h-6 sm:w-7 sm:h-7" />
+                                            })()}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
+                                            </div>
+                                            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">{howToUseGoal.title}</h3>
+                                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: howToUseGoal.description }} />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </section>
                     </FadeIn>

@@ -328,16 +328,16 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                     </div>
                                 </div>
 
-                                <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/40 p-5 sm:p-6 rounded-2xl border-2 border-blue-200 shadow-sm shadow-blue-100/20">
-                                    <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-500 border border-blue-400 rounded-xl flex items-center justify-center text-white z-10 shadow-sm">
-                                        <Calculator className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
+                                    <div className="relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white z-10 shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:scale-110">
+                                        <Calculator className="w-6 h-6 sm:w-7 sm:h-7" />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="text-[10px] font-bold text-white bg-blue-600 px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">The Goal</span>
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Analyze Volume & Conversion</h3>
-                                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">Analyze Volume & Conversion</h3>
+                                        <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90">
                                             Review the <b>Total Volume</b> and the <b>Given vs Result</b> table. These live calculations provide precise cubic data and conversions for your products.
                                         </p>
                                     </div>

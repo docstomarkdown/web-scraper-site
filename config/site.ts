@@ -179,6 +179,8 @@ export const toolsGroups = [
       {
         title: "Lead Time Calculator",
         href: "/tools/lead-time-calculator",
+      },
+      {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },

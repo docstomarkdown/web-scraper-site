@@ -9,7 +9,6 @@ import {
     Copy,
     RefreshCw,
     XCircle,
-    ScanLine,
     ShieldCheck,
     ArrowRight,
     Barcode as BarcodeIcon,
@@ -19,7 +18,7 @@ import {
     ChevronUp
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { FadeIn, ResultFeedbackCard, ToolSectionHeader, ScannerModal } from "@/app/tools/_shared/components"
+import { FadeIn, ResultFeedbackCard, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Barcode from 'react-barcode'
@@ -227,7 +226,7 @@ export function Validator() {
     }
 
     // useBarcodeScanner Hook
-    const { isScanning, setIsScanning, scannerError, handleFileUpload } = useBarcodeScanner({
+    const { handleFileUpload } = useBarcodeScanner({
         onScan: (decodedText) => {
             setInputCode(decodedText)
             setResult(validateBarcode(decodedText))
@@ -237,7 +236,14 @@ export function Validator() {
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            const offset = 100;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         }
     };
 
@@ -261,17 +267,10 @@ export function Validator() {
                 onChange={handleFileUpload}
             />
 
-            {/* Scanner Modal */}
-            <ScannerModal
-                isOpen={isScanning}
-                onOpenChange={setIsScanning}
-                error={scannerError}
-            />
-
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
-                {/* LEFT: Input (Col Span 5) */}
-                <div className="lg:col-span-5">
+                {/* LEFT: Input (Col Span 6) */}
+                <div className="lg:col-span-6">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm overflow-hidden h-full flex flex-col bg-white">
                             <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100 flex flex-row items-center justify-between space-y-0">
@@ -298,14 +297,14 @@ export function Validator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <CardDescription>Enter your barcode number or scan an image below.</CardDescription>
+                                    <CardDescription>Enter your barcode number or upload an image below.</CardDescription>
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-6 pt-6">
                                 <div className="space-y-2">
                                     <div className="flex justify-between items-center text-sm font-bold text-slate-600">
                                         <Label htmlFor="barcode-input">Barcode Number</Label>
-                                        <span className="text-[10px] font-mono opacity-50">UPC / EAN</span>
+                                        <span className="text-xs font-mono opacity-50 uppercase">UPC / EAN</span>
                                     </div>
                                     <Input
                                         id="barcode-input"
@@ -315,24 +314,13 @@ export function Validator() {
                                         className="h-14 text-xl font-mono focus-visible:ring-primary shadow-sm bg-white"
                                         autoComplete="off"
                                     />
-                                    <p className="text-xs text-slate-400">
-                                        Supports UPC-A (12), EAN-13 (13), EAN-8 (8).
-                                    </p>
 
 
                                     {/* Scan Controls */}
-                                    <div className="grid grid-cols-2 gap-3 pt-2">
+                                    <div className="pt-2">
                                         <Button
                                             variant="secondary"
-                                            className="h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
-                                            onClick={() => setIsScanning(true)}
-                                        >
-                                            <ScanLine className="w-4 h-4 mr-2 text-blue-500" />
-                                            Scan Camera
-                                        </Button>
-                                        <Button
-                                            variant="secondary"
-                                            className="h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
+                                            className="w-full h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
                                             onClick={() => document.getElementById('barcode-upload')?.click()}
                                         >
                                             <div className="flex items-center">
@@ -380,36 +368,25 @@ export function Validator() {
                     </FadeIn>
                 </div>
 
-                {/* RIGHT: Results (Col Span 7) */}
-                <div className="lg:col-span-7">
+                {/* RIGHT: Results (Col Span 6) */}
+                <div className="lg:col-span-6">
                     <FadeIn delay={0.4} direction="left" className="h-full">
                         <div className="space-y-6">
                             {/* Blue Result Card (Always Visible) */}
                             <ResultFeedbackCard
                                 variant={result && !result.isValid ? "warning" : "default"}
                                 title="Validation Status"
-                                titleLabel="Live"
+                                titleLabel={!inputCode ? "Ready" : result?.isValid ? "Valid" : "Invalid"}
                                 valueColor={result && !result.isValid ? 'text-red-300' : 'text-white'}
                                 mainValue={
                                     <div className="flex items-baseline gap-3">
                                         <span>
                                             {inputCode || "000000000000"}
                                         </span>
-                                        {inputCode && result && (
-                                            <span className={`text-sm font-bold px-3 py-1 rounded-full align-middle ${result.isValid ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/30 text-red-200'}`}>
-                                                {result.isValid ? 'VALID' : 'INVALID'}
-                                            </span>
-                                        )}
-                                        {!inputCode && (
-                                            <span className="text-sm font-bold px-3 py-1 rounded-full bg-slate-700/50 text-slate-300 align-middle">
-                                                READY
-                                            </span>
-                                        )}
                                     </div>
                                 }
                             >
-                                <div className="space-y-3 border-t border-white/10 pt-4 mt-2">
-                                    <Row label="Format" value={result?.format || "-"} className="text-slate-300" />
+                                <div className="space-y-3 mt-2">
                                     <Row
                                         label={
                                             <div className="flex items-center gap-1.5">

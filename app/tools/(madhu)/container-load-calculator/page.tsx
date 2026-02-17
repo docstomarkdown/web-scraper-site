@@ -67,7 +67,14 @@ export default function ContainerLoadCalculator() {
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            const offset = 100;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         }
     }
 

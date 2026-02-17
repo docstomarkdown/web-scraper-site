@@ -305,7 +305,14 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use')
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
+            const offset = 120
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY
+            const offsetPosition = elementPosition - offset
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            })
         }
     }
 
@@ -366,25 +373,32 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
 
                             {/* Box Dimensions & Weight */}
                             <div className="space-y-3">
-                                <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                    Box details
-                                </label>
+                                <div className="flex items-center justify-between">
+                                    <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                        Box details
+                                    </label>
+                                    <button
+                                        onClick={scrollToGuide}
+                                        className="text-slate-300 hover:text-blue-600 transition-colors"
+                                    >
+                                        <HelpCircle className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                                     {([
-                                        { id: 'length' as const, label: `Length (${unit})`, placeholder: "12" },
-                                        { id: 'width' as const, label: `Width (${unit})`, placeholder: "10" },
-                                        { id: 'height' as const, label: `Height (${unit})`, placeholder: "8" },
-                                        { id: 'weight' as const, label: 'Weight (lb)', placeholder: "5" }
+                                        { id: 'length' as const, placeholder: "Length" },
+                                        { id: 'width' as const, placeholder: "Width" },
+                                        { id: 'height' as const, placeholder: "Height" },
+                                        { id: 'weight' as const, placeholder: "Weight" }
                                     ] as const).map((field) => (
                                         <div key={field.id}>
-                                            <label className="text-[10px] font-bold text-slate-400 mb-1 block pl-1">{field.label}</label>
                                             <div className="relative">
                                                 <Input
                                                     type="number"
                                                     value={boxDimensions[field.id]}
                                                     onChange={(e) => handleBoxChange(field.id, e.target.value)}
-                                                    className="h-10 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-12 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                    className="h-11 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 text-left pl-4 pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                                     placeholder={field.placeholder}
                                                 />
                                                 <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md w-[22px]">
@@ -434,7 +448,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <div className="font-bold text-slate-900">{type.label}</div>
+                                                        <div className="font-semibold text-slate-700">{type.label}</div>
                                                         <div className="text-xs text-slate-500">{type.dimensions}</div>
                                                     </div>
                                                     <div className={cn(
@@ -453,10 +467,18 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
 
                                 {/* Stack Limits */}
                                 <div className="space-y-4">
-                                    <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                        Stack limits
-                                    </label>
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                            Stack limits
+                                        </label>
+                                        <button
+                                            onClick={scrollToGuide}
+                                            className="text-slate-300 hover:text-blue-600 transition-colors"
+                                        >
+                                            <HelpCircle className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
                                     <div className="space-y-3 p-3 bg-slate-50/50 rounded-lg border border-slate-200">
                                         {/* Preset Dropdown */}
                                         <div className="space-y-1.5">
@@ -469,6 +491,8 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                     if (value !== "custom") {
                                                         const values = STACK_PRESETS[value]
                                                         setStackLimits(values)
+                                                    } else {
+                                                        setStackLimits({ maxHeight: "", weightLimit: "" })
                                                     }
                                                     setSelectedPreset(value)
                                                 }}
@@ -548,36 +572,26 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                         <div className="h-px bg-slate-200 -mx-1" />
 
                                         <div className="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="text-[10px] font-bold text-slate-500 mb-1.5 block pl-1">Max height (in)</label>
-                                                <Input
-                                                    type="number"
-                                                    value={stackLimits.maxHeight}
-                                                    onChange={(e) => {
-                                                        handleStackLimitChange('maxHeight', e.target.value)
-                                                        setSelectedPreset("custom")
-                                                    }}
-                                                    className={cn(
-                                                        "h-10 w-full text-sm font-bold bg-white transition-all",
-                                                        selectedPreset === "custom" ? "border-blue-500 ring-2 ring-blue-500/10" : "border-slate-300"
-                                                    )}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="text-[10px] font-bold text-slate-500 mb-1.5 block pl-1">Weight limit (lb)</label>
-                                                <Input
-                                                    type="number"
-                                                    value={stackLimits.weightLimit}
-                                                    onChange={(e) => {
-                                                        handleStackLimitChange('weightLimit', e.target.value)
-                                                        setSelectedPreset("custom")
-                                                    }}
-                                                    className={cn(
-                                                        "h-10 w-full text-sm font-bold bg-white transition-all",
-                                                        selectedPreset === "custom" ? "border-blue-500 ring-2 ring-blue-500/10" : "border-slate-300"
-                                                    )}
-                                                />
-                                            </div>
+                                            <Input
+                                                type="number"
+                                                value={stackLimits.maxHeight}
+                                                onChange={(e) => {
+                                                    handleStackLimitChange('maxHeight', e.target.value)
+                                                    setSelectedPreset("custom")
+                                                }}
+                                                placeholder="Max height"
+                                                className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                            />
+                                            <Input
+                                                type="number"
+                                                value={stackLimits.weightLimit}
+                                                onChange={(e) => {
+                                                    handleStackLimitChange('weightLimit', e.target.value)
+                                                    setSelectedPreset("custom")
+                                                }}
+                                                placeholder="Weight limit"
+                                                className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -588,24 +602,20 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                 <div className="space-y-4 p-4 bg-blue-50/50 rounded-lg border border-blue-100">
                                     <label className="text-xs font-bold text-blue-600 pl-1">Custom pallet dimensions (inches)</label>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="text-[10px] text-slate-500 mb-1 block font-bold pl-1">Length</label>
-                                            <Input
-                                                type="number"
-                                                value={customPallet.length}
-                                                onChange={(e) => handleCustomPalletChange('length', e.target.value)}
-                                                className="h-10 w-full text-sm border-slate-300 bg-white px-3 font-bold"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="text-[10px] text-slate-500 mb-1 block font-bold pl-1">Width</label>
-                                            <Input
-                                                type="number"
-                                                value={customPallet.width}
-                                                onChange={(e) => handleCustomPalletChange('width', e.target.value)}
-                                                className="h-10 w-full text-sm border-slate-300 bg-white px-3 font-bold"
-                                            />
-                                        </div>
+                                        <Input
+                                            type="number"
+                                            value={customPallet.length}
+                                            onChange={(e) => handleCustomPalletChange('length', e.target.value)}
+                                            placeholder="Length"
+                                            className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                        />
+                                        <Input
+                                            type="number"
+                                            value={customPallet.width}
+                                            onChange={(e) => handleCustomPalletChange('width', e.target.value)}
+                                            placeholder="Width"
+                                            className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                        />
                                     </div>
                                 </div>
                             )}

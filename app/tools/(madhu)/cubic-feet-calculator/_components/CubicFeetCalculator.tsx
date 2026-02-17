@@ -137,7 +137,14 @@ ${results.inches.toLocaleString()} Cubic Inches
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            const offset = 120
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY
+            const offsetPosition = elementPosition - offset
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            })
         }
     }
 
@@ -195,10 +202,18 @@ ${results.inches.toLocaleString()} Cubic Inches
                             </div>
                             {/* Inputs Grid */}
                             <div className="space-y-4">
-                                <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                    Dimensions ({unit})
-                                </label>
+                                <div className="flex items-center justify-between">
+                                    <label className="text-base font-bold text-slate-400 flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                        Dimensions ({unit})
+                                    </label>
+                                    <button
+                                        onClick={scrollToGuide}
+                                        className="text-slate-300 hover:text-blue-600 transition-colors"
+                                    >
+                                        <HelpCircle className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     {[
                                         { id: 'length' as const, label: 'Length', icon: <Maximize className="w-3.5 h-3.5 rotate-90" /> },
@@ -210,7 +225,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                 type="number"
                                                 value={inputs[field.id]}
                                                 onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                                className="h-12 w-full text-lg border-slate-300 bg-white shadow-sm placeholder:italic text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-12 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                                 placeholder={field.label}
                                             />
                                             <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
@@ -235,16 +250,24 @@ ${results.inches.toLocaleString()} Cubic Inches
                             <div className="h-px bg-slate-100 w-full" />
 
                             <div className="space-y-4">
-                                <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                    Quantity
-                                </label>
+                                <div className="flex items-center justify-between">
+                                    <label className="text-base font-bold text-slate-400 flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                        Quantity
+                                    </label>
+                                    <button
+                                        onClick={scrollToGuide}
+                                        className="text-slate-300 hover:text-blue-600 transition-colors"
+                                    >
+                                        <HelpCircle className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
                                 <div className="relative group">
                                     <Input
                                         type="number"
                                         value={inputs.quantity}
                                         onChange={(e) => handleInputChange('quantity', e.target.value)}
-                                        className="h-12 w-full text-lg border-slate-300 bg-white shadow-sm placeholder:italic px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                        className="h-12 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                         placeholder="Ex: 1"
                                     />
                                 </div>
