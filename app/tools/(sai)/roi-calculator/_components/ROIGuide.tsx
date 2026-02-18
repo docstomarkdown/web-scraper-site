@@ -33,7 +33,7 @@ const insights = [
         iconColor: "text-amber-500",
         statColor: "text-amber-600",
         title: "Return on Investment (ROI) Percentage",
-        stat: "Return on Investment (ROI) %",
+        stat: "ROI %",
         statLabel: "The key profitability metric",
         description: "Return on Investment (ROI) expressed as a percentage. Calculated as: ((Revenue - Investment) / Investment) × 100. A positive Return on Investment (ROI) means you made money; a negative Return on Investment (ROI) means you lost money.",
         tooltip: "How much profit you made relative to what you invested."

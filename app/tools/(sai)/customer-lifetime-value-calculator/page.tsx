@@ -6,7 +6,7 @@ import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
 import { CTA } from "@/components/sections/CTA";
 
 export const metadata: Metadata = {
-    title: "Customer Lifetime Value (LTV) Calculator",
+    title: "Customer Lifetime Value (CLV) Calculator",
     description: "Calculate the total revenue a single customer will generate for your business over their entire relationship with you.",
 };
 

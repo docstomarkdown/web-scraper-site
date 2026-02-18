@@ -184,7 +184,7 @@ export function FreeShippingCalculator() {
                     <ResultFeedbackCard
                         title="Required Sales Increase"
                         titleLabel={isViable ? "Feasible" : "High Risk"}
-                        labelClassName={isViable ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"}
+                        labelClassName={isViable ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}
                         mainValue={
                             isViable ?
                                 <Counter value={salesIncreaseNeeded} formatter={(v) => `+${v.toFixed(1)}%`} /> :

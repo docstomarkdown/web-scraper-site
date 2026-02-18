@@ -137,57 +137,63 @@ export function ReturnOnAdSpendCalculator() {
                                 tooltip="The total amount spent on advertising campaigns."
                             />
 
-                            {/* Mode Toggle */}
-                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
-                                <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-slate-700">Do you know your revenue?</label>
-                                    <TooltipProvider>
-                                        <Tooltip delayDuration={300}>
-                                            <TooltipTrigger asChild>
-                                                <HelpCircle className="w-4 h-4 text-slate-400 cursor-help hover:text-slate-600 transition-colors" />
-                                            </TooltipTrigger>
-                                            <TooltipContent className="max-w-[200px] text-xs">
-                                                <p>Switch to &quot;No&quot; if you want to calculate the revenue needed to hit a specific Target Return on Ad Spend (ROAS).</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <div className="flex gap-2">
+                            {/* Simplified Input Mode Selection via Tabs or just stacked inputs? 
+                                User asked to "Simplify revenue input". The previous toggle was "Do you know your revenue? Yes/No".
+                                "Yes" -> Show Revenue Input. "No" -> Show Target ROAS Input.
+                                I will replace the bulky toggle with a cleaner interaction or just label the section better. 
+                                Actually, the user might want a simple calculator where you just enter Revenue. 
+                                But the tool has two distinct modes: "Calculate ROAS" (backward looking) and "Calculate Revenue Needed" (forward looking).
+                                I will switch to a Tabs-like approach or a simple dropdown for "Goal", which is cleaner than a "Do you know...?" question.
+                            */}
+
+                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-4">
+                                <label className="text-sm font-medium text-slate-700 block">I want to calculate:</label>
+                                <div className="grid grid-cols-2 gap-2">
                                     <button
                                         onClick={() => setMode("calculate-roas")}
-                                        className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 border ${mode === "calculate-roas" ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100" : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"}`}
+                                        className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200 border ${mode === "calculate-roas"
+                                                ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100"
+                                                : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"
+                                            }`}
                                     >
-                                        Yes
+                                        My Current ROAS
                                     </button>
                                     <button
                                         onClick={() => setMode("calculate-revenue")}
-                                        className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 border ${mode === "calculate-revenue" ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100" : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"}`}
+                                        className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200 border ${mode === "calculate-revenue"
+                                                ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100"
+                                                : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"
+                                            }`}
                                     >
-                                        No
+                                        Revenue Goal
                                     </button>
                                 </div>
-                            </div>
 
-                            {mode === "calculate-roas" ? (
-                                <CalculatorInput
-                                    label={`Revenue from Ads (${symbol})`}
-                                    value={revenueFromAds}
-                                    onChange={setRevenueFromAds}
-                                    placeholder="500.00"
-                                    max={1000000}
-                                    tooltip="The total revenue generated directly from your ads."
-                                />
-                            ) : (
-                                <CalculatorInput
-                                    label="Target Return on Ad Spend (ROAS)"
-                                    value={targetROAS}
-                                    onChange={setTargetROAS}
-                                    placeholder="4.0"
-                                    max={100}
-                                    step={0.1}
-                                    tooltip="Return on Ad Spend (ROAS): The money you make for every $1 spent on ads. Aim for 4X or more. Calculated as: Revenue / Ad Spend."
-                                />
-                            )}
+                                {mode === "calculate-roas" ? (
+                                    <div className="pt-2">
+                                        <CalculatorInput
+                                            label={`Revenue from Ads (${symbol})`}
+                                            value={revenueFromAds}
+                                            onChange={setRevenueFromAds}
+                                            placeholder="500.00"
+                                            max={10000000}
+                                            tooltip="The total revenue generated directly from your ads."
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="pt-2">
+                                        <CalculatorInput
+                                            label="Target ROAS (x)"
+                                            value={targetROAS}
+                                            onChange={setTargetROAS}
+                                            placeholder="4.0"
+                                            max={100}
+                                            step={0.1}
+                                            tooltip="Your goal Return on Ad Spend. Example: 4.0 means you want to make $4 for every $1 spent."
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
@@ -209,7 +215,7 @@ export function ReturnOnAdSpendCalculator() {
                         valueColor={mode === "calculate-roas" ? (roas > 1 ? "text-emerald-400" : (roas < 1 ? "text-red-400" : "text-white")) : "text-white"}
                         secondaryMetrics={[
                             {
-                                label: mode === "calculate-roas" ? "Return on Ad Spend (ROAS) %" : "Target Return on Ad Spend (ROAS)",
+                                label: mode === "calculate-roas" ? "ROAS %" : "Target ROAS (x)",
                                 value: mode === "calculate-roas" ? (
                                     <Counter value={roasPercent} formatter={(v) => `${v.toFixed(0)}%`} />
                                 ) : (
@@ -225,22 +231,7 @@ export function ReturnOnAdSpendCalculator() {
                         ]}
                     />
 
-                    {/* Breakdown Cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Total Ad Spend"
-                            value={<Counter value={spend} formatter={formatCurrency} key={`spend-${currency}`} />}
-                            icon={DollarSign}
-                        />
-                        <ResultCard
-                            title={mode === "calculate-roas" ? "Revenue Generated" : "Target Return on Ad Spend (ROAS)"}
-                            value={mode === "calculate-roas" ?
-                                <Counter value={revenue} formatter={formatCurrency} key={`rev-${currency}`} /> :
-                                <Counter value={val(targetROAS)} formatter={(v) => `${v.toFixed(2)}x`} />
-                            }
-                            icon={TrendingUp}
-                        />
-                    </div>
+
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
                         <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>

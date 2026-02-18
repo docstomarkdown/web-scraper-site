@@ -75,10 +75,11 @@ export function CPACalculator() {
     const target = val(targetCPA)
 
     // Determine Color
-    // If target is set: Green if CPA <= Target, Red if CPA > Target
-    // If target not set: White default
+    // We'll return specific class sets for the badge to ensure consistency
+    let badgeClasses = "bg-slate-100 border-slate-200 text-slate-600"
     let valueColor = "text-white"
     let statusLabel = "Calculated CPA"
+    // Title label background (inside the dark card)
     let statusColor = "bg-slate-800/50 text-slate-300"
 
     if (validCalculation && target > 0) {
@@ -86,10 +87,14 @@ export function CPACalculator() {
             valueColor = "text-emerald-400"
             statusLabel = "Under Target"
             statusColor = "bg-emerald-500/20 text-emerald-300"
+            // Clean, standard success colors for the external badge
+            badgeClasses = "bg-emerald-50 border-emerald-200 text-emerald-700"
         } else {
             valueColor = "text-red-400"
             statusLabel = "Over Target"
             statusColor = "bg-red-500/20 text-red-300"
+            // Clean, standard error colors for the external badge
+            badgeClasses = "bg-red-50 border-red-200 text-red-700"
         }
     }
 
@@ -296,48 +301,19 @@ export function CPACalculator() {
                     {validCalculation && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            statusColor.replace('bg-', 'bg-opacity-10 border-').replace('/20', '').replace('text-', 'text-')
+                            badgeClasses
                         )}>
                             {validCalculation && target > 0 ? (
-                                cpa <= target ? "✅ CPA Below Target" : "⚠️ CPA Above Target"
+                                cpa <= target ? (
+                                    <span>✅ CPA Below Target <span className="opacity-80 ml-1">(-{formatCurrency(Math.abs(cpa - target))})</span></span>
+                                ) : (
+                                    <span>⚠️ CPA Above Target <span className="opacity-80 ml-1">(+{formatCurrency(Math.abs(cpa - target))})</span></span>
+                                )
                             ) : "📊 CPA Calculated"}
                         </div>
                     )}
 
-                    {/* Breakdown Card */}
-                    {validCalculation ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Metric Breakdown</p>
-                            </div>
-                            <div className="divide-y divide-slate-50">
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">{mode === 'campaign-data' ? 'Total Ad Spend' : 'Cost Per Click'}</span>
-                                    <span className="text-sm font-medium text-slate-700">
-                                        {formatCurrency(mode === 'campaign-data' ? val(adSpend) : val(cpc))}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">{mode === 'campaign-data' ? 'Total Conversions' : 'Conversion Rate'}</span>
-                                    <span className="text-sm font-medium text-slate-700">
-                                        {mode === 'campaign-data' ? val(conversions).toLocaleString() : `${val(conversionRate)}%`}
-                                    </span>
-                                </div>
-                                {target > 0 && (
-                                    <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                        <span className="text-sm font-semibold text-slate-900">Target Variance</span>
-                                        <span className={cn("text-sm font-bold", cpa <= target ? "text-emerald-600" : "text-red-600")}>
-                                            {cpa <= target ? "-" : "+"}{formatCurrency(Math.abs(cpa - target))}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter metrics to calculate CPA.</p>
-                        </div>
-                    )}
+
 
                     {/* Pro Tip */}
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">

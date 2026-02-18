@@ -17,7 +17,7 @@ export default function FreeShippingCalculatorPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
-                            Free Shipping Calculator
+                            Free Shipping Threshold Calculator
                         </h1>
                     </FadeIn>
                 </div>

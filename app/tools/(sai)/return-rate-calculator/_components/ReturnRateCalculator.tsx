@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, RefreshCw, Package, RotateCcw, AlertTriangle, DollarSign, Calculator } from "lucide-react";
+import { HelpCircle, Package, RotateCcw, AlertTriangle, DollarSign, Calculator } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CurrencyCombobox } from "@/app/tools/_shared/components";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
 import { cn } from "@/lib/utils";

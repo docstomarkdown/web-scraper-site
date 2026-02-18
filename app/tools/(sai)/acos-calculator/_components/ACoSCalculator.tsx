@@ -61,23 +61,20 @@ export function ACoSCalculator() {
     };
 
     // Determine Status
+    // Determine Status & standard badge classes
     let status = "Waiting"
-    let statusColor = "text-slate-400"
-    let statusBg = "bg-slate-100"
+    let badgeClasses = "bg-slate-50 border-slate-200 text-slate-500"
 
     if (acos > 0 && breakevenAcos > 0) {
         if (acos < breakevenAcos) {
             status = "Profitable"
-            statusColor = "text-emerald-600"
-            statusBg = "bg-emerald-100"
+            badgeClasses = "bg-emerald-50 border-emerald-200 text-emerald-700"
         } else if (Math.abs(acos - breakevenAcos) < 0.1) {
             status = "Breakeven"
-            statusColor = "text-amber-600"
-            statusBg = "bg-amber-100"
+            badgeClasses = "bg-amber-50 border-amber-200 text-amber-700"
         } else {
             status = "Unprofitable"
-            statusColor = "text-red-600"
-            statusBg = "bg-red-100"
+            badgeClasses = "bg-red-50 border-red-200 text-red-700"
         }
     }
 
@@ -220,9 +217,7 @@ export function ACoSCalculator() {
                             animate={{ opacity: 1, scale: 1 }}
                             className={cn(
                                 "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                                statusBg,
-                                statusColor.replace('text-', 'border-').replace('600', '200'),
-                                statusColor
+                                badgeClasses
                             )}
                         >
                             {status === "Profitable" ? "🔥 Profitable Campaign" : status === "Breakeven" ? "👍 Breaking Even" : "⚠️ Unprofitable"}
