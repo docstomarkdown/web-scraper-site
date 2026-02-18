@@ -95,7 +95,7 @@ export function ContainerLoadCalculatorInput({
                         value={value}
                         onChange={handleInputChange}
                         className={cn(
-                            "h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-[140px] text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all pr-10",
+                            "h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-400 placeholder:italic w-[140px] text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all pr-10",
                             type === 'text' && "text-sm"
                         )}
                         min={type === "number" ? min : undefined}
@@ -109,14 +109,14 @@ export function ContainerLoadCalculatorInput({
                         <button
                             type="button"
                             onClick={() => adjustValue(step)}
-                            className="flex-1 px-2.5 hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-blue-600 border-b border-slate-100 transition-colors rounded-tr-md"
+                            className="flex-1 px-2.5 hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-blue-600 border-b border-slate-100 transition-colors rounded-tr-xl"
                         >
                             <ChevronUp className="h-3 w-3" />
                         </button>
                         <button
                             type="button"
                             onClick={() => adjustValue(-step)}
-                            className="flex-1 px-2.5 hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-blue-600 transition-colors rounded-br-md"
+                            className="flex-1 px-2.5 hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-blue-600 transition-colors rounded-br-xl"
                         >
                             <ChevronDown className="h-3 w-3" />
                         </button>

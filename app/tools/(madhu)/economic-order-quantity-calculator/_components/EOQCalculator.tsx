@@ -180,33 +180,16 @@ Results:
                         <div className="space-y-6">
                             {/* Cost Breakdown Grid */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white/5 rounded-2xl p-4 border border-white/5 backdrop-blur-sm">
-                                    <p className="text-xs font-bold text-slate-300 mb-1 flex items-center gap-1.5">
-                                        <ShoppingCart className="w-3 h-3 text-orange-400" />
-                                        Ordering Cost
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">Ordering Cost</p>
+                                    <p className="text-xl font-bold text-indigo-400">
+                                        {hasInputs ? `$${results.annualOrderCost.toFixed(0)}` : "$0"}
                                     </p>
-                                    <p className="text-xl font-bold text-white">${results.annualOrderCost.toFixed(0)}</p>
-                                    <p className="text-xs text-slate-500 mt-0.5">Annual Total</p>
                                 </div>
-                                <div className="bg-white/5 rounded-2xl p-4 border border-white/5 backdrop-blur-sm text-left">
-                                    <p className="text-xs font-bold text-slate-300 mb-1 flex items-center gap-1.5">
-                                        <Warehouse className="w-3 h-3 text-emerald-400" />
-                                        Holding Cost
-                                    </p>
-                                    <p className="text-xl font-bold text-white">${results.annualHoldingCost.toFixed(0)}</p>
-                                    <p className="text-xs text-slate-500 mt-0.5">Annual Total</p>
-                                </div>
-                            </div>
-
-                            {/* Orders per Year */}
-                            <div className="flex items-start gap-4 bg-white/5 p-5 rounded-2xl border border-white/5">
-                                <div className="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center border border-indigo-500/30 flex-shrink-0 mt-1">
-                                    <Activity className="w-5 h-5 text-indigo-400" />
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-slate-400 text-xs font-bold mb-1">Frequency</p>
-                                    <p className="text-[13px] font-bold text-slate-200 leading-relaxed italic">
-                                        You should place approx. <span className="text-indigo-400 not-italic">{results.annualOrders} orders</span> per year.
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">Holding Cost</p>
+                                    <p className="text-xl font-bold text-emerald-400">
+                                        {hasInputs ? `$${results.annualHoldingCost.toFixed(0)}` : "$0"}
                                     </p>
                                 </div>
                             </div>
@@ -321,13 +304,13 @@ function EOQInput({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-2xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
+                        "h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
                         isCurrency ? "pl-10 pr-5" : "px-5"
                     )}
                     placeholder={placeholder}
                 />
 
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-2xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
+                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
                     <button
                         onClick={() => onChange((parseFloat(value || "0") + (isCurrency ? 1 : 100)).toString())}
                         className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"

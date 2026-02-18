@@ -147,6 +147,17 @@ const toolDescriptions: Record<string, string> = {
 
     // 42. Amazon Storage Fee Calculator
     "Amazon Storage Fee Calculator": "Estimate monthly inventory storage fees for Amazon FBA based on product size and seasonality.",
+    "Customer Lifetime Value (CLV) Calculator": "Calculate Customer Lifetime Value (CLV) to understand how much a customer is worth to your business over time.",
+    "PayPal Fee Calculator": "Calculate PayPal transaction fees and the net amount you will receive.",
+    "Time Zone Meeting Planner": "Plan meetings across multiple time zones without the confusion.",
+    "Mercari Fee Calculator": "Calculate fees and profits for selling items on Mercari.",
+    "Pallet Configuration Calculator": "Optimize pallet packing by calculating the best way to stack boxes on a pallet.",
+    "Lead Time Calculator": "Calculate total supply chain lead time from order to delivery, including production, shipping, and customs.",
+    "Reorder Point Calculator": "Calculate when to reorder your products based on lead time, daily sales velocity, and safety stock levels.",
+    "Economic Order Quantity (EOQ) Calculator": "Identify the optimal order size that minimizes the total annual cost of ordering and holding inventory.",
+    "Days of Inventory Calculator": "Forecast how many days your current stock will last based on your sales velocity to prevent stockouts and optimize turnover.",
+    "Inventory Turnover Calculator": "Calculate your inventory turnover ratio to assess operational efficiency, identify slow-moving stock, and optimize your supply chain.",
+    "Cost of Goods Sold (COGS) Calculator": "Calculate your true product cost including manufacturing, shipping, customs, packaging, and fulfillment costs.",
 };
 
 // Helper to determine category and icon

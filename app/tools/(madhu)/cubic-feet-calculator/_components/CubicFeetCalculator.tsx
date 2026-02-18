@@ -225,10 +225,10 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                 type="number"
                                                 value={inputs[field.id]}
                                                 onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                                className="h-12 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                                 placeholder={field.label}
                                             />
-                                            <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
+                                            <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl">
                                                 <button
                                                     onClick={() => handleInputChange(field.id, (parseFloat(inputs[field.id] || "0") + 1).toString())}
                                                     className="flex items-center justify-center px-1.5 flex-1 hover:text-blue-600 text-slate-400 transition-colors"
@@ -267,7 +267,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         type="number"
                                         value={inputs.quantity}
                                         onChange={(e) => handleInputChange('quantity', e.target.value)}
-                                        className="h-12 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:text-slate-400 px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                        className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:italic placeholder:text-slate-400 px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                         placeholder="Ex: 1"
                                     />
                                 </div>
@@ -315,25 +315,25 @@ ${results.inches.toLocaleString()} Cubic Inches
                         <div className="h-px bg-white/10 w-full mt-4 mb-4" />
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <p className="text-xs font-medium tracking-wider text-slate-500">Cubic meters</p>
-                                <div className="text-xl font-bold text-white flex items-baseline gap-1">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                <p className="text-xs font-bold text-slate-300 mb-1">Cubic meters</p>
+                                <p className="text-xl font-bold text-indigo-400">
                                     <Counter
                                         value={results.cbm}
                                         formatter={(val) => val.toFixed(4)}
                                     />
-                                    <span className="text-xs opacity-40">CBM</span>
-                                </div>
+                                    <span className="text-xs font-normal opacity-50 ml-1">CBM</span>
+                                </p>
                             </div>
-                            <div className="space-y-1">
-                                <p className="text-xs font-medium tracking-wider text-slate-500">Cubic inches</p>
-                                <div className="text-xl font-bold text-white flex items-baseline gap-1">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
+                                <p className="text-xs font-bold text-slate-300 mb-1">Cubic inches</p>
+                                <p className="text-xl font-bold text-emerald-400">
                                     <Counter
                                         value={results.inches}
                                         formatter={(val) => Math.round(val).toLocaleString()}
                                     />
-                                    <span className="text-xs opacity-40">IN³</span>
-                                </div>
+                                    <span className="text-xs font-normal opacity-50 ml-1">IN³</span>
+                                </p>
                             </div>
                         </div>
                     </ResultFeedbackCard>

@@ -144,6 +144,10 @@ export const toolsGroups = [
         href: "/tools/mercari-fee-calculator",
       },
       {
+        title: "Inventory Turnover Calculator",
+        href: "/tools/inventory-turnover-calculator",
+      },
+      {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },
@@ -199,13 +203,13 @@ export const toolsGroups = [
         title: "Amazon Storage Fee Calculator",
         href: "/tools/amazon-storage-fee-calculator",
       },
-      /*
+      
             {
               title: "Dimension Converter",
               href: "/tools/dimension-converter",
             },
-      */
-      /*
+      
+      
             {
               title: "Universal Product Code (UPC) / European Article Number (EAN) Validator",
               href: "/tools/upc-ean-validator",
@@ -214,8 +218,7 @@ export const toolsGroups = [
               title: "Global Trade Item Number (GTIN) Converter",
               href: "/tools/gtin-converter",
             },
-      */
-      /*
+    
             {
               title: "Product Weight Converter",
               href: "/tools/weight-converter",
@@ -224,8 +227,7 @@ export const toolsGroups = [
               title: "Cubic Feet Calculator",
               href: "/tools/cubic-feet-calculator",
             },
-      */
-      /*
+      
             {
               title: "Pallet Configuration Calculator",
               href: "/tools/pallet-configuration-calculator",
@@ -250,7 +252,10 @@ export const toolsGroups = [
               title: "Days of Inventory Calculator",
               href: "/tools/days-of-inventory-calculator",
             },
-      */
+     
+        title: "Cost of Goods Sold (COGS) Calculator",
+        href: "/tools/cost-of-goods-sold-calculator",
+      },
     ],
   },
 ];

@@ -193,7 +193,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                                 placeholder={unit === "in" ? (dim === "length" ? "Ex: 12.00" : dim === "width" ? "Ex: 8.00" : "Ex: 6.00") : (dim === "length" ? "Ex: 30.00" : dim === "width" ? "Ex: 20.00" : "Ex: 15.00")}
                                                 value={dimensions[dim]}
                                                 onChange={handleInputChange}
-                                                className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                             />
                                         </div>
                                     </div>
@@ -234,19 +234,24 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                     <span className="text-lg font-normal text-slate-400 ml-2">{unit}³</span>
                                 </>
                             }
-                            secondaryMetrics={[
-                                {
-                                    label: "Cubic Inches",
-                                    value: <Counter value={volume?.in3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} />,
-                                    color: "text-slate-300"
-                                },
-                                {
-                                    label: "Cubic Centimeters",
-                                    value: <Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />,
-                                    color: "text-slate-300"
-                                }
-                            ]}
-                        />
+                        >
+                            <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-white/10">
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">Cubic Inches</p>
+                                    <p className="text-xl font-bold text-indigo-400">
+                                        <Counter value={volume?.in3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} />
+                                        <span className="text-xs font-normal opacity-50 ml-1">IN³</span>
+                                    </p>
+                                </div>
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">Cubic Centimeters</p>
+                                    <p className="text-xl font-bold text-emerald-400">
+                                        <Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />
+                                        <span className="text-xs font-normal opacity-50 ml-1">CM³</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </ResultFeedbackCard>
 
                         {/* Conversion Results Table Card */}
                         <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
