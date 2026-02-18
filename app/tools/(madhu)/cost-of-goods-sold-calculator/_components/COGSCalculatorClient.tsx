@@ -5,11 +5,10 @@ import { COGSCalculator } from "./COGSCalculator"
 import {
     Truck,
     Package,
-    ShoppingCart,
-    BarChart3,
-    ShieldCheck,
     TrendingUp,
     AlertCircle,
+    Scale,
+    CreditCard,
     RotateCcw
 } from "lucide-react"
 
@@ -20,82 +19,77 @@ export function COGSCalculatorClient() {
             toolComponent={<COGSCalculator />}
             howToUseSteps={[
                 {
-                    title: "Enter Sourcing Costs",
-                    description: "Start with the unit product cost from your supplier, then add freight shipping costs to your warehouse and any applicable customs duties or taxes.",
+                    title: "Enter Acquisition Costs",
+                    description: "Input the unit cost from your supplier, plus inbound shipping and duties. This gives you your 'Landed Cost'—the price to get the product to your warehouse.",
                     icon: Package
                 },
                 {
-                    title: "Add Packaging & Prep",
-                    description: "Include the cost of boxes, inserts, and any fees charged by your 3PL for prepping and labeling your products for shipment.",
-                    icon: ShoppingCart
-                },
-                {
-                    title: "Factor in Fulfillment",
-                    description: "Enter your pick and pack fees and the average shipping cost to the final customer to get a complete view of order-level costs.",
+                    title: "Add Fulfillment Fees",
+                    description: "Include the cost to pick, pack, and ship the product to the customer. Don't forget platform fees (like FBA) and packaging materials.",
                     icon: Truck
                 },
                 {
-                    title: "Consider Returns & Risk",
-                    description: "Set an estimated return rate percentage. This helps account for the 'lost' costs of processing returns and shipping that eat into your margins.",
+                    title: "Factor in Returns",
+                    description: "Enter your estimated return rate %. The calculator adds a 'Return Risk' cost to ensure your profit margin accounts for refunded items.",
                     icon: RotateCcw
                 }
             ]}
             howToUseGoal={{
-                title: "Identify Your True Unit Margin",
-                description: "By calculating your 'True COGS'—including fulfillment and returns—you can accurately set prices that guarantee profitability and identify exactly which costs are squeezing your margins.",
+                title: "Find Your True Profit",
+                description: "Most sellers underestimate costs. This tool reveals your 'True COGS' and actual Gross Margin so you can price your products profitably.",
                 icon: TrendingUp
             }}
             hiddenTruthInsights={[
                 {
-                    title: "The 'Return' Tax",
-                    description: "Most sellers forget that a 5% return rate doesn't just lose the sale; it costs double in fulfillment and shipping while tying up capital in 'unsellable' inventory.",
+                    title: "The 'Return Risk' Trap",
+                    description: "If you have a 10% return rate on a $50 item, you lose $5.00 per sale in revenue, plus shipping costs. Most calculators ignore this, leading to inflated profit estimates.",
                     icon: AlertCircle,
-                    stat: "8-12%",
-                    statLabel: "Margin Erosion",
-                    iconBg: "bg-red-50",
-                    iconColor: "text-red-600",
-                    statColor: "text-red-600",
-                    tooltip: "The average impact of returns on net profit when fulfillment costs are high."
+                    stat: "Hidden Cost",
+                    statLabel: "Profit Killer",
+                    iconBg: "bg-amber-50",
+                    iconColor: "text-amber-600",
+                    statColor: "text-amber-600",
+                    tooltip: "Your margin isn't real until the return window closes."
                 },
                 {
-                    title: "Landed vs. True COGS",
-                    description: "Landed cost only gets you to the warehouse. 'True COGS' includes fulfillment, which often accounts for 30% or more of the total variable cost per unit.",
-                    icon: BarChart3,
-                    stat: "30%+",
-                    statLabel: "Hidden Costs",
+                    title: "Landed vs. Product Cost",
+                    description: "Your product cost is $5, but after shipping and taxes, it's $7. Pricing based on $5 guarantees you lose money on every sale.",
+                    icon: Scale,
+                    stat: "+40%",
+                    statLabel: "Avg Markup",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "Fulfillment and storage can often exceed the manufacturing cost for low-priced items."
+                    tooltip: "Freight and duties often add 30-50% to the base product cost."
                 },
                 {
-                    title: "Customs Volatility",
-                    description: "Duty rates can change overnight due to trade wars or reclassifications. Monitoring your HS codes can save thousands in unexpected per-unit costs.",
-                    icon: ShieldCheck,
-                    stat: "25%",
-                    statLabel: "Potential Duty",
+                    title: "Fulfillment > Manufacturing",
+                    description: "For many low-cost items, the cost to pick, pack, and ship (Fulfillment) is actually higher than the cost to make the product.",
+                    icon: CreditCard,
+                    stat: "Reality",
+                    statLabel: "Check Fees",
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600",
                     statColor: "text-indigo-600",
-                    tooltip: "MaximumSection 301 tariffs often applied to specific imports."
+                    tooltip: "Common in items under $20 selling price."
                 }
             ]}
             faqs={[
                 {
-                    question: "What is the difference between Landed Cost and COGS?",
-                    answer: "Landed cost includes everything to get the product to your door (Manufacturing + Inbound Shipping + Duty). COGS in e-commerce typically extends this to include packaging and fulfillment fees, providing a more accurate 'Cost per Order'."
+                    question: "What is 'Landed Cost'?",
+                    answer: "Landed Cost is the total price of a product once it has arrived at your doorstep. It includes the original purchase price, freight, customs, duties, taxes, and insurance."
                 },
                 {
-                    question: "Should I include marketing costs in COGS?",
-                    answer: "Traditionally, marketing is an operating expense. However, many e-commerce sellers include 'Cost Per Acquisition' (CPA) when calculating their 'True Per-Unit Cost' to see if a product is viable after ad spend."
+                    question: "Why include Return Rate in COGS?",
+                    answer: "Returns are a cost of doing business. If 1 in 10 items is returned, you lose the shipping and fulfillment fees for that item. Including a 'Return Risk' buffer ensures your pricing covers these inevitable losses."
                 },
                 {
-                    question: "What is a good COGS percentage?",
-                    answer: "For most private label e-commerce brands, a COGS between 25-35% of the retail price is considered healthy. This allows enough room for marketing, overhead, and profit."
+                    question: "What is a good Gross Margin?",
+                    answer: "For e-commerce, a Gross Margin above 30% is generally considered healthy. If it is below 20%, you may struggle to pay for ads and operating expenses."
                 },
                 {
-                    question: "How do returns impact my COGS?",
-                    answer: "Returns increase your COGS because you've already paid for fulfillment, packaging, and outbound shipping which are non-refundable. Additionally, you may pay a return processing fee and lose a percentage of the product value if it cannot be resold as new."
+                    question: "Does this include Ad Spend (ROAS)?",
+                    answer: "No. This calculator finds your 'Gross Profit' (Revenue - COGS). You pay for ads from your Gross Profit. Determining your 'Net Profit' after ads is a separate calculation."
                 }
             ]}
         />
