@@ -224,6 +224,10 @@ export const toolsGroups = [
         title: "Poshmark Fee Calculator",
         href: "/tools/poshmark-fee-calculator",
       },
+      {
+        title: "Cost of Goods Sold (COGS) Calculator",
+        href: "/tools/cost-of-goods-sold-calculator",
+      },
     ],
   },
 ];
