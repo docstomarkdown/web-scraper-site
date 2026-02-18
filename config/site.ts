@@ -193,6 +193,10 @@ export const toolsGroups = [
         href: "/tools/days-of-inventory-calculator",
       },
       {
+        title: "Inventory Turnover Calculator",
+        href: "/tools/inventory-turnover-calculator",
+      },
+      {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
       },
@@ -219,6 +223,10 @@ export const toolsGroups = [
       {
         title: "Poshmark Fee Calculator",
         href: "/tools/poshmark-fee-calculator",
+      },
+      {
+        title: "Cost of Goods Sold (COGS) Calculator",
+        href: "/tools/cost-of-goods-sold-calculator",
       },
     ],
   },

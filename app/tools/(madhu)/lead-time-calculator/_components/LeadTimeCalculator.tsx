@@ -199,13 +199,13 @@ Estimated Delivery Date: ${deliveryDate}
                             </div>
 
                             <div className="grid grid-cols-2 gap-4 pt-2">
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Supplier Time</p>
-                                    <p className="text-sm font-bold text-indigo-400">{Math.round(totals.pct.supplier)}%</p>
+                                    <p className="text-xl font-bold text-indigo-400">{hasInputs ? Math.round(totals.pct.supplier) : 0}%</p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Shipping Time</p>
-                                    <p className="text-sm font-bold text-emerald-400">{Math.round(totals.pct.shipping)}%</p>
+                                    <p className="text-xl font-bold text-emerald-400">{hasInputs ? Math.round(totals.pct.shipping) : 0}%</p>
                                 </div>
                             </div>
                         </div>

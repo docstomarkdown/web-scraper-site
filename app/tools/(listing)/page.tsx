@@ -61,6 +61,8 @@ const toolDescriptions: Record<string, string> = {
     "Reorder Point Calculator": "Calculate when to reorder your products based on lead time, daily sales velocity, and safety stock levels.",
     "Economic Order Quantity (EOQ) Calculator": "Identify the optimal order size that minimizes the total annual cost of ordering and holding inventory.",
     "Days of Inventory Calculator": "Forecast how many days your current stock will last based on your sales velocity to prevent stockouts and optimize turnover.",
+    "Inventory Turnover Calculator": "Calculate your inventory turnover ratio to assess operational efficiency, identify slow-moving stock, and optimize your supply chain.",
+    "Cost of Goods Sold (COGS) Calculator": "Calculate your true product cost including manufacturing, shipping, customs, packaging, and fulfillment costs.",
 };
 
 // Helper to determine category and icon
