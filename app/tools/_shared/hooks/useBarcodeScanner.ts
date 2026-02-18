@@ -71,7 +71,17 @@ export function useBarcodeScanner({ onScan, onError, formatsToSupport }: Barcode
 
         try {
             const { Html5Qrcode } = await import("html5-qrcode")
-            const html5QrCode = new Html5Qrcode("file-reader-placeholder-hook")
+
+            // Ensure the placeholder element exists for Html5Qrcode to attach to
+            const placeholderId = "file-reader-placeholder-hook"
+            if (!document.getElementById(placeholderId)) {
+                const elem = document.createElement("div")
+                elem.id = placeholderId
+                elem.style.display = "none"
+                document.body.appendChild(elem)
+            }
+
+            const html5QrCode = new Html5Qrcode(placeholderId, false)
 
             const response = await html5QrCode.scanFileV2(file, true)
             if (response && response.decodedText) {

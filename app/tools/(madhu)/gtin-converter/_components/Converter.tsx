@@ -18,10 +18,10 @@ import {
     ClipboardCheck,
     Download,
     AlertTriangle,
-    ScanLine
+    FileUp
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { FadeIn, ResultFeedbackCard, ScannerModal } from "../../../_shared/components"
+import { FadeIn, ResultFeedbackCard } from "../../../_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import bwipjs from 'bwip-js'
 import Barcode from 'react-barcode'
@@ -239,7 +239,7 @@ export function Converter() {
     }
 
     // useBarcodeScanner Hook
-    const { isScanning, setIsScanning, scannerError, handleFileUpload } = useBarcodeScanner({
+    const { handleFileUpload } = useBarcodeScanner({
         onScan: (decodedText) => {
             setInputCode(decodedText)
             // No need to call validateAndConvert here if it's triggered by inputCode change effect
@@ -281,7 +281,14 @@ GTIN-14: ${results.gtin14}
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            const offset = 100;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         }
     };
 
@@ -351,24 +358,22 @@ GTIN-14: ${results.gtin14}
                 id="gtin-barcode-upload"
                 accept="image/*"
                 className="hidden"
-                onChange={handleFileUpload}
-            />
-
-            {/* Hidden div for html5-qrcode file scanning */}
-            <div id="gtin-file-reader" className="hidden"></div>
-
-            {/* Scanner Modal */}
-            <ScannerModal
-                isOpen={isScanning}
-                onOpenChange={setIsScanning}
-                error={scannerError}
-                readerId="reader"
+                onChange={(e) => {
+                    // Create placeholder if missing (same fix as UPC tool)
+                    if (!document.getElementById("file-reader-placeholder-hook")) {
+                        const div = document.createElement("div");
+                        div.id = "file-reader-placeholder-hook";
+                        div.style.display = "none";
+                        document.body.appendChild(div);
+                    }
+                    handleFileUpload(e);
+                }}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
                 {/* LEFT: Inputs */}
-                <div className="lg:col-span-5">
+                <div className="lg:col-span-6">
                     <Card className="border border-slate-200 shadow-sm bg-white h-full flex flex-col overflow-hidden">
                         <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100 flex flex-row items-center justify-between space-y-0">
                             <div>
@@ -394,14 +399,14 @@ GTIN-14: ${results.gtin14}
                                         </Tooltip>
                                     </TooltipProvider>
                                 </div>
-                                <CardDescription>Enter any UPC, EAN, or GTIN barcode.</CardDescription>
+                                <CardDescription>Enter your barcode number or upload an image below..</CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center text-sm font-bold text-slate-600">
                                     <Label htmlFor="gtin-input">Barcode Number</Label>
-                                    <span className="text-[10px] font-mono opacity-50">Universal Product Code (UPC) / European Article Number (EAN)</span>
+                                    <span className="text-xs font-mono opacity-50 uppercase">GTIN / UPC / EAN</span>
                                 </div>
                                 <Input
                                     id="gtin-input"
@@ -411,43 +416,16 @@ GTIN-14: ${results.gtin14}
                                     className="h-14 text-xl font-bold focus-visible:ring-primary shadow-sm bg-white"
                                     autoComplete="off"
                                 />
-                                <p className="text-xs text-slate-400">
-                                    Supports Universal Product Code (UPC)-A (12), European Article Number (EAN)-13 (13), Global Trade Item Number (GTIN)-14 (14).
-                                </p>
-
 
                                 {/* Scan Controls */}
-                                <div className="grid grid-cols-2 gap-3 pt-2">
+                                <div className="pt-2">
                                     <Button
                                         variant="secondary"
-                                        className="h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
-                                        onClick={() => setIsScanning(true)}
-                                    >
-                                        <ScanLine className="w-4 h-4 mr-2 text-blue-500" />
-                                        Scan Camera
-                                    </Button>
-                                    <Button
-                                        variant="secondary"
-                                        className="h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
+                                        className="h-10 w-full text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
                                         onClick={() => document.getElementById('gtin-barcode-upload')?.click()}
                                     >
                                         <div className="flex items-center">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="w-4 h-4 mr-2 text-emerald-500"
-                                            >
-                                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                                                <circle cx="9" cy="9" r="2" />
-                                                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                                            </svg>
+                                            <FileUp className="w-4 h-4 mr-2 text-blue-500" />
                                             Upload Image
                                         </div>
                                     </Button>
@@ -539,22 +517,19 @@ GTIN-14: ${results.gtin14}
                 </div>
 
                 {/* RIGHT: Results */}
-                <div className="lg:col-span-7">
+                <div className="lg:col-span-6">
                     <div className="space-y-6 flex flex-col h-full">
                         {/* Summary Visualization Card */}
                         <ResultFeedbackCard
                             variant={inputCode && !status.isValid ? "warning" : "default"}
-                            title={inputCode && !status.isValid ? 'Validation Status' : 'Live Conversion Map'}
-                            titleLabel="Live"
+                            title={inputCode && !status.isValid ? 'Validation Status' : 'Conversion Map'}
+                            titleLabel={!inputCode ? "Ready" : status.isValid ? "Valid" : "Invalid"}
                             // If invalid, show large text here. If valid, show nothing in mainValue and use children.
                             mainValue={inputCode && !status.isValid ? (
                                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                                    <div className="flex items-baseline gap-3 mb-1">
+                                    <div className="flex items-baseline gap-3">
                                         <span className="text-3xl sm:text-4xl font-bold tracking-tight text-red-100 break-all">
                                             {inputCode}
-                                        </span>
-                                        <span className="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full bg-red-500/30 text-red-200 border border-red-500/30">
-                                            INVALID
                                         </span>
                                     </div>
                                 </div>
@@ -563,10 +538,10 @@ GTIN-14: ${results.gtin14}
                             {/* Validation Analysis or Results List */}
                             {inputCode && !status.isValid ? (
                                 // INVALID STATE SUB-CONTENT
-                                <div className="space-y-3 border-t border-red-800/50 pt-3">
+                                <div className="space-y-3 mt-2">
                                     <div className="flex justify-between items-center text-sm text-red-200/80">
                                         <span>Analysis</span>
-                                        <span className="font-medium text-white text-right">
+                                        <span className="font-medium text-white text-right font-mono">
                                             {status.correctedCode
                                                 ? "Check Digit Invalid"
                                                 : typeof status.message === 'string' && status.message.includes("numeric")
