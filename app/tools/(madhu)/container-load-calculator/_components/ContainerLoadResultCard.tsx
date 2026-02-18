@@ -86,12 +86,12 @@ export function ContainerLoadResultCard({
                     )}>
                         <div className="grid grid-cols-2 gap-4">
                             {secondaryMetrics.map((metric, index) => (
-                                <div key={index}>
-                                    <p className={cn(
-                                        "text-[10px] uppercase font-semibold tracking-wider mb-1",
-                                        variant === "compact" ? "text-slate-400" : "text-slate-400"
-                                    )}>{metric.label}</p>
-                                    <div className={cn("text-xl font-bold break-all", metric.color || "text-emerald-400")}>
+                                <div key={index} className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">{metric.label}</p>
+                                    <div className={cn(
+                                        "text-xl font-bold break-all",
+                                        index === 0 ? "text-indigo-400" : "text-emerald-400"
+                                    )}>
                                         {metric.value}
                                     </div>
                                 </div>

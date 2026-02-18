@@ -208,10 +208,10 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                             type="number"
                                             value={inputValue}
                                             onChange={(e) => setInputValue(e.target.value)}
-                                            className="h-12 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                            className="h-12 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-400 placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                             placeholder="Ex: 12.00"
                                         />
-                                        <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md">
+                                        <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl">
                                             <button
                                                 type="button"
                                                 onClick={() => {
@@ -333,17 +333,18 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                         }
                     >
                         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 mt-2">
-                            {secondaryUnits.map(unit => (
-                                <div key={unit} className="space-y-1">
-                                    <p className="text-xs font-medium tracking-wider text-slate-400">
-                                        {unit === 'lbs' ? 'pounds' : unit === 'oz' ? 'ounces' : unit === 'kg' ? 'kilograms' : 'grams'}
+                            {secondaryUnits.map((unit, index) => (
+                                <div key={unit} className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <p className="text-xs font-bold text-slate-300 mb-1">
+                                        {unit === 'lbs' ? 'Pounds' : unit === 'oz' ? 'Ounces' : unit === 'kg' ? 'Kilograms' : 'Grams'}
                                     </p>
-                                    <div className="text-xl font-bold tracking-tight text-white break-words">
-                                        <div className="flex items-baseline gap-1">
-                                            <Counter value={conversions[unit]} />
-                                            <span className="text-xs opacity-40 ml-1 font-medium">{unit}</span>
-                                        </div>
-                                    </div>
+                                    <p className={cn(
+                                        "text-xl font-bold break-all",
+                                        index === 0 ? "text-indigo-400" : "text-emerald-400"
+                                    )}>
+                                        <Counter value={conversions[unit]} />
+                                        <span className="text-xs font-normal opacity-50 ml-1 uppercase">{unit}</span>
+                                    </p>
                                 </div>
                             ))}
                         </div>
