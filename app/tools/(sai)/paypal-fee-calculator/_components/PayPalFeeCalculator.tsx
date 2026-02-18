@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { HelpCircle, DollarSign, ArrowRight, Wallet, Percent, TrendingUp, BarChart3 } from "lucide-react";
+import { HelpCircle, RotateCcw, DollarSign, ArrowRight, Wallet, Percent, TrendingUp, BarChart3 } from "lucide-react";
 import { CurrencyCombobox } from "@/app/tools/_shared/components";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
 
@@ -13,6 +13,11 @@ export function PayPalFeeCalculator() {
     const [currency, setCurrency] = useState("USD");
     const [amount, setAmount] = useState<number | "">(100);
     const [feeType, setFeeType] = useState<"standard" | "international" | "micropayment" | "nonprofit">("standard");
+
+    const handleReset = () => {
+        setAmount(100)
+        setFeeType("standard")
+    }
 
     const val = (v: number | "") => (v === "" ? 0 : v);
     const amountVal = val(amount);
@@ -50,12 +55,29 @@ export function PayPalFeeCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0 text-left">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Transaction Data
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </CardTitle>
                                     <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
                                         <HelpCircle className="h-4 w-4" />
                                     </button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription className="text-sm">Configure your sale or transfer details.</CardDescription>
                             </div>

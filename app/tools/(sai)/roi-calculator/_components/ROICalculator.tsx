@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { HelpCircle, TrendingUp, DollarSign, Percent, BarChart3 } from "lucide-react"
+import { HelpCircle, TrendingUp, DollarSign, Percent, BarChart3, RotateCcw } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
@@ -41,6 +41,14 @@ export function ROICalculator() {
             element.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
+    const handleReset = () => {
+        setAmountInvested("")
+        setAmountReturned("")
+        setLengthValue("")
+        setFromDate(new Date().toISOString().split('T')[0])
+        setToDate(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0])
+    }
 
     // Calculations
     const invested = val(amountInvested)
@@ -103,8 +111,8 @@ export function ROICalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Investment Details
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
@@ -114,8 +122,25 @@ export function ROICalculator() {
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
-                                <CardDescription>Enter amount invested and returned.</CardDescription>
+                                <CardDescription>Calculate your return on investment.</CardDescription>
                             </div>
                             <div className="w-[140px]">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
@@ -141,25 +166,22 @@ export function ROICalculator() {
 
                             <div className="space-y-4 pt-4 border-t border-slate-50">
                                 <label className="text-sm font-bold text-slate-600">Investment Time</label>
-                                <div className="relative flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-fit">
-                                    {/* Animated Background Pill */}
+                                <div className="relative flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-fit">
                                     <motion.div
-                                        className="absolute bg-white rounded-md shadow-sm border border-blue-200"
+                                        className="absolute bg-white rounded-lg shadow-sm border border-slate-200"
                                         initial={false}
                                         animate={{
                                             x: mode === "dates" ? 0 : "100%",
-                                            width: "50%"
                                         }}
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        style={{ top: 4, bottom: 4, left: 4, width: 'calc(50% - 4px)' }}
+                                        transition={{ type: "spring", stiffness: 350, damping: 35 }}
+                                        style={{ top: 2, bottom: 2, left: 2, width: 'calc(50% - 2px)' }}
                                     />
-
                                     <button
                                         type="button"
                                         onClick={() => setMode("dates")}
                                         className={cn(
-                                            "relative z-10 px-4 py-1.5 rounded-md text-[10px] font-bold transition-colors uppercase tracking-wider w-24",
-                                            mode === "dates" ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
+                                            "relative z-10 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 w-28",
+                                            mode === "dates" ? "text-blue-600" : "text-slate-500 hover:text-slate-700"
                                         )}
                                     >
                                         Use Dates
@@ -168,8 +190,8 @@ export function ROICalculator() {
                                         type="button"
                                         onClick={() => setMode("length")}
                                         className={cn(
-                                            "relative z-10 px-4 py-1.5 rounded-md text-[10px] font-bold transition-colors uppercase tracking-wider w-24",
-                                            mode === "length" ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
+                                            "relative z-10 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 w-28",
+                                            mode === "length" ? "text-blue-600" : "text-slate-500 hover:text-slate-700"
                                         )}
                                     >
                                         Use Length
@@ -234,7 +256,7 @@ export function ROICalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Investment ROI"
                         mainValue={
@@ -255,25 +277,78 @@ export function ROICalculator() {
                         ]}
                     />
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Total Investment"
-                            value={<Counter value={invested} formatter={formatCurrency} key={`inv-${currency}`} />}
-                            icon={DollarSign}
-                            tooltip="The initial amount of capital you put into this investment."
-                        />
-                        <ResultCard
-                            title="Investment Length"
-                            value={
-                                <div className="flex items-baseline gap-1">
-                                    <Counter value={safeYears} formatter={(v) => v.toFixed(3)} />
-                                    <span className="text-xs font-normal">years</span>
+                    {/* Return Indicator */}
+                    {invested > 0 && returned > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className={cn(
+                                "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                                safeROI >= 100
+                                    ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                    : safeROI >= 20
+                                        ? "bg-blue-50 border-blue-200 text-blue-700"
+                                        : safeROI >= 0
+                                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                                            : "bg-red-50 border-red-200 text-red-700"
+                            )}
+                        >
+                            {safeROI >= 100
+                                ? "🔥 Excellent Return!"
+                                : safeROI >= 20
+                                    ? "✨ Strong Return!"
+                                    : safeROI >= 0
+                                        ? "👍 Positive Return"
+                                        : "⚠️ Loss on Investment"}
+                        </motion.div>
+                    )}
+
+                    {/* Investment Breakdown */}
+                    {invested > 0 || returned > 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                        >
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Investment Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Amount Invested</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(invested)}</span>
                                 </div>
-                            }
-                            icon={BarChart3}
-                            tooltip="The total time duration between your investment date and the return date."
-                        />
-                    </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Amount Returned</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(returned)}</span>
+                                </div>
+                                <div className={cn("flex justify-between items-center px-4 py-3", safeGain >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-semibold", safeGain >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                        {safeGain >= 0 ? "Net Gain" : "Net Loss"}
+                                    </span>
+                                    <span className={cn("text-sm font-bold", safeGain >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                        {safeGain >= 0 ? "+" : ""}{formatCurrency(safeGain)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Investment Period</span>
+                                    <span className="text-sm font-medium text-slate-700">
+                                        {safeYears >= 1 ? `${safeYears.toFixed(1)} years` : `${Math.round(safeYears * 365)} days`}
+                                    </span>
+                                </div>
+                                {safeAnnualized !== 0 && (
+                                    <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                        <span className="text-sm font-semibold text-blue-700">Annualized Return</span>
+                                        <span className="text-sm font-bold text-blue-700">{safeAnnualized.toFixed(2)}%</span>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter values to see the investment breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>

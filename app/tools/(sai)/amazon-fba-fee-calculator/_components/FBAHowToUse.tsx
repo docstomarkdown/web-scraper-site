@@ -6,21 +6,22 @@ import { Scale, Package, Banknote } from "lucide-react"
 export function FBAHowToUse() {
     return (
         <ToolSteps
+
             steps={[
                 {
-                    title: "Enter Dimensions & Weight",
-                    description: "Accurately enter your packaged product's length, width, height, and weight. Amazon fees heavily depend on size tiers.",
+                    title: "Measure Your Product",
+                    description: "Enter how big and heavy your package is. Amazon's fees change based on the size of the box, so accurate numbers are important.",
                     icon: Scale
                 },
                 {
-                    title: "Input Selling Price",
-                    description: "Enter the price you intend to sell at. This is used to calculate the Referral Fee (typically 15% of the sale price).",
-                    icon: Package
+                    title: "Set Your Selling Price",
+                    description: "Enter the price you want to sell your item for. This helps calculate Amazon's commission (the fee they take for every sale).",
+                    icon: Banknote
                 },
                 {
-                    title: "View Total Fees",
-                    description: "Instantly see your estimated Amazon FBA Fulfillment Fee and Referral Fee totals.",
-                    icon: Banknote
+                    title: "See Your Total Fees",
+                    description: "Look at the results to see exactly what Amazon will charge you. This tells you how much money you will keep after paying Amazon.",
+                    icon: Package
                 }
             ]}
         />

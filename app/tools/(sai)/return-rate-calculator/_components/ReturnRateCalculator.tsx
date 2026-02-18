@@ -91,8 +91,8 @@ export function ReturnRateCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Return Metrics
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </CardTitle>
                                     <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
                                         <HelpCircle className="w-4 h-4" />
@@ -102,13 +102,23 @@ export function ReturnRateCalculator() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                <button
-                                    onClick={handleReset}
-                                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                                    title="Reset All"
-                                >
-                                    <RefreshCw className="w-4 h-4" />
-                                </button>
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={handleReset}
+                                                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-8 w-8 rounded-full"
+                                            >
+                                                <RotateCcw className="w-4 h-4" />
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                            Reset Calculator
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">

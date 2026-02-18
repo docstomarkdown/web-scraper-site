@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { HelpCircle, Box, Calendar, Package } from "lucide-react"
+import { HelpCircle, RotateCcw, Box, Calendar, Package } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CurrencyCombobox } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
 // Constants for Fees (2024 Estimates)
 const RATES = {
@@ -31,6 +32,15 @@ export function StorageFeeCalculator() {
     const [sizeTier, setSizeTier] = useState<"standard" | "oversize">("standard")
 
     const val = (v: number | "") => (v === "" ? 0 : v)
+
+    const handleReset = () => {
+        setLength("")
+        setWidth("")
+        setHeight("")
+        setQuantity("")
+        setSeason("jan-sept")
+        setSizeTier("standard")
+    }
 
     const scrollToGuide = () => {
         const element = document.getElementById('storage-guide');
@@ -72,17 +82,34 @@ export function StorageFeeCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inputs
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-transparent h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>Enter product dimensions and inventory details.</CardDescription>
                             </div>
@@ -186,16 +213,46 @@ export function StorageFeeCalculator() {
                         ]}
                     />
 
-                    {/* Insight Card */}
-                    <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 flex gap-3 items-start">
-                        <Calendar className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                            <h4 className="text-sm font-semibold text-amber-900 mb-1">Peak Season Warning</h4>
-                            <p className="text-sm text-amber-700 leading-relaxed">
-                                Storage fees increase significantly (up to 3x) during Q4 (Oct-Dec). Plan your inventory carefully to avoid excessive bold fees during the holidays.
-                            </p>
+                    {/* Indicator Badge */}
+                    {monthlyFee > 0 && (
+                        <div className={cn(
+                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                            season === "oct-dec" ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-blue-50 border-blue-200 text-blue-700"
+                        )}>
+                            {season === "oct-dec" ? "⚠️ Peak Season Rates (Oct-Dec)" : "✅ Standard Season Rates (Jan-Sept)"}
                         </div>
-                    </div>
+                    )}
+
+                    {/* Breakdown Card */}
+                    {monthlyFee > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fee Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Unit Volume</span>
+                                    <span className="text-sm font-medium text-slate-700">{volumePerUnit.toFixed(4)} cu ft</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Total Volume ({qty} units)</span>
+                                    <span className="text-sm font-medium text-slate-700">{totalVolume.toFixed(2)} cu ft</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Rate per cu ft</span>
+                                    <span className="text-sm font-medium text-slate-700">${rate.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                    <span className="text-sm font-semibold text-slate-900">Monthly Fee</span>
+                                    <span className="text-sm font-bold text-blue-600">{formatCurrency(monthlyFee)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter details to see fee breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>

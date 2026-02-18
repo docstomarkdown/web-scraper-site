@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, DollarSign, MousePointerClick, Users, Target, Info, BarChart3 } from "lucide-react"
+import { HelpCircle, RotateCcw, DollarSign, MousePointerClick, Users, Target, Info, BarChart3 } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -24,6 +24,15 @@ export function CPACalculator() {
 
     // Common
     const [targetCPA, setTargetCPA] = useState<number | "">("")
+
+    const handleReset = () => {
+        setAdSpend("")
+        setConversions("")
+        setCpc("")
+        setConversionRate("")
+        setTargetCPA("")
+        setMode("campaign-data")
+    }
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
@@ -102,17 +111,34 @@ export function CPACalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inputs
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>Enter your campaign metrics.</CardDescription>
                             </div>
@@ -266,8 +292,55 @@ export function CPACalculator() {
                         }
                     />
 
+                    {/* Indicator Badge */}
+                    {validCalculation && (
+                        <div className={cn(
+                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                            statusColor.replace('bg-', 'bg-opacity-10 border-').replace('/20', '').replace('text-', 'text-')
+                        )}>
+                            {validCalculation && target > 0 ? (
+                                cpa <= target ? "✅ CPA Below Target" : "⚠️ CPA Above Target"
+                            ) : "📊 CPA Calculated"}
+                        </div>
+                    )}
+
+                    {/* Breakdown Card */}
+                    {validCalculation ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Metric Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">{mode === 'campaign-data' ? 'Total Ad Spend' : 'Cost Per Click'}</span>
+                                    <span className="text-sm font-medium text-slate-700">
+                                        {formatCurrency(mode === 'campaign-data' ? val(adSpend) : val(cpc))}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">{mode === 'campaign-data' ? 'Total Conversions' : 'Conversion Rate'}</span>
+                                    <span className="text-sm font-medium text-slate-700">
+                                        {mode === 'campaign-data' ? val(conversions).toLocaleString() : `${val(conversionRate)}%`}
+                                    </span>
+                                </div>
+                                {target > 0 && (
+                                    <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                        <span className="text-sm font-semibold text-slate-900">Target Variance</span>
+                                        <span className={cn("text-sm font-bold", cpa <= target ? "text-emerald-600" : "text-red-600")}>
+                                            {cpa <= target ? "-" : "+"}{formatCurrency(Math.abs(cpa - target))}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter metrics to calculate CPA.</p>
+                        </div>
+                    )}
+
                     {/* Pro Tip */}
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
                             <h4 className="text-sm font-semibold text-blue-900 mb-1">Pro Tip</h4>

@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, RefreshCw, Target, MousePointer2, ShoppingCart, TrendingUp, DollarSign } from "lucide-react";
+import { HelpCircle, RotateCcw, Target, MousePointer2, ShoppingCart, TrendingUp, DollarSign } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CurrencyCombobox } from "@/app/tools/_shared/components";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
 import { cn } from "@/lib/utils";
@@ -86,24 +87,29 @@ export function AdBudgetCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Budget Planner
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </CardTitle>
                                     <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
                                         <HelpCircle className="w-4 h-4" />
                                     </button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors flex items-center justify-center p-0"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <p className="text-sm text-slate-500 font-medium tracking-tight">Define revenue targets and traffic costs.</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                <button
-                                    onClick={handleReset}
-                                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                                    title="Reset All"
-                                >
-                                    <RefreshCw className="w-4 h-4" />
-                                </button>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">
@@ -193,63 +199,64 @@ export function AdBudgetCalculator() {
                         ]}
                     />
 
-                    {/* Insight Card: Traffic Funnel */}
-                    <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-blue-600" />
-                                Traffic Potential
-                            </h3>
-                            {requiredAdSpend > 0 && (
-                                <span className={cn("text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-100 text-blue-600")}>
-                                    Forecast
-                                </span>
+                    {/* Indicator Badge */}
+                    {requiredAdSpend > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className={cn(
+                                "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                                estOrders >= 1000 ? "bg-purple-50 border-purple-200 text-purple-700" :
+                                    estOrders >= 100 ? "bg-blue-50 border-blue-200 text-blue-700" :
+                                        "bg-slate-50 border-slate-200 text-slate-600"
                             )}
+                        >
+                            {estOrders >= 1000 ? "🚀 High Volume Strategy" : estOrders >= 100 ? "✨ Growth Strategy" : "🌱 Starting Strategy"}
+                        </motion.div>
+                    )}
+
+                    {/* Breakdown Card */}
+                    {requiredAdSpend > 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                        >
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Campaign Funnel</p>
+                            </div>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Total Ad Spend</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(requiredAdSpend)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
+                                    <span className="text-sm text-slate-500 flex items-center gap-2">
+                                        <MousePointer2 className="w-3.5 h-3.5 text-slate-400" />
+                                        Est. Clicks
+                                    </span>
+                                    <div className="text-right">
+                                        <div className="text-sm font-medium text-slate-700">{Math.round(estClicks).toLocaleString()}</div>
+                                        <div className="text-[10px] text-slate-400">@ {formatCurrency(cpc)} CPC</div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                    <span className="text-sm font-semibold text-blue-700 flex items-center gap-2">
+                                        <ShoppingCart className="w-3.5 h-3.5" />
+                                        Est. Orders
+                                    </span>
+                                    <div className="text-right">
+                                        <div className="text-sm font-bold text-blue-700">{Math.round(estOrders).toLocaleString()}</div>
+                                        <div className="text-[10px] text-blue-400">@ {val(conversionRate)}% CR</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter goals to see campaign funnel.</p>
                         </div>
-
-                        <div className="space-y-0 relative">
-                            {/* Visual Funnel Step 1: Spend */}
-                            <FunnelStep
-                                label="Total Spend"
-                                value={formatCurrency(requiredAdSpend)}
-                                icon={DollarSign}
-                                color="bg-blue-50 text-blue-600"
-                                isLast={false}
-                            />
-
-                            {/* Connector Line */}
-                            <div className="h-6 w-0.5 bg-slate-200 ml-6 -my-1" />
-
-                            {/* Visual Funnel Step 2: Clicks */}
-                            <FunnelStep
-                                label="Traffic (Clicks)"
-                                value={Math.round(estClicks).toLocaleString()}
-                                subtext={`@ ${formatCurrency(cpc)} CPC`}
-                                icon={MousePointer2}
-                                color="bg-purple-50 text-purple-600"
-                                isLast={false}
-                            />
-
-                            {/* Connector Line */}
-                            <div className="h-6 w-0.5 bg-slate-200 ml-6 -my-1" />
-
-                            {/* Visual Funnel Step 3: Orders */}
-                            <FunnelStep
-                                label="Sales (Orders)"
-                                value={Math.round(estOrders).toLocaleString()}
-                                subtext={`@ ${cvr}% Conv. Rate`}
-                                icon={ShoppingCart}
-                                color="bg-emerald-50 text-emerald-600"
-                                isLast={true}
-                            />
-                        </div>
-
-                        <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mt-4">
-                            <p className="text-xs text-slate-500 font-medium leading-relaxed text-center">
-                                *Estimates based on your CPC and Conversion Rate. Actual results may vary based on market conditions.
-                            </p>
-                        </div>
-                    </Card>
+                    )}
                 </div>
             </div>
         </FadeIn>

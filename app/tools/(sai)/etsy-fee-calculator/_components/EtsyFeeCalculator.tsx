@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, currencies, FadeIn } from "@/app/tools/_shared/components"
 import { Separator } from "@/components/ui/separator"
-import { Store, CreditCard, Megaphone, DollarSign, Tag } from "lucide-react"
+import { Store, CreditCard, Megaphone, DollarSign, Tag, RotateCcw, HelpCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
 export function EtsyFeeCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -39,6 +42,18 @@ export function EtsyFeeCalculator() {
         if (paymentFeeVar === "") setPaymentFeeVar(3.0) // US Standard
         if (paymentFeeFixed === "") setPaymentFeeFixed(0.25) // US Standard
     }, [])
+
+    const handleReset = () => {
+        setPrice("")
+        setShippingCharged("")
+        setItemCost("")
+        setShippingCost("")
+        setListingFee(0.20)
+        setTransactionFeeVar(6.5)
+        setPaymentFeeVar(3.0)
+        setPaymentFeeFixed(0.25)
+        setOffsiteAdsFee("")
+    }
 
     useEffect(() => {
         const p = Number(price) || 0
@@ -97,14 +112,25 @@ export function EtsyFeeCalculator() {
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
                     <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2.5 bg-orange-50 rounded-xl">
-                                <Store className="w-6 h-6 text-orange-600" />
-                            </div>
-                            <div>
-                                <CardTitle className="text-lg font-semibold text-slate-900">Etsy Sale Details</CardTitle>
-                                <CardDescription>Enter sale price and costs.</CardDescription>
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <CardTitle className="text-xl font-bold text-blue-600">Inputs</CardTitle>
+                            <TooltipProvider delayDuration={100}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={handleReset}
+                                            className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        >
+                                            <RotateCcw className="w-3.5 h-3.5" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                        Reset Calculator
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                         </div>
                         <div className="w-[140px]">
                             <CurrencyCombobox value={currency} onValueChange={setCurrency} />
@@ -229,37 +255,41 @@ export function EtsyFeeCalculator() {
                     />
 
                     {/* Breakdown */}
-                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
-                        <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <Megaphone className="w-4 h-4 text-orange-500" />
-                            Fee Breakdown
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Listing Fee</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{Number(listingFee).toFixed(2)}</span>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="px-4 py-3 border-b border-slate-100">
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fee Breakdown</p>
+                        </div>
+                        <div className="divide-y divide-slate-50">
+                            <div className="flex justify-between items-center px-4 py-3">
+                                <span className="text-sm text-slate-500">Listing Fee</span>
+                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{Number(listingFee).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Transaction Fee</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(transactionFeeVar) / 100)).toFixed(2)}</span>
+                            <div className="flex justify-between items-center px-4 py-3">
+                                <span className="text-sm text-slate-500">Transaction Fee</span>
+                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(transactionFeeVar) / 100)).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Processing Fee</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{(((Number(price) + Number(shippingCharged)) * (Number(paymentFeeVar) / 100)) + Number(paymentFeeFixed)).toFixed(2)}</span>
+                            <div className="flex justify-between items-center px-4 py-3">
+                                <span className="text-sm text-slate-500">Processing Fee</span>
+                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{(((Number(price) + Number(shippingCharged)) * (Number(paymentFeeVar) / 100)) + Number(paymentFeeFixed)).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Offsite Ads</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(offsiteAdsFee) / 100)).toFixed(2)}</span>
+                            <div className="flex justify-between items-center px-4 py-3">
+                                <span className="text-sm text-slate-500">Offsite Ads</span>
+                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(offsiteAdsFee) / 100)).toFixed(2)}</span>
                             </div>
-                            <Separator className="my-2" />
-                            <div className="flex justify-between text-sm font-semibold">
-                                <span className="text-slate-700">Total Fees</span>
-                                <span className="text-red-600">
+                            <div className="flex justify-between items-center px-4 py-3 bg-red-50/50">
+                                <span className="text-sm text-slate-500">Total Fees</span>
+                                <span className="text-sm font-bold text-red-600">
                                     -{currencySymbol}{totalFees.toFixed(2)}
                                 </span>
                             </div>
+                            <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                <span className="text-sm font-semibold text-slate-900">Net Profit</span>
+                                <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                    {currencySymbol}{netProfit.toFixed(2)}
+                                </span>
+                            </div>
                         </div>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </FadeIn>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { HelpCircle, Info } from "lucide-react"
+import { HelpCircle, Info, RotateCcw } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
@@ -41,6 +41,17 @@ export function DropshippingCalculator() {
             element.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
+    const handleReset = () => {
+        setPurchasePrice("")
+        setSalesPrice("")
+        setOrdersReceived("")
+        setCancelledQty("")
+        setRtoPercentage("")
+        setAdsCostPerProduct("")
+        setShippingCost("")
+        setOtherCosts("")
+    }
 
     // Calculations
     const purchasePriceVal = val(purchasePrice)
@@ -88,31 +99,39 @@ export function DropshippingCalculator() {
                         <Card className="border border-slate-200 shadow-sm bg-white">
                             <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                                 <div className="space-y-1">
-                                    <div className="flex items-center gap-3">
-                                        <CardTitle className="text-2xl font-bold text-blue-600">
-                                            Calculator Inputs
+                                    <div className="flex items-center gap-2">
+                                        <CardTitle className="text-xl font-bold text-blue-600">
+                                            Inputs
                                         </CardTitle>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={scrollToGuide}
+                                            className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        >
+                                            <HelpCircle className="w-4 h-4" />
+                                        </Button>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        onClick={scrollToGuide}
-                                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
+                                                        onClick={handleReset}
+                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors"
                                                     >
-                                                        <HelpCircle className="w-4 h-4" />
+                                                        <RotateCcw className="w-3.5 h-3.5" />
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    How to use this calculator
+                                                    Reset Calculator
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <CardDescription>Enter your product and marketing costs below.</CardDescription>
+                                    <CardDescription>Calculate your dropshipping net profit.</CardDescription>
                                 </div>
-                                <div className="w-[180px]">
+                                <div className="w-[140px]">
                                     <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                                 </div>
                             </CardHeader>
@@ -206,12 +225,12 @@ export function DropshippingCalculator() {
                                 {
                                     label: "Revenue",
                                     value: <Counter value={revenueGenerated} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-300"
+                                    color: "text-slate-100"
                                 },
                                 {
                                     label: "Total Expenses",
                                     value: <Counter value={totalExpenses} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-400"
+                                    color: "text-slate-300"
                                 }
                             ]}
                         />

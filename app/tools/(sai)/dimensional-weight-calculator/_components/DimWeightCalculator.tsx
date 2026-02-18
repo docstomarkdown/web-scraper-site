@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HelpCircle, Info, Box } from "lucide-react";
+import { HelpCircle, RotateCcw, Info, Box, Scale, Ruler } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
 
@@ -26,6 +26,14 @@ export function DimWeightCalculator() {
     const [dimWeight, setDimWeight] = useState<number>(0);
     const [billableWeight, setBillableWeight] = useState<number>(0);
     const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
+
+    const handleReset = () => {
+        setLength("");
+        setWidth("");
+        setHeight("");
+        setActualWeight("");
+        setDivisor("139");
+    }
 
     const calculate = useCallback(() => {
         const l = length === "" ? 0 : length;
@@ -80,28 +88,36 @@ export function DimWeightCalculator() {
                             <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-3">
-                                        <CardTitle className="text-2xl font-bold text-blue-600">
-                                            Package Details
+                                        <CardTitle className="text-xl font-bold text-blue-600">
+                                            Inputs
                                         </CardTitle>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={scrollToGuide}
+                                            className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        >
+                                            <HelpCircle className="w-4 h-4" />
+                                        </Button>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        onClick={scrollToGuide}
-                                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
+                                                        onClick={handleReset}
+                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                                     >
-                                                        <HelpCircle className="w-4 h-4" />
+                                                        <RotateCcw className="w-3.5 h-3.5" />
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    How to use this calculator
+                                                    Reset Calculator
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <CardDescription>Enter dimensions and weight to calculate billable weight.</CardDescription>
+                                    <CardDescription>Enter dimensions and weight.</CardDescription>
                                 </div>
                                 <div className="w-[160px]">
                                     <Tabs value={unit} onValueChange={(v: string) => setUnit(v as "imperial" | "metric")}>
@@ -202,20 +218,44 @@ export function DimWeightCalculator() {
                             ]}
                         />
 
-                        <div className="grid grid-cols-1 gap-3">
-                            <ResultCard
-                                title="Dimensional Weight"
-                                value={<>{dimWeight} <span className="text-sm font-normal text-slate-500">{unit === "imperial" ? "lbs" : "kg"}</span></>}
-                                tooltip="Based on package volume: (L x W x H) / Divisor"
-                                icon={Box}
-                            />
-                            <ResultCard
-                                title="Actual Weight"
-                                value={<>{actualWeight || 0} <span className="text-sm font-normal text-slate-500">{unit === "imperial" ? "lbs" : "kg"}</span></>}
-                                tooltip="Physical weight entered."
-                                icon={Box}
-                            />
-                        </div>
+                        {/* Breakdown Card */}
+                        {(dimWeight > 0 || actualWeight !== "") ? (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                                <div className="px-4 py-3 border-b border-slate-100">
+                                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Weight Analysis</p>
+                                </div>
+                                <div className="divide-y divide-slate-50">
+                                    <div className="flex justify-between items-center px-4 py-3">
+                                        <div className="flex items-center gap-2">
+                                            <Scale className="w-4 h-4 text-slate-400" />
+                                            <span className="text-sm text-slate-500">Actual Weight</span>
+                                        </div>
+                                        <span className="text-sm font-medium text-slate-700">
+                                            {actualWeight || 0} {unit === "imperial" ? "lbs" : "kg"}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-4 py-3">
+                                        <div className="flex items-center gap-2">
+                                            <Ruler className="w-4 h-4 text-slate-400" />
+                                            <span className="text-sm text-slate-500">DIM Weight</span>
+                                        </div>
+                                        <span className="text-sm font-medium text-slate-700">
+                                            {dimWeight} {unit === "imperial" ? "lbs" : "kg"}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                        <span className="text-sm font-semibold text-slate-900">Billable Weight</span>
+                                        <span className="text-sm font-bold text-blue-600">
+                                            {billableWeight} {unit === "imperial" ? "lbs" : "kg"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                                <p className="text-sm text-slate-400">Enter package details to see breakdown.</p>
+                            </div>
+                        )}
 
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
                             Carriers charge based on the <strong>greater</strong> of Actual Weight or Dimensional Weight.

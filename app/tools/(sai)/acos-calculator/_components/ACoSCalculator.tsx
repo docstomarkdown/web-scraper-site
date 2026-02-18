@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CalculatorInput } from "@/app/tools/_shared/components"
 import { ResultFeedbackCard, Counter, FadeIn } from "@/app/tools/_shared/components"
-import { HelpCircle, RefreshCw, TrendingUp, DollarSign, Percent, AlertCircle, CheckCircle2 } from "lucide-react"
+import { HelpCircle, RotateCcw, TrendingUp, DollarSign, Percent, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
@@ -90,22 +91,30 @@ export function ACoSCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Campaign Financials
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </CardTitle>
                                     <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
                                         <HelpCircle className="w-4 h-4" />
                                     </button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors flex items-center justify-center p-0"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <p className="text-sm text-slate-500 font-medium tracking-tight">Enter your ad spend, revenue, and product margin.</p>
                             </div>
-                            <button
-                                onClick={handleReset}
-                                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                                title="Reset All"
-                            >
-                                <RefreshCw className="w-4 h-4" />
-                            </button>
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">
                             {/* Group 1: Campaign Data */}
@@ -204,85 +213,72 @@ export function ACoSCalculator() {
                         ]}
                     />
 
-                    {/* Insight Card */}
-                    <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-blue-600" />
-                                Profitability Insight
-                            </h3>
-                            {acos > 0 && (
-                                <span className={cn("text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full", statusBg, statusColor)}>
-                                    {status}
-                                </span>
+                    {/* Indicator Badge */}
+                    {acos > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className={cn(
+                                "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                                statusBg,
+                                statusColor.replace('text-', 'border-').replace('600', '200'),
+                                statusColor
                             )}
-                        </div>
+                        >
+                            {status === "Profitable" ? "🔥 Profitable Campaign" : status === "Breakeven" ? "👍 Breaking Even" : "⚠️ Unprofitable"}
+                        </motion.div>
+                    )}
 
-                        <div className="space-y-4">
-                            <InsightItem
-                                label="Net Profit"
-                                value={netProfit !== 0 ? `$${netProfit.toFixed(2)}` : "$0.00"}
-                                description="Actual profit after advertising costs."
-                                icon={DollarSign}
-                                color={netProfit > 0 ? "text-emerald-600" : netProfit < 0 ? "text-red-500" : "text-slate-400"}
-                                bg={netProfit > 0 ? "bg-emerald-50" : netProfit < 0 ? "bg-red-50" : "bg-slate-50"}
-                            />
-                            <InsightItem
-                                label="Margin Efficiency"
-                                value={breakevenAcos > 0 ? `${(breakevenAcos - acos).toFixed(2)}%` : "0.00%"}
-                                description="Remaining margin after ad spend."
-                                icon={CheckCircle2}
-                                color={breakevenAcos - acos > 0 ? "text-emerald-600" : "text-slate-400"}
-                                bg={breakevenAcos - acos > 0 ? "bg-emerald-50" : "bg-slate-50"}
-                            />
-                        </div>
-
-                        <Separator />
-
-                        <div className="pt-2">
-                            <div className="flex items-center justify-between mb-3">
-                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Efficiency Scale</p>
-                                {acos > 0 && (
-                                    <span className={cn("text-xs font-bold px-2 py-0.5 rounded-md border",
-                                        acos > breakevenAcos ? "text-red-600 bg-red-50 border-red-100" : "text-emerald-600 bg-emerald-50 border-emerald-100"
-                                    )}>
-                                        {acos.toFixed(1)}% Current
-                                    </span>
-                                )}
+                    {/* Breakdown Card */}
+                    {Number(adRevenue) > 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                        >
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Campaign Breakdown</p>
                             </div>
-
-                            <div className="relative pt-2 pb-1">
-                                {/* Visual Bar: Green (Profit) -> Red (Loss) */}
-                                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
-                                    <div className="h-full bg-emerald-400" style={{ width: '50%' }} />
-                                    <div className="h-full bg-red-400" style={{ width: '50%' }} />
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Ad Spend</span>
+                                    <span className="text-sm font-medium text-slate-700">${Number(adSpend).toFixed(2)}</span>
                                 </div>
-
-                                {/* Breakeven Marker (Center) */}
-                                <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-400 -ml-[1px] h-full z-0" />
-
-                                {/* Dynamic Pointer */}
-                                {breakevenAcos > 0 && acos > 0 && (
-                                    <motion.div
-                                        initial={{ left: '50%' }}
-                                        animate={{
-                                            // 50% is breakeven. 
-                                            // If ACoS = 0, Left = 0%. 
-                                            // If ACoS = Breakeven, Left = 50%.
-                                            // If ACoS = 2x Breakeven, Left = 100%.
-                                            left: `${Math.min(Math.max((acos / (breakevenAcos * 2)) * 100, 0), 100)}%`
-                                        }}
-                                        className="absolute top-0 -mt-0.5 w-4 h-4 bg-white border-2 border-slate-800 rounded-full shadow-md z-10 -ml-2 transition-all"
-                                    />
-                                )}
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Ad Revenue</span>
+                                    <span className="text-sm font-medium text-slate-700">${Number(adRevenue).toFixed(2)}</span>
+                                </div>
+                                <div className={cn("flex justify-between items-center px-4 py-3", netProfit >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-semibold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                        Net Profit
+                                    </span>
+                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                        {netProfit >= 0 ? "+" : ""}${netProfit.toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="px-4 py-3">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-xs font-medium text-slate-500">Efficiency Scale</span>
+                                        <span className="text-xs font-bold text-slate-700">{acos.toFixed(1)}% ACoS</span>
+                                    </div>
+                                    <div className="relative h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
+                                        <div className="h-full bg-emerald-400" style={{ width: '50%' }} />
+                                        <div className="h-full bg-red-400" style={{ width: '50%' }} />
+                                        {/* Breakeven Marker */}
+                                        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-800 -ml-[1px] h-full z-10" />
+                                    </div>
+                                    <div className="flex justify-between mt-1 text-[10px] font-medium text-slate-400">
+                                        <span>Profitable</span>
+                                        <span>High Loss</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex justify-between mt-2 text-[11px] font-bold text-slate-500 italic">
-                                <span>High Profit</span>
-                                <span>Breakeven</span>
-                                <span>Loss</span>
-                            </div>
+                        </motion.div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter metrics to see breakdown.</p>
                         </div>
-                    </Card>
+                    )}
                 </div>
             </div>
         </FadeIn>

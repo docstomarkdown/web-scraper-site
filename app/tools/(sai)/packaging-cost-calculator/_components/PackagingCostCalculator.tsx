@@ -3,7 +3,8 @@
 import React, { useState, useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, Package, Scissors, Star, ChevronDown, ChevronUp, ChevronsUpDown, Layers } from "lucide-react"
+import { HelpCircle, RotateCcw, Package, Scissors, Star, ChevronDown, ChevronUp, ChevronsUpDown, Layers } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
@@ -18,7 +19,20 @@ export function PackagingCostCalculator() {
     const [brandingCost, setBrandingCost] = useState<number | "">("")
     const [laborTime, setLaborTime] = useState<number | "">("")
     const [hourlyWage, setHourlyWage] = useState<number | "">("")
+
     const [orderQuantity, setOrderQuantity] = useState<number | "">(1)
+
+    const handleReset = () => {
+        setBoxCost("")
+        setPaddingCost("")
+        setTapeCost("")
+        setLabelCost("")
+        setBrandingCost("")
+        setLaborTime("")
+        setHourlyWage("")
+        setOrderQuantity(1)
+        setShowAdvanced(false)
+    }
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
@@ -127,19 +141,36 @@ export function PackagingCostCalculator() {
                         <div className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0 p-6">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <h2 className="text-xl font-bold text-slate-800">
-                                        Packaging Details
+                                    <h2 className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </h2>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
-                                <p className="text-sm text-slate-500">Enter costs for materials and labor per unit.</p>
+                                <p className="text-sm text-slate-500 font-medium tracking-tight">Enter costs for materials and labor per unit.</p>
                             </div>
                             <div className="w-[140px]">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />

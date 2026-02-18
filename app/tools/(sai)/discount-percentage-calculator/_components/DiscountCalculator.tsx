@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, TrendingDown, DollarSign, Percent, ArrowRight, RefreshCw } from "lucide-react"
+import { HelpCircle, TrendingDown, DollarSign, Percent, ArrowRight, RotateCcw, ShoppingCart } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { motion } from "framer-motion"
@@ -17,10 +17,12 @@ export function DiscountCalculator() {
     // Inputs
     const [originalPrice, setOriginalPrice] = useState<number | "">("")
     const [discountValue, setDiscountValue] = useState<number | "">("") // Can be % or price depending on mode
+    const [quantity, setQuantity] = useState<number | "">("")
 
     // Results
     const [finalPrice, setFinalPrice] = useState<number>(0)
     const [savings, setSavings] = useState<number>(0)
+    const [totalSavings, setTotalSavings] = useState<number>(0)
     const [calculatedDiscount, setCalculatedDiscount] = useState<number>(0)
 
     const val = (v: number | "") => (v === "" ? 0 : v)
@@ -41,11 +43,13 @@ export function DiscountCalculator() {
         }
     };
 
-    const resetFields = () => {
+    const handleReset = () => {
         setOriginalPrice("")
         setDiscountValue("")
+        setQuantity("")
         setFinalPrice(0)
         setSavings(0)
+        setTotalSavings(0)
         setCalculatedDiscount(0)
     }
 
@@ -53,27 +57,32 @@ export function DiscountCalculator() {
     useEffect(() => {
         const price = val(originalPrice)
         const secondVal = val(discountValue)
+        const qty = val(quantity) || 1
 
         if (mode === "find-price") {
             if (price > 0 && secondVal >= 0) {
                 const save = price * (secondVal / 100)
                 setSavings(save)
-                setFinalPrice(price - save)
+                setTotalSavings(save * qty)
+                setFinalPrice((price - save) * qty)
             } else {
                 setSavings(0)
-                setFinalPrice(price)
+                setTotalSavings(0)
+                setFinalPrice(price * qty)
             }
         } else {
             if (price > 0 && secondVal > 0) {
                 const save = price - secondVal
                 setSavings(Math.max(save, 0))
+                setTotalSavings(Math.max(save, 0) * qty)
                 setCalculatedDiscount(save > 0 ? (save / price) * 100 : 0)
             } else {
                 setSavings(0)
+                setTotalSavings(0)
                 setCalculatedDiscount(0)
             }
         }
-    }, [originalPrice, discountValue, mode])
+    }, [originalPrice, discountValue, mode, quantity])
 
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -92,7 +101,7 @@ export function DiscountCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inputs
                                     </CardTitle>
                                     <Button
@@ -103,9 +112,26 @@ export function DiscountCalculator() {
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>
-                                    {mode === "find-price" ? "Enter price and discount percentage." : "Enter original and final price."}
+                                    Calculate your discount and final price.
                                 </CardDescription>
                             </div>
                             <div className="w-[140px]">
@@ -115,34 +141,33 @@ export function DiscountCalculator() {
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-4 mb-2 pb-6 border-b border-slate-50">
                                 <label className="text-sm font-bold text-slate-600">Calculation Mode</label>
-                                <div className="relative flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-fit">
+                                <div className="relative flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-fit">
                                     {/* Animated Background Pill */}
                                     <motion.div
-                                        className="absolute bg-white rounded-md shadow-sm border border-blue-200"
+                                        className="absolute bg-white rounded-lg shadow-sm border border-slate-200"
                                         initial={false}
                                         animate={{
                                             x: mode === "find-price" ? 0 : "100%",
                                         }}
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        style={{ top: 4, bottom: 4, left: 4, width: 'calc(50% - 4px)' }}
+                                        transition={{ type: "spring", stiffness: 350, damping: 35 }}
+                                        style={{ top: 2, bottom: 2, left: 2, width: 'calc(50% - 2px)' }}
                                     />
-
                                     <button
                                         type="button"
-                                        onClick={() => { setMode("find-price"); resetFields(); }}
+                                        onClick={() => { setMode("find-price"); handleReset(); }}
                                         className={cn(
-                                            "relative z-10 px-4 py-1.5 rounded-md text-[10px] font-bold transition-colors uppercase tracking-wider w-32",
-                                            mode === "find-price" ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
+                                            "relative z-10 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 w-32",
+                                            mode === "find-price" ? "text-blue-600" : "text-slate-500 hover:text-slate-700"
                                         )}
                                     >
                                         Find Final Price
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => { setMode("find-discount"); resetFields(); }}
+                                        onClick={() => { setMode("find-discount"); handleReset(); }}
                                         className={cn(
-                                            "relative z-10 px-4 py-1.5 rounded-md text-[10px] font-bold transition-colors uppercase tracking-wider w-32",
-                                            mode === "find-discount" ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
+                                            "relative z-10 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 w-32",
+                                            mode === "find-discount" ? "text-blue-600" : "text-slate-500 hover:text-slate-700"
                                         )}
                                     >
                                         Find Discount %
@@ -168,7 +193,7 @@ export function DiscountCalculator() {
                                 >
                                     {mode === "find-price" ? (
                                         <CalculatorInput
-                                            label="Discount Percentage (%)"
+                                            label="Discount (%)"
                                             value={discountValue}
                                             onChange={setDiscountValue}
                                             placeholder="20"
@@ -186,18 +211,25 @@ export function DiscountCalculator() {
                                         />
                                     )}
                                 </motion.div>
+
+                                <CalculatorInput
+                                    label="Quantity"
+                                    value={quantity}
+                                    onChange={setQuantity}
+                                    placeholder="1"
+                                    max={10000}
+                                    tooltip="Number of items you are buying."
+                                />
                             </div>
-
-
                         </CardContent>
                     </Card>
                 </div>
 
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
                     {/* Main Result Card */}
                     <ResultFeedbackCard
-                        title={mode === "find-price" ? "Final Price" : "Discount Percentage"}
+                        title={mode === "find-price" ? "Total Price" : "Discount Percentage"}
                         mainValue={
                             mode === "find-price" ? (
                                 <Counter value={finalPrice} formatter={formatCurrency} key={currency} />
@@ -207,14 +239,14 @@ export function DiscountCalculator() {
                         }
                         secondaryMetrics={[
                             {
-                                label: "You Save",
-                                value: <Counter value={savings} formatter={formatCurrency} key={currency} />,
+                                label: "Total Savings",
+                                value: <Counter value={totalSavings} formatter={formatCurrency} key={currency} />,
                                 color: "text-emerald-400"
                             },
                             {
-                                label: mode === "find-price" ? "Discount %" : "Original Price",
+                                label: mode === "find-price" ? "Unit Saving" : "Unit Price",
                                 value: mode === "find-price" ? (
-                                    <Counter value={Number(discountValue) || 0} formatter={(v) => `${v}%`} />
+                                    <Counter value={savings} formatter={formatCurrency} key={currency} />
                                 ) : (
                                     <Counter value={Number(originalPrice) || 0} formatter={formatCurrency} key={currency} />
                                 ),
@@ -223,22 +255,82 @@ export function DiscountCalculator() {
                         ]}
                     />
 
-                    <div className="grid grid-cols-1 gap-4">
-                        <ResultCard
-                            title="Summary"
-                            value={
-                                originalPrice && discountValue ? (
-                                    mode === "find-price" ? (
-                                        <>Original {formatCurrency(Number(originalPrice))} minus {discountValue}% OFF</>
-                                    ) : (
-                                        <>Original {formatCurrency(Number(originalPrice))} discounted to {formatCurrency(Number(discountValue))}</>
-                                    )
-                                ) : "Enter values to see summary"
-                            }
-                            icon={TrendingDown}
-                            tooltip="A quick overview of your calculation."
-                        />
-                    </div>
+                    {/* Savings Indicator */}
+                    {(mode === "find-price" ? val(discountValue) > 0 : calculatedDiscount > 0) && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className={cn(
+                                "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                                (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 40
+                                    ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                    : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 20
+                                        ? "bg-blue-50 border-blue-200 text-blue-700"
+                                        : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 10
+                                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                                            : "bg-slate-50 border-slate-200 text-slate-600"
+                            )}
+                        >
+                            {(mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 40
+                                ? "🔥 Amazing Deal!"
+                                : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 20
+                                    ? "✨ Great Savings!"
+                                    : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 10
+                                        ? "👍 Decent Discount"
+                                        : "💡 Modest Savings"}
+                        </motion.div>
+                    )}
+
+                    {/* Price Breakdown */}
+                    {originalPrice && discountValue ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                        >
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Price Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Original Price</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(val(originalPrice))}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Discount</span>
+                                    <span className="text-sm font-medium text-red-500">
+                                        - {formatCurrency(savings)} ({mode === "find-price" ? `${val(discountValue)}%` : `${calculatedDiscount.toFixed(1)}%`})
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Price After Discount</span>
+                                    <span className="text-sm font-semibold text-slate-800">
+                                        {formatCurrency(val(originalPrice) - savings)}
+                                    </span>
+                                </div>
+                                {val(quantity) > 1 && (
+                                    <>
+                                        <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
+                                            <span className="text-sm text-slate-500">Quantity</span>
+                                            <span className="text-sm font-medium text-slate-700">× {val(quantity)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                            <span className="text-sm font-semibold text-blue-700">Grand Total</span>
+                                            <span className="text-sm font-bold text-blue-700">{formatCurrency(finalPrice)}</span>
+                                        </div>
+                                    </>
+                                )}
+                                <div className="flex justify-between items-center px-4 py-3 bg-emerald-50/50">
+                                    <span className="text-sm font-semibold text-emerald-700">You Save</span>
+                                    <span className="text-sm font-bold text-emerald-700">{formatCurrency(totalSavings)}</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter values to see the price breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>

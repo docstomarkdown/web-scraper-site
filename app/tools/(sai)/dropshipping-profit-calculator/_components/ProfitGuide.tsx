@@ -29,7 +29,7 @@ const insights = [
         title: "The Margin Illusion",
         stat: "30–40%",
         statLabel: "Profit lost to hidden costs",
-        description: "Gross margins often look great on paper, but shipping and ad costs can deceptive. These hidden expenses frequently cut profits by 30–40%, so always prioritize calculating NET profit."
+        description: "Gross margins can be misleading. Hidden costs like shipping variances, transaction fees, and taxes often eat up 30-40% of your expected profit. Always calculate your NET profit to see the real picture."
     },
     {
         icon: AlertTriangle,
@@ -39,8 +39,8 @@ const insights = [
         title: "The RTO Problem",
         stat: "2×",
         statLabel: "Shipping cost per return",
-        description: "Returns are costly—you pay for both forward and return shipping, plus wasted ad spend. In COD markets, RTO rates of 15–30% are common and must be factored in.",
-        tooltip: "RTO (Return to Origin): When a customer doesn't accept the package and it's sent back to you. You lose the money spent on shipping and ads."
+        description: "Returns are a double hit: you pay for shipping both ways, plus you lose your ad spend. In Cash on Delivery (COD) markets, RTO rates can hit 15-30%, making this a critical factor to track.",
+        tooltip: "RTO (Return to Origin): When a customer rejects a delivery. You pay for shipping to them AND back to you, plus the ad money is wasted."
     },
     {
         icon: CircleDollarSign,
@@ -50,8 +50,8 @@ const insights = [
         title: "ROAS Reality Check",
         stat: "4×+",
         statLabel: "Target ROAS (not 3.5×)",
-        description: "A 3.5× ROAS might look profitable but often ignores product costs and RTOs. You often keep only ~15% of revenue, so factor RTO rates into every calculation.",
-        tooltip: "ROAS (Return on Ad Spend): How much money you make for every $1 spent on ads. For example, 4X means you made $4 from $1 of ads."
+        description: "A 3.5× ROAS might look good, but after deducting product and shipping costs, your actual profit could be thin. Aim for higher ROAS to cover all operational expenses and returns.",
+        tooltip: "ROAS (Return on Ad Spend): Revenue earned for every $1 spent on ads. A high ROAS doesn't always guarantee profit if your margins are low."
     },
     {
         icon: Calculator,
@@ -61,8 +61,8 @@ const insights = [
         title: "Break-Even CPA",
         stat: "Know It",
         statLabel: "Your max cost per acquisition",
-        description: "Your Break-Even CPA is your sale price minus all costs. Knowing this limit before spending on ads is crucial—a lower CPA gives you more room to scale profitably.",
-        tooltip: "CPA (Cost Per Acquisition): The average amount you spend on ads to get just one order."
+        description: "This is your profitability line in the sand. It's the maximum you can spend to acquire a customer without losing money. Keep your actual CPA below this number to stay profitable.",
+        tooltip: "CPA (Cost Per Acquisition): The average cost to get one paying customer. If your CPA is lower than your break-even point, you make money."
     }
 ]
 
