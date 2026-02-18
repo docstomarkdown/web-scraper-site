@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { HelpCircle, DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
+import { HelpCircle, RotateCcw, DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
@@ -21,6 +22,16 @@ export function BundleProfitCalculator() {
     // State
     const [currency, setCurrency] = useState("USD")
     const [showAdvanced, setShowAdvanced] = useState(false)
+
+    const handleReset = () => {
+        setProducts([
+            { id: "A", name: "Product A", cost: "", price: "" },
+            { id: "B", name: "Product B", cost: "", price: "" }
+        ])
+        setBundleMode("percentage")
+        setBundleValue("")
+        setShowAdvanced(false)
+    }
 
     // Dynamic Products State
     const [products, setProducts] = useState<Product[]>([
@@ -121,10 +132,29 @@ export function BundleProfitCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div>
-                                <CardTitle className="text-xl font-bold text-slate-800">
-                                    Product Details
-                                </CardTitle>
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
+                                    </CardTitle>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </div>
                                 <CardDescription>Enter costs and selling prices for each item in the bundle.</CardDescription>
                             </div>
                             <div className="w-[140px]">
@@ -273,34 +303,54 @@ export function BundleProfitCalculator() {
                         ]}
                     />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Bundle Price"
-                            value={<Counter value={bundlePrice} formatter={formatCurrency} key={`bp-${currency}`} />}
-                            icon={Package}
-                        />
-                        <ResultCard
-                            title="Total Cost"
-                            value={<Counter value={totalCost} formatter={formatCurrency} key={`tc-${currency}`} />}
-                            icon={DollarSign}
-                            subtext="Combined costs"
-                        />
-                    </div>
+                    {/* Indicator Badge */}
+                    {margin !== 0 && (
+                        <div className={cn(
+                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                            margin >= 20 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                                margin > 0 ? "bg-yellow-50 border-yellow-200 text-yellow-700" :
+                                    "bg-red-50 border-red-200 text-red-700"
+                        )}>
+                            {margin >= 20 ? "🚀 Highly Profitable Bundle" : margin > 0 ? "⚠️ Low Margin Bundle" : "🛑 Unprofitable Bundle"}
+                        </div>
+                    )}
 
-                    <Card className="border border-slate-200 shadow-sm bg-slate-50">
-                        <CardContent className="pt-6">
-                            <div className="flex items-start gap-3">
-                                <AlertCircle className="w-5 h-5 text-slate-400 mt-0.5" />
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-slate-800">Breakdown</p>
-                                    <p className="text-xs text-slate-500">
-                                        Selling these <strong>{products.length} items</strong> separately would generate <strong>{formatCurrency(originalPrice)}</strong> in revenue with <strong>{formatCurrency(originalPrice - totalCost)}</strong> profit.
-                                        By bundling, you sacrifice <strong>{formatCurrency(discountAmount)}</strong> in revenue to potentially increase sales volume.
-                                    </p>
-                                </div>
+                    {/* Breakdown Card */}
+                    {margin !== 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profit Breakdown</p>
                             </div>
-                        </CardContent>
-                    </Card>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Total Product Cost</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(totalCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Bundle Selling Price</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(bundlePrice)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                    <span className="text-sm font-semibold text-slate-900">Net Profit per Bundle</span>
+                                    <span className={cn("text-sm font-bold", profit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                        {formatCurrency(profit)}
+                                    </span>
+                                </div>
+                                {discountAmount > 0 && (
+                                    <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                        <span className="text-sm text-slate-500">Customer Savings</span>
+                                        <span className="text-sm font-medium text-blue-600">
+                                            {formatCurrency(discountAmount)} ({discountPercent.toFixed(1)}%)
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter product details to calculate profit.</p>
+                        </div>
+                    )}
 
                 </div>
             </div>

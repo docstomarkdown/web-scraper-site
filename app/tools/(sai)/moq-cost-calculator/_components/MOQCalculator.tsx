@@ -12,7 +12,8 @@ import { CalculatorInput } from "@/app/tools/_shared/components/CalculatorInput"
 import { ResultFeedbackCard } from "@/app/tools/_shared/components/ResultFeedbackCard";
 import { FadeIn } from "@/app/tools/_shared/components/FadeIn";
 import { CurrencyCombobox } from "@/app/tools/_shared/components";
-import { HelpCircle, AlertTriangle } from "lucide-react";
+import { HelpCircle, RotateCcw, AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
     Tooltip,
     TooltipContent,
@@ -27,6 +28,14 @@ export function MOQCalculator() {
     const [shippingCost, setShippingCost] = useState<number | "">("");
     const [miscCost, setMiscCost] = useState<number | "">("");
     const [monthlySales, setMonthlySales] = useState<number | "">("");
+
+    const handleReset = () => {
+        setUnitPrice("");
+        setMoq("");
+        setShippingCost("");
+        setMiscCost("");
+        setMonthlySales("");
+    }
 
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
@@ -100,18 +109,36 @@ export function MOQCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Cost & MOQ Details
+                                    <CardTitle className="text-xl font-bold text-blue-600">
+                                        Inputs
                                     </CardTitle>
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <button
-                                                    type="button"
-                                                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full inline-flex items-center justify-center"
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset} // Note: This button doesn't have a specific onClick in original, but added for reset consistency
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
                                                 >
                                                     <HelpCircle className="w-4 h-4" />
-                                                </button>
+                                                </Button>
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 Enter your supplier&apos;s Minimum Order Quantity and costs.

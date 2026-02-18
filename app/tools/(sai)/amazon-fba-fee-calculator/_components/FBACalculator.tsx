@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { HelpCircle, Info, Check, ChevronsUpDown } from "lucide-react"
+import { HelpCircle, Info, Check, ChevronsUpDown, RotateCcw } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
@@ -245,6 +245,16 @@ export function FBACalculator() {
         }
     };
 
+    const handleReset = () => {
+        setSalesPrice("")
+        setWeight("")
+        setLength("")
+        setWidth("")
+        setHeight("")
+        setCategory("General (Default)")
+        setStorageMonths("")
+    }
+
     const salesPriceVal = val(salesPrice)
     const weightVal = val(weight)
     const lengthVal = val(length)
@@ -324,33 +334,41 @@ export function FBACalculator() {
                         <Card className="border border-slate-200 shadow-sm bg-white">
                             <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                                 <div className="space-y-1">
-                                    <div className="flex items-center gap-3">
-                                        <CardTitle className="text-2xl font-bold text-blue-600 flex items-baseline gap-2">
-                                            Calculator <span className="text-slate-400 font-medium text-lg">Inputs</span>
+                                    <div className="flex items-center gap-2">
+                                        <CardTitle className="text-xl font-bold text-blue-600">
+                                            Inputs
                                         </CardTitle>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={scrollToGuide}
+                                            className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        >
+                                            <HelpCircle className="w-4 h-4" />
+                                        </Button>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        onClick={scrollToGuide}
-                                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
+                                                        onClick={handleReset}
+                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors"
                                                     >
-                                                        <HelpCircle className="w-4 h-4" />
+                                                        <RotateCcw className="w-3.5 h-3.5" />
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    How to use this calculator
+                                                    Reset Calculator
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
                                     <CardDescription>
-                                        Using <strong>{currency}</strong> rates ({units.weight}/{units.dim}).
+                                        Estimate FBA and referral fees.
                                     </CardDescription>
                                 </div>
-                                <div className="w-[180px]">
+                                <div className="w-[140px]">
                                     <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                                 </div>
                             </CardHeader>

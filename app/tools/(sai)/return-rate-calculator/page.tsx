@@ -6,7 +6,7 @@ import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
 import { CTA } from "@/components/sections/CTA";
 
 export const metadata: Metadata = {
-    title: "Return Rate Calculator - E-commerce Refurn Metrics",
+    title: "Return Rate Calculator - E-commerce Return Metrics",
     description: "Calculate your product return rate percentage to identify quality issues or description mismatches.",
 };
 

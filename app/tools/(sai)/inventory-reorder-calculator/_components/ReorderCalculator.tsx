@@ -3,7 +3,8 @@
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, AlertTriangle, CheckCircle2, Clock, Package } from "lucide-react"
+import { HelpCircle, RotateCcw, AlertTriangle, CheckCircle2, Clock, Package } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function ReorderCalculator() {
@@ -11,6 +12,13 @@ export function ReorderCalculator() {
     const [leadTime, setLeadTime] = useState<number | "">("")
     const [safetyStockDays, setSafetyStockDays] = useState<number | "">("")
     const [currentStock, setCurrentStock] = useState<number | "">("")
+
+    const handleReset = () => {
+        setDailySales("")
+        setLeadTime("")
+        setSafetyStockDays("")
+        setCurrentStock("")
+    }
 
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
@@ -55,17 +63,34 @@ export function ReorderCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inventory Metrics
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>Enter your sales velocity and lead times.</CardDescription>
                             </div>
@@ -108,7 +133,7 @@ export function ReorderCalculator() {
                     <ResultFeedbackCard
                         title="Reorder Point"
                         titleLabel={titleLabel}
-                        labelClassName={!isReorderNeeded ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"}
+                        labelClassName={!isReorderNeeded ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}
                         mainValue={
                             <div className="flex items-baseline gap-1">
                                 <Counter value={reorderPoint} />

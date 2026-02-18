@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, DollarSign, Percent, ShoppingCart, Tag, BarChart } from "lucide-react"
+import { HelpCircle, RotateCcw, DollarSign, Percent, ShoppingCart, Tag, BarChart } from "lucide-react"
 import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, currencies, FadeIn } from "@/app/tools/_shared/components"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 
 export function CouponROICalculator() {
@@ -96,14 +98,30 @@ export function CouponROICalculator() {
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
                     <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2.5 bg-indigo-50 rounded-xl">
-                                <Tag className="w-6 h-6 text-indigo-600" />
+                        <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                                <CardTitle className="text-xl font-bold text-blue-600">
+                                    Inputs
+                                </CardTitle>
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={handleReset}
+                                                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                            >
+                                                <RotateCcw className="w-3.5 h-3.5" />
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                            Reset Calculator
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </div>
-                            <div>
-                                <CardTitle className="text-lg font-semibold text-slate-900">Campaign Details</CardTitle>
-                                <CardDescription>Enter your coupon efficiency metrics.</CardDescription>
-                            </div>
+                            <CardDescription>Enter your coupon efficiency metrics.</CardDescription>
                         </div>
                         <div className="w-[140px]">
                             <CurrencyCombobox value={currency} onValueChange={setCurrency} />
@@ -198,34 +216,50 @@ export function CouponROICalculator() {
                         </div>
                     </ResultFeedbackCard>
 
+                    {/* Indicator Badge */}
+                    {totalRevenue > 0 && (
+                        <div className={cn(
+                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                            roi > 0 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                                roi === 0 ? "bg-slate-50 border-slate-200 text-slate-700" :
+                                    "bg-red-50 border-red-200 text-red-700"
+                        )}>
+                            {roi > 0 ? "🚀 Positive ROI Campaign" : roi === 0 ? "⚖️ Break-Even Campaign" : "🛑 Negative ROI Campaign"}
+                        </div>
+                    )}
+
                     {/* Breakdown */}
-                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
-                        <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <BarChart className="w-4 h-4 text-indigo-500" />
-                            Financial Breakdown
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Gross Sales</span>
-                                <span className="font-medium">{currencySymbol}{(Number(redemptions) * Number(aov)).toFixed(2)}</span>
+                    {totalRevenue > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Financial Breakdown</p>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Total Discount Cost</span>
-                                <span className="text-red-500 font-medium">-{currencySymbol}{(Number(redemptions) * Number(discountAmount)).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Campaign Cost</span>
-                                <span className="text-red-500 font-medium">-{currencySymbol}{Number(campaignCost).toFixed(2)}</span>
-                            </div>
-                            <Separator className="my-2" />
-                            <div className="flex justify-between text-sm font-semibold">
-                                <span className="text-slate-700">Net Profit</span>
-                                <span className={netProfit >= 0 ? "text-emerald-600" : "text-red-600"}>
-                                    {currencySymbol}{netProfit.toFixed(2)}
-                                </span>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Gross Sales</span>
+                                    <span className="text-sm font-medium text-slate-700">{currencySymbol}{(Number(redemptions) * Number(aov)).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Total Cost (Goods + Ads)</span>
+                                    <span className="text-sm font-medium text-slate-700">-{currencySymbol}{totalCost.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
+                                    <span className="text-sm text-slate-500">Discount Given</span>
+                                    <span className="text-sm font-medium text-red-600">-{currencySymbol}{(Number(redemptions) * Number(discountAmount)).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-100/50 border-t border-slate-100">
+                                    <span className="text-sm font-bold text-slate-900">Net Profit</span>
+                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                        {currencySymbol}{netProfit.toFixed(2)}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </Card>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter metrics to see financial breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>

@@ -3,7 +3,8 @@
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, TrendingUp, DollarSign, Percent, AlertTriangle, CheckCircle2 } from "lucide-react"
+import { HelpCircle, RotateCcw, TrendingUp, DollarSign, Percent, AlertTriangle, CheckCircle2 } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
@@ -13,6 +14,13 @@ export function FreeShippingCalculator() {
     const [marginPercent, setMarginPercent] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
     const [proposedThreshold, setProposedThreshold] = useState<number | "">("")
+
+    const handleReset = () => {
+        setAov("")
+        setMarginPercent("")
+        setShippingCost("")
+        setProposedThreshold("")
+    }
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
@@ -102,17 +110,34 @@ export function FreeShippingCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inputs
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>Enter your current metrics.</CardDescription>
                             </div>
@@ -159,7 +184,7 @@ export function FreeShippingCalculator() {
                     <ResultFeedbackCard
                         title="Required Sales Increase"
                         titleLabel={isViable ? "Feasible" : "High Risk"}
-                        labelClassName={isViable ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"}
+                        labelClassName={isViable ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}
                         mainValue={
                             isViable ?
                                 <Counter value={salesIncreaseNeeded} formatter={(v) => `+${v.toFixed(1)}%`} /> :

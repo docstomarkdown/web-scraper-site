@@ -11,7 +11,7 @@ interface SecondaryMetric {
 }
 
 interface ResultFeedbackCardProps {
-    title: string
+    title: React.ReactNode
     titleLabel?: string | React.ReactNode // e.g. "High Performance"
     labelClassName?: string // e.g. "text-emerald-400"
     mainValue?: React.ReactNode
@@ -22,6 +22,7 @@ interface ResultFeedbackCardProps {
     secondaryMetrics?: SecondaryMetric[]
     className?: string
     children?: React.ReactNode
+    hideChildrenBorder?: boolean
 }
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -40,7 +41,8 @@ export function ResultFeedbackCard({
     className,
     variant = "default",
     tooltip,
-    children
+    children,
+    hideChildrenBorder = false
 }: ResultFeedbackCardProps & { variant?: "default" | "warning" | "compact", tooltip?: string }) {
 
     // Default styles based on variant
@@ -181,7 +183,7 @@ export function ResultFeedbackCard({
                 {children && (
                     <div className={cn(
                         "pt-4",
-                        (mainValue || mainMetricLabel || secondaryMetrics.length > 0) && (variant === "compact" ? "border-t border-slate-100" : "border-t border-white/10")
+                        !hideChildrenBorder && (mainValue || mainMetricLabel || secondaryMetrics.length > 0) && (variant === "compact" ? "border-t border-slate-100" : "border-t border-white/10")
                     )}>
                         {children}
                     </div>

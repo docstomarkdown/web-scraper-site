@@ -22,36 +22,131 @@ import {
 
 // Full descriptions for tools
 const toolDescriptions: Record<string, string> = {
-    "Dimension Converter": "Convert product dimensions between inches, cm, and mm with volume and dimensional weight calculations.",
-    "Amazon Fulfillment by Amazon (FBA) Fee Calculator": "Estimate Amazon Fulfillment by Amazon (FBA) fees, referral fees, and net profit based on product size and weight.",
-    "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, RTO, and shipping costs.",
-    "Profit Margin Calculator": "Instantly calculate gross margin, markup percentage, and profit per unit for any product.",
-    "Return on Investment (ROI) Calculator": "Calculate Return on Investment (ROI) for any product to measure profitability and make smarter sourcing decisions.",
-    "Discount Percentage Calculator": "Quickly calculate original price, discount percentage, or final price with this easy-to-use tool.",
-    "Cost Per Acquisition (CPA) Calculator": "Determine your Cost Per Acquisition (CPA). Calculate from campaign data or estimate based on Cost Per Click (CPC) and conversion rate.",
-    "Product Weight Converter": "Convert weights between oz, lbs, g, and kg with real-time shipping cost impact analysis for e-commerce.",
-    "Cubic Feet Calculator": "Calculate cubic feet (CFT) and cubic meters (CBM) from dimensions for freight and storage cost estimation.",
-    "Universal Product Code (UPC) / European Article Number (EAN) Validator": "Validate Universal Product Code (UPC), European Article Number (EAN), and ISBN barcodes to ensure product compliance and data accuracy.",
-    "Global Trade Item Number (GTIN) Converter": "Convert between Global Trade Item Number (GTIN-8, GTIN-12, GTIN-13, and GTIN-14) formats for global compatibility.",
-    "Break-Even Calculator": "Determine the sales volume needed to cover costs and start generating profit.",
-    "Return on Ad Spend (ROAS) Calculator": "Calculate Return on Ad Spend (ROAS) to measure the effectiveness of your digital advertising campaigns.",
-    "Dimensional Weight Calculator": "Calculate the dimensional weight of your packages for accurately checking shipping costs.",
-    "Free Shipping Calculator": "Determine the minimum order value required to offer free shipping without losing profit.",
-    "Inventory Reorder Calculator": "Calculate the optimal reorder point and quantity to prevent stockouts and overstocking.",
-    "Safety Stock Calculator": "Determine the right amount of buffer stock to hold to protect against supply chain fluctuations.",
-    "Sales Velocity Calculator": "Track how fast your products are selling to optimize inventory and marketing strategies.",
-    "Promo Code Generator": "Generate unique, random promo codes for your marketing campaigns and sales.",
-    "Price Elasticity Calculator": "Analyze how changes in price affect the demand for your products to find the sweet spot.",
-    "Bundle Profit Calculator": "Calculate the profitability of product bundles to increase average order value.",
-    "Minimum Order Quantity (MOQ) Cost Calculator": "Calculate the total cost and per-unit cost when purchasing Minimum Order Quantities (MOQ).",
-    "Landed Cost Calculator": "Determine the true cost of a product including shipping, customs, and other fees.",
-    "Wholesale Price Calculator": "Calculate the optimal wholesale price to offer retailers while maintaining your target margin.",
-    "SKU Generator": "Generate consistent and meaningful Stock Keeping Units (SKUs) for your inventory.",
-    "Pay-Per-Click (PPC) Bid Calculator": "Calculate the maximum Pay-Per-Click (PPC) bid you should pay to achieve your target Advertising Cost of Sales (ACoS).",
-    "Advertising Cost of Sales (ACoS) Calculator": "Calculate Advertising Cost of Sales (ACoS) to measure the efficiency of your Amazon Pay-Per-Click (PPC) campaigns.",
-    "Total Advertising Cost of Sales (TACoS) Calculator": "Calculate Total Advertising Cost of Sales (TACoS) to see the holistic impact of ads on your business.",
-    "Ad Spend Budget Planner": "Plan your advertising budget based on your revenue goals and target Return on Ad Spend (ROAS).",
+    // 1. Dropshipping Profit Calculator
+    "Dropshipping Profit Calculator": "Calculate your net profit margins with precision, accounting for ads, purchase costs, and shipping fees.",
+
+    // 2. Amazon FBA Fee Calculator
+    "Amazon FBA Fee Calculator": "Estimate Amazon FBA fees, referral fees, and net profit based on product size and weight.",
+
+    // 3. Profit Margin Calculator
+    "Profit Margin Calculator": "Instantly determine your gross margin, markup percentage, and profit per unit for any product.",
+
+    // 4. Discount Percentage Calculator
+    "Discount Percentage Calculator": "Quickly calculate the original price, discount percentage, or final sale price with ease.",
+
+    // 5. ROI Calculator
+    "Return on Investment (ROI) Calculator": "Measure the profitability of your investments and make smarter sourcing decisions.",
+
+    // 6. ROAS Calculator
+    "Return on Ad Spend (ROAS) Calculator": "Evaluate the effectiveness of your digital advertising campaigns by calculating Return on Ad Spend.",
+
+    // 7. CPA Calculator
+    "Cost Per Acquisition (CPA) Calculator": "Determine the true cost to acquire a customer and optimize your marketing budget.",
+
+    // 8. Dimensional Weight Calculator
+    "Dimensional Weight Calculator": "Calculate the dimensional weight of your packages to accurately estimate shipping costs.",
+
+    // 9. Free Shipping Calculator
+    "Free Shipping Calculator": "Determine the minimum order value required to offer free shipping without hurting your profits.",
+
+    // 10. Inventory Reorder Calculator
+    "Inventory Reorder Calculator": "Calculate the optimal reorder point and quantity to prevent stockouts while minimizing holding costs.",
+
+    // 11. Safety Stock Calculator
+    "Safety Stock Calculator": "Determine the right amount of buffer stock to hold to protect against demand spikes and supply delays.",
+
+    // 12. Sales Velocity Calculator
+    "Sales Velocity Calculator": "Track how fast your products are selling to optimize inventory levels and forecast future demand.",
+
+    // 13. Promo Code Generator
+    "Promo Code Generator": "Generate unique, random promo codes for your marketing campaigns, sales, and special offers.",
+
+    // 14. Price Elasticity Calculator
+    "Price Elasticity Calculator": "Analyze how changes in price affect customer demand to find the optimal price point for revenue.",
+
+    // 15. Bundle Profit Calculator
+    "Bundle Profit Calculator": "Calculate the profitability of product bundles to increase average order value and clear inventory.",
+
+    // 16. MOQ Cost Calculator
+    "Minimum Order Quantity (MOQ) Cost Calculator": "Calculate total investment and per-unit costs when purchasing Minimum Order Quantities.",
+
+    // 17. Landed Cost Calculator
+    "Landed Cost Calculator": "Determine the true cost of a product including manufacturing, shipping, customs, insurance, and other fees.",
+
+    // 18. Break-Even Calculator
+    "Break-Even Calculator": "Determine the exact sales volume needed to cover all fixed and variable costs and start generating profit.",
+
+    // 19. Wholesale Price Calculator
+    "Wholesale Price Calculator": "Calculate the optimal wholesale price to offer retailers while maintaining your target profit margin.",
+
+    // 20. SKU Generator
+    "SKU Generator": "Generate consistent, meaningful, and organized Stock Keeping Units (SKUs) for your entire inventory.",
+
+    // 21. PPC Bid Calculator
+    "Pay-Per-Click (PPC) Bid Calculator": "Calculate the maximum PPC bid you can afford to pay to achieve your target Advertising Cost of Sales.",
+
+    // 22. ACoS Calculator
+    "Advertising Cost of Sales (ACoS) Calculator": "Measure the efficiency and profitability of your Amazon PPC campaigns with ACoS calculations.",
+
+    // 23. TACoS Calculator
+    "Total Advertising Cost of Sales (TACoS) Calculator": "Understand the holistic impact of advertising spend on your total revenue with TACoS.",
+
+    // 24. Ad Spend Budget Planner
+    "Ad Spend Budget Planner": "Plan your advertising budget effectively based on your revenue goals and target ROAS.",
+
+    // 25. Return Rate Calculator
     "Return Rate Calculator": "Calculate your product return rate to identify quality issues and improve customer satisfaction.",
+
+    // 26. CLV Calculator
+    "Customer Lifetime Value (CLV) Calculator": "Calculate the total worth of a customer to your business over the entirety of their relationship.",
+
+    // 27. Time Zone Meeting Planner
+    "Time Zone Meeting Planner": "Plan international meetings effortlessly by finding the best overlapping times across time zones.",
+
+    // 28. Mercari Fee Calculator
+    "Mercari Fee Calculator": "Calculate selling fees and estimated profit for items sold on the Mercari marketplace.",
+
+    // 29. Packaging Cost Calculator
+    "Packaging Cost Calculator": "Estimate the cost of packaging materials per unit to accurately price your products.",
+
+    // 30. PayPal Fee Calculator
+    "PayPal Fee Calculator": "Calculate PayPal transaction fees and the net amount you will receive for domestic and international payments.",
+
+    // 31. FBA Removal Order Cost Calculator
+    "FBA Removal Order Cost Calculator": "Estimate the fees associated with removing or disposing of inventory from Amazon FBA centers.",
+
+    // 32. Coupon ROI Calculator
+    "Coupon ROI Calculator": "Measure the Return on Investment of your coupon campaigns to ensure they are driving profitable sales.",
+
+    // 33. POD Profit Calculator
+    "Print on Demand Profit Calculator": "Calculate profits for print-on-demand products by accounting for base costs, platform fees, and shipping.",
+
+    // 34. Etsy Fee Calculator
+    "Etsy Fee Calculator": "Estimate Etsy listing fees, transaction fees, and payment processing fees to determine your net profit.",
+
+    // 35. eBay Fee Calculator
+    "eBay Fee Calculator": "Calculate eBay final value fees, insertion fees, and estimated profit for your listings.",
+
+    // 36. Poshmark Fee Calculator
+    "Poshmark Fee Calculator": "Calculate Poshmark selling fees and your net earnings to price your fashion items correctly.",
+
+    // 37. CAC Calculator
+    "Customer Acquisition Cost (CAC) Calculator": "Calculate the average cost to acquire a new customer to ensure your marketing is sustainable.",
+
+    // 38. Conversion Rate Calculator
+    "Conversion Rate Calculator": "Measure the percentage of visitors who complete a desired action to gauge website performance.",
+
+    // 39. AOV Calculator
+    "Average Order Value (AOV) Calculator": "Calculate the average amount spent each time a customer places an order.",
+
+    // 40. Cart Abandonment Rate Calculator
+    "Cart Abandonment Rate Calculator": "Identify the percentage of users who add items to their cart but leave without purchasing.",
+
+    // 41. A/B Test Duration Calculator
+    "A/B Test Duration Calculator": "Estimate how long to run an A/B test to achieve statistically significant results.",
+
+    // 42. Amazon Storage Fee Calculator
+    "Amazon Storage Fee Calculator": "Estimate monthly inventory storage fees for Amazon FBA based on product size and seasonality.",
     "Customer Lifetime Value (CLV) Calculator": "Calculate Customer Lifetime Value (CLV) to understand how much a customer is worth to your business over time.",
     "PayPal Fee Calculator": "Calculate PayPal transaction fees and the net amount you will receive.",
     "Time Zone Meeting Planner": "Plan meetings across multiple time zones without the confusion.",

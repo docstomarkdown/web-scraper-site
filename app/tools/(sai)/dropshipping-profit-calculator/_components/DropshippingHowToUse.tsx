@@ -9,22 +9,22 @@ export function DropshippingHowToUse() {
             steps={[
                 {
                     title: "Enter Product Costs",
-                    description: "Start by entering your selling price and product cost from your supplier. This is the foundation of your margin analysis.",
+                    description: "First, enter your selling price and the product cost from your supplier. This is the starting point for calculating your profit.",
                     icon: ShoppingBag
                 },
                 {
                     title: "Add Shipping & Ads",
-                    description: "Input your shipping costs and ad spend (CPA). These often overlooked costs are what truly determine your net profitability.",
+                    description: "Input your shipping costs and ad spend (CPA). These are critical expenses that directly impact your final profit.",
                     icon: Truck
                 },
                 {
                     title: "Set RTO Percentage",
-                    description: "Factor in your expected Return to Origin (RTO) rate. In COD markets, this is the #1 reason dropshippers lose money.",
+                    description: "Enter your expected Return to Origin (RTO) rate. Returned orders are a major cost in dropshipping, so it's important to factor this in.",
                     icon: RefreshCcw
                 },
                 {
                     title: "View Your Profit",
-                    description: "Instantly see your net profit, margins, and the Break-Even CPA you need to hit to stay in the green.",
+                    description: "Instantly see your net profit, margins, and the Break-Even CPA needed to ensure your business stays profitable.",
                     icon: Wallet
                 }
             ]}

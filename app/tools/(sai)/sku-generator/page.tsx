@@ -17,7 +17,7 @@ export default function SKUGeneratorPage() {
                 <div className="text-center mb-12">
                     <FadeIn>
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
-                            E-commerce SKU Generator
+                            SKU Generator
                         </h1>
                     </FadeIn>
                 </div>

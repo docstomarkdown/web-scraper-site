@@ -32,40 +32,24 @@ export const toolsGroups = [
     icon: "shopping-cart",
     items: [
       {
-        title: "Amazon Fulfillment by Amazon (FBA) Fee Calculator",
-        href: "/tools/amazon-fba-fee-calculator",
-      },
-      {
         title: "Dropshipping Profit Calculator",
         href: "/tools/dropshipping-profit-calculator",
       },
       {
-        title: "Dimension Converter",
-        href: "/tools/dimension-converter",
+        title: "Amazon FBA Fee Calculator",
+        href: "/tools/amazon-fba-fee-calculator",
       },
       {
         title: "Profit Margin Calculator",
         href: "/tools/profit-margin-calculator",
       },
       {
-        title: "Universal Product Code (UPC) / European Article Number (EAN) Validator",
-        href: "/tools/upc-ean-validator",
-      },
-      {
-        title: "Global Trade Item Number (GTIN) Converter",
-        href: "/tools/gtin-converter",
+        title: "Discount Percentage Calculator",
+        href: "/tools/discount-percentage-calculator",
       },
       {
         title: "Return on Investment (ROI) Calculator",
         href: "/tools/roi-calculator",
-      },
-      {
-        title: "Break-Even Calculator",
-        href: "/tools/break-even-calculator",
-      },
-      {
-        title: "Discount Percentage Calculator",
-        href: "/tools/discount-percentage-calculator",
       },
       {
         title: "Return on Ad Spend (ROAS) Calculator",
@@ -80,11 +64,11 @@ export const toolsGroups = [
         href: "/tools/dimensional-weight-calculator",
       },
       {
-        title: "Free Shipping Calculator",
+        title: "Free Shipping Threshold Calculator",
         href: "/tools/free-shipping-calculator",
       },
       {
-        title: "Inventory Reorder Calculator",
+        title: "Inventory Reorder Point Calculator",
         href: "/tools/inventory-reorder-calculator",
       },
       {
@@ -104,14 +88,6 @@ export const toolsGroups = [
         href: "/tools/price-elasticity-calculator",
       },
       {
-        title: "Product Weight Converter",
-        href: "/tools/weight-converter",
-      },
-      {
-        title: "Cubic Feet Calculator",
-        href: "/tools/cubic-feet-calculator",
-      },
-      {
         title: "Bundle Profit Calculator",
         href: "/tools/bundle-profit-calculator",
       },
@@ -122,6 +98,10 @@ export const toolsGroups = [
       {
         title: "Landed Cost Calculator",
         href: "/tools/landed-cost-calculator",
+      },
+      {
+        title: "Break-Even Calculator",
+        href: "/tools/break-even-calculator",
       },
       {
         title: "Wholesale Price Calculator",
@@ -156,41 +136,12 @@ export const toolsGroups = [
         href: "/tools/customer-lifetime-value-calculator",
       },
       {
-        title: "PayPal Fee Calculator",
-        href: "/tools/paypal-fee-calculator",
-      },
-      {
         title: "Time Zone Meeting Planner",
         href: "/tools/time-zone-meeting-planner",
       },
       {
         title: "Mercari Fee Calculator",
         href: "/tools/mercari-fee-calculator",
-      },
-
-      {
-        title: "Pallet Configuration Calculator",
-        href: "/tools/pallet-configuration-calculator",
-      },
-      {
-        title: "Container Load Calculator",
-        href: "/tools/container-load-calculator",
-      },
-      {
-        title: "Lead Time Calculator",
-        href: "/tools/lead-time-calculator",
-      },
-      {
-        title: "Reorder Point Calculator",
-        href: "/tools/reorder-point-calculator",
-      },
-      {
-        title: "Economic Order Quantity (EOQ) Calculator",
-        href: "/tools/economic-order-quantity-calculator",
-      },
-      {
-        title: "Days of Inventory Calculator",
-        href: "/tools/days-of-inventory-calculator",
       },
       {
         title: "Inventory Turnover Calculator",
@@ -199,6 +150,10 @@ export const toolsGroups = [
       {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",
+      },
+      {
+        title: "PayPal Fee Calculator",
+        href: "/tools/paypal-fee-calculator",
       },
       {
         title: "FBA Removal Order Cost Calculator",
@@ -225,6 +180,79 @@ export const toolsGroups = [
         href: "/tools/poshmark-fee-calculator",
       },
       {
+        title: "Customer Acquisition Cost (CAC) Calculator",
+        href: "/tools/customer-acquisition-cost-calculator",
+      },
+      {
+        title: "Conversion Rate Calculator",
+        href: "/tools/conversion-rate-calculator",
+      },
+      {
+        title: "Average Order Value (AOV) Calculator",
+        href: "/tools/average-order-value-calculator",
+      },
+      {
+        title: "Cart Abandonment Rate Calculator",
+        href: "/tools/cart-abandonment-calculator",
+      },
+      {
+        title: "A/B Test Duration Calculator",
+        href: "/tools/ab-test-duration-calculator",
+      },
+      {
+        title: "Amazon Storage Fee Calculator",
+        href: "/tools/amazon-storage-fee-calculator",
+      },
+      
+            {
+              title: "Dimension Converter",
+              href: "/tools/dimension-converter",
+            },
+      
+      
+            {
+              title: "Universal Product Code (UPC) / European Article Number (EAN) Validator",
+              href: "/tools/upc-ean-validator",
+            },
+            {
+              title: "Global Trade Item Number (GTIN) Converter",
+              href: "/tools/gtin-converter",
+            },
+    
+            {
+              title: "Product Weight Converter",
+              href: "/tools/weight-converter",
+            },
+            {
+              title: "Cubic Feet Calculator",
+              href: "/tools/cubic-feet-calculator",
+            },
+      
+            {
+              title: "Pallet Configuration Calculator",
+              href: "/tools/pallet-configuration-calculator",
+            },
+            {
+              title: "Container Load Calculator",
+              href: "/tools/container-load-calculator",
+            },
+            {
+              title: "Lead Time Calculator",
+              href: "/tools/lead-time-calculator",
+            },
+            {
+              title: "Reorder Point Calculator",
+              href: "/tools/reorder-point-calculator",
+            },
+            {
+              title: "Economic Order Quantity (EOQ) Calculator",
+              href: "/tools/economic-order-quantity-calculator",
+            },
+            {
+              title: "Days of Inventory Calculator",
+              href: "/tools/days-of-inventory-calculator",
+            },
+     
         title: "Cost of Goods Sold (COGS) Calculator",
         href: "/tools/cost-of-goods-sold-calculator",
       },

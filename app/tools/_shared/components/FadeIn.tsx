@@ -1,9 +1,11 @@
 "use client"
 
-import { motion } from "framer-motion"
+import React from "react"
+
+import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 
-interface FadeInProps {
+interface FadeInProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode
     className?: string
     delay?: number

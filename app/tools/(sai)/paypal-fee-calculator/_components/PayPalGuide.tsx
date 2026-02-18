@@ -15,6 +15,8 @@ export function PayPalGuide() {
                     icon: Wallet,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
+                    stat: "2.9% + $0.30",
+                    statLabel: "Domestic Rate"
                 },
                 {
                     title: "Breakeven Pricing",
@@ -22,6 +24,8 @@ export function PayPalGuide() {
                     icon: RefreshCcw,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-600",
+                    stat: "$103.30",
+                    statLabel: "To Get $100"
                 },
             ]}
         />

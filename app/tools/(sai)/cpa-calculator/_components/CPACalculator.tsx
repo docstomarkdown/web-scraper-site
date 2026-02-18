@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, DollarSign, MousePointerClick, Users, Target, Info, BarChart3 } from "lucide-react"
+import { HelpCircle, RotateCcw, DollarSign, MousePointerClick, Users, Target, Info, BarChart3 } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -24,6 +24,15 @@ export function CPACalculator() {
 
     // Common
     const [targetCPA, setTargetCPA] = useState<number | "">("")
+
+    const handleReset = () => {
+        setAdSpend("")
+        setConversions("")
+        setCpc("")
+        setConversionRate("")
+        setTargetCPA("")
+        setMode("campaign-data")
+    }
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
@@ -66,10 +75,11 @@ export function CPACalculator() {
     const target = val(targetCPA)
 
     // Determine Color
-    // If target is set: Green if CPA <= Target, Red if CPA > Target
-    // If target not set: White default
+    // We'll return specific class sets for the badge to ensure consistency
+    let badgeClasses = "bg-slate-100 border-slate-200 text-slate-600"
     let valueColor = "text-white"
     let statusLabel = "Calculated CPA"
+    // Title label background (inside the dark card)
     let statusColor = "bg-slate-800/50 text-slate-300"
 
     if (validCalculation && target > 0) {
@@ -77,10 +87,14 @@ export function CPACalculator() {
             valueColor = "text-emerald-400"
             statusLabel = "Under Target"
             statusColor = "bg-emerald-500/20 text-emerald-300"
+            // Clean, standard success colors for the external badge
+            badgeClasses = "bg-emerald-50 border-emerald-200 text-emerald-700"
         } else {
             valueColor = "text-red-400"
             statusLabel = "Over Target"
             statusColor = "bg-red-500/20 text-red-300"
+            // Clean, standard error colors for the external badge
+            badgeClasses = "bg-red-50 border-red-200 text-red-700"
         }
     }
 
@@ -102,17 +116,34 @@ export function CPACalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inputs
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>Enter your campaign metrics.</CardDescription>
                             </div>
@@ -159,7 +190,7 @@ export function CPACalculator() {
                                                         <Info className="h-3.5 w-3.5" />
                                                     </div>
                                                 </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
                                                     Analyze existing results using total spend and conversions.
                                                 </TooltipContent>
                                             </Tooltip>
@@ -185,7 +216,7 @@ export function CPACalculator() {
                                                         <Info className="h-3.5 w-3.5" />
                                                     </div>
                                                 </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
                                                     Forecast costs based on CPC and Conversion Rate.
                                                 </TooltipContent>
                                             </Tooltip>
@@ -266,8 +297,26 @@ export function CPACalculator() {
                         }
                     />
 
+                    {/* Indicator Badge */}
+                    {validCalculation && (
+                        <div className={cn(
+                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
+                            badgeClasses
+                        )}>
+                            {validCalculation && target > 0 ? (
+                                cpa <= target ? (
+                                    <span>✅ CPA Below Target <span className="opacity-80 ml-1">(-{formatCurrency(Math.abs(cpa - target))})</span></span>
+                                ) : (
+                                    <span>⚠️ CPA Above Target <span className="opacity-80 ml-1">(+{formatCurrency(Math.abs(cpa - target))})</span></span>
+                                )
+                            ) : "📊 CPA Calculated"}
+                        </div>
+                    )}
+
+
+
                     {/* Pro Tip */}
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
                             <h4 className="text-sm font-semibold text-blue-900 mb-1">Pro Tip</h4>

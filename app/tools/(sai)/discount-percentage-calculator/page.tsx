@@ -17,7 +17,7 @@ export default function DiscountCalculatorPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
-                            Discount Calculator
+                            Discount Percentage Calculator
                         </h1>
 
                     </FadeIn>

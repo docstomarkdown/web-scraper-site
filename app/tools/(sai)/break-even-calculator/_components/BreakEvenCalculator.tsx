@@ -4,9 +4,10 @@ import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { HelpCircle, TrendingUp, DollarSign, Percent, BarChart3, Scale } from "lucide-react"
+import { HelpCircle, RotateCcw, TrendingUp, DollarSign, Percent, BarChart3, Scale, Target } from "lucide-react"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
 
 export function BreakEvenCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -24,6 +25,12 @@ export function BreakEvenCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
+
+    const handleReset = () => {
+        setFixedCosts("")
+        setPricePerUnit("")
+        setVariableCostPerUnit("")
+    }
 
     const scrollToGuide = () => {
         const element = document.getElementById('break-even-guide');
@@ -59,17 +66,34 @@ export function BreakEvenCalculator() {
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Inputs
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-blue-600 hover:bg-transparent h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleReset}
+                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                                Reset Calculator
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                                 <CardDescription>Enter your costs and pricing details.</CardDescription>
                             </div>
@@ -124,21 +148,43 @@ export function BreakEvenCalculator() {
                         ]}
                     />
 
-                    {/* Breakdown Cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Contribution Margin"
-                            value={<Counter value={contributionMargin} formatter={formatCurrency} key={`cm-${currency}`} />}
-                            icon={Scale}
-                            tooltip="The amount of each sale that contributes to covering your fixed costs. (Price - Variable Cost)"
-                        />
-                        <ResultCard
-                            title="Total Fixed Costs"
-                            value={<Counter value={fixed} formatter={formatCurrency} key={`fix-${currency}`} />}
-                            icon={DollarSign}
-                            tooltip="All the overhead costs that must be paid regardless of sales volume."
-                        />
-                    </div>
+                    {/* Indicator Badge */}
+                    {breakEvenUnits > 0 && (
+                        <div className="px-4 py-3 rounded-xl border bg-blue-50 border-blue-200 text-blue-700 text-center text-sm font-semibold">
+                            🎯 Break-Even Target Calculated
+                        </div>
+                    )}
+
+                    {/* Breakdown Card */}
+                    {breakEvenUnits > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-4 py-3 border-b border-slate-100">
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Unit Economics</p>
+                            </div>
+                            <div className="divide-y divide-slate-50">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Price per Unit</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(price)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Variable Cost</span>
+                                    <span className="text-sm font-medium text-slate-700">-{formatCurrency(variable)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                    <span className="text-sm font-semibold text-slate-900">Contribution Margin</span>
+                                    <span className="text-sm font-bold text-emerald-600">{formatCurrency(contributionMargin)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Fixed Costs</span>
+                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(fixed)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter costs to see unit economics.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>
@@ -150,7 +196,7 @@ function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, valu
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
                 <div className="flex items-center gap-1.5 mb-1">
-                    <p className="text-xs font-medium text-slate-500">{title}</p>
+                    <p className="text-sm font-semibold text-slate-500">{title}</p>
                     {tooltip && (
                         <TooltipProvider delayDuration={100}>
                             <Tooltip>
@@ -159,7 +205,7 @@ function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, valu
                                         <HelpCircle className="h-3 w-3" />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
+                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
                                     {tooltip}
                                 </TooltipContent>
                             </Tooltip>
