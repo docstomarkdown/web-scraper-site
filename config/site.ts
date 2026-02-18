@@ -64,6 +64,10 @@ export const toolsGroups = [
         href: "/tools/break-even-calculator",
       },
       {
+        title: "Conversion Rate Calculator",
+        href: "/tools/conversion-rate-calculator",
+      },
+      {
         title: "Discount Percentage Calculator",
         href: "/tools/discount-percentage-calculator",
       },
@@ -74,6 +78,14 @@ export const toolsGroups = [
       {
         title: "Cost Per Acquisition (CPA) Calculator",
         href: "/tools/cpa-calculator",
+      },
+      {
+        title: "Customer Acquisition Cost (CAC) Calculator",
+        href: "/tools/customer-acquisition-cost-calculator",
+      },
+      {
+        title: "Cart Abandonment Rate Calculator",
+        href: "/tools/cart-abandonment-calculator",
       },
       {
         title: "Dimensional Weight Calculator",
@@ -144,8 +156,20 @@ export const toolsGroups = [
         href: "/tools/tacos-calculator",
       },
       {
+        title: "Average Order Value (AOV) Calculator",
+        href: "/tools/average-order-value-calculator",
+      },
+      {
         title: "Ad Spend Budget Planner",
         href: "/tools/ad-spend-budget-planner",
+      },
+      {
+        title: "A/B Test Duration Calculator",
+        href: "/tools/ab-test-duration-calculator",
+      },
+      {
+        title: "Amazon Storage Fee Calculator",
+        href: "/tools/amazon-storage-fee-calculator",
       },
       {
         title: "Return Rate Calculator",
