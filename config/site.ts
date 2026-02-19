@@ -272,6 +272,10 @@ export const toolsGroups = [
         title: "Affiliate Commission Calculator",
         href: "/tools/affiliate-commission-calculator",
       },
+      {
+        title: "Email Marketing ROI Calculator",
+        href: "/tools/email-marketing-roi-calculator",
+      },
     ],
   },
 ];
