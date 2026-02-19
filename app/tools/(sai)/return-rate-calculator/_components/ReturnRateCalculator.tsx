@@ -214,6 +214,29 @@ export function ReturnRateCalculator() {
                         ]}
                     />
 
+                    {/* Breakdown Card */}
+                    {sold > 0 && (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-red-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Financial Impact Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Lost Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(lostRevenue)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Processing Costs</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalReturnCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-red-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Total Profit Leakage</span>
+                                    <span className="text-base font-bold text-red-600">{formatCurrency(profitLeakage)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Insight Card */}
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
                         <div className="flex items-center justify-between">

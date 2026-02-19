@@ -120,6 +120,27 @@ export function SafetyStockCalculator() {
                         ]}
                     />
 
+                    {/* Breakdown Card */}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Stock Calculation</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Max Usage (Worst Case)</span>
+                                <span className="text-sm font-semibold text-slate-800"><Counter value={maxUsage} /> units</span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Avg Usage (Normal Case)</span>
+                                <span className="text-sm font-semibold text-slate-800">- <Counter value={avgUsage} /> units</span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                <span className="text-sm font-bold text-slate-900">Safety Buffer</span>
+                                <span className="text-base font-bold text-blue-600"><Counter value={safetyStock} /> units</span>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <div className="flex items-start gap-3">

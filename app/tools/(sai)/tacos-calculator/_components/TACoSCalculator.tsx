@@ -225,6 +225,31 @@ export function TACoSCalculator() {
                         ]}
                     />
 
+                    {/* Breakdown Card */}
+                    {revenue > 0 && margin > 0 && (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Margin Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Gross Margin</span>
+                                    <span className="text-sm font-semibold text-slate-800">{margin.toFixed(2)}%</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">TACoS Impact</span>
+                                    <span className="text-sm font-semibold text-red-600">-{tacos.toFixed(2)}%</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Net Margin</span>
+                                    <span className={cn("text-base font-bold", netMargin > 0 ? "text-emerald-600" : "text-red-600")}>
+                                        {netMargin.toFixed(2)}%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Insight Card */}
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
                         <div className="flex items-center justify-between">

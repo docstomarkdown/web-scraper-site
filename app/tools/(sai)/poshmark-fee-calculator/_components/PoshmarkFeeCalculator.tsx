@@ -170,35 +170,31 @@ export function PoshmarkFeeCalculator() {
                     />
 
                     {/* Breakdown */}
-                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
-                        <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <ShoppingBag className="w-4 h-4 text-indigo-500" />
-                            Payout Breakdown
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Sold Price</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{Number(soldPrice).toFixed(2)}</span>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-rose-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Payout Breakdown</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Sold Price</span>
+                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(soldPrice).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Poshmark Fee</span>
-                                <span className="text-red-600 font-medium">-{currencySymbol}{poshFee.toFixed(2)}</span>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Poshmark Fee</span>
+                                <span className="text-sm font-semibold text-red-600">-{currencySymbol}{poshFee.toFixed(2)}</span>
                             </div>
                             {Number(shippingDiscount) > 0 && (
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-slate-500">Shipping Discount</span>
-                                    <span className="text-red-600 font-medium">-{currencySymbol}{Number(shippingDiscount).toFixed(2)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Shipping Discount</span>
+                                    <span className="text-sm font-semibold text-red-600">-{currencySymbol}{Number(shippingDiscount).toFixed(2)}</span>
                                 </div>
                             )}
-                            <Separator className="my-2" />
-                            <div className="flex justify-between text-sm font-semibold">
-                                <span className="text-slate-700">Net Earnings</span>
-                                <span className="text-emerald-600">
-                                    {currencySymbol}{netEarnings.toFixed(2)}
-                                </span>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-rose-50/20">
+                                <span className="text-sm font-bold text-slate-900">Net Earnings</span>
+                                <span className="text-base font-bold text-rose-600">{currencySymbol}{netEarnings.toFixed(2)}</span>
                             </div>
                         </div>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </FadeIn>

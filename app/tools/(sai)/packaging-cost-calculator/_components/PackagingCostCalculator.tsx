@@ -309,39 +309,44 @@ export function PackagingCostCalculator() {
                         }
                         valueColor="text-blue-600"
                         secondaryMetrics={[
-                            {
-                                label: "Total Materials",
-                                value: <Counter value={totalMaterialCost} formatter={formatCurrency} key={`tmc-${currency}`} />,
-                                color: "text-slate-600"
-                            },
-                            {
-                                label: "Labor Cost",
-                                value: <Counter value={laborCostPerUnit} formatter={formatCurrency} key={`tlc-${currency}`} />,
-                                color: "text-slate-600"
-                            },
                             ...(qty > 1 ? [{
                                 label: `Batch Total (×${qty.toLocaleString()})`,
                                 value: <Counter value={batchTotal} formatter={formatCurrency} key={`bt-${currency}-${qty}`} />,
-                                color: "text-indigo-600"
+                                color: "text-emerald-500"
                             }] : [])
                         ]}
                     />
 
-                    {/* Breakdown Cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Materials Share"
-                            value={<Counter value={materialPercentage} formatter={(v) => `${v.toFixed(1)}%`} />}
-                            icon={Package}
-                            color="text-blue-600"
-                        />
-                        <ResultCard
-                            title="Labor Share"
-                            value={<Counter value={laborPercentage} formatter={(v) => `${v.toFixed(1)}%`} />}
-                            icon={Scissors}
-                            color="text-amber-600"
-                        />
-                    </div>
+                    {/* Cost Breakdown Card */}
+                    {hasInput ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Box/Mailer</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(box)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Included (Tape, Label, etc.)</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(padding + tape + label + branding)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Labor Cost</span>
+                                    <span className="text-sm font-semibold text-amber-600">{formatCurrency(laborCostPerUnit)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
+                                    <span className="text-sm font-bold text-slate-900">Total Per Unit</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(totalPackagingCost)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter packaging costs to see breakdown.</p>
+                        </div>
+                    )}
 
                     {/* Smart Optimization Insight */}
                     <Card className="border border-blue-100 shadow-sm bg-gradient-to-br from-blue-50/50 to-white overflow-hidden">
@@ -368,17 +373,5 @@ export function PackagingCostCalculator() {
     )
 }
 
-function ResultCard({ title, value, icon: Icon, color = "text-slate-800" }: { title: string, value: React.ReactNode, icon: React.ComponentType<{ className?: string }>, color?: string }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-blue-200 transition-all duration-300">
-            <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{title}</p>
-                <p className={cn("text-xl font-extrabold tracking-tight", color)}>{value}</p>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
-    )
-}
+
 

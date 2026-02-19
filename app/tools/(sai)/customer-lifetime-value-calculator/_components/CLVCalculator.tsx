@@ -36,14 +36,14 @@ export function CLVCalculator() {
 
     useEffect(() => {
         const revenue = aovVal * freqVal * lifespanVal;
-        const profit = revenue * (marginVal / 100);
+        const grossProfit = revenue * (marginVal / 100);
 
         setClvRevenue(revenue);
-        setClvProfit(profit);
-        setAnnualProfit(profit / (lifespanVal || 1));
+        setClvProfit(grossProfit - cacVal);
+        setAnnualProfit(grossProfit / (lifespanVal || 1));
 
         if (cacVal > 0) {
-            setLtvCacRatio(profit / cacVal);
+            setLtvCacRatio(grossProfit / cacVal);
         } else {
             setLtvCacRatio(0);
         }
@@ -213,11 +213,48 @@ export function CLVCalculator() {
                         mainValue={
                             <Counter value={clvProfit} formatter={formatCurrency} />
                         }
-                        secondaryMetrics={[
-                            { label: "LTV Revenue", value: formatCurrency(clvRevenue), color: "text-slate-300" },
-                            { label: "Annual Profit", value: formatCurrency(annualProfit), color: "text-emerald-400" }
-                        ]}
                     />
+
+                    {/* Breakdown Card */}
+                    {clvRevenue > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Lifetime Value Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Lifetime Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(clvRevenue)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Gross Profit (Margin: {marginVal}%)</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(clvRevenue * (marginVal / 100))}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Acquisition Cost (CAC)</span>
+                                    <span className="text-sm font-semibold text-red-600">-{formatCurrency(cacVal)}</span>
+                                </div>
+
+                                {annualProfit > 0 && (
+                                    <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
+                                        <span className="text-sm font-medium text-slate-500">Annual Profit Contribution</span>
+                                        <span className="text-sm font-bold text-slate-700">{formatCurrency(annualProfit)}</span>
+                                    </div>
+                                )}
+
+                                <div className="flex justify-between items-center px-5 py-4 bg-emerald-50/30">
+                                    <span className="text-sm font-bold text-slate-900">Net Lifetime Profit</span>
+                                    <span className={cn("text-base font-bold text-emerald-600")}>
+                                        {formatCurrency(clvProfit)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter metrics to calculate LTV.</p>
+                        </div>
+                    )}
 
                     {/* Insight Card: Ratio Meter */}
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">

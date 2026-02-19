@@ -286,16 +286,68 @@ export function CPACalculator() {
                             <Counter value={cpa} formatter={formatCurrency} key={`${currency}-${mode}`} />
                         }
                         valueColor={valueColor}
-                        secondaryMetrics={
-                            mode === "campaign-data" ? [
-                                { label: "Total Spend", value: <Counter value={val(adSpend)} formatter={formatCurrency} key={currency} />, color: "text-slate-300" },
-                                { label: "Conversions", value: <Counter value={val(conversions)} formatter={(v) => v.toFixed(0)} />, color: "text-slate-300" }
-                            ] : [
-                                { label: "CPC", value: <Counter value={val(cpc)} formatter={formatCurrency} key={currency} />, color: "text-slate-300" },
-                                { label: "Est. Conversions (per 100 clicks)", value: <Counter value={val(conversionRate)} formatter={(v) => v.toFixed(1)} />, color: "text-slate-300" }
-                            ]
-                        }
                     />
+
+                    {/* Breakdown Card */}
+                    {validCalculation ? (
+                        <div className={cn(
+                            "bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4",
+                            cpa <= (target || cpa) ? "border-l-emerald-500" : "border-l-red-500"
+                        )}>
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">
+                                    {mode === "campaign-data" ? "Campaign Audit" : "Projection Breakdown"}
+                                </p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                {mode === "campaign-data" ? (
+                                    <>
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">Total Spend</span>
+                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(val(adSpend))}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">Total Conversions</span>
+                                            <span className="text-sm font-semibold text-slate-800">{val(conversions)}</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">Cost Per Click (CPC)</span>
+                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(val(cpc))}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">Clicks for 1 Conversion</span>
+                                            <span className="text-sm font-semibold text-slate-800">
+                                                {val(conversionRate) > 0 ? (100 / val(conversionRate)).toFixed(1) : "—"}
+                                            </span>
+                                        </div>
+                                    </>
+                                )}
+
+                                {target > 0 && (
+                                    <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
+                                        <span className="text-sm font-medium text-slate-500">Target CPA</span>
+                                        <span className="text-sm font-bold text-slate-700">{formatCurrency(target)}</span>
+                                    </div>
+                                )}
+
+                                <div className={cn("flex justify-between items-center px-5 py-4", cpa <= (target || cpa) ? "bg-emerald-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-bold", cpa <= (target || cpa) ? "text-emerald-700" : "text-red-700")}>
+                                        Measured CPA
+                                    </span>
+                                    <span className={cn("text-base font-bold", cpa <= (target || cpa) ? "text-emerald-700" : "text-red-700")}>
+                                        {formatCurrency(cpa)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter campaign data to see analysis.</p>
+                        </div>
+                    )}
 
                     {/* Indicator Badge */}
                     {validCalculation && (

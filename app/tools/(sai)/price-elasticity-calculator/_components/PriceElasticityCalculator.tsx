@@ -7,6 +7,7 @@ import { HelpCircle, RefreshCw, TrendingUp, TrendingDown, ArrowRight } from "luc
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
 
 export function PriceElasticityCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -221,6 +222,33 @@ export function PriceElasticityCalculator() {
                             }
                         ]}
                     />
+
+                    {/* Breakdown Card */}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Elasticity Analysis</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">% Change in Price</span>
+                                <span className={cn("text-sm font-semibold", percentChangePrice > 0 ? "text-slate-800" : "text-emerald-600")}>
+                                    {percentChangePrice > 0 ? "+" : ""}{(percentChangePrice * 100).toFixed(1)}%
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">% Change in Demand</span>
+                                <span className={cn("text-sm font-semibold", percentChangeQuantity >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                    {percentChangeQuantity > 0 ? "+" : ""}{(percentChangeQuantity * 100).toFixed(1)}%
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                <span className="text-sm font-bold text-slate-900">Revenue Impact</span>
+                                <span className={cn("text-base font-bold", revenueChange >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                    {revenueChange >= 0 ? "+" : ""}{formatCurrency(revenueChange)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Interpretation Card */}
                     <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">

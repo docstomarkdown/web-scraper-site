@@ -143,67 +143,46 @@ export function WholesalePriceCalculator() {
                     <ResultFeedbackCard
                         title="Recommended Wholesale Price"
                         mainValue={
-                            <Counter value={wholesalePrice} formatter={formatCurrency} key={currency} />
+                            effectiveCost > 0 ?
+                                <Counter value={wholesalePrice} formatter={formatCurrency} key={currency} /> :
+                                "—"
                         }
                         valueColor="text-blue-500"
-                        secondaryMetrics={[
-                            {
-                                label: "Profit per Unit",
-                                value: <Counter value={profitPerUnit} formatter={formatCurrency} key={`profit-${currency}`} />,
-                                color: profitPerUnit >= 0 ? 'text-emerald-500' : 'text-red-500'
-                            },
-                            {
-                                label: "Markup",
-                                value: <Counter value={markup} formatter={(v) => `${v.toFixed(2)}%`} />,
-                                color: "text-slate-600"
-                            }
-                        ]}
+                        secondaryMetrics={[]}
                     />
 
-                    {/* Breakdown Cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Effective Cost"
-                            value={<Counter value={effectiveCost} formatter={formatCurrency} key={`cost-${currency}`} />}
-                            icon={Tag}
-                            tooltip="Original cost plus any taxes/duties."
-                        />
-                        <ResultCard
-                            title="Gross Margin"
-                            value={<Counter value={margin} formatter={(v) => `${v.toFixed(2)}%`} />}
-                            icon={Percent}
-                        />
-                    </div>
+                    {/* Breakdown Card */}
+                    {effectiveCost > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Effective Cost</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(effectiveCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Target Margin</span>
+                                    <span className="text-sm font-semibold text-slate-800">{Number(margin).toFixed(2)}%</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Markup Required</span>
+                                    <span className="text-sm font-semibold text-slate-800">{markup.toFixed(2)}%</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4">
+                                    <span className="text-sm font-bold text-emerald-600">Profit per Unit</span>
+                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(profitPerUnit)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter cost and margin to see breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>
-    )
-}
-
-function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group relative">
-            <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                    <p className="text-xs font-medium text-slate-500">{title}</p>
-                    {tooltip && (
-                        <TooltipProvider delayDuration={100}>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircle className="w-3 h-3 text-slate-300 hover:text-slate-500" />
-                                </TooltipTrigger>
-                                <TooltipContent className="bg-slate-900 text-white text-xs border-slate-800">
-                                    {tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                </div>
-                <p className="text-lg font-bold text-slate-800">{value}</p>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400 group-hover:bg-slate-100 group-hover:text-blue-500 transition-colors">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
     )
 }

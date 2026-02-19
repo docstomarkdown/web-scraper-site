@@ -194,7 +194,7 @@ export function EtsyFeeCalculator() {
                                 <CreditCard className="w-4 h-4 text-slate-400" />
                                 Fee Settings
                             </h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
                                 <CalculatorInput
                                     label={`Listing Fee (${currencySymbol})`}
                                     value={listingFee}
@@ -255,11 +255,11 @@ export function EtsyFeeCalculator() {
                     />
 
                     {/* Breakdown */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="px-4 py-3 border-b border-slate-100">
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fee Breakdown</p>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-orange-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                         </div>
-                        <div className="divide-y divide-slate-50">
+                        <div className="divide-y divide-slate-100">
                             <div className="flex justify-between items-center px-4 py-3">
                                 <span className="text-sm text-slate-500">Listing Fee</span>
                                 <span className="text-sm font-medium text-slate-700">{currencySymbol}{Number(listingFee).toFixed(2)}</span>
@@ -282,9 +282,9 @@ export function EtsyFeeCalculator() {
                                     -{currencySymbol}{totalFees.toFixed(2)}
                                 </span>
                             </div>
-                            <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                <span className="text-sm font-semibold text-slate-900">Net Profit</span>
-                                <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
+                                <span className="text-sm font-bold text-slate-900">Net Profit</span>
+                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
                                     {currencySymbol}{netProfit.toFixed(2)}
                                 </span>
                             </div>
@@ -292,6 +292,6 @@ export function EtsyFeeCalculator() {
                     </div>
                 </div>
             </div>
-        </FadeIn>
+        </FadeIn >
     )
 }

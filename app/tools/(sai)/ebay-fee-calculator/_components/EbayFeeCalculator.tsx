@@ -230,11 +230,11 @@ export function EbayFeeCalculator() {
                     />
 
                     {/* Breakdown */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="px-4 py-3 border-b border-slate-100">
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fee Breakdown</p>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                         </div>
-                        <div className="divide-y divide-slate-50">
+                        <div className="divide-y divide-slate-100">
                             <div className="flex justify-between items-center px-4 py-3">
                                 <span className="text-sm text-slate-500">Final Value Fee</span>
                                 <span className="text-sm font-medium text-slate-700">
@@ -253,9 +253,9 @@ export function EbayFeeCalculator() {
                                     -{currencySymbol}{(Number(itemCost) + Number(shippingCost)).toFixed(2)}
                                 </span>
                             </div>
-                            <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                <span className="text-sm font-semibold text-slate-900">Net Profit</span>
-                                <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
+                                <span className="text-sm font-bold text-slate-900">Net Profit</span>
+                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
                                     {currencySymbol}{netProfit.toFixed(2)}
                                 </span>
                             </div>

@@ -190,35 +190,33 @@ export function PODProfitCalculator() {
                     />
 
                     {/* Breakdown */}
-                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
-                        <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <DollarSign className="w-4 h-4 text-indigo-500" />
-                            Cost Breakdown
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Base Cost</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{Number(baseCost).toFixed(2)}</span>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-indigo-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Base Cost</span>
+                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(baseCost).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Shipping Cost</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{Number(shippingCost).toFixed(2)}</span>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Shipping Cost</span>
+                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(shippingCost).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Total Fees</span>
-                                <span className="font-medium text-red-500">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Total Fees</span>
+                                <span className="text-sm font-semibold text-red-600">
                                     {currencySymbol}{(Number(totalCosts) - Number(baseCost) - Number(shippingCost)).toFixed(2)}
                                 </span>
                             </div>
-                            <Separator className="my-2" />
-                            <div className="flex justify-between text-sm font-semibold">
-                                <span className="text-slate-700">Total Costs</span>
-                                <span className="text-slate-900">
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-indigo-50/20">
+                                <span className="text-sm font-bold text-slate-900">Total Costs</span>
+                                <span className="text-base font-bold text-indigo-900">
                                     {currencySymbol}{totalCosts.toFixed(2)}
                                 </span>
                             </div>
                         </div>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </FadeIn>

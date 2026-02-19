@@ -225,11 +225,11 @@ export function StorageFeeCalculator() {
 
                     {/* Breakdown Card */}
                     {monthlyFee > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fee Breakdown</p>
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
+                            <div className="divide-y divide-slate-100">
                                 <div className="flex justify-between items-center px-4 py-3">
                                     <span className="text-sm text-slate-500">Unit Volume</span>
                                     <span className="text-sm font-medium text-slate-700">{volumePerUnit.toFixed(4)} cu ft</span>
@@ -240,10 +240,10 @@ export function StorageFeeCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-4 py-3">
                                     <span className="text-sm text-slate-500">Rate per cu ft</span>
-                                    <span className="text-sm font-medium text-slate-700">${rate.toFixed(2)}</span>
+                                    <span className="text-sm font-semibold text-slate-800">${rate.toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                    <span className="text-sm font-semibold text-slate-900">Monthly Fee</span>
+                                <div className="flex justify-between items-center px-4 py-3 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Monthly Fee</span>
                                     <span className="text-sm font-bold text-blue-600">{formatCurrency(monthlyFee)}</span>
                                 </div>
                             </div>

@@ -229,29 +229,29 @@ export function ACoSCalculator() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500"
                         >
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Campaign Breakdown</p>
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Campaign Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
-                                <div className="flex justify-between items-center px-4 py-3">
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
                                     <span className="text-sm text-slate-500">Ad Spend</span>
                                     <span className="text-sm font-medium text-slate-700">${Number(adSpend).toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Ad Revenue</span>
-                                    <span className="text-sm font-medium text-slate-700">${Number(adRevenue).toFixed(2)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Ad Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">${Number(adRevenue).toFixed(2)}</span>
                                 </div>
-                                <div className={cn("flex justify-between items-center px-4 py-3", netProfit >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
-                                    <span className={cn("text-sm font-semibold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                <div className={cn("flex justify-between items-center px-5 py-3.5", netProfit >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
                                         Net Profit
                                     </span>
-                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                    <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
                                         {netProfit >= 0 ? "+" : ""}${netProfit.toFixed(2)}
                                     </span>
                                 </div>
-                                <div className="px-4 py-3">
+                                <div className="px-5 py-4">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="text-xs font-medium text-slate-500">Efficiency Scale</span>
                                         <span className="text-xs font-bold text-slate-700">{acos.toFixed(1)}% ACoS</span>

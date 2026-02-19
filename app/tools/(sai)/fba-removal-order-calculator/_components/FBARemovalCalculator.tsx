@@ -290,8 +290,32 @@ export function FBARemovalCalculator() {
                         </div>
                     </ResultFeedbackCard>
 
-
-
+                    {/* Breakdown Card */}
+                    {totalCost > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Per-Unit Fee</span>
+                                    <span className="text-sm font-semibold text-slate-800">{currencySymbol}{removalFeePerUnit.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Quantity</span>
+                                    <span className="text-sm font-semibold text-slate-800">{Number(quantity).toLocaleString()} units</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Total Removal Cost</span>
+                                    <span className="text-base font-bold text-blue-600">{currencySymbol}{totalCost.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter details to calculate removal cost.</p>
+                        </div>
+                    )}
                     <Card className="border border-slate-200 shadow-sm bg-white p-5">
                         <div className="flex gap-4">
                             <div className="p-2.5 bg-blue-50 text-blue-600 rounded-lg h-fit shrink-0">
@@ -304,9 +328,10 @@ export function FBARemovalCalculator() {
                                 </p>
                             </div>
                         </div>
+
                     </Card>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

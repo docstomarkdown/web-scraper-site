@@ -229,11 +229,13 @@ export function MarginCalculator() {
                     <ResultFeedbackCard
                         title={(quantity && quantity > 1) ? 'Total Net Profit' : 'Net Profit per Unit'}
                         mainValue={
-                            <Counter value={totalNetProfit} formatter={formatCurrency} key={currency} />
+                            totalRevenue > 0 ?
+                                <Counter value={totalNetProfit} formatter={formatCurrency} key={currency} /> :
+                                "—"
                         }
                         valueColor={totalNetProfit > 0 ? "text-emerald-400" : (totalNetProfit < 0 ? "text-red-400" : "text-white")}
                         mainMetricColor={totalNetProfit >= 0 ? 'text-white' : 'text-red-200'}
-                        secondaryMetrics={[
+                        secondaryMetrics={totalRevenue > 0 ? [
                             {
                                 label: "Net Margin",
                                 value: <Counter value={netMarginPercent} formatter={(v) => `${v.toFixed(2)}%`} />,
@@ -244,65 +246,49 @@ export function MarginCalculator() {
                                 value: <Counter value={roiPercent} formatter={(v) => `${v.toFixed(2)}%`} />,
                                 color: "text-blue-400"
                             }
-                        ]}
+                        ] : []}
                     />
 
-                    {/* Breakdown Grid */}
-                    <div className="grid grid-cols-2 gap-3">
-                        <ResultCard
-                            title="Total Revenue"
-                            value={<Counter value={totalRevenue} formatter={formatCurrency} key={currency} />}
-                            icon={DollarSign}
-                        />
-                        <ResultCard
-                            title="Total Costs"
-                            value={<Counter value={totalCostOfGoods} formatter={formatCurrency} key={currency} />}
-                            icon={TrendingUp}
-                            tooltip="Includes Cost Price + Shipping + Misc + Tax"
-                        />
-                        <ResultCard
-                            title="Gross Margin"
-                            value={`${grossMarginPercent.toFixed(2)}%`}
-                            icon={Percent}
-                            tooltip="Margin before extra expenses (Price - Cost Price)."
-                        />
-                        <ResultCard
-                            title="Markup"
-                            value={`${markupPercent.toFixed(2)}%`}
-                            icon={TrendingUp}
-                            tooltip="Percentage mark-up over total costs."
-                        />
-                    </div>
+                    {/* Breakdown Card */}
+                    {totalRevenue > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Financial Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">
+                                        {formatCurrency(totalRevenue)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Costs</span>
+                                    <span className="text-sm font-semibold text-red-500">
+                                        - {formatCurrency(totalCostOfGoods)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Gross Margin</span>
+                                    <span className="text-sm font-semibold text-slate-800">
+                                        {grossMarginPercent.toFixed(2)}%
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4">
+                                    <span className="text-sm font-bold text-emerald-600">Markup</span>
+                                    <span className="text-base font-bold text-emerald-600">
+                                        {markupPercent.toFixed(2)}%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter cost and selling price to see breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>
-    )
-}
-
-function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-blue-300 transition-colors">
-            <div>
-                <p className="text-xs font-semibold text-slate-500 mb-1 flex items-center gap-1.5">
-                    {title}
-                    {tooltip && (
-                        <TooltipProvider delayDuration={100}>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Info className="w-3 h-3 text-slate-300 hover:text-blue-500 cursor-help transition-colors" />
-                                </TooltipTrigger>
-                                <TooltipContent className="text-xs bg-slate-900 text-white border-slate-800">
-                                    {tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                </p>
-                <p className="text-lg font-bold text-slate-800">{value}</p>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400 group-hover:text-blue-500 transition-colors">
-                <Icon className="w-4 h-4" />
-            </div>
-        </div>
     )
 }

@@ -139,11 +139,11 @@ export function AbandonmentCalculator() {
 
                     {/* Breakdown Card */}
                     {isValid ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Cart Flow</p>
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-red-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cart Flow</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
+                            <div className="divide-y divide-slate-100">
                                 <div className="flex justify-between items-center px-4 py-3">
                                     <span className="text-sm text-slate-500">Total Carts Created</span>
                                     <span className="text-sm font-medium text-slate-700">{cartsVal.toLocaleString()}</span>

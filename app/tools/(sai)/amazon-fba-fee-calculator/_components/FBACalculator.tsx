@@ -610,44 +610,49 @@ export function FBACalculator() {
                             mainValue={
                                 <Counter value={totalFees} formatter={formatCurrency} key={currency} />
                             }
-                            secondaryMetrics={[
-                                {
-                                    label: "Fulfillment by Amazon (FBA) Fee",
-                                    value: <Counter value={fbaFee} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-300"
-                                },
-                                {
-                                    label: "Referral Fee (Est.)",
-                                    value: <Counter value={referralFee} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-400"
-                                },
-                                ...(closingFee > 0 ? [{
-                                    label: "Closing Fee",
-                                    value: <Counter value={closingFee} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-400"
-                                }] : []),
-                                ...(storageFee > 0 ? [{
-                                    label: "Storage Fee (Est.)",
-                                    value: <Counter value={storageFee} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-400"
-                                }] : [])
-                            ]}
+                            valueColor="text-slate-800"
+                            secondaryMetrics={[]}
                         />
 
-                        {/* Metrics Grid */}
-                        <div className="grid grid-cols-2 gap-3">
-                            <ResultCard
-                                title="Size Tier"
-                                value={getSizeTier()}
-                                tooltip="Based on your dimensions and weight. Impacts your Fulfillment by Amazon (FBA) fee significantly."
-                            />
-
-                            <ResultCard
-                                title="Referral Fee %"
-                                value={`${(categories?.[category] || (currency === 'INR' ? 0.12 : 0.15)) * 100}%`}
-                                tooltip="Platform fee percentage based on your selected category."
-                            />
-                        </div>
+                        {/* Fee Breakdown Card */}
+                        {salesPriceVal > 0 ? (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                                <div className="px-5 py-3.5 border-b border-slate-100 flex justify-between items-center">
+                                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
+                                    <span className="text-[10px] font-semibold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{getSizeTier()}</span>
+                                </div>
+                                <div className="divide-y divide-slate-100">
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Referral Fee ({(categories?.[category] || (currency === 'INR' ? 0.12 : 0.15)) * 100}%)</span>
+                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(referralFee)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Fulfillment Fee (FBA)</span>
+                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(fbaFee)}</span>
+                                    </div>
+                                    {closingFee > 0 && (
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">Closing Fee</span>
+                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(closingFee)}</span>
+                                        </div>
+                                    )}
+                                    {storageFee > 0 && (
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">Est. Storage Fee</span>
+                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(storageFee)}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
+                                        <span className="text-sm font-bold text-slate-900">Total Fees</span>
+                                        <span className="text-base font-bold text-slate-900">{formatCurrency(totalFees)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                                <p className="text-sm text-slate-400">Enter product details to calculate fees.</p>
+                            </div>
+                        )}
 
 
                     </FadeIn>
@@ -659,41 +664,4 @@ export function FBACalculator() {
     )
 }
 
-function ResultCard({ title, value, darkwarning, tooltip }: { title: string, value: React.ReactNode, darkwarning?: boolean, tooltip?: string }) {
-    return (
-        <div className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default ${darkwarning
-            ? 'bg-orange-50/50 border-orange-100'
-            : 'bg-white border-slate-200 shadow-sm'
-            }`}>
-            <div className="flex items-center gap-1.5 mb-1">
-                <p className="text-xs font-semibold text-slate-500">{title}</p>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                    <Info className="h-3 w-3" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
-            <p className="text-xl font-bold text-slate-800">{value}</p>
-        </div>
-    )
-}
 
-function Row({ label, value, isNegative, className }: { label: string, value: React.ReactNode, isNegative?: boolean, className?: string }) {
-    return (
-        <div className={`flex justify-between items-center text-sm ${className}`}>
-            <span>{label}</span>
-            <span className="font-medium tracking-wide">
-                {isNegative ? '-' : ''}{value}
-            </span>
-        </div>
-    )
-}

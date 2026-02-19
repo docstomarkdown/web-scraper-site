@@ -237,22 +237,8 @@ export function DiscountCalculator() {
                                 <Counter value={calculatedDiscount} formatter={(v) => `${v.toFixed(2)}%`} />
                             )
                         }
-                        secondaryMetrics={[
-                            {
-                                label: "Total Savings",
-                                value: <Counter value={totalSavings} formatter={formatCurrency} key={currency} />,
-                                color: "text-emerald-400"
-                            },
-                            {
-                                label: mode === "find-price" ? "Unit Saving" : "Unit Price",
-                                value: mode === "find-price" ? (
-                                    <Counter value={savings} formatter={formatCurrency} key={currency} />
-                                ) : (
-                                    <Counter value={Number(originalPrice) || 0} formatter={formatCurrency} key={currency} />
-                                ),
-                                color: "text-blue-400"
-                            }
-                        ]}
+                        valueColor="text-blue-600"
+                        secondaryMetrics={[]}
                     />
 
                     {/* Savings Indicator */}
@@ -286,44 +272,46 @@ export function DiscountCalculator() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500"
                         >
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Price Breakdown</p>
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Original Price</span>
-                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(val(originalPrice))}</span>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Original Price</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(val(originalPrice))}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Discount</span>
-                                    <span className="text-sm font-medium text-red-500">
-                                        - {formatCurrency(savings)} ({mode === "find-price" ? `${val(discountValue)}%` : `${calculatedDiscount.toFixed(1)}%`})
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Discount ({mode === "find-price" ? `${val(discountValue)}%` : `${calculatedDiscount.toFixed(1)}%`})</span>
+                                    <span className="text-sm font-semibold text-red-500">
+                                        - {formatCurrency(savings)}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Price After Discount</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Price After Discount</span>
                                     <span className="text-sm font-semibold text-slate-800">
                                         {formatCurrency(val(originalPrice) - savings)}
                                     </span>
                                 </div>
                                 {val(quantity) > 1 && (
                                     <>
-                                        <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
-                                            <span className="text-sm text-slate-500">Quantity</span>
-                                            <span className="text-sm font-medium text-slate-700">× {val(quantity)}</span>
+                                        <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
+                                            <span className="text-sm text-slate-600">Quantity</span>
+                                            <span className="text-sm font-semibold text-slate-800">× {val(quantity)}</span>
                                         </div>
-                                        <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
-                                            <span className="text-sm font-semibold text-blue-700">Grand Total</span>
-                                            <span className="text-sm font-bold text-blue-700">{formatCurrency(finalPrice)}</span>
+                                        <div className="flex justify-between items-center px-5 py-4">
+                                            <span className="text-sm font-bold text-emerald-600">Grand Total</span>
+                                            <span className="text-base font-bold text-emerald-600">{formatCurrency(finalPrice)}</span>
                                         </div>
                                     </>
                                 )}
-                                <div className="flex justify-between items-center px-4 py-3 bg-emerald-50/50">
-                                    <span className="text-sm font-semibold text-emerald-700">You Save</span>
-                                    <span className="text-sm font-bold text-emerald-700">{formatCurrency(totalSavings)}</span>
-                                </div>
+                                {val(quantity) === 1 && (
+                                    <div className="flex justify-between items-center px-5 py-4">
+                                        <span className="text-sm font-bold text-emerald-600">Final Price</span>
+                                        <span className="text-base font-bold text-emerald-600">{formatCurrency(finalPrice)}</span>
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     ) : (
@@ -337,32 +325,4 @@ export function DiscountCalculator() {
     )
 }
 
-function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-            <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                    <p className="text-xs font-medium text-slate-500">{title}</p>
-                    {tooltip && (
-                        <TooltipProvider delayDuration={100}>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button type="button" className="text-slate-300 hover:text-slate-500 transition-colors cursor-default">
-                                        <HelpCircle className="h-3 w-3" />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent side="top" className="max-w-xs text-[10px] bg-slate-900 text-white border-slate-800">
-                                    {tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                </div>
-                <div className="text-sm font-medium text-slate-800">{value}</div>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
-    )
-}
+

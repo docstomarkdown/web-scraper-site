@@ -160,11 +160,11 @@ export function CACCalculator() {
 
                     {/* Breakdown Card */}
                     {isValid ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Cost Breakdown</p>
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
+                            <div className="divide-y divide-slate-100">
                                 <div className="flex justify-between items-center px-4 py-3">
                                     <span className="text-sm text-slate-500">Total Expenses</span>
                                     <span className="text-sm font-medium text-slate-700">{formatCurrency(expensesVal)}</span>
@@ -173,9 +173,9 @@ export function CACCalculator() {
                                     <span className="text-sm text-slate-500">New Customers</span>
                                     <span className="text-sm font-medium text-slate-700">{customersVal.toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                    <span className="text-sm font-semibold text-slate-900">Cost Per Customer</span>
-                                    <span className="text-sm font-bold text-blue-600">{formatCurrency(cac)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Cost Per Customer</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(cac)}</span>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +197,6 @@ export function CACCalculator() {
                     </div>
                 </div>
             </div>
-        </FadeIn>
+        </FadeIn >
     )
 }

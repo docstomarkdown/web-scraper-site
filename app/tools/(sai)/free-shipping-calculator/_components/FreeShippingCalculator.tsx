@@ -207,31 +207,37 @@ export function FreeShippingCalculator() {
                         ]}
                     />
 
-                    {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                        <div className="flex items-start gap-3">
-                            {isViable ?
-                                <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5" /> :
-                                <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
-                            }
-                            <div>
-                                <h4 className="font-semibold text-slate-800 mb-1">
-                                    {isViable ? "Viability Analysis" : "Profit Warning"}
-                                </h4>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    {isViable ? (
-                                        <>
-                                            Offering free shipping costs you <strong>{formatCurrency(shipCost)}</strong> per order.
-                                            To maintain your current total profit, you need to increase sales volume by <strong>{salesIncreaseNeeded.toFixed(1)}%</strong>
-                                            OR increase your AOV to compensate.
-                                        </>
-                                    ) : (
-                                        <>
-                                            Your shipping cost ({formatCurrency(shipCost)}) is higher than your gross profit ({formatCurrency(grossProfitPerOrder)}).
-                                            Offering free shipping at this AOV will result in a loss of <strong>{formatCurrency(Math.abs(netProfitWithFreeShipping))}</strong> per order.
-                                        </>
-                                    )}
-                                </p>
+                    {/* Breakdown Card */}
+                    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${isViable ? 'border-l-emerald-500' : 'border-l-red-500'}`}>
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Gross Profit per Order</span>
+                                <span className="text-sm font-semibold text-slate-800">
+                                    {formatCurrency(grossProfitPerOrder)}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Shipping Cost</span>
+                                <span className="text-sm font-semibold text-red-500">
+                                    - {formatCurrency(shipCost)}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Net Profit After Shipping</span>
+                                <span className="text-sm font-semibold text-slate-800">
+                                    {formatCurrency(netProfitWithFreeShipping)}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-4">
+                                <span className={`text-sm font-bold ${isViable ? 'text-emerald-600' : 'text-red-600'}`}>
+                                    {isViable ? 'Sales Lift Needed' : 'Not Viable'}
+                                </span>
+                                <span className={`text-base font-bold ${isViable ? 'text-emerald-600' : 'text-red-600'}`}>
+                                    {isViable ? `+${salesIncreaseNeeded.toFixed(1)}%` : formatCurrency(Math.abs(netProfitWithFreeShipping)) + ' loss'}
+                                </span>
                             </div>
                         </div>
                     </div>

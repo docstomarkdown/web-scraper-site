@@ -157,6 +157,27 @@ export function ReorderCalculator() {
                         ]}
                     />
 
+                    {/* Breakdown Card */}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Reorder Calculation</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Lead Time Demand</span>
+                                <span className="text-sm font-semibold text-slate-800"><Counter value={leadTimeDemand} /> units</span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Safety Stock</span>
+                                <span className="text-sm font-semibold text-slate-800"><Counter value={safetyStockUnits} /> units</span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                <span className="text-sm font-bold text-slate-900">Reorder Point</span>
+                                <span className="text-base font-bold text-blue-600">{reorderPoint.toLocaleString()} units</span>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <div className="flex items-start gap-3">

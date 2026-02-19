@@ -199,10 +199,7 @@ export function MOQCalculator() {
                         titleLabel="Landed Cost"
                         labelClassName="bg-blue-500/10 text-blue-400"
                         mainValue={formatCurrency(totalInvestment)}
-                        valueColor="text-white"
-                        mainMetricLabel="Effective Cost Per Unit"
-                        mainMetricValue={formatCurrency(effectiveCostPerUnit)}
-                        mainMetricColor="text-blue-400"
+                        valueColor="text-blue-500"
                         secondaryMetrics={[
                             {
                                 label: "Inventory Coverage",
@@ -216,6 +213,37 @@ export function MOQCalculator() {
                             },
                         ]}
                     />
+
+                    {/* Breakdown Card */}
+                    {totalInvestment > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Investment Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Product Cost</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency((unitPrice === "" ? 0 : unitPrice) * (moq === "" ? 0 : moq))}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Shipping</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(shippingCost === "" ? 0 : shippingCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Misc Costs</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(miscCost === "" ? 0 : miscCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4 bg-slate-50/50">
+                                    <span className="text-sm font-bold text-slate-900">Effective Cost Per Unit</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(effectiveCostPerUnit)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter MOQ details to calculate investment.</p>
+                        </div>
+                    )}
 
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">

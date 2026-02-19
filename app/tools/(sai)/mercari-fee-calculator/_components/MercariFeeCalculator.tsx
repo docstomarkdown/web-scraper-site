@@ -247,52 +247,59 @@ export function MercariFeeCalculator() {
                             title="Net Profit"
                             titleLabel="Live"
                             labelClassName="text-emerald-400 bg-slate-800/50 border-slate-700/50"
-                            mainValue={<Counter value={netProfit} formatter={formatCurrency} />}
+                            mainValue={
+                                price > 0 ?
+                                    <Counter value={netProfit} formatter={formatCurrency} /> :
+                                    "—"
+                            }
                             valueColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
                             mainMetricLabel="Status"
                             mainMetricValue={price > 0 ? (netProfit >= 0 ? "PROFITABLE" : "LOSS") : "WAITING"}
                             mainMetricColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
-                            secondaryMetrics={[
+                            secondaryMetrics={price > 0 ? [
                                 {
                                     label: "Total Fees",
                                     value: <Counter value={totalFees} formatter={formatCurrency} />,
                                     color: "text-slate-400"
-                                },
-                                {
-                                    label: "Margin",
-                                    value: <>{margin.toFixed(1)}%</>,
-                                    color: "text-slate-300"
                                 },
                                 ...(quantity > 1 ? [{
                                     label: `Batch Profit (×${quantity})`,
                                     value: <Counter value={batchProfit} formatter={formatCurrency} />,
                                     color: "text-emerald-400 font-bold"
                                 }] : [])
-                            ]}
+                            ] : []}
                         />
 
-                        <div className="grid grid-cols-2 gap-3">
-                            <ResultCard
-                                title="Mercari Fee (10%)"
-                                value={<Counter value={merchFee} formatter={formatCurrency} />}
-                                tooltip="10% selling fee based on the item price."
-                            />
-                            <ResultCard
-                                title="Processing Fee"
-                                value={<Counter value={processingFee} formatter={formatCurrency} />}
-                                tooltip="2.9% + $0.50 payment processing fee."
-                            />
-                            <ResultCard
-                                title="ROI"
-                                value={<>{roi.toFixed(1)}%</>}
-                                tooltip="Return on Investment (Profit / Total Investment Costs)."
-                            />
-                            <ResultCard
-                                title="Costs Total"
-                                value={<Counter value={cost + ship + other} formatter={formatCurrency} />}
-                                tooltip="Sum of product, shipping, and other expenses."
-                            />
-                        </div>
+                        {/* Breakdown Card */}
+                        {price > 0 ? (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                                <div className="px-5 py-3.5 border-b border-slate-100">
+                                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fees & Profit</p>
+                                </div>
+                                <div className="divide-y divide-slate-100">
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Sale Price</span>
+                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(price)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Item Cost & Shipping</span>
+                                        <span className="text-sm font-semibold text-red-500">- {formatCurrency(cost + ship + other)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Mercari Fees</span>
+                                        <span className="text-sm font-semibold text-red-500">- {formatCurrency(totalFees)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-4">
+                                        <span className="text-sm font-bold text-emerald-600">Net Margin</span>
+                                        <span className="text-base font-bold text-emerald-600">{margin.toFixed(1)}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                                <p className="text-sm text-slate-400">Enter item details to calculate profit.</p>
+                            </div>
+                        )}
 
 
                         {insight && (
@@ -311,30 +318,5 @@ export function MercariFeeCalculator() {
             </div>
         </FadeIn>
 
-    );
-}
-
-function ResultCard({ title, value, tooltip }: { title: string, value: React.ReactNode, tooltip?: string }) {
-    return (
-        <div className="p-4 rounded-xl border bg-white border-slate-200 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default">
-            <div className="flex items-center gap-1.5 mb-1">
-                <p className="text-xs font-semibold text-slate-500">{title}</p>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <div className="text-slate-400 hover:text-blue-600 transition-colors">
-                                    <ShoppingBag className="h-3 w-3" />
-                                </div>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
-            <p className="text-xl font-bold text-slate-800">{value}</p>
-        </div>
     );
 }
