@@ -2,7 +2,7 @@
 
 import React from "react"
 import { MadhuToolTemplate, Step, Insight, FAQ } from "../../ToolTemplate"
-import { InfluencerROICalculator } from "./InfluencerROICalculator"
+import { InfluencerROICalculator } from "./CalculatorComponent"
 import { DollarSign, Users, Target, TrendingUp, Gift, MessageSquare, Heart } from "lucide-react"
 
 export function InfluencerROIPageContent() {
@@ -31,7 +31,7 @@ export function InfluencerROIPageContent() {
 
     const goal = {
         title: "Quantitative Influencer Strategy",
-        description: "Move beyond 'vanity metrics' and gut feelings. This tool provides a rigorous financial framework to prove the value of your creator partnerships and optimize your marketing budget for maximum growth.",
+        description: "Move beyond 'vanity metrics' and gut feelings. This tool provides a financial framework to prove the value of your creator partnerships and optimize your marketing budget for maximum growth.",
         icon: TrendingUp
     }
 
@@ -102,3 +102,4 @@ export function InfluencerROIPageContent() {
         />
     )
 }
+

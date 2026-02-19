@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { InfluencerROIPageContent } from "./_components/InfluencerROIPageContent"
+import { InfluencerROIPageContent as ROIPage } from "./_components/ROIPage"
 
 export const metadata: Metadata = {
     title: 'Influencer Marketing ROI Calculator - Track Campaign Performance | Web Scraper Pro',
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function InfluencerROICalculatorPage() {
-    return <InfluencerROIPageContent />
+    return <ROIPage />
 }

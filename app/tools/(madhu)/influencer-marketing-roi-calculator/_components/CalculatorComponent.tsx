@@ -1,14 +1,15 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+// Using relative paths to bypass potential alias resolution issues in this route group
+import { Card, CardContent } from "../../../../../components/ui/card"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../../../components/ui/tooltip"
 import { HelpCircle, Info, TrendingUp, TrendingDown, DollarSign, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2 } from "lucide-react"
 import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
-import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "@/app/tools/_shared/components"
-import { cn } from "@/lib/utils"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "../../../_shared/components"
+import { cn } from "../../../../../lib/utils"
+import { Input } from "../../../../../components/ui/input"
+import { Label } from "../../../../../components/ui/label"
 
 function InfluencerInput({
     label,
@@ -47,7 +48,7 @@ function InfluencerInput({
             <Input
                 type="number"
                 value={value}
-                onChange={(e) => onChange(e.target.value === "" ? "" : parseFloat(e.target.value))}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value === "" ? "" : parseFloat(e.target.value))}
                 placeholder={placeholder}
                 className="h-10 w-[160px] text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
             />
@@ -211,14 +212,14 @@ export function InfluencerROICalculator() {
                                         value={productCogs}
                                         onChange={setProductCogs}
                                         placeholder="Ex: 50.00"
-                                        tooltip="The manufacturing cost of the gifted products."
+                                        tooltip="The manufacturing cost or wholesale price of gifted products."
                                     />
                                     <InfluencerInput
                                         label="Shipping & Packaging"
                                         value={shippingCost}
                                         onChange={setShippingCost}
                                         placeholder="Ex: 15.00"
-                                        tooltip="Cost to ship the product to the influencer."
+                                        tooltip="Costs to ship the units to the influencer."
                                     />
                                 </div>
                             </div>
@@ -235,15 +236,15 @@ export function InfluencerROICalculator() {
                                         label="Agency/Mgmt Fee"
                                         value={managementFee}
                                         onChange={setManagementFee}
-                                        placeholder="Ex: 200.00"
-                                        tooltip="Fees for agencies or talent managers."
+                                        placeholder="Ex: 250.00"
+                                        tooltip="Any commission or fee paid to an agency or manager."
                                     />
                                     <InfluencerInput
                                         label="Content Rights Fee"
                                         value={contentRightsFee}
                                         onChange={setContentRightsFee}
-                                        placeholder="Ex: 150.00"
-                                        tooltip="Cost to use the creator's content in your own ads."
+                                        placeholder="Ex: 100.00"
+                                        tooltip="Additional cost for whitelisting or spark ad rights."
                                     />
                                 </div>
                             </div>
@@ -260,22 +261,22 @@ export function InfluencerROICalculator() {
                                         label="Total Sales Revenue"
                                         value={totalSales}
                                         onChange={setTotalSales}
-                                        placeholder="Ex: 5000.00"
-                                        tooltip="Total revenue generated from the influencer's links/codes."
+                                        placeholder="Ex: 8500.00"
+                                        tooltip="The total gross revenue generated from tracking links/codes."
                                     />
                                     <InfluencerInput
                                         label="Total Conversions"
                                         value={conversions}
                                         onChange={setConversions}
-                                        placeholder="Ex: 100"
-                                        tooltip="Total number of orders generated."
+                                        placeholder="Ex: 125"
+                                        tooltip="Number of successful orders or leads generated."
                                     />
                                     <InfluencerInput
                                         label="Total Impressions"
                                         value={impressions}
                                         onChange={setImpressions}
                                         placeholder="Ex: 50000"
-                                        tooltip="Total views the content received."
+                                        tooltip="Number of times the content was viewed."
                                     />
                                     <InfluencerInput
                                         label="Total Engagements"
@@ -314,7 +315,7 @@ export function InfluencerROICalculator() {
                                 <div className="flex items-baseline gap-2">
                                     <Counter
                                         value={roi}
-                                        formatter={(v) => `${v.toFixed(2)}%`}
+                                        formatter={(v: number) => `${v.toFixed(2)}%`}
                                         className={cn("text-white", hasAnyData && netProfit < 0 && "text-red-200 font-black")}
                                     />
                                     <span className="text-white/60 text-lg font-medium">Return</span>
@@ -341,7 +342,7 @@ export function InfluencerROICalculator() {
                                         </TooltipProvider>
                                     </div>
                                     <p className="text-xl font-bold text-emerald-400">
-                                        <Counter value={roas} formatter={(v) => `${v.toFixed(2)}x`} />
+                                        <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
@@ -361,7 +362,7 @@ export function InfluencerROICalculator() {
                                         </TooltipProvider>
                                     </div>
                                     <p className="text-xl font-bold text-blue-400">
-                                        <Counter value={cpa} formatter={formatCurrency} />
+                                        <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
@@ -381,7 +382,7 @@ export function InfluencerROICalculator() {
                                         </TooltipProvider>
                                     </div>
                                     <p className="text-xl font-bold text-purple-400">
-                                        <Counter value={cpm} formatter={formatCurrency} />
+                                        <Counter value={cpm} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
@@ -401,7 +402,7 @@ export function InfluencerROICalculator() {
                                         </TooltipProvider>
                                     </div>
                                     <p className="text-xl font-bold text-amber-400">
-                                        <Counter value={cpe} formatter={formatCurrency} />
+                                        <Counter value={cpe} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
                             </div>
