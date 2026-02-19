@@ -264,6 +264,10 @@ export const toolsGroups = [
         title: "Net Profit Calculator",
         href: "/tools/net-profit-calculator",
       },
+      {
+        title: "Influencer Marketing ROI Calculator",
+        href: "/tools/influencer-marketing-roi-calculator",
+      },
     ],
   },
 ];

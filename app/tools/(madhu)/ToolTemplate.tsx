@@ -68,7 +68,7 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
     const showHelp = !!onHelpClick || !!scrollId
 
     return (
-        <div className="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="px-6 py-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
                 {Icon && (
                     <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
@@ -199,12 +199,12 @@ export function MadhuToolTemplate({
     faqs
 }: MadhuToolTemplateProps) {
     return (
-        <div className="min-h-screen bg-slate-50 pt-32 pb-12">
+        <div className="min-h-screen bg-slate-50 pt-28 pb-12">
             <div className="container mx-auto px-4">
                 {/* Header */}
-                <div className="text-center mb-10">
+                <div className="text-center mb-6">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
+                        <h1 className="text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl mb-4">
                             {title}
                         </h1>
                     </FadeIn>
