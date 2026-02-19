@@ -4,7 +4,7 @@ import React, { useState } from "react"
 // Using relative paths to bypass potential alias resolution issues in this route group
 import { Card, CardContent } from "../../../../../components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../../../components/ui/tooltip"
-import { HelpCircle, Info, TrendingUp, TrendingDown, DollarSign, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2 } from "lucide-react"
+import { HelpCircle, Info, TrendingUp, TrendingDown, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2 } from "lucide-react"
 import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
 import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "../../../_shared/components"
 import { cn } from "../../../../../lib/utils"
@@ -165,7 +165,6 @@ export function InfluencerROICalculator() {
                             <InputCardHeader
                                 title="Campaign Budget"
                                 subtitle="Log every dollar invested into the campaign."
-                                icon={DollarSign}
                                 scrollId="how-to-use"
                             />
                             <div className="w-[100px]">

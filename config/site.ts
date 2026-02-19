@@ -268,6 +268,10 @@ export const toolsGroups = [
         title: "Influencer Marketing ROI Calculator",
         href: "/tools/influencer-marketing-roi-calculator",
       },
+      {
+        title: "Affiliate Commission Calculator",
+        href: "/tools/affiliate-commission-calculator",
+      },
     ],
   },
 ];
