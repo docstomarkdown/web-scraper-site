@@ -1,12 +1,11 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RefreshCw, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { RefreshCw, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function PriceElasticityCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -14,14 +13,6 @@ export function PriceElasticityCalculator() {
     const [finalPrice, setFinalPrice] = useState<number | "">("")
     const [initialQuantity, setInitialQuantity] = useState<number | "">("")
     const [finalQuantity, setFinalQuantity] = useState<number | "">("")
-
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     const handleReset = () => {
         setInitialPrice("")
         setFinalPrice("")
@@ -85,36 +76,13 @@ export function PriceElasticityCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Market Data
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={handleReset}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        title="Reset Fields"
-                                    >
-                                        <RefreshCw className="w-4 h-4" />
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                </div>
-                                <CardDescription>Enter price and quantity changes.</CardDescription>
-                            </div>
-                            <div className="w-[120px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter price and quantity changes."
+
+                            onReset={handleReset}
+
+                        />
                         <CardContent className="space-y-5 pt-6">
                             {/* Group 1: Starting Position */}
                             <div className="space-y-3">
@@ -221,6 +189,33 @@ export function PriceElasticityCalculator() {
                             }
                         ]}
                     />
+
+                    {/* Breakdown Card */}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Elasticity Analysis</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">% Change in Price</span>
+                                <span className={cn("text-sm font-semibold", percentChangePrice > 0 ? "text-slate-800" : "text-emerald-600")}>
+                                    {percentChangePrice > 0 ? "+" : ""}{(percentChangePrice * 100).toFixed(1)}%
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">% Change in Demand</span>
+                                <span className={cn("text-sm font-semibold", percentChangeQuantity >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                    {percentChangeQuantity > 0 ? "+" : ""}{(percentChangeQuantity * 100).toFixed(1)}%
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                <span className="text-sm font-bold text-slate-900">Revenue Impact</span>
+                                <span className={cn("text-base font-bold", revenueChange >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                    {revenueChange >= 0 ? "+" : ""}{formatCurrency(revenueChange)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Interpretation Card */}
                     <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">

@@ -1,13 +1,11 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { HelpCircle, Info, RotateCcw } from "lucide-react"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Info } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 
 export function DropshippingCalculator() {
@@ -34,14 +32,6 @@ export function DropshippingCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const getSymbol = () => currencySymbols[currency] || "$"
-
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     const handleReset = () => {
         setPurchasePrice("")
         setSalesPrice("")
@@ -97,44 +87,17 @@ export function DropshippingCalculator() {
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <CardTitle className="text-xl font-bold text-blue-600">
-                                            Inputs
-                                        </CardTitle>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={scrollToGuide}
-                                            className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        >
-                                            <HelpCircle className="w-4 h-4" />
-                                        </Button>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleReset}
-                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors"
-                                                    >
-                                                        <RotateCcw className="w-3.5 h-3.5" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    Reset Calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <CardDescription>Calculate your dropshipping net profit.</CardDescription>
-                                </div>
-                                <div className="w-[140px]">
-                                    <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                </div>
-                            </CardHeader>
+                            <CalculatorCardHeader
+
+                                description="Calculate your dropshipping net profit."
+
+                                onReset={handleReset}
+
+                                currency={currency}
+
+                                onCurrencyChange={setCurrency}
+
+                            />
                             <CardContent className="space-y-6 pt-6">
                                 <CalculatorInput
                                     label={`Purchase Price (${symbol})`}
@@ -226,11 +189,6 @@ export function DropshippingCalculator() {
                                     label: "Revenue",
                                     value: <Counter value={revenueGenerated} formatter={formatCurrency} key={currency} />,
                                     color: "text-slate-100"
-                                },
-                                {
-                                    label: "Total Expenses",
-                                    value: <Counter value={totalExpenses} formatter={formatCurrency} key={currency} />,
-                                    color: "text-slate-300"
                                 }
                             ]}
                         />
@@ -264,10 +222,44 @@ export function DropshippingCalculator() {
                             />
                         </div>
 
-                        {/* Context Summary */}
-                        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
-                            If you purchase at <strong><Counter value={purchasePriceVal} formatter={formatCurrency} key={currency} /></strong> and sell at <strong><Counter value={salesPriceVal} formatter={formatCurrency} key={currency} /></strong>, with <strong><Counter value={ordersReceivedVal} /></strong> orders, your total profit is <strong><Counter value={netProfit} formatter={formatCurrency} key={currency} /></strong>.
-                        </div>
+                        {/* Breakdown Card */}
+                        {deliveredOrders > 0 ? (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                                <div className="px-5 py-3.5 border-b border-slate-100">
+                                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">P&L Breakdown</p>
+                                </div>
+                                <div className="divide-y divide-slate-100">
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Total Product Cost</span>
+                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalPurchaseCost)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Total Ad Spend</span>
+                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalAdsCost)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Total Shipping</span>
+                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(deliveredOrders * shippingCostVal)}</span>
+                                    </div>
+                                    {(totalRtoCost > 0 || totalOtherCosts > 0) && (
+                                        <div className="flex justify-between items-center px-5 py-3.5">
+                                            <span className="text-sm text-slate-600">RTO & Other Costs</span>
+                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalRtoCost + totalOtherCosts)}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
+                                        <span className="text-sm font-bold text-emerald-600">Net Profit</span>
+                                        <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                            {formatCurrency(netProfit)}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                                <p className="text-sm text-slate-400">Enter order details to calculate profit.</p>
+                            </div>
+                        )}
                     </FadeIn>
                 </div>
             </div>
@@ -275,41 +267,4 @@ export function DropshippingCalculator() {
     )
 }
 
-function ResultCard({ title, value, darkwarning, tooltip }: { title: string, value: React.ReactNode, darkwarning?: boolean, tooltip?: string }) {
-    return (
-        <div className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-default ${darkwarning
-            ? 'bg-orange-50/50 border-orange-100'
-            : 'bg-white border-slate-200 shadow-sm'
-            }`}>
-            <div className="flex items-center gap-1.5 mb-1">
-                <p className="text-xs font-semibold text-slate-500">{title}</p>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                    <Info className="h-3 w-3" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
-            <p className={`text-xl font-bold ${darkwarning ? 'text-orange-600' : 'text-slate-800'}`}>{value}</p>
-        </div>
-    )
-}
 
-function Row({ label, value, isNegative, className }: { label: string, value: React.ReactNode, isNegative?: boolean, className?: string }) {
-    return (
-        <div className={`flex justify-between items-center text-sm ${className}`}>
-            <span>{label}</span>
-            <span className="font-medium tracking-wide">
-                {isNegative ? '-' : ''}{value}
-            </span>
-        </div>
-    )
-}

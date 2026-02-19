@@ -1,12 +1,10 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RotateCcw, TrendingUp, DollarSign, Percent, BarChart3, AlertCircle } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Card, CardContent } from "@/components/ui/card"
+import { TrendingUp, DollarSign, Percent, BarChart3, AlertCircle } from "lucide-react"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
 
 export function ReturnOnAdSpendCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -39,12 +37,7 @@ export function ReturnOnAdSpendCalculator() {
     }
     const symbol = currencySymbols[currency] || "$"
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('roas-guide');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     // --- Calculations ---
     const spend = val(adSpend)
@@ -88,44 +81,13 @@ export function ReturnOnAdSpendCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter your ad spend details.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter your ad spend details."
+                            onReset={handleReset}
+                            guideId="roas-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
                         <CardContent className="space-y-5 pt-6">
 
                             <CalculatorInput
@@ -152,8 +114,8 @@ export function ReturnOnAdSpendCalculator() {
                                     <button
                                         onClick={() => setMode("calculate-roas")}
                                         className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200 border ${mode === "calculate-roas"
-                                                ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100"
-                                                : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"
+                                            ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100"
+                                            : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"
                                             }`}
                                     >
                                         My Current ROAS
@@ -161,8 +123,8 @@ export function ReturnOnAdSpendCalculator() {
                                     <button
                                         onClick={() => setMode("calculate-revenue")}
                                         className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200 border ${mode === "calculate-revenue"
-                                                ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100"
-                                                : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"
+                                            ? "bg-white border-blue-200 text-blue-700 shadow-sm ring-1 ring-blue-100"
+                                            : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100"
                                             }`}
                                     >
                                         Revenue Goal
@@ -222,14 +184,38 @@ export function ReturnOnAdSpendCalculator() {
                                     <Counter value={val(targetROAS)} formatter={(v) => `${v.toFixed(2)}x`} />
                                 ),
                                 color: currentHealth.color
-                            },
-                            {
-                                label: "Net Profit (Ads)",
-                                value: <Counter value={mode === "calculate-roas" ? profit : plannedProfit} formatter={formatCurrency} key={currency} />,
-                                color: (mode === "calculate-roas" ? profit : plannedProfit) >= 0 ? 'text-emerald-400' : 'text-red-400'
                             }
                         ]}
                     />
+
+                    {/* Performance Breakdown Card */}
+                    {spend > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Performance Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Ad Spend</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(spend)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Revenue Generated</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(mode === "calculate-roas" ? revenue : calculatedRevenue)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
+                                    <span className="text-sm font-bold text-emerald-600">Net Profit (Ads)</span>
+                                    <span className={cn("text-base font-bold", (mode === "calculate-roas" ? profit : plannedProfit) >= 0 ? "text-emerald-600" : "text-red-500")}>
+                                        {formatCurrency(mode === "calculate-roas" ? profit : plannedProfit)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter ad spend details to calculate performance.</p>
+                        </div>
+                    )}
 
 
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
@@ -250,16 +236,4 @@ export function ReturnOnAdSpendCalculator() {
     )
 }
 
-function ResultCard({ title, value, icon: Icon }: { title: string, value: React.ReactNode, icon: any }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-            <div>
-                <p className="text-sm font-semibold text-slate-500 mb-1">{title}</p>
-                <p className="text-lg font-bold text-slate-800">{value}</p>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
-    )
-}
+

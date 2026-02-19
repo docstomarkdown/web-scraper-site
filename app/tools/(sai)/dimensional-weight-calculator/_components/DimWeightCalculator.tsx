@@ -1,20 +1,22 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
+    SelectLabel,
+    SelectSeparator,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HelpCircle, RotateCcw, Info, Box, Scale, Ruler } from "lucide-react";
+import { Info, Box, Scale, Ruler } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
+import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function DimWeightCalculator() {
     const [length, setLength] = useState<number | "">("");
@@ -25,13 +27,16 @@ export function DimWeightCalculator() {
 
     const [dimWeight, setDimWeight] = useState<number>(0);
     const [billableWeight, setBillableWeight] = useState<number>(0);
-    const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
+    const [dimUnit, setDimUnit] = useState<"in" | "cm">("in");
+    const [weightUnit, setWeightUnit] = useState<"lb" | "kg">("lb");
 
     const handleReset = () => {
         setLength("");
         setWidth("");
         setHeight("");
         setActualWeight("");
+        setDimUnit("in");
+        setWeightUnit("lb");
         setDivisor("139");
     }
 
@@ -85,66 +90,30 @@ export function DimWeightCalculator() {
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-3">
-                                        <CardTitle className="text-xl font-bold text-blue-600">
-                                            Inputs
-                                        </CardTitle>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={scrollToGuide}
-                                            className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        >
-                                            <HelpCircle className="w-4 h-4" />
-                                        </Button>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleReset}
-                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                    >
-                                                        <RotateCcw className="w-3.5 h-3.5" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    Reset Calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <CardDescription>Enter dimensions and weight.</CardDescription>
-                                </div>
-                                <div className="w-[160px]">
-                                    <Tabs value={unit} onValueChange={(v: string) => setUnit(v as "imperial" | "metric")}>
-                                        <TabsList className="grid w-full grid-cols-2">
-                                            <TabsTrigger value="imperial">In / Lb</TabsTrigger>
-                                            <TabsTrigger value="metric">Cm / Kg</TabsTrigger>
-                                        </TabsList>
-                                    </Tabs>
-                                </div>
-                            </CardHeader>
+                            <CalculatorCardHeader
+
+                                description="Enter dimensions and weight."
+
+                                onReset={handleReset}
+
+                            />
                             <CardContent className="space-y-6 pt-6">
                                 <CalculatorInput
-                                    label={`Length (${unit === "imperial" ? "in" : "cm"})`}
+                                    label={`Length (${dimUnit})`}
                                     value={length}
                                     onChange={setLength}
                                     placeholder="0"
                                     tooltip="The longest side of the package."
                                 />
                                 <CalculatorInput
-                                    label={`Width (${unit === "imperial" ? "in" : "cm"})`}
+                                    label={`Width (${dimUnit})`}
                                     value={width}
                                     onChange={setWidth}
                                     placeholder="0"
                                     tooltip="The width of the package."
                                 />
                                 <CalculatorInput
-                                    label={`Height (${unit === "imperial" ? "in" : "cm"})`}
+                                    label={`Height (${dimUnit})`}
                                     value={height}
                                     onChange={setHeight}
                                     placeholder="0"
@@ -152,13 +121,14 @@ export function DimWeightCalculator() {
                                 />
 
                                 {/* Custom Select for Divisor to match CalculatorInput style slightly */}
-                                <div className="flex items-center justify-between gap-2">
+                                {/* DIM Divisor Selection - Optimized Design */}
+                                <div className="space-y-2">
                                     <div className="flex items-center gap-2">
-                                        <Label className="text-base font-semibold text-slate-700">DIM Divisor</Label>
+                                        <Label className="text-sm font-medium text-slate-700">DIM Divisor</Label>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-500 hover:text-blue-600 transition-colors cursor-default">
+                                                    <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors cursor-default">
                                                         <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -168,24 +138,57 @@ export function DimWeightCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <div className="w-36 md:w-44">
-                                        <Select value={divisor} onValueChange={setDivisor}>
-                                            <SelectTrigger className="h-10 border-slate-300 bg-white shadow-sm focus:ring-blue-600/10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 transition-all w-full">
-                                                <SelectValue placeholder="Select" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="139">139 (Daily Rates)</SelectItem>
-                                                <SelectItem value="166">166 (Retail/USPS)</SelectItem>
-                                                <SelectItem value="194">194 (Domestic)</SelectItem>
-                                                <SelectItem value="5000">5000 (Metric)</SelectItem>
-                                                <SelectItem value="6000">6000 (Metric)</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
+
+                                    <Select value={divisor} onValueChange={setDivisor}>
+                                        <SelectTrigger className="h-11 border-slate-200 bg-white shadow-sm focus:ring-blue-500/10 hover:border-blue-500 focus:border-blue-500 focus:ring-4 transition-all w-full text-slate-700">
+                                            <SelectValue placeholder="Select divisor" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {dimUnit === "in" ? (
+                                                <SelectGroup>
+                                                    <SelectLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2 py-1.5 bg-slate-50/50">Imperial (Inches / Lbs)</SelectLabel>
+                                                    <SelectItem value="139" className="py-2.5 cursor-pointer">
+                                                        <div className="flex items-center justify-between w-full gap-4">
+                                                            <span className="font-medium">UPS / FedEx Daily Rates</span>
+                                                            <span className="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded font-mono font-semibold">139</span>
+                                                        </div>
+                                                    </SelectItem>
+                                                    <SelectItem value="166" className="py-2.5 cursor-pointer">
+                                                        <div className="flex items-center justify-between w-full gap-4">
+                                                            <span className="font-medium">Retail / USPS</span>
+                                                            <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded font-mono font-semibold">166</span>
+                                                        </div>
+                                                    </SelectItem>
+                                                    <SelectItem value="194" className="py-2.5 cursor-pointer">
+                                                        <div className="flex items-center justify-between w-full gap-4">
+                                                            <span className="font-medium">Domestic Ground</span>
+                                                            <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded font-mono font-semibold">194</span>
+                                                        </div>
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            ) : (
+                                                <SelectGroup>
+                                                    <SelectLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2 py-1.5 bg-slate-50/50">Metric (Cm / Kg)</SelectLabel>
+                                                    <SelectItem value="5000" className="py-2.5 cursor-pointer">
+                                                        <div className="flex items-center justify-between w-full gap-4">
+                                                            <span className="font-medium">International Standard</span>
+                                                            <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded font-mono font-semibold">5000</span>
+                                                        </div>
+                                                    </SelectItem>
+                                                    <SelectItem value="6000" className="py-2.5 cursor-pointer">
+                                                        <div className="flex items-center justify-between w-full gap-4">
+                                                            <span className="font-medium">Legacy Metric</span>
+                                                            <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded font-mono font-semibold">6000</span>
+                                                        </div>
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            )}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
 
                                 <CalculatorInput
-                                    label={`Actual Weight (${unit === "imperial" ? "lb" : "kg"})`}
+                                    label={`Actual Weight (${weightUnit})`}
                                     value={actualWeight}
                                     onChange={setActualWeight}
                                     placeholder="0"
@@ -205,14 +208,14 @@ export function DimWeightCalculator() {
                             mainValue={
                                 <div className="flex items-baseline gap-1">
                                     <Counter value={billableWeight} />
-                                    <span className="text-2xl font-normal opacity-80">{unit === "imperial" ? "lbs" : "kg"}</span>
+                                    <span className="text-2xl font-normal opacity-80">{weightUnit === "lb" ? "lbs" : "kg"}</span>
                                 </div>
                             }
                             valueColor="text-white"
                             secondaryMetrics={[
                                 {
                                     label: "Dimensional Weight",
-                                    value: <><Counter value={dimWeight} /> {unit === "imperial" ? "lbs" : "kg"}</>,
+                                    value: <><Counter value={dimWeight} /> {weightUnit === "lb" ? "lbs" : "kg"}</>,
                                     color: "text-blue-200"
                                 }
                             ]}
@@ -220,33 +223,33 @@ export function DimWeightCalculator() {
 
                         {/* Breakdown Card */}
                         {(dimWeight > 0 || actualWeight !== "") ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                                <div className="px-4 py-3 border-b border-slate-100">
-                                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Weight Analysis</p>
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                                <div className="px-5 py-3.5 border-b border-slate-100">
+                                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Weight Breakdown</p>
                                 </div>
-                                <div className="divide-y divide-slate-50">
-                                    <div className="flex justify-between items-center px-4 py-3">
-                                        <div className="flex items-center gap-2">
-                                            <Scale className="w-4 h-4 text-slate-400" />
-                                            <span className="text-sm text-slate-500">Actual Weight</span>
-                                        </div>
-                                        <span className="text-sm font-medium text-slate-700">
-                                            {actualWeight || 0} {unit === "imperial" ? "lbs" : "kg"}
+                                <div className="divide-y divide-slate-100">
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Actual Weight</span>
+                                        <span className="text-sm font-semibold text-slate-800">
+                                            {actualWeight || 0} {weightUnit === "lb" ? "lbs" : "kg"}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center px-4 py-3">
-                                        <div className="flex items-center gap-2">
-                                            <Ruler className="w-4 h-4 text-slate-400" />
-                                            <span className="text-sm text-slate-500">DIM Weight</span>
-                                        </div>
-                                        <span className="text-sm font-medium text-slate-700">
-                                            {dimWeight} {unit === "imperial" ? "lbs" : "kg"}
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Dimensional Weight</span>
+                                        <span className="text-sm font-semibold text-slate-800">
+                                            {dimWeight} {weightUnit === "lb" ? "lbs" : "kg"}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                        <span className="text-sm font-semibold text-slate-900">Billable Weight</span>
-                                        <span className="text-sm font-bold text-blue-600">
-                                            {billableWeight} {unit === "imperial" ? "lbs" : "kg"}
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">DIM Divisor Used</span>
+                                        <span className="text-sm font-semibold text-slate-800">
+                                            ÷ {divisor}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center px-5 py-4">
+                                        <span className="text-sm font-bold text-emerald-600">Billable Weight</span>
+                                        <span className="text-base font-bold text-emerald-600">
+                                            {billableWeight} {weightUnit === "lb" ? "lbs" : "kg"}
                                         </span>
                                     </div>
                                 </div>
@@ -259,7 +262,7 @@ export function DimWeightCalculator() {
 
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
                             Carriers charge based on the <strong>greater</strong> of Actual Weight or Dimensional Weight.
-                            In this case, you will be billed for <strong>{billableWeight} {unit === "imperial" ? "lbs" : "kg"}</strong>.
+                            In this case, you will be billed for <strong>{billableWeight} {weightUnit === "lb" ? "lbs" : "kg"}</strong>.
                         </div>
 
                     </FadeIn>

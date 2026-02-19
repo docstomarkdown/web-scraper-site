@@ -1,13 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { HelpCircle, RotateCcw, DollarSign, ArrowRight, Wallet, Percent, TrendingUp, BarChart3 } from "lucide-react";
-import { CurrencyCombobox } from "@/app/tools/_shared/components";
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
+import { DollarSign, ArrowRight, Wallet, Percent, TrendingUp, BarChart3 } from "lucide-react"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function PayPalFeeCalculator() {
     const [currency, setCurrency] = useState("USD");
@@ -52,39 +49,17 @@ export function PayPalFeeCalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0 text-left">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
-                                        <HelpCircle className="h-4 w-4" />
-                                    </button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription className="text-sm">Configure your sale or transfer details.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter your details."
+
+                            onReset={handleReset}
+
+                            currency={currency}
+
+                            onCurrencyChange={setCurrency}
+
+                        />
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-4">
                                 <div className="space-y-2">
@@ -144,32 +119,46 @@ export function PayPalFeeCalculator() {
                     <ResultFeedbackCard
                         title="You Receive (Net)"
                         mainValue={
-                            <div className="flex items-baseline gap-1">
-                                <Counter value={netAmount > 0 ? netAmount : 0} formatter={formatCurrency} />
-                            </div>
+                            amountVal > 0 ?
+                                <div className="flex items-baseline gap-1">
+                                    <Counter value={netAmount > 0 ? netAmount : 0} formatter={formatCurrency} />
+                                </div> :
+                                "—"
                         }
                         valueColor="text-emerald-400"
-                        secondaryMetrics={[
-                            { label: "Total Fee", value: formatCurrency(totalFee), color: "text-red-400" },
-                            { label: "Fixed Cost", value: formatCurrency(fixedFee), color: "text-slate-300" }
-                        ]}
+                        secondaryMetrics={[]}
                     />
 
-                    {/* Breakdown Cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Markup Price"
-                            value={formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}
-                            description="Price to offset fees."
-                            icon={ArrowRight}
-                        />
-                        <ResultCard
-                            title="Net Keep %"
-                            value={`${((netAmount / (amountVal || 1)) * 100).toFixed(1)}%`}
-                            description="Profit retention."
-                            icon={TrendingUp}
-                        />
-                    </div>
+                    {/* Breakdown Card */}
+                    {amountVal > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Transaction Amount</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(amountVal)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total PayPal Fee</span>
+                                    <span className="text-sm font-semibold text-red-500">- {formatCurrency(totalFee)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Net Keep %</span>
+                                    <span className="text-sm font-semibold text-slate-800">{((netAmount / (amountVal || 1)) * 100).toFixed(1)}%</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4">
+                                    <span className="text-sm font-bold text-emerald-600">Ask For (To Cover Fees)</span>
+                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter transaction details to see breakdown.</p>
+                        </div>
+                    )}
 
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white overflow-hidden relative">
                         <div className="flex items-center justify-between relative z-10">
@@ -211,23 +200,6 @@ export function PayPalFeeCalculator() {
                 </div>
             </div>
         </FadeIn>
-    );
-}
-
-function ResultCard({ title, value, description, icon: Icon }: { title: string, value: string, description: string, icon: any }) {
-    return (
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm group hover:border-blue-200 transition-all duration-300">
-            <div className="flex items-center gap-1.5 mb-3">
-                <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-500 group-hover:bg-blue-50 transition-colors">
-                    <Icon className="h-4 w-4" />
-                </div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{title}</p>
-            </div>
-            <div className="space-y-1">
-                <p className="text-xl font-black text-slate-900">{value}</p>
-                <p className="text-[11px] font-medium text-slate-400 leading-tight">{description}</p>
-            </div>
-        </div>
     );
 }
 

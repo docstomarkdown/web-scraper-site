@@ -1,6 +1,7 @@
 export * from './FadeIn'
 export * from './Counter'
 export * from './CalculatorInput'
+export * from './CalculatorCardHeader'
 
 export * from './ToolSectionHeader'
 export * from './ToolFAQ'

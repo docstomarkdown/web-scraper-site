@@ -1,14 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { HelpCircle, RotateCcw, User, Repeat, Calendar, DollarSign, Percent, TrendingUp, ShieldCheck } from "lucide-react";
-import { CurrencyCombobox } from "@/app/tools/_shared/components";
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { User, Repeat, Calendar, DollarSign, Percent, TrendingUp, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { motion } from "framer-motion";
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function CLVCalculator() {
     const [currency, setCurrency] = useState("USD");
@@ -36,14 +33,14 @@ export function CLVCalculator() {
 
     useEffect(() => {
         const revenue = aovVal * freqVal * lifespanVal;
-        const profit = revenue * (marginVal / 100);
+        const grossProfit = revenue * (marginVal / 100);
 
         setClvRevenue(revenue);
-        setClvProfit(profit);
-        setAnnualProfit(profit / (lifespanVal || 1));
+        setClvProfit(grossProfit - cacVal);
+        setAnnualProfit(grossProfit / (lifespanVal || 1));
 
         if (cacVal > 0) {
-            setLtvCacRatio(profit / cacVal);
+            setLtvCacRatio(grossProfit / cacVal);
         } else {
             setLtvCacRatio(0);
         }
@@ -87,44 +84,17 @@ export function CLVCalculator() {
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                </div>
-                                <CardDescription>Define your customer value and costs.</CardDescription>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                <TooltipProvider delayDuration={100}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={handleReset}
-                                                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-8 w-8 rounded-full"
-                                            >
-                                                <RotateCcw className="w-4 h-4" />
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                            Reset Calculator
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Define your customer value and costs."
+
+                            onReset={handleReset}
+
+                            currency={currency}
+
+                            onCurrencyChange={setCurrency}
+
+                        />
                         <CardContent className="space-y-6 pt-6">
 
                             {/* Group 1: Value Drivers */}
@@ -213,11 +183,48 @@ export function CLVCalculator() {
                         mainValue={
                             <Counter value={clvProfit} formatter={formatCurrency} />
                         }
-                        secondaryMetrics={[
-                            { label: "LTV Revenue", value: formatCurrency(clvRevenue), color: "text-slate-300" },
-                            { label: "Annual Profit", value: formatCurrency(annualProfit), color: "text-emerald-400" }
-                        ]}
                     />
+
+                    {/* Breakdown Card */}
+                    {clvRevenue > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Lifetime Value Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Lifetime Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(clvRevenue)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Gross Profit (Margin: {marginVal}%)</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(clvRevenue * (marginVal / 100))}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Acquisition Cost (CAC)</span>
+                                    <span className="text-sm font-semibold text-red-600">-{formatCurrency(cacVal)}</span>
+                                </div>
+
+                                {annualProfit > 0 && (
+                                    <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
+                                        <span className="text-sm font-medium text-slate-500">Annual Profit Contribution</span>
+                                        <span className="text-sm font-bold text-slate-700">{formatCurrency(annualProfit)}</span>
+                                    </div>
+                                )}
+
+                                <div className="flex justify-between items-center px-5 py-4 bg-emerald-50/30">
+                                    <span className="text-sm font-bold text-slate-900">Net Lifetime Profit</span>
+                                    <span className={cn("text-base font-bold text-emerald-600")}>
+                                        {formatCurrency(clvProfit)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter metrics to calculate LTV.</p>
+                        </div>
+                    )}
 
                     {/* Insight Card: Ratio Meter */}
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">

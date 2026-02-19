@@ -1,12 +1,10 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, currencies, FadeIn } from "@/app/tools/_shared/components"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { ShoppingBag, Truck, DollarSign, Tag, RotateCcw } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { ShoppingBag, Truck, DollarSign, Tag } from "lucide-react"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
 
 export function PoshmarkFeeCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -75,33 +73,17 @@ export function PoshmarkFeeCalculator() {
 
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
-                        <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-2">
-                                <CardTitle className="text-xl font-bold text-blue-600">Inputs</CardTitle>
-                                <TooltipProvider delayDuration={100}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={handleReset}
-                                                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                            >
-                                                <RotateCcw className="w-3.5 h-3.5" />
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                            Reset Calculator
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                        </div>
-                        <div className="w-[140px]">
-                            <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                        </div>
-                    </CardHeader>
+                    <CalculatorCardHeader
+
+                        description="Enter your details."
+
+                        onReset={handleReset}
+
+                        currency={currency}
+
+                        onCurrencyChange={setCurrency}
+
+                    />
 
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Revenue */}
@@ -170,35 +152,31 @@ export function PoshmarkFeeCalculator() {
                     />
 
                     {/* Breakdown */}
-                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
-                        <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <ShoppingBag className="w-4 h-4 text-indigo-500" />
-                            Payout Breakdown
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Sold Price</span>
-                                <span className="font-medium text-slate-700">{currencySymbol}{Number(soldPrice).toFixed(2)}</span>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-rose-500">
+                        <div className="px-5 py-3.5 border-b border-slate-100">
+                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Payout Breakdown</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Sold Price</span>
+                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(soldPrice).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Poshmark Fee</span>
-                                <span className="text-red-600 font-medium">-{currencySymbol}{poshFee.toFixed(2)}</span>
+                            <div className="flex justify-between items-center px-5 py-3.5">
+                                <span className="text-sm text-slate-600">Poshmark Fee</span>
+                                <span className="text-sm font-semibold text-red-600">-{currencySymbol}{poshFee.toFixed(2)}</span>
                             </div>
                             {Number(shippingDiscount) > 0 && (
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-slate-500">Shipping Discount</span>
-                                    <span className="text-red-600 font-medium">-{currencySymbol}{Number(shippingDiscount).toFixed(2)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Shipping Discount</span>
+                                    <span className="text-sm font-semibold text-red-600">-{currencySymbol}{Number(shippingDiscount).toFixed(2)}</span>
                                 </div>
                             )}
-                            <Separator className="my-2" />
-                            <div className="flex justify-between text-sm font-semibold">
-                                <span className="text-slate-700">Net Earnings</span>
-                                <span className="text-emerald-600">
-                                    {currencySymbol}{netEarnings.toFixed(2)}
-                                </span>
+                            <div className="flex justify-between items-center px-5 py-3.5 bg-rose-50/20">
+                                <span className="text-sm font-bold text-slate-900">Net Earnings</span>
+                                <span className="text-base font-bold text-rose-600">{currencySymbol}{netEarnings.toFixed(2)}</span>
                             </div>
                         </div>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </FadeIn>

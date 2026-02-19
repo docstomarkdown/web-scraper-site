@@ -1,25 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardContent,
-    CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { CalculatorInput } from "@/app/tools/_shared/components/CalculatorInput";
 import { ResultFeedbackCard } from "@/app/tools/_shared/components/ResultFeedbackCard";
 import { FadeIn } from "@/app/tools/_shared/components/FadeIn";
-import { CurrencyCombobox } from "@/app/tools/_shared/components";
-import { HelpCircle, RotateCcw, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { AlertTriangle } from "lucide-react";
+import { CalculatorCardHeader } from "@/app/tools/_shared/components";
 
 export function MOQCalculator() {
     const [currency, setCurrency] = useState("USD");
@@ -106,52 +93,12 @@ export function MOQCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset} // Note: This button doesn't have a specific onClick in original, but added for reset consistency
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <HelpCircle className="w-4 h-4" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                Enter your supplier&apos;s Minimum Order Quantity and costs.
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter your supplier pricing, shipping, and sales data.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter your supplier pricing, shipping, and sales data."
+                            onReset={handleReset}
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
                                 label={`Unit Price (${symbol})`}
@@ -199,10 +146,7 @@ export function MOQCalculator() {
                         titleLabel="Landed Cost"
                         labelClassName="bg-blue-500/10 text-blue-400"
                         mainValue={formatCurrency(totalInvestment)}
-                        valueColor="text-white"
-                        mainMetricLabel="Effective Cost Per Unit"
-                        mainMetricValue={formatCurrency(effectiveCostPerUnit)}
-                        mainMetricColor="text-blue-400"
+                        valueColor="text-blue-500"
                         secondaryMetrics={[
                             {
                                 label: "Inventory Coverage",
@@ -216,6 +160,37 @@ export function MOQCalculator() {
                             },
                         ]}
                     />
+
+                    {/* Breakdown Card */}
+                    {totalInvestment > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Investment Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Product Cost</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency((unitPrice === "" ? 0 : unitPrice) * (moq === "" ? 0 : moq))}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Shipping</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(shippingCost === "" ? 0 : shippingCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Misc Costs</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(miscCost === "" ? 0 : miscCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4 bg-slate-50/50">
+                                    <span className="text-sm font-bold text-slate-900">Effective Cost Per Unit</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(effectiveCostPerUnit)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter MOQ details to calculate investment.</p>
+                        </div>
+                    )}
 
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">

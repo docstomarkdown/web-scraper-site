@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { HelpCircle, Package, RotateCcw, AlertTriangle, DollarSign, Calculator } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { CurrencyCombobox } from "@/app/tools/_shared/components";
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
+import { Card, CardContent } from "@/components/ui/card";
+import { Package, RotateCcw, AlertTriangle, DollarSign, Calculator } from "lucide-react";
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -66,10 +63,7 @@ export function ReturnRateCalculator() {
         }).format(val);
     };
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) element.scrollIntoView({ behavior: 'smooth' });
-    };
+
 
     // Determine Status
     let status = "Calculate";
@@ -89,39 +83,12 @@ export function ReturnRateCalculator() {
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
-                                        <HelpCircle className="w-4 h-4" />
-                                    </button>
-                                </div>
-                                <p className="text-sm text-slate-500 font-medium tracking-tight">Enter sales, returns, and item values.</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                <TooltipProvider delayDuration={100}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={handleReset}
-                                                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-8 w-8 rounded-full"
-                                            >
-                                                <RotateCcw className="w-4 h-4" />
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                            Reset Calculator
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter sales, returns, and item values."
+                            onReset={handleReset}
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
                         <CardContent className="space-y-6 pt-6">
                             {/* Group 1: Volume Data */}
                             <div className="space-y-4">
@@ -213,6 +180,29 @@ export function ReturnRateCalculator() {
                             { label: "Processing Costs", value: formatCurrency(totalReturnCost), color: "text-orange-400" }
                         ]}
                     />
+
+                    {/* Breakdown Card */}
+                    {sold > 0 && (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-red-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Financial Impact Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Lost Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(lostRevenue)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Processing Costs</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalReturnCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-red-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Total Profit Leakage</span>
+                                    <span className="text-base font-bold text-red-600">{formatCurrency(profitLeakage)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Insight Card */}
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">

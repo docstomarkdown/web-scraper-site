@@ -1,14 +1,11 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RotateCcw, DollarSign, Users, TrendingUp, Target } from "lucide-react"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { DollarSign, Users, TrendingUp, Target } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function CACCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -30,14 +27,6 @@ export function CACCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
-    const scrollToGuide = () => {
-        const element = document.getElementById('cac-guide');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     // Calculation
     const expensesVal = val(expenses)
     const customersVal = val(customers)
@@ -65,44 +54,19 @@ export function CACCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter total costs and customers acquired.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter total costs and customers acquired."
+
+                            onReset={handleReset}
+
+                            guideId="cac-guide"
+
+                            currency={currency}
+
+                            onCurrencyChange={setCurrency}
+
+                        />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
                                 label={`Total Sales & Marketing Costs (${symbol})`}
@@ -160,11 +124,11 @@ export function CACCalculator() {
 
                     {/* Breakdown Card */}
                     {isValid ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Cost Breakdown</p>
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
+                            <div className="divide-y divide-slate-100">
                                 <div className="flex justify-between items-center px-4 py-3">
                                     <span className="text-sm text-slate-500">Total Expenses</span>
                                     <span className="text-sm font-medium text-slate-700">{formatCurrency(expensesVal)}</span>
@@ -173,9 +137,9 @@ export function CACCalculator() {
                                     <span className="text-sm text-slate-500">New Customers</span>
                                     <span className="text-sm font-medium text-slate-700">{customersVal.toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
-                                    <span className="text-sm font-semibold text-slate-900">Cost Per Customer</span>
-                                    <span className="text-sm font-bold text-blue-600">{formatCurrency(cac)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Cost Per Customer</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(cac)}</span>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +161,6 @@ export function CACCalculator() {
                     </div>
                 </div>
             </div>
-        </FadeIn>
+        </FadeIn >
     )
 }

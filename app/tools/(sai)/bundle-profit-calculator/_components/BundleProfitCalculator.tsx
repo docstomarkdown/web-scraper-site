@@ -5,11 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { HelpCircle, RotateCcw, DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 type Product = {
     id: string
@@ -131,36 +129,17 @@ export function BundleProfitCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter costs and selling prices for each item in the bundle.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter costs and selling prices for each item in the bundle."
+
+                            onReset={handleReset}
+
+                            currency={currency}
+
+                            onCurrencyChange={setCurrency}
+
+                        />
                         <CardContent className="space-y-6 pt-6">
 
                             {products.map((product, index) => (
@@ -286,10 +265,12 @@ export function BundleProfitCalculator() {
                         titleLabel={margin >= 20 ? "Highly Profitable" : (margin > 0 ? "Profitable" : "Unprofitable")}
                         labelClassName={margin >= 20 ? "text-emerald-400" : (margin > 0 ? "text-yellow-400" : "text-red-400")}
                         mainValue={
-                            <Counter value={margin} formatter={(v) => `${v.toFixed(2)}%`} />
+                            bundlePrice > 0 ?
+                                <Counter value={margin} formatter={(v) => `${v.toFixed(2)}%`} /> :
+                                "—"
                         }
-                        valueColor={margin >= 20 ? "text-emerald-400" : (margin > 0 ? "text-yellow-400" : "text-red-400")}
-                        secondaryMetrics={[
+                        valueColor={margin >= 20 ? "text-emerald-400" : (margin > 0 ? "text-yellow-400" : (margin < 0 ? "text-red-400" : "text-white"))}
+                        secondaryMetrics={bundlePrice > 0 ? [
                             {
                                 label: "Net Profit",
                                 value: <Counter value={profit} formatter={formatCurrency} key={currency} />,
@@ -300,7 +281,7 @@ export function BundleProfitCalculator() {
                                 value: <Counter value={discountPercent} formatter={(v) => `${v.toFixed(1)}%`} />,
                                 color: "text-blue-400"
                             }
-                        ]}
+                        ] : []}
                     />
 
                     {/* Indicator Badge */}
@@ -317,29 +298,29 @@ export function BundleProfitCalculator() {
 
                     {/* Breakdown Card */}
                     {margin !== 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profit Breakdown</p>
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Profit Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Total Product Cost</span>
-                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(totalCost)}</span>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Product Cost</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalCost)}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Bundle Selling Price</span>
-                                    <span className="text-sm font-medium text-slate-700">{formatCurrency(bundlePrice)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Bundle Selling Price</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(bundlePrice)}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50">
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
                                     <span className="text-sm font-semibold text-slate-900">Net Profit per Bundle</span>
                                     <span className={cn("text-sm font-bold", profit >= 0 ? "text-emerald-600" : "text-red-600")}>
                                         {formatCurrency(profit)}
                                     </span>
                                 </div>
                                 {discountAmount > 0 && (
-                                    <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                    <div className="flex justify-between items-center px-5 py-4 bg-blue-50/50">
                                         <span className="text-sm text-slate-500">Customer Savings</span>
-                                        <span className="text-sm font-medium text-blue-600">
+                                        <span className="text-base font-bold text-blue-600">
                                             {formatCurrency(discountAmount)} ({discountPercent.toFixed(1)}%)
                                         </span>
                                     </div>
@@ -358,17 +339,4 @@ export function BundleProfitCalculator() {
     )
 }
 
-function ResultCard({ title, value, icon: Icon, subtext }: { title: string, value: React.ReactNode, icon: any, subtext?: string }) {
-    return (
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-slate-300 transition-colors group">
-            <div>
-                <p className="text-xs font-semibold text-slate-500 mb-1">{title}</p>
-                <div className="text-xl font-bold text-slate-900">{value}</div>
-                {subtext && <p className="text-[10px] text-slate-400 mt-1 font-medium">{subtext}</p>}
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-xl text-slate-400 group-hover:text-blue-500 group-hover:bg-blue-50 transition-colors">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
-    )
-}
+

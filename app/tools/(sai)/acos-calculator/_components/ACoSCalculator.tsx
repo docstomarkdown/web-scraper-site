@@ -1,11 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalculatorInput } from "@/app/tools/_shared/components"
-import { ResultFeedbackCard, Counter, FadeIn } from "@/app/tools/_shared/components"
-import { HelpCircle, RotateCcw, TrendingUp, DollarSign, Percent, AlertCircle, CheckCircle2 } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card, CardContent } from "@/components/ui/card"
+import { TrendingUp, DollarSign, Percent, BarChart3, AlertCircle, CheckCircle2 } from "lucide-react"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
@@ -53,12 +51,7 @@ export function ACoSCalculator() {
         setProfitMargin("")
     }
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     // Determine Status
     // Determine Status & standard badge classes
@@ -85,34 +78,10 @@ export function ACoSCalculator() {
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
-                                        <HelpCircle className="w-4 h-4" />
-                                    </button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <button
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors flex items-center justify-center p-0"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <p className="text-sm text-slate-500 font-medium tracking-tight">Enter your ad spend, revenue, and product margin.</p>
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter your ad spend, revenue, and product margin."
+                            onReset={handleReset}
+                        />
                         <CardContent className="space-y-6 pt-6">
                             {/* Group 1: Campaign Data */}
                             <div className="space-y-4">
@@ -229,29 +198,29 @@ export function ACoSCalculator() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500"
                         >
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Campaign Breakdown</p>
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Campaign Breakdown</p>
                             </div>
-                            <div className="divide-y divide-slate-50">
-                                <div className="flex justify-between items-center px-4 py-3">
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
                                     <span className="text-sm text-slate-500">Ad Spend</span>
                                     <span className="text-sm font-medium text-slate-700">${Number(adSpend).toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Ad Revenue</span>
-                                    <span className="text-sm font-medium text-slate-700">${Number(adRevenue).toFixed(2)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Ad Revenue</span>
+                                    <span className="text-sm font-semibold text-slate-800">${Number(adRevenue).toFixed(2)}</span>
                                 </div>
-                                <div className={cn("flex justify-between items-center px-4 py-3", netProfit >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
-                                    <span className={cn("text-sm font-semibold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                <div className={cn("flex justify-between items-center px-5 py-3.5", netProfit >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
                                         Net Profit
                                     </span>
-                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                    <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
                                         {netProfit >= 0 ? "+" : ""}${netProfit.toFixed(2)}
                                     </span>
                                 </div>
-                                <div className="px-4 py-3">
+                                <div className="px-5 py-4">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="text-xs font-medium text-slate-500">Efficiency Scale</span>
                                         <span className="text-xs font-bold text-slate-700">{acos.toFixed(1)}% ACoS</span>

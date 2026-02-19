@@ -1,12 +1,10 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RotateCcw, Package, DollarSign, Ship, Percent } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Card, CardContent } from "@/components/ui/card"
+import { Package, DollarSign, Ship, Percent } from "lucide-react"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
 
 export function LandedCostCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -37,12 +35,7 @@ export function LandedCostCalculator() {
     }
     const symbol = currencySymbols[currency] || "$"
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('landed-cost-guide');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     // Calculations
     const unitCost = val(productCost)
@@ -73,44 +66,13 @@ export function LandedCostCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter product and import cost details.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter product and import cost details."
+                            onReset={handleReset}
+                            guideId="landed-cost-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
                                 label={`Product Cost Per Unit (${symbol})`}
@@ -179,49 +141,52 @@ export function LandedCostCalculator() {
                                 ? "text-emerald-400"
                                 : (costUplift > 100 ? "text-red-400" : "text-amber-400")
                         }
-                        secondaryMetrics={[
-                            {
-                                label: "Total Landed Cost",
-                                value: <Counter value={totalLandedCost} formatter={formatCurrency} key={`tlc-${currency}`} />,
-                                color: "text-blue-400"
-                            },
-                            {
-                                label: "Duty Amount",
-                                value: <Counter value={dutyAmount} formatter={formatCurrency} key={`duty-${currency}`} />,
-                                color: "text-amber-400"
-                            }
-                        ]}
                     />
 
-                    {/* Breakdown Cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <ResultCard
-                            title="Total Product Cost"
-                            value={<Counter value={totalProductCost} formatter={formatCurrency} key={`tpc-${currency}`} />}
-                            icon={DollarSign}
-                        />
-                        <ResultCard
-                            title="Cost Uplift"
-                            value={<Counter value={costUplift} formatter={(v) => `${v.toFixed(1)}%`} />}
-                            icon={Percent}
-                        />
-                    </div>
+                    {/* Cost Breakdown Card */}
+                    {unitCount > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Landed Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Total Product Cost</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(totalProductCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Freight & Insurance</span>
+                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(shipping + insurance)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Import Taxes & Fees</span>
+                                    <span className="text-sm font-semibold text-amber-600">{formatCurrency(dutyAmount + fees)}</span>
+                                </div>
+
+                                {costUplift > 0 && (
+                                    <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
+                                        <span className="text-sm font-medium text-slate-500">Cost Uplift</span>
+                                        <span className="text-sm font-bold text-slate-700">+{costUplift.toFixed(1)}%</span>
+                                    </div>
+                                )}
+
+                                <div className="flex justify-between items-center px-5 py-4 bg-blue-50/30">
+                                    <span className="text-sm font-bold text-slate-900">Total Landed Investment</span>
+                                    <span className={cn("text-base font-bold text-blue-700")}>
+                                        {formatCurrency(totalLandedCost)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter order details to calculate landed cost.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>
     )
 }
 
-function ResultCard({ title, value, icon: Icon }: { title: string, value: React.ReactNode, icon: React.ComponentType<{ className?: string }> }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-            <div>
-                <p className="text-xs font-medium text-slate-500 mb-1">{title}</p>
-                <p className="text-lg font-bold text-slate-800">{value}</p>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
-    )
-}
+

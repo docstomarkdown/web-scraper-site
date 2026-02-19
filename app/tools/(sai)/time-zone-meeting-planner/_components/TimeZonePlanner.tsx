@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useMemo, useEffect, type ChangeEvent, type ElementType } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components";
-import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe } from "lucide-react";
+import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe } from "lucide-react"
 import { cn } from "@/lib/utils";
+import { CalculatorCardHeader, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 // --- Constants ---
 
@@ -257,17 +257,13 @@ export function TimeZonePlanner() {
             <div className="space-y-8">
                 {/* Main Controls Card */}
                 <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                    <CardHeader className="bg-slate-900 text-white p-6 border-b-0 space-y-1">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 border border-blue-500/30">
-                                <Clock className="h-5 w-5" />
-                            </div>
-                            <div>
-                                <CardTitle className="text-xl font-bold">Time Zone Planner</CardTitle>
-                                <CardDescription className="text-slate-400 text-sm">Coordinate across borders with ease.</CardDescription>
-                            </div>
-                        </div>
-                    </CardHeader>
+                    <CalculatorCardHeader
+
+                        description="Enter your details."
+
+                        onReset={() => { setBaseTime("09:00"); setCompareTimezones(["Europe/London", "Asia/Tokyo", "America/New_York"]); }}
+
+                    />
                     <CardContent className="p-8">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
