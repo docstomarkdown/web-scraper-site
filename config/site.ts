@@ -203,7 +203,6 @@ export const toolsGroups = [
         title: "Amazon Storage Fee Calculator",
         href: "/tools/amazon-storage-fee-calculator",
       },
-      /*
             {
               title: "Dimension Converter",
               href: "/tools/dimension-converter",
@@ -256,7 +255,6 @@ export const toolsGroups = [
               title: "Cost of Goods Sold (COGS) Calculator",
               href: "/tools/cost-of-goods-sold-calculator",
             },
-      */
     ],
   },
 ];
