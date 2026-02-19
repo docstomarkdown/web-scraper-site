@@ -203,58 +203,83 @@ export const toolsGroups = [
         title: "Amazon Storage Fee Calculator",
         href: "/tools/amazon-storage-fee-calculator",
       },
-            {
-              title: "Dimension Converter",
-              href: "/tools/dimension-converter",
-            },
-      
-      
-            {
-              title: "Universal Product Code (UPC) / European Article Number (EAN) Validator",
-              href: "/tools/upc-ean-validator",
-            },
-            {
-              title: "Global Trade Item Number (GTIN) Converter",
-              href: "/tools/gtin-converter",
-            },
-    
-            {
-              title: "Product Weight Converter",
-              href: "/tools/weight-converter",
-            },
-            {
-              title: "Cubic Feet Calculator",
-              href: "/tools/cubic-feet-calculator",
-            },
-      
-            {
-              title: "Pallet Configuration Calculator",
-              href: "/tools/pallet-configuration-calculator",
-            },
-            {
-              title: "Container Load Calculator",
-              href: "/tools/container-load-calculator",
-            },
-            {
-              title: "Lead Time Calculator",
-              href: "/tools/lead-time-calculator",
-            },
-            {
-              title: "Reorder Point Calculator",
-              href: "/tools/reorder-point-calculator",
-            },
-            {
-              title: "Economic Order Quantity (EOQ) Calculator",
-              href: "/tools/economic-order-quantity-calculator",
-            },
-            {
-              title: "Days of Inventory Calculator",
-              href: "/tools/days-of-inventory-calculator",
-            },
-            {
-              title: "Cost of Goods Sold (COGS) Calculator",
-              href: "/tools/cost-of-goods-sold-calculator",
-            },
+
+      {
+        title: "Dimension Converter",
+        href: "/tools/dimension-converter",
+      },
+
+
+      {
+        title: "Universal Product Code (UPC) / European Article Number (EAN) Validator",
+        href: "/tools/upc-ean-validator",
+      },
+      {
+        title: "Global Trade Item Number (GTIN) Converter",
+        href: "/tools/gtin-converter",
+      },
+
+      {
+        title: "Product Weight Converter",
+        href: "/tools/weight-converter",
+      },
+      {
+        title: "Cubic Feet Calculator",
+        href: "/tools/cubic-feet-calculator",
+      },
+
+      {
+        title: "Pallet Configuration Calculator",
+        href: "/tools/pallet-configuration-calculator",
+      },
+      {
+        title: "Container Load Calculator",
+        href: "/tools/container-load-calculator",
+      },
+      {
+        title: "Lead Time Calculator",
+        href: "/tools/lead-time-calculator",
+      },
+      {
+        title: "Reorder Point Calculator",
+        href: "/tools/reorder-point-calculator",
+      },
+      {
+        title: "Economic Order Quantity (EOQ) Calculator",
+        href: "/tools/economic-order-quantity-calculator",
+      },
+      {
+        title: "Days of Inventory Calculator",
+        href: "/tools/days-of-inventory-calculator",
+      },
+      {
+        title: "Inventory Turnover Calculator",
+        href: "/tools/inventory-turnover-calculator",
+      },
+      {
+        title: "Cost of Goods Sold (COGS) Calculator",
+        href: "/tools/cost-of-goods-sold-calculator",
+      },
+      {
+        title: "Gross Margin Calculator",
+        href: "/tools/gross-margin-calculator",
+      },
+      {
+        title: "Net Profit Calculator",
+        href: "/tools/net-profit-calculator",
+      },
+      {
+        title: "Influencer Marketing ROI Calculator",
+        href: "/tools/influencer-marketing-roi-calculator",
+      },
+      {
+        title: "Affiliate Commission Calculator",
+        href: "/tools/affiliate-commission-calculator",
+      },
+      {
+        title: "Email Marketing ROI Calculator",
+        href: "/tools/email-marketing-roi-calculator",
+      },
     ],
   },
 ];

@@ -155,6 +155,9 @@ const toolDescriptions: Record<string, string> = {
     "Days of Inventory Calculator": "Forecast how many days your current stock will last based on your sales velocity to prevent stockouts and optimize turnover.",
     "Inventory Turnover Calculator": "Calculate your inventory turnover ratio to assess operational efficiency, identify slow-moving stock, and optimize your supply chain.",
     "Cost of Goods Sold (COGS) Calculator": "Calculate your true product cost including manufacturing, shipping, customs, packaging, and fulfillment costs.",
+    "Gross Margin Calculator": "Powerful tool to streamline your workflow.",
+    "Net Profit Calculator": "Calculate your net profit after expenses, ads, overhead, and taxes. Get a clear view of your business bottom line.",
+    "Affiliate Commission Calculator": "Calculate affiliate payouts, net revenue, and profit margins to optimize your partner program commission structure.",
 };
 
 // Helper to determine category and icon
