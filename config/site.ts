@@ -260,6 +260,10 @@ export const toolsGroups = [
         title: "Gross Margin Calculator",
         href: "/tools/gross-margin-calculator",
       },
+      {
+        title: "Net Profit Calculator",
+        href: "/tools/net-profit-calculator",
+      },
     ],
   },
 ];
