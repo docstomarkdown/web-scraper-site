@@ -1,13 +1,11 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RotateCcw, DollarSign, Percent, ShoppingCart, Tag, BarChart } from "lucide-react"
-import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, currencies, FadeIn } from "@/app/tools/_shared/components"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { DollarSign, Percent, ShoppingCart, Tag, BarChart } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
 
 export function CouponROICalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -97,36 +95,17 @@ export function CouponROICalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
-                        <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                                <CardTitle className="text-xl font-bold text-blue-600">
-                                    Inputs
-                                </CardTitle>
-                                <TooltipProvider delayDuration={100}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={handleReset}
-                                                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                            >
-                                                <RotateCcw className="w-3.5 h-3.5" />
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                            Reset Calculator
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                            <CardDescription>Enter your coupon efficiency metrics.</CardDescription>
-                        </div>
-                        <div className="w-[140px]">
-                            <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                        </div>
-                    </CardHeader>
+                    <CalculatorCardHeader
+
+                        description="Enter your coupon efficiency metrics."
+
+                        onReset={handleReset}
+
+                        currency={currency}
+
+                        onCurrencyChange={setCurrency}
+
+                    />
 
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Campaign Costs */}

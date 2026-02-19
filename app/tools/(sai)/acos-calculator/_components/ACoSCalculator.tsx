@@ -1,11 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalculatorInput } from "@/app/tools/_shared/components"
-import { ResultFeedbackCard, Counter, FadeIn } from "@/app/tools/_shared/components"
-import { HelpCircle, RotateCcw, TrendingUp, DollarSign, Percent, AlertCircle, CheckCircle2 } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card, CardContent } from "@/components/ui/card"
+import { TrendingUp, DollarSign, Percent, BarChart3, AlertCircle, CheckCircle2 } from "lucide-react"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
@@ -53,12 +51,7 @@ export function ACoSCalculator() {
         setProfitMargin("")
     }
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     // Determine Status
     // Determine Status & standard badge classes
@@ -85,34 +78,10 @@ export function ACoSCalculator() {
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <button onClick={scrollToGuide} className="text-slate-400 hover:text-blue-600 transition-colors">
-                                        <HelpCircle className="w-4 h-4" />
-                                    </button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <button
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors flex items-center justify-center p-0"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <p className="text-sm text-slate-500 font-medium tracking-tight">Enter your ad spend, revenue, and product margin.</p>
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter your ad spend, revenue, and product margin."
+                            onReset={handleReset}
+                        />
                         <CardContent className="space-y-6 pt-6">
                             {/* Group 1: Campaign Data */}
                             <div className="space-y-4">

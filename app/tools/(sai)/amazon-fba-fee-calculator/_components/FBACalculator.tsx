@@ -1,15 +1,14 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { HelpCircle, Info, Check, ChevronsUpDown, RotateCcw } from "lucide-react"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Info, Check, ChevronsUpDown } from "lucide-react"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 
 import { ChevronDown, ChevronUp } from "lucide-react"
@@ -238,12 +237,7 @@ export function FBACalculator() {
     }
     const getSymbol = () => currencySymbols[currency] || "$"
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     const handleReset = () => {
         setSalesPrice("")
@@ -332,46 +326,12 @@ export function FBACalculator() {
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <CardTitle className="text-xl font-bold text-blue-600">
-                                            Inputs
-                                        </CardTitle>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={scrollToGuide}
-                                            className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        >
-                                            <HelpCircle className="w-4 h-4" />
-                                        </Button>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleReset}
-                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full transition-colors"
-                                                    >
-                                                        <RotateCcw className="w-3.5 h-3.5" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    Reset Calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <CardDescription>
-                                        Estimate FBA and referral fees.
-                                    </CardDescription>
-                                </div>
-                                <div className="w-[140px]">
-                                    <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                </div>
-                            </CardHeader>
+                            <CalculatorCardHeader
+                                description="Estimate FBA and referral fees."
+                                onReset={handleReset}
+                                currency={currency}
+                                onCurrencyChange={setCurrency}
+                            />
                             <CardContent className="space-y-4 pt-6">
                                 <div className="space-y-4">
                                     <CalculatorInput
@@ -610,7 +570,7 @@ export function FBACalculator() {
                             mainValue={
                                 <Counter value={totalFees} formatter={formatCurrency} key={currency} />
                             }
-                            valueColor="text-slate-800"
+                            // valueColor removed to use default white text on dark background
                             secondaryMetrics={[]}
                         />
 

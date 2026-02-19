@@ -1,11 +1,9 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RotateCcw, DollarSign, ShoppingBag, TrendingUp, Search } from "lucide-react"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Card, CardContent } from "@/components/ui/card"
+import { TrendingUp, DollarSign, ShoppingCart, Search } from "lucide-react"
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
@@ -30,12 +28,7 @@ export function AOVCalculator() {
         setOrders("")
     }
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('aov-guide');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     // Calculation
     const revenueVal = val(revenue)
@@ -64,47 +57,16 @@ export function AOVCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-blue-600 hover:bg-transparent h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter your sales data.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+                            description="Enter your sales data."
+                            onReset={handleReset}
+                            guideId="aov-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
-                                label={`Total Revenue (${symbol})`}
+                                label={`Total Revenue(${symbol})`}
                                 value={revenue}
                                 onChange={setRevenue}
                                 placeholder="50000.00"

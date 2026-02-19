@@ -1,13 +1,11 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, RefreshCw, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { RefreshCw, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function PriceElasticityCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -15,14 +13,6 @@ export function PriceElasticityCalculator() {
     const [finalPrice, setFinalPrice] = useState<number | "">("")
     const [initialQuantity, setInitialQuantity] = useState<number | "">("")
     const [finalQuantity, setFinalQuantity] = useState<number | "">("")
-
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     const handleReset = () => {
         setInitialPrice("")
         setFinalPrice("")
@@ -86,36 +76,13 @@ export function PriceElasticityCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Market Data
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={handleReset}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        title="Reset Fields"
-                                    >
-                                        <RefreshCw className="w-4 h-4" />
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                </div>
-                                <CardDescription>Enter price and quantity changes.</CardDescription>
-                            </div>
-                            <div className="w-[120px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter price and quantity changes."
+
+                            onReset={handleReset}
+
+                        />
                         <CardContent className="space-y-5 pt-6">
                             {/* Group 1: Starting Position */}
                             <div className="space-y-3">

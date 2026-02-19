@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { HelpCircle, RotateCcw, ShoppingBag, Package, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { HelpCircle, ShoppingBag, Package, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components";
 import { cn } from "@/lib/utils";
 
 export function MercariFeeCalculator() {
@@ -54,12 +52,7 @@ export function MercariFeeCalculator() {
         }).format(v);
     };
 
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+
 
     // Quick Presets
     const applyPreset = (type: 'clothing' | 'electronics' | 'cards') => {
@@ -144,57 +137,18 @@ export function MercariFeeCalculator() {
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-3">
-                                        <CardTitle className="text-xl font-bold text-blue-600">
-                                            Inputs
-                                        </CardTitle>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={scrollToGuide}
-                                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                    >
-                                                        <HelpCircle className="w-4 h-4" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    How to use this calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleReset}
-                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                    >
-                                                        <RotateCcw className="w-3.5 h-3.5" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    Reset Calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <div className="flex items-center gap-2 pt-2">
-                                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Presets:</span>
-                                        <div className="flex gap-2">
-                                            <button onClick={() => applyPreset('clothing')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Clothing</button>
-                                            <button onClick={() => applyPreset('electronics')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Electronics</button>
-                                            <button onClick={() => applyPreset('cards')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Cards</button>
-                                        </div>
-                                    </div>
+                            <CalculatorCardHeader
+                                description="Enter your listing details."
+                                onReset={handleReset}
+                            />
+                            <div className="px-6 pb-3 flex items-center gap-2">
+                                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Presets:</span>
+                                <div className="flex gap-2">
+                                    <button onClick={() => applyPreset('clothing')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Clothing</button>
+                                    <button onClick={() => applyPreset('electronics')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Electronics</button>
+                                    <button onClick={() => applyPreset('cards')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Cards</button>
                                 </div>
-                            </CardHeader>
+                            </div>
                             <CardContent className="space-y-6 pt-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <CalculatorInput

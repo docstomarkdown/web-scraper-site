@@ -1,13 +1,11 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, currencies, FadeIn } from "@/app/tools/_shared/components"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Store, CreditCard, Megaphone, DollarSign, Tag, RotateCcw, HelpCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Store, CreditCard, Megaphone, DollarSign, Tag } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
 
 export function EtsyFeeCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -111,31 +109,17 @@ export function EtsyFeeCalculator() {
 
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
-                        <div className="flex items-center gap-2">
-                            <CardTitle className="text-xl font-bold text-blue-600">Inputs</CardTitle>
-                            <TooltipProvider delayDuration={100}>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={handleReset}
-                                            className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        >
-                                            <RotateCcw className="w-3.5 h-3.5" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                        Reset Calculator
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </div>
-                        <div className="w-[140px]">
-                            <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                        </div>
-                    </CardHeader>
+                    <CalculatorCardHeader
+
+                        description="Enter your details."
+
+                        onReset={handleReset}
+
+                        currency={currency}
+
+                        onCurrencyChange={setCurrency}
+
+                    />
 
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Revenue */}

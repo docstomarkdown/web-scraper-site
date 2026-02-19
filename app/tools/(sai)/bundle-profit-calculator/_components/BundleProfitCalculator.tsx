@@ -5,11 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { HelpCircle, RotateCcw, DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CurrencyCombobox } from "@/app/tools/_shared/components"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 type Product = {
     id: string
@@ -131,36 +129,17 @@ export function BundleProfitCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Inputs
-                                    </CardTitle>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleReset}
-                                                    className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                >
-                                                    <RotateCcw className="w-3.5 h-3.5" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                Reset Calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter costs and selling prices for each item in the bundle.</CardDescription>
-                            </div>
-                            <div className="w-[140px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter costs and selling prices for each item in the bundle."
+
+                            onReset={handleReset}
+
+                            currency={currency}
+
+                            onCurrencyChange={setCurrency}
+
+                        />
                         <CardContent className="space-y-6 pt-6">
 
                             {products.map((product, index) => (

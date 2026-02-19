@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, currencies, FadeIn } from "@/app/tools/_shared/components"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ShoppingBag, Truck, CreditCard, Tag, DollarSign, Package } from "lucide-react"
+import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
 
 export function PODProfitCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -71,20 +71,17 @@ export function PODProfitCalculator() {
 
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CardHeader className="pb-6 border-b border-slate-100/50 flex flex-row items-center justify-between space-y-0">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2.5 bg-indigo-50 rounded-xl">
-                                <ShoppingBag className="w-6 h-6 text-indigo-600" />
-                            </div>
-                            <div>
-                                <CardTitle className="text-lg font-semibold text-slate-900">Product & Pricing</CardTitle>
-                                <CardDescription>Enter your sales and production details.</CardDescription>
-                            </div>
-                        </div>
-                        <div className="w-[140px]">
-                            <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                        </div>
-                    </CardHeader>
+                    <CalculatorCardHeader
+
+                        description="Enter your sales and production details."
+
+                        onReset={() => { setSellingPrice(""); setShippingCharge(""); setBaseCost(""); setShippingCost(""); setPlatformFeePercent(""); setTransactionFeePercent(""); setTransactionFeeFixed(""); }}
+
+                        currency={currency}
+
+                        onCurrencyChange={setCurrency}
+
+                    />
 
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Revenue Section */}

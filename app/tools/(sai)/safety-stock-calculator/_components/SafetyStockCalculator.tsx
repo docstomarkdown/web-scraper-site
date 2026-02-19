@@ -1,24 +1,15 @@
 "use client"
 
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { HelpCircle, AlertTriangle, ShieldCheck } from "lucide-react"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { AlertTriangle, ShieldCheck } from "lucide-react"
+import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function SafetyStockCalculator() {
     const [maxDailySales, setMaxDailySales] = useState<number | "">("")
     const [maxLeadTime, setMaxLeadTime] = useState<number | "">("")
     const [avgDailySales, setAvgDailySales] = useState<number | "">("")
     const [avgLeadTime, setAvgLeadTime] = useState<number | "">("")
-
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     // --- Calculations ---
@@ -39,24 +30,13 @@ export function SafetyStockCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Sales & Lead Time Variability
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                </div>
-                                <CardDescription>Enter your best and average case scenarios.</CardDescription>
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Enter your best and average case scenarios."
+
+                            onReset={() => { setMaxDailySales(""); setMaxLeadTime(""); setAvgDailySales(""); setAvgLeadTime(""); }}
+
+                        />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
                                 label="Max Daily Sales"

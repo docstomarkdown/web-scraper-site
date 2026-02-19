@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
     Select,
     SelectContent,
@@ -15,9 +14,9 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HelpCircle, RotateCcw, Info, Box, Scale, Ruler } from "lucide-react";
+import { Info, Box, Scale, Ruler } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components";
+import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function DimWeightCalculator() {
     const [length, setLength] = useState<number | "">("");
@@ -91,65 +90,13 @@ export function DimWeightCalculator() {
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-3">
-                                        <CardTitle className="text-xl font-bold text-blue-600">
-                                            Inputs
-                                        </CardTitle>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={scrollToGuide}
-                                            className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                        >
-                                            <HelpCircle className="w-4 h-4" />
-                                        </Button>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleReset}
-                                                        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                                    >
-                                                        <RotateCcw className="w-3.5 h-3.5" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    Reset Calculator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <CardDescription>Enter dimensions and weight.</CardDescription>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="flex flex-col items-center gap-1">
-                                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Size</span>
-                                        <Tabs value={dimUnit} onValueChange={(v: string) => {
-                                            const newDimUnit = v as "in" | "cm";
-                                            setDimUnit(newDimUnit);
-                                            setDivisor(newDimUnit === "in" ? "139" : "5000");
-                                        }}>
-                                            <TabsList className="grid w-full grid-cols-2 h-8">
-                                                <TabsTrigger value="in" className="text-xs px-3 h-7">Inches</TabsTrigger>
-                                                <TabsTrigger value="cm" className="text-xs px-3 h-7">Cm</TabsTrigger>
-                                            </TabsList>
-                                        </Tabs>
-                                    </div>
-                                    <div className="flex flex-col items-center gap-1">
-                                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Weight</span>
-                                        <Tabs value={weightUnit} onValueChange={(v: string) => setWeightUnit(v as "lb" | "kg")}>
-                                            <TabsList className="grid w-full grid-cols-2 h-8">
-                                                <TabsTrigger value="lb" className="text-xs px-3 h-7">Lbs</TabsTrigger>
-                                                <TabsTrigger value="kg" className="text-xs px-3 h-7">Kg</TabsTrigger>
-                                            </TabsList>
-                                        </Tabs>
-                                    </div>
-                                </div>
-                            </CardHeader>
+                            <CalculatorCardHeader
+
+                                description="Enter dimensions and weight."
+
+                                onReset={handleReset}
+
+                            />
                             <CardContent className="space-y-6 pt-6">
                                 <CalculatorInput
                                     label={`Length (${dimUnit})`}

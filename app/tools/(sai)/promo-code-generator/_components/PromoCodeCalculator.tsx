@@ -1,16 +1,15 @@
 "use client"
 
 import React, { useState, useCallback } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, RefreshCw, Copy, Check, Ticket, Settings2, ChevronDown, ChevronUp, Type, Binary, Hash } from "lucide-react"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { RefreshCw, Copy, Check, Ticket, Settings2, ChevronDown, ChevronUp, Type, Binary, Hash } from "lucide-react"
 import { Label } from "@/components/ui/label"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { toast } from "sonner"
 import { Info } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
 export function PromoCodeCalculator() {
     // --- State ---
@@ -28,13 +27,6 @@ export function PromoCodeCalculator() {
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
     // --- Helpers ---
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     const generateRandomString = (len: number) => {
         let chars = ""
         if (useUppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -82,24 +74,13 @@ export function PromoCodeCalculator() {
                 {/* Inputs Section */}
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
-                            <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-xl font-bold text-slate-800">
-                                        Configuration
-                                    </CardTitle>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-6 w-6 rounded-full"
-                                    >
-                                        <HelpCircle className="w-4 h-4" />
-                                    </Button>
-                                </div>
-                                <CardDescription>Set your prefix, suffix and randomization rules.</CardDescription>
-                            </div>
-                        </CardHeader>
+                        <CalculatorCardHeader
+
+                            description="Set your prefix, suffix and randomization rules."
+
+                            onReset={() => { setPrefix(""); setSuffix(""); setLength(8); setCount(5); setGeneratedCodes([]); }}
+
+                        />
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-5">
                                 <CalculatorInput
