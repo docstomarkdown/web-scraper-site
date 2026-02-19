@@ -253,6 +253,10 @@ export const toolsGroups = [
         href: "/tools/days-of-inventory-calculator",
       },
       {
+        title: "Inventory Turnover Calculator",
+        href: "/tools/inventory-turnover-calculator",
+      },
+      {
         title: "Cost of Goods Sold (COGS) Calculator",
         href: "/tools/cost-of-goods-sold-calculator",
       },
