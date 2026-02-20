@@ -98,7 +98,7 @@ export function ResultFeedbackCard({
                 variant === "compact" && "p-4 pb-2"
             )}>
                 <div className={cn(
-                    "text-sm font-medium uppercase tracking-wider flex justify-between items-center",
+                    "text-sm font-medium tracking-wider flex justify-between items-center gap-2",
                     variant === "compact" ? "text-slate-500" : "text-slate-300/80"
                 )}>
                     <div className="flex items-center gap-2">
