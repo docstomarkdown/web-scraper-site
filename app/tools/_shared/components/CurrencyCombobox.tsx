@@ -229,19 +229,26 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                     )}
                 >
                     {selectedCurrency ? (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-grow overflow-hidden pr-1 text-left">
                             <Image
                                 src={`https://flagcdn.com/w20/${selectedCurrency.flag.toLowerCase()}.png`}
-                                width={20}
-                                height={15}
+                                width={18}
+                                height={14}
                                 alt={selectedCurrency.name}
+                                className="object-contain flex-shrink-0"
+                            />
+                            <span className="whitespace-nowrap flex-shrink-0">{selectedCurrency.code} ({selectedCurrency.symbol})</span>
                                 className="object-contain rounded-[1px]"
                             />
                             <span className="text-slate-700 tracking-tight">{selectedCurrency.code}</span>
                         </div>
                     ) : (
-                        'Select currency'
+                        <span className="flex-grow text-left">Select currency</span>
                     )}
+                    <ChevronDown className={cn(
+                        "h-3 w-3 shrink-0 opacity-40 transition-transform duration-200",
+                        open && "rotate-180"
+                    )} />
                     <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-slate-400" />
                 </Button>
             </PopoverTrigger>

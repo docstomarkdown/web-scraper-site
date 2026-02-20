@@ -193,7 +193,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                                 placeholder={unit === "in" ? (dim === "length" ? "Ex: 12.00" : dim === "width" ? "Ex: 8.00" : "Ex: 6.00") : (dim === "length" ? "Ex: 30.00" : dim === "width" ? "Ex: 20.00" : "Ex: 15.00")}
                                                 value={dimensions[dim]}
                                                 onChange={handleInputChange}
-                                                className="h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-400 placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                className="h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                             />
                                         </div>
                                     </div>

@@ -124,7 +124,6 @@ Estimated Delivery Date: ${deliveryDate}
                         <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-6">
                                 <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                     Timeline Details (Days)
                                 </label>
 
@@ -234,13 +233,6 @@ function LeadTimeInput({
     return (
         <div className="space-y-2 group/input">
             <div className="relative group">
-                <label className={cn(
-                    "absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 italic font-medium transition-all pointer-events-none z-10",
-                    value !== "" && "opacity-0 -translate-x-2"
-                )}>
-                    {label}
-                </label>
-
                 <TooltipProvider delayDuration={100}>
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -248,8 +240,8 @@ function LeadTimeInput({
                                 type="text"
                                 value={value}
                                 onChange={(e) => onChange(e.target.value)}
-                                className="h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-xl pl-5 pr-12 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none"
-                                placeholder=""
+                                className="h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-xl pl-5 pr-12 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
+                                placeholder={`Ex: ${label}`}
                             />
                         </TooltipTrigger>
                         <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800 p-2 rounded-lg">
@@ -272,8 +264,8 @@ function LeadTimeInput({
                         <ChevronDown className="h-3.5 w-3.5" />
                     </button>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

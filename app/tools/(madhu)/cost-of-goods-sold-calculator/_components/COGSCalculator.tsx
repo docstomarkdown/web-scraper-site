@@ -2,17 +2,17 @@
 
 import React, { useState, useMemo } from "react"
 import {
-    DollarSign,
-    Package,
-    Truck,
-    Scale,
-    Box,
-    CreditCard,
-    RotateCcw,
-    Tag,
-    TrendingUp,
-    Percent
+    Info,
+    RefreshCw,
+    Copy,
+    Check
 } from "lucide-react"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger
+} from "@/components/ui/tooltip"
 import {
     InputCardHeader,
     ActionButtons
@@ -126,7 +126,7 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
 
     return (
         <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-1">
 
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7">
@@ -137,95 +137,86 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-5 md:p-6 space-y-4 flex-1 flex flex-col">
 
                             {/* Section 1: Acquisition Costs */}
-                            <div className="space-y-6">
-                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                                    <Package className="w-4 h-4" />
+                            <div className="space-y-3">
+                                <h3 className="text-[15px] font-bold text-slate-400">
                                     Acquisition (Landed) Cost
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
                                     <COGSInput
                                         label="Product Cost"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
-                                        icon={DollarSign}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Cost per unit from supplier"
                                     />
                                     <COGSInput
                                         label="Inbound Shipping"
                                         value={values.inboundShipping}
                                         onChange={(v) => handleInputChange('inboundShipping', v)}
-                                        icon={Truck}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Freight cost to get goods to you (per unit)"
                                     />
                                     <COGSInput
                                         label="Duties & Taxes"
                                         value={values.duties}
                                         onChange={(v) => handleInputChange('duties', v)}
-                                        icon={Scale}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Customs duties, tariffs, and taxes"
                                     />
                                     <COGSInput
                                         label="Pkg. & Prep"
                                         value={values.packaging}
                                         onChange={(v) => handleInputChange('packaging', v)}
-                                        icon={Box}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Cost of packaging, polybags, labels, etc."
                                     />
                                 </div>
                             </div>
 
                             {/* Section 2: Fulfillment & Sales */}
-                            <div className="space-y-6 pt-6 border-t border-slate-100">
-                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                                    <CreditCard className="w-4 h-4" />
+                            <div className="space-y-3 pt-4 border-t border-slate-100">
+                                <h3 className="text-[15px] font-bold text-slate-400">
                                     Fulfillment & Sales
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
                                     <COGSInput
                                         label="Fulfillment Fee"
                                         value={values.fulfillmentFee}
                                         onChange={(v) => handleInputChange('fulfillmentFee', v)}
-                                        icon={Box} // Or a hand/box icon
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Cost to pick and pack (e.g., FBA Fee)"
                                     />
                                     <COGSInput
                                         label="Outbound Ship"
                                         value={values.outboundShipping}
                                         onChange={(v) => handleInputChange('outboundShipping', v)}
-                                        icon={Truck}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Shipping cost to customer (if not included in price)"
                                     />
                                     <COGSInput
                                         label="Est. Return Rate"
                                         value={values.returnRate}
                                         onChange={(v) => handleInputChange('returnRate', v)}
-                                        icon={RotateCcw}
-                                        placeholder="0"
-                                        prefix="%"
+                                        placeholder="Ex: 0"
+                                        suffix="%"
+                                        prefix=""
                                         tooltip="Percentage of sales expected to be returned"
                                     />
                                     <COGSInput
                                         label="Target Sell Price"
                                         value={values.sellPrice}
                                         onChange={(v) => handleInputChange('sellPrice', v)}
-                                        icon={Tag}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         highlightColor="blue"
                                         tooltip="The price you intend to sell the product for"
                                     />
                                 </div>
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-slate-50">
+                            <div className="pt-1.5 border-t border-slate-50">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -245,10 +236,10 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                         mainValue={
                             <div className="flex flex-col">
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-4xl font-bold tracking-tight text-slate-900">$</span>
+                                    <span className="text-4xl font-bold tracking-tight text-white">$</span>
                                     <Counter value={results.trueCogs} formatter={(v) => v.toFixed(2)} />
                                 </div>
-                                <p className="text-slate-400 text-sm font-bold mt-2">Landed + Fulfillment + Returns</p>
+                                <p className="text-slate-400 text-xs font-bold mt-2">Landed + Fulfillment + Returns</p>
                             </div>
                         }
                     >
@@ -258,18 +249,21 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Landed Cost</p>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-lg font-medium text-slate-400">$</span>
+                                        <span className="text-lg font-medium text-indigo-400/60">$</span>
                                         <span className="text-xl font-bold text-indigo-400">{results.landedCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Return Cost</p>
                                     <div className="flex items-baseline gap-1">
+                                        <span className="text-lg font-medium text-emerald-400/60">$</span>
+                                        <span className="text-xl font-bold text-emerald-400">{results.returnRiskCost.toFixed(2)}</span>
                                         <span className="text-lg font-medium text-slate-400">$</span>
                                         <span className="text-xl font-bold text-blue-400">{results.returnRiskCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
+
 
                             {/* Profit Card */}
                             <div className="bg-blue-500/5 rounded-xl p-5 border border-blue-500/10 mt-4">
@@ -308,44 +302,68 @@ function COGSInput({
     label,
     value,
     onChange,
-    icon: Icon,
     tooltip,
     placeholder,
     prefix = "$",
+    suffix = "",
     highlightColor = "blue"
 }: {
     label: string,
     value: string,
     onChange: (v: string) => void,
-    icon: any,
     tooltip: string,
-    placeholder: string
-    prefix?: string
+    placeholder: string,
+    prefix?: string,
+    suffix?: string,
     highlightColor?: "blue" | "indigo"
 }) {
     return (
         <div className="space-y-1.5 group/input relative z-10">
-            <div className="flex items-center gap-2 mb-1 pl-1">
-                <Icon className="w-3.5 h-3.5 text-slate-400" />
+            <div className="flex items-center gap-1.5 mb-1 pl-1">
                 <label className="text-sm font-bold text-slate-600">
                     {label}
                 </label>
+                {tooltip && (
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                    <Info className="h-3.5 w-3.5" />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                {tooltip}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
             </div>
 
             <div className="relative group bg-white">
-                <div className="absolute left-3 top-0 bottom-0 flex items-center pointer-events-none">
-                    <span className="text-slate-400 font-medium text-sm">{prefix}</span>
-                </div>
+                {prefix && (
+                    <div className="absolute left-3 top-0 bottom-0 flex items-center pointer-events-none">
+                        <span className="text-slate-400 font-medium text-sm">{prefix}</span>
+                    </div>
+                )}
                 <input
                     type="text"
                     value={value ?? ""}
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "h-11 w-full text-base border border-slate-200 bg-slate-50/50 rounded-lg px-4 pl-7 transition-all font-bold text-slate-900 focus:outline-none focus:ring-2 focus:bg-white focus:border-blue-500/50 placeholder:text-slate-300 placeholder:font-medium",
-                        "focus:ring-blue-500/10"
+                        "h-11 w-full text-base border border-slate-200 bg-slate-50/50 rounded-lg px-4 transition-all font-bold text-slate-900 focus:outline-none focus:ring-2 focus:bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
+                        prefix ? "pl-7" : "pl-4",
+                        suffix ? "pr-8" : "pr-4",
+                        highlightColor === "indigo"
+                            ? "focus:border-indigo-500/50 focus:ring-indigo-500/10"
+                            : "focus:border-blue-500/50 focus:ring-blue-500/10"
                     )}
                     placeholder={placeholder}
                 />
+                {suffix && (
+                    <div className="absolute right-3 top-0 bottom-0 flex items-center pointer-events-none">
+                        <span className="text-slate-400 font-medium text-sm">{suffix}</span>
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -95,7 +95,7 @@ export function ContainerLoadCalculatorInput({
                         value={value}
                         onChange={handleInputChange}
                         className={cn(
-                            "h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-400 placeholder:italic w-[140px] text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all pr-10",
+                            "h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-[140px] text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all pr-10",
                             type === 'text' && "text-sm"
                         )}
                         min={type === "number" ? min : undefined}

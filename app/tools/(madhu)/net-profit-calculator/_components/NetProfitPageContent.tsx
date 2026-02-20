@@ -94,9 +94,10 @@ export function NetProfitPageContent() {
         <MadhuToolTemplate
             title="Net Profit Calculator"
             toolComponent={<NetProfitCalculator />}
-            howToUseTitle="How to Calculate Your True Net Profit"
+            howToUseTitle="How to Use This Tool"
             howToUseSteps={steps}
             howToUseGoal={goal}
+            hiddenTruthTitle="The Hidden Truth About This Process"
             hiddenTruthInsights={insights}
             faqs={faqs}
         />

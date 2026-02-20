@@ -204,7 +204,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                         Dimensions ({unit})
                                     </label>
                                     <button
@@ -225,8 +224,8 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                 type="number"
                                                 value={inputs[field.id]}
                                                 onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                                className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:italic placeholder:text-slate-400 text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                                placeholder={field.label}
+                                                className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                placeholder={`Ex: ${field.label}`}
                                             />
                                             <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl">
                                                 <button
@@ -252,7 +251,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                         Quantity
                                     </label>
                                     <button
@@ -267,7 +265,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         type="number"
                                         value={inputs.quantity}
                                         onChange={(e) => handleInputChange('quantity', e.target.value)}
-                                        className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:italic placeholder:text-slate-400 px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                        className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                         placeholder="Ex: 1"
                                     />
                                 </div>

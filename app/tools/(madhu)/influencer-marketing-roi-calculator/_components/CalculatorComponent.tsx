@@ -10,6 +10,7 @@ import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "../../../
 import { cn } from "../../../../../lib/utils"
 import { Input } from "../../../../../components/ui/input"
 import { Label } from "../../../../../components/ui/label"
+import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"
 
 function InfluencerInput({
     label,
@@ -50,7 +51,7 @@ function InfluencerInput({
                 value={value}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value === "" ? "" : parseFloat(e.target.value))}
                 placeholder={placeholder}
-                className="h-10 w-[160px] text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                className="h-10 w-[160px] text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
             />
         </div>
     )
@@ -58,6 +59,7 @@ function InfluencerInput({
 
 export function InfluencerROICalculator() {
     const [currency, setCurrency] = useState("USD")
+
 
     // Investment States
     const [influencerFee, setInfluencerFee] = useState<number | "">("")
@@ -76,6 +78,7 @@ export function InfluencerROICalculator() {
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     const handleReset = () => {
+
         setInfluencerFee("")
         setProductCogs("")
         setShippingCost("")
@@ -156,23 +159,24 @@ export function InfluencerROICalculator() {
 
     return (
         <FadeIn className="w-full max-w-7xl mx-auto py-4 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {/* Left Column: Inputs */}
                 <div className="lg:col-span-8 space-y-4">
-                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
+                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full">
                         <div className="flex flex-row items-center justify-between border-b border-slate-100 pr-6">
                             <InputCardHeader
                                 title="Campaign Budget"
                                 subtitle="Log every dollar invested into the campaign."
                                 scrollId="how-to-use"
                             />
-                            <div className="w-[100px]">
+                            <div className="w-[145px]">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                             </div>
                         </div>
 
-                        <CardContent className="p-4 md:p-6 space-y-5">
+                        <CardContent className="p-4 space-y-3">
+
+
                             {/* Primary Investment */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2">
@@ -298,7 +302,7 @@ export function InfluencerROICalculator() {
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-32">
+                <div className="lg:col-span-4 lg:sticky lg:top-32 h-full flex flex-col gap-3">
 
                     {/* Primary Result: ROI */}
                     <ResultFeedbackCard
@@ -322,7 +326,7 @@ export function InfluencerROICalculator() {
                             </div>
                         }
                     >
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             <div className="grid grid-cols-2 gap-2">
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
                                     <div className="flex items-center gap-1.5 mb-1">
@@ -409,54 +413,100 @@ export function InfluencerROICalculator() {
                     </ResultFeedbackCard>
 
                     {/* Investment Breakdown */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4">
+                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 flex-1 flex flex-col">
                         <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                             <PieChart className="w-4 h-4 text-blue-500" />
                             Budget Allocation
                         </h4>
 
-                        <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-hidden flex mb-4 border border-slate-200/50">
-                            {feePct > 0 && <div style={{ width: `${feePct}%` }} className="h-full bg-blue-500" />}
-                            {boostPct > 0 && <div style={{ width: `${boostPct}%` }} className="h-full bg-emerald-500" />}
-                            {productPct > 0 && <div style={{ width: `${productPct}%` }} className="h-full bg-amber-500" />}
-                            {managementPct > 0 && <div style={{ width: `${managementPct}%` }} className="h-full bg-purple-500" />}
+                        <div className="flex items-center gap-4 flex-1 min-h-0">
+                            {/* Left: Chart */}
+                            <div className="h-[140px] w-[140px] relative shrink-0">
+                                {totalInvestment > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <RechartsPie>
+                                            <Pie
+                                                data={[
+                                                    { name: "Influencer Fee", value: fee, color: "#3b82f6" },
+                                                    { name: "Ad Boosting", value: boost, color: "#10b981" },
+                                                    { name: "Product & Logistics", value: pCogs + ship, color: "#f59e0b" },
+                                                    { name: "Management & Rights", value: mgmt + rights, color: "#a855f7" },
+                                                ].filter(i => i.value > 0)}
+                                                cx="50%"
+                                                cy="50%"
+                                                innerRadius={45}
+                                                outerRadius={60}
+                                                paddingAngle={5}
+                                                dataKey="value"
+                                                stroke="none"
+                                            >
+                                                {/* @ts-ignore */}
+                                                {[
+                                                    { name: "Influencer Fee", value: fee, color: "#3b82f6" },
+                                                    { name: "Ad Boosting", value: boost, color: "#10b981" },
+                                                    { name: "Product & Logistics", value: pCogs + ship, color: "#f59e0b" },
+                                                    { name: "Management & Rights", value: mgmt + rights, color: "#a855f7" },
+                                                ].filter(i => i.value > 0).map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <RechartsTooltip
+                                                formatter={(value: number) => formatCurrency(value)}
+                                                contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
+                                                itemStyle={{ color: '#fff' }}
+                                            />
+                                        </RechartsPie>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center text-slate-300 text-sm border-2 border-dashed border-slate-100 rounded-full">
+                                        No data
+                                    </div>
+                                )}
+                                {/* Center Label */}
+                                {totalInvestment > 0 && (
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                        <span className="text-[10px] font-medium text-slate-400">Total</span>
+                                        <span className="text-xs font-bold text-slate-900">{formatCurrency(totalInvestment)}</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right: Legend */}
+                            <div className="flex-1 grid grid-cols-1 gap-2">
+                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
+                                    <div className="flex items-center gap-1.5 truncate">
+                                        <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                                        <span className="text-slate-600 font-medium truncate">Influencer Fees</span>
+                                    </div>
+                                    <span className="font-bold text-slate-900 ml-1">{feePct.toFixed(0)}%</span>
+                                </div>
+                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
+                                    <div className="flex items-center gap-1.5 truncate">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                                        <span className="text-slate-600 font-medium truncate">Ad Boosting</span>
+                                    </div>
+                                    <span className="font-bold text-slate-900 ml-1">{boostPct.toFixed(0)}%</span>
+                                </div>
+                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
+                                    <div className="flex items-center gap-1.5 truncate">
+                                        <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                                        <span className="text-slate-600 font-medium truncate">Product & Logistics</span>
+                                    </div>
+                                    <span className="font-bold text-slate-900 ml-1">{productPct.toFixed(0)}%</span>
+                                </div>
+                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
+                                    <div className="flex items-center gap-1.5 truncate">
+                                        <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
+                                        <span className="text-slate-600 font-medium truncate">Management & Rights</span>
+                                    </div>
+                                    <span className="font-bold text-slate-900 ml-1">{managementPct.toFixed(0)}%</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                                    <span className="text-slate-600 font-medium">Influencer Fees</span>
-                                </div>
-                                <span className="font-bold text-slate-900">{feePct.toFixed(1)}%</span>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                                    <span className="text-slate-600 font-medium">Ad Boosting</span>
-                                </div>
-                                <span className="font-bold text-slate-900">{boostPct.toFixed(1)}%</span>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                                    <span className="text-slate-600 font-medium">Product & Logistics</span>
-                                </div>
-                                <span className="font-bold text-slate-900">{productPct.toFixed(1)}%</span>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-purple-500" />
-                                    <span className="text-slate-600 font-medium">Management & Rights</span>
-                                </div>
-                                <span className="font-bold text-slate-900">{managementPct.toFixed(1)}%</span>
-                            </div>
-                        </div>
 
-                        <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Investment</span>
-                            <span className="text-lg font-black text-slate-900">{formatCurrency(totalInvestment)}</span>
-                        </div>
+
+
                     </Card>
 
                 </div>

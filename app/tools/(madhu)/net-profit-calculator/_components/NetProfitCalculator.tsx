@@ -8,6 +8,7 @@ import { HelpCircle, Info, TrendingUp, DollarSign, Percent, BarChart3, PieChart,
 import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
 import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
+import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"
 
 export function NetProfitCalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -83,12 +84,12 @@ export function NetProfitCalculator() {
     const profitPercent = getPercent(Math.max(netProfit, 0)) // Only show positive profit on bar
 
     return (
-        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-6">
-                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
+                <div className="lg:col-span-7">
+                    <Card className="border border-slate-200 shadow-lg shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full flex flex-col">
                         <div className="flex flex-row items-center justify-between border-b border-slate-100 pr-6">
                             <InputCardHeader
                                 title="Financial Data"
@@ -96,18 +97,17 @@ export function NetProfitCalculator() {
                                 icon={Calculator}
                                 scrollId="how-to-use"
                             />
-                            <div className="w-[100px]">
+                            <div className="w-[140px] flex-shrink-0">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                             </div>
                         </div>
 
-                        <CardContent className="p-4 md:p-6 space-y-6">
-
+                        <CardContent className="p-4 flex-1 flex flex-col justify-between">
                             <div className="space-y-6">
                                 {/* Income Section */}
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-base font-bold text-slate-400 tracking-tight">
+                                        <h3 className="text-sm font-bold text-slate-400 tracking-tight">
                                             Expected income
                                         </h3>
                                     </div>
@@ -123,9 +123,9 @@ export function NetProfitCalculator() {
                                 </div>
 
                                 {/* Expenses Section */}
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-base font-bold text-slate-400 tracking-tight">
+                                        <h3 className="text-sm font-bold text-slate-400 tracking-tight">
                                             Business expenses
                                         </h3>
                                     </div>
@@ -162,20 +162,21 @@ export function NetProfitCalculator() {
                                         />
                                     </div>
                                 </div>
-                            </div>
 
-                            <ActionButtons
-                                onReset={handleReset}
-                                onCopy={handleCopy}
-                                isCopied={isCopied}
-                                className="pt-4"
-                            />
+                                <div className="pt-4 mt-auto border-t border-slate-50">
+                                    <ActionButtons
+                                        onReset={handleReset}
+                                        onCopy={handleCopy}
+                                        isCopied={isCopied}
+                                    />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-32">
 
                     {/* Primary Result Card */}
                     <ResultFeedbackCard
@@ -198,10 +199,10 @@ export function NetProfitCalculator() {
                             </div>
                         }
                     >
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             {/* Secondary Metrics Grid */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="bg-white/5 rounded-xl p-2 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">Net Margin</p>
                                         <TooltipProvider delayDuration={100}>
@@ -210,7 +211,7 @@ export function NetProfitCalculator() {
                                                     <Info className="h-3.5 w-3.5 text-slate-400 hover:text-white cursor-pointer" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Percentage of revenue that is actual profit after ALL expenses and taxes.
+                                                    The percentage of revenue that remains as profit after all costs are deducted.
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -219,7 +220,7 @@ export function NetProfitCalculator() {
                                         <Counter value={netMargin} formatter={(v) => `${v.toFixed(2)}%`} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">ROI</p>
                                         <TooltipProvider delayDuration={100}>
@@ -237,15 +238,39 @@ export function NetProfitCalculator() {
                                         <Counter value={roi} formatter={(v) => `${v.toFixed(2)}%`} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
-                                    <p className="text-xs font-bold text-slate-400 mb-1">Tax Amount</p>
-                                    <p className="text-xl font-bold text-amber-400">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
+                                    <div className="flex items-center gap-1.5 mb-1">
+                                        <p className="text-[10px] font-bold text-slate-400 whitespace-nowrap">Tax Amount</p>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Info className="h-3.5 w-3.5 text-slate-400 hover:text-white cursor-pointer" />
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                    Estimated income tax based on your operating profit and tax rate.
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
+                                    <p className="text-lg font-bold text-amber-400">
                                         <Counter value={taxAmount} formatter={formatCurrency} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
-                                    <p className="text-xs font-bold text-slate-400 mb-1">Total Expenses</p>
-                                    <p className="text-xl font-bold text-slate-200">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
+                                    <div className="flex items-center gap-1.5 mb-1">
+                                        <p className="text-[10px] font-bold text-slate-400 whitespace-nowrap">Total Expenses</p>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Info className="h-3.5 w-3.5 text-slate-400 hover:text-white cursor-pointer" />
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                    Sum of all business costs: COGS, Ad Spend, Overhead, and Tax.
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
+                                    <p className="text-lg font-bold text-slate-200">
                                         <Counter value={totalExpenses + taxAmount} formatter={formatCurrency} />
                                     </p>
                                 </div>
@@ -253,59 +278,130 @@ export function NetProfitCalculator() {
                         </div>
                     </ResultFeedbackCard>
 
-                    {/* Breakdown Chart */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-5">
-                        <h4 className="text-sm font-bold text-slate-700 mb-6 flex items-center gap-2">
-                            <PieChart className="w-4 h-4 text-blue-500" />
-                            Revenue Distribution
-                        </h4>
-
-                        {/* Stacked Bar */}
-                        <div className="relative w-full h-10 bg-slate-100 rounded-lg overflow-hidden flex mb-4">
-                            {cogsPercent > 0 && (
-                                <div style={{ width: `${cogsPercent}%` }} className="h-full bg-slate-400" title="COGS" />
-                            )}
-                            {adsPercent > 0 && (
-                                <div style={{ width: `${adsPercent}%` }} className="h-full bg-blue-400" title="Ads" />
-                            )}
-                            {overheadPercent > 0 && (
-                                <div style={{ width: `${overheadPercent}%` }} className="h-full bg-purple-400" title="Overhead" />
-                            )}
-                            {taxPercent > 0 && (
-                                <div style={{ width: `${taxPercent}%` }} className="h-full bg-amber-400" title="Tax" />
-                            )}
-                            {profitPercent > 0 && (
-                                <div style={{ width: `${profitPercent}%` }} className="h-full bg-emerald-500" title="Profit" />
+                    {/* Budget Allocation style Revenue Breakdown */}
+                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-3">
+                        <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                                <PieChart className="w-3.5 h-3.5 text-blue-500" />
+                                Revenue Breakdown
+                            </h4>
+                            {netProfit < 0 && (
+                                <span className="text-[10px] font-black bg-red-50 text-red-600 px-2 py-0.5 rounded-full animate-pulse">
+                                    NEGATIVE MARGIN
+                                </span>
                             )}
                         </div>
 
-                        {/* Legend */}
-                        <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs font-medium text-slate-600">
-                            <div className="flex items-center gap-2">
-                                <div className="w-2.5 h-2.5 rounded-full bg-slate-400" />
-                                <span>COGS ({cogsPercent.toFixed(1)}%)</span>
+                        <div className="flex items-center gap-4 min-h-[140px]">
+                            {/* Left: Donut Chart */}
+                            <div className="h-[120px] w-[120px] relative shrink-0">
+                                {r > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <RechartsPie>
+                                            <Pie
+                                                data={[
+                                                    { name: "COGS", value: c, color: "#94a3b8" },
+                                                    { name: "Ads", value: ads, color: "#60a5fa" },
+                                                    { name: "Overhead", value: over, color: "#c084fc" },
+                                                    { name: "Tax", value: taxAmount, color: "#fbbf24" },
+                                                    { name: "Net Profit", value: Math.max(0, netProfit), color: "#10b981" },
+                                                ].filter(i => i.value > 0)}
+                                                cx="50%"
+                                                cy="50%"
+                                                innerRadius={45}
+                                                outerRadius={60}
+                                                paddingAngle={4}
+                                                dataKey="value"
+                                                stroke="none"
+                                            >
+                                                {[
+                                                    { name: "COGS", value: c, color: "#94a3b8" },
+                                                    { name: "Ads", value: ads, color: "#60a5fa" },
+                                                    { name: "Overhead", value: over, color: "#c084fc" },
+                                                    { name: "Tax", value: taxAmount, color: "#fbbf24" },
+                                                    { name: "Net Profit", value: Math.max(0, netProfit), color: "#10b981" },
+                                                ].filter(i => i.value > 0).map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <RechartsTooltip
+                                                formatter={(value: number) => formatCurrency(value)}
+                                                contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px', padding: '8px' }}
+                                                itemStyle={{ color: '#fff' }}
+                                            />
+                                        </RechartsPie>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center text-slate-300 text-[10px] font-bold border-2 border-dashed border-slate-100 rounded-full text-center p-4">
+                                        Enter Revenue to see breakdown
+                                    </div>
+                                )}
+                                {/* Center Label */}
+                                {r > 0 && (
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Total</span>
+                                        <span className={`text-[11px] font-black ${netProfit >= 0 ? 'text-slate-900' : 'text-red-600'}`}>
+                                            {formatCurrency(r)}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
-                            <div className="flex items-center gap-2">
-                                <div className="w-2.5 h-2.5 rounded-full bg-blue-400" />
-                                <span>Ads ({adsPercent.toFixed(1)}%)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div className="w-2.5 h-2.5 rounded-full bg-purple-400" />
-                                <span>Overhead ({overheadPercent.toFixed(1)}%)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                                <span>Tax ({taxPercent.toFixed(1)}%)</span>
-                            </div>
-                            <div className="flex items-center gap-2 col-span-2 mt-1 pt-1 border-t border-slate-100">
-                                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                                <span className="font-bold text-emerald-600">Net Profit ({profitPercent.toFixed(1)}%)</span>
+
+                            {/* Right: Legend */}
+                            <div className="flex-1 space-y-1.5 pt-1">
+                                <LegendItem label="COGS" percent={cogsPercent} color="bg-slate-400" />
+                                <LegendItem label="Ads" percent={adsPercent} color="bg-blue-400" />
+                                <LegendItem label="Overhead" percent={overheadPercent} color="bg-purple-400" />
+                                <LegendItem label="Tax" percent={taxPercent} color="bg-amber-400" />
+                                <div className="pt-1 mt-1 border-t border-slate-100">
+                                    <LegendItem
+                                        label="Net Profit"
+                                        percent={profitPercent}
+                                        color="bg-emerald-500"
+                                        isProfit
+                                        isNegative={netProfit < 0}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </Card>
 
                 </div>
             </div>
-        </FadeIn>
+        </FadeIn >
+    )
+}
+
+function LegendItem({
+    label,
+    percent,
+    color,
+    isProfit = false,
+    isNegative = false
+}: {
+    label: string,
+    percent: number,
+    color: string,
+    isProfit?: boolean,
+    isNegative?: boolean
+}) {
+    return (
+        <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5 border border-slate-100/50">
+            <div className="flex items-center gap-1.5 truncate">
+                <div className={cn("w-2 h-2 rounded-full shrink-0", color)} />
+                <span className={cn(
+                    "font-medium truncate",
+                    isProfit ? (isNegative ? "text-red-600" : "text-emerald-700") : "text-slate-600"
+                )}>
+                    {label}
+                </span>
+            </div>
+            <span className={cn(
+                "font-black ml-1",
+                isProfit ? (isNegative ? "text-red-600" : "text-emerald-600") : "text-slate-900"
+            )}>
+                {percent.toFixed(1)}%
+            </span>
+        </div>
     )
 }

@@ -308,10 +308,10 @@ export function Validator() {
                                     </div>
                                     <Input
                                         id="barcode-input"
-                                        placeholder="e.g. 036000291452"
+                                        placeholder="Ex: 036000291452"
                                         value={inputCode}
                                         onChange={handleInputChange}
-                                        className="h-14 text-xl font-mono focus-visible:ring-primary shadow-sm bg-white"
+                                        className="h-14 text-xl font-mono focus-visible:ring-primary shadow-sm bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
                                         autoComplete="off"
                                     />
 

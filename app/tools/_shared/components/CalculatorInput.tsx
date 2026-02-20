@@ -76,11 +76,11 @@ export function CalculatorInput({
                 type={type}
                 value={value}
                 onChange={handleInputChange}
-                className={`h-11 text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-40 md:w-48 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all`}
+                className={`h-11 text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-40 md:w-48 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all`}
                 min={type === "number" ? min : undefined}
                 max={type === "number" ? max : undefined}
                 step={type === "number" ? step : undefined}
-                placeholder={placeholder ? (type === "number" ? `Ex: ${placeholder}` : placeholder) : undefined}
+                placeholder={placeholder ? (type === "number" && !placeholder.startsWith("Ex:") ? `Ex: ${placeholder}` : placeholder) : undefined}
             />
         </div>
     )

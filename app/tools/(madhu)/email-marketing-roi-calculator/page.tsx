@@ -38,6 +38,14 @@ function EmailInput({
     prefix?: string
     suffix?: string
 }) {
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    const hasValue = value !== ""
+
+    // Inject prefix into placeholder if consistent with "Ex: " pattern
+    const displayPlaceholder = prefix && !hasValue
+        ? placeholder.replace("Ex: ", `Ex: ${prefix}`)
+        : placeholder
+
     return (
         <div className="flex items-center justify-between gap-4 w-full group/input">
             <div className="flex items-center gap-2 w-[170px] shrink-0">
@@ -59,24 +67,39 @@ function EmailInput({
                     </TooltipProvider>
                 )}
             </div>
-            <div className="relative w-[160px]">
-                {prefix && (
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium pointer-events-none">{prefix}</span>
+
+            <div
+                className={cn(
+                    "relative w-[160px] h-10 flex items-center justify-end border border-slate-200 bg-white rounded-md shadow-sm transition-all overflow-hidden px-3",
+                    "hover:border-blue-600 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-600/10"
                 )}
-                <Input
+                onClick={() => inputRef.current?.focus()}
+            >
+                {/* Prefix - Only shown when there is a value */}
+                {prefix && hasValue && (
+                    <span className="text-slate-400 text-sm font-medium pointer-events-none transition-all">
+                        {prefix}
+                    </span>
+                )}
+
+                <input
+                    ref={inputRef}
                     type="number"
                     value={value}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         onChange(e.target.value === "" ? "" : parseFloat(e.target.value))
                     }
-                    placeholder={placeholder}
+                    placeholder={displayPlaceholder}
                     className={cn(
-                        "h-10 w-full text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all",
-                        prefix && "pl-7"
+                        "bg-transparent border-none outline-none p-0 h-full font-medium text-base text-slate-900 placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
+                        hasValue ? "text-right w-auto min-w-[1ch]" : "text-right w-full"
                     )}
+                    style={hasValue ? { width: `${Math.max(1, value.toString().length)}ch` } : undefined}
                 />
+
+                {/* Suffix */}
                 {suffix && (
-                    <span className="absolute right-8 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium pointer-events-none">{suffix}</span>
+                    <span className="text-slate-400 text-sm font-medium pointer-events-none ml-1">{suffix}</span>
                 )}
             </div>
         </div>
@@ -85,22 +108,22 @@ function EmailInput({
 
 export default function EmailROICalculator() {
     // Inputs
-    const [listSize, setListSize] = useState<number | "">(10000)
-    const [campaignCost, setCampaignCost] = useState<number | "">(500)
-    const [openRate, setOpenRate] = useState<number | "">(20)
-    const [clickThroughRate, setClickThroughRate] = useState<number | "">(3)
-    const [conversionRate, setConversionRate] = useState<number | "">(5)
-    const [averageOrderValue, setAverageOrderValue] = useState<number | "">(50)
+    const [listSize, setListSize] = useState<number | "">("")
+    const [campaignCost, setCampaignCost] = useState<number | "">("")
+    const [openRate, setOpenRate] = useState<number | "">("")
+    const [clickThroughRate, setClickThroughRate] = useState<number | "">("")
+    const [conversionRate, setConversionRate] = useState<number | "">("")
+    const [averageOrderValue, setAverageOrderValue] = useState<number | "">("")
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     const handleReset = () => {
-        setListSize(10000)
-        setCampaignCost(500)
-        setOpenRate(20)
-        setClickThroughRate(3)
-        setConversionRate(5)
-        setAverageOrderValue(50)
+        setListSize("")
+        setCampaignCost("")
+        setOpenRate("")
+        setClickThroughRate("")
+        setConversionRate("")
+        setAverageOrderValue("")
     }
 
     // Calculations
@@ -163,23 +186,23 @@ export default function EmailROICalculator() {
     }
 
     const toolComponent = (
-        <FadeIn className="w-full max-w-7xl mx-auto py-4 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <FadeIn className="w-full max-w-7xl mx-auto py-2 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-8 space-y-4">
-                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
+                <div className="lg:col-start-2 lg:col-span-6 flex flex-col h-full space-y-4">
+                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full flex flex-col">
                         <InputCardHeader
                             title="Campaign Data"
                             subtitle="Enter your list size, costs, and performance rates."
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-4 md:p-6 space-y-5">
+                        <CardContent className="p-4 space-y-4 flex-1 flex flex-col">
                             {/* List & Cost */}
-                            <div className="space-y-2">
-                                <MadhuSubHeader title="Campaign setup" />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Campaign setup" withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-2.5">
                                     <EmailInput
                                         label="List Size"
                                         value={listSize}
@@ -199,9 +222,9 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Engagement Rates */}
-                            <div className="space-y-2">
-                                <MadhuSubHeader title="Engagement metrics" />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Engagement metrics" withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-2.5">
                                     <EmailInput
                                         label="Open Rate"
                                         value={openRate}
@@ -222,9 +245,9 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Conversion */}
-                            <div className="space-y-2">
-                                <MadhuSubHeader title="Conversion metrics" />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Conversion metrics" withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-2.5">
                                     <EmailInput
                                         label="Conversion Rate"
                                         value={conversionRate}
@@ -248,14 +271,14 @@ export default function EmailROICalculator() {
                                 onReset={handleReset}
                                 onCopy={handleCopy}
                                 isCopied={isCopied}
-                                className="pt-2"
+                                className="pt-2 mt-auto"
                             />
                         </CardContent>
                     </Card>
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-32">
+                <div className="lg:col-span-4 space-y-3 lg:sticky lg:top-32">
 
                     {/* Primary Result Card */}
                     <ResultFeedbackCard
@@ -285,7 +308,7 @@ export default function EmailROICalculator() {
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-emerald-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -295,17 +318,17 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-emerald-400">
+                                    <p className="text-lg font-bold text-emerald-400">
                                         <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">Net Profit</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-blue-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -315,17 +338,17 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className={cn("text-xl font-bold", netProfit >= 0 ? "text-blue-400" : "text-red-300")}>
+                                    <p className={cn("text-lg font-bold", netProfit >= 0 ? "text-blue-400" : "text-red-300")}>
                                         <Counter value={netProfit} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">CPA</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-purple-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -335,17 +358,17 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-purple-400">
+                                    <p className="text-lg font-bold text-purple-400">
                                         <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">Rev / Sub</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-amber-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -355,7 +378,7 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-amber-400">
+                                    <p className="text-lg font-bold text-amber-400">
                                         <Counter value={revenuePerSubscriber} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
@@ -364,50 +387,83 @@ export default function EmailROICalculator() {
                     </ResultFeedbackCard>
 
                     {/* Funnel Breakdown */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4">
-                        <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <PieChart className="w-4 h-4 text-blue-500" />
+                    {/* Funnel Breakdown - Budget Allocation Style */}
+                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-3">
+                        <h4 className="text-xs font-bold text-slate-700 mb-3 flex items-center gap-2">
+                            <PieChart className="w-3.5 h-3.5 text-blue-500" />
                             Subscriber Funnel
                         </h4>
 
-                        <div className="space-y-3">
-                            <div>
-                                <div className="flex justify-between text-xs mb-1">
-                                    <span className="text-slate-500 font-medium flex items-center gap-1.5">
-                                        <Mail className="w-3 h-3 text-indigo-500" /> Opens
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            {/* Step 1: Opens */}
+                            <div className="bg-blue-50/50 rounded-xl p-3 border border-blue-100 flex flex-col justify-between h-full relative group">
+                                <div className="flex items-center justify-between mb-2">
+                                    <div className="p-1.5 bg-blue-100 text-blue-600 rounded-lg">
+                                        <Mail className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-100/50 px-2 py-0.5 rounded-full">
+                                        {openPct}%
                                     </span>
-                                    <span className="font-bold text-slate-900">{formatNumber(opens)}</span>
                                 </div>
-                                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <div style={{ width: `${openPctBar}%` }} className="h-full bg-indigo-400 rounded-full transition-all duration-500" />
+                                <div>
+                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Opens</p>
+                                    <p className="text-lg font-bold text-slate-900">{formatNumber(opens)}</p>
                                 </div>
+                                {/* Connector Line (Desktop) */}
+                                <div className="hidden sm:block absolute top-1/2 -right-4 w-4 h-[2px] bg-slate-200 z-10" />
                             </div>
-                            <div>
-                                <div className="flex justify-between text-xs mb-1">
-                                    <span className="text-slate-500 font-medium flex items-center gap-1.5">
-                                        <MousePointer className="w-3 h-3 text-purple-500" /> Clicks
+
+                            {/* Step 2: Clicks */}
+                            <div className="bg-purple-50/50 rounded-xl p-3 border border-purple-100 flex flex-col justify-between h-full relative group">
+                                <div className="flex items-center justify-between mb-2">
+                                    <div className="p-1.5 bg-purple-100 text-purple-600 rounded-lg">
+                                        <MousePointer className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-purple-600 bg-purple-100/50 px-2 py-0.5 rounded-full">
+                                        {ctrPct}%
                                     </span>
-                                    <span className="font-bold text-slate-900">{formatNumber(clicks)}</span>
                                 </div>
-                                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <div style={{ width: `${clickPctBar}%` }} className="h-full bg-purple-400 rounded-full transition-all duration-500" />
+                                <div>
+                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Clicks</p>
+                                    <p className="text-lg font-bold text-slate-900">{formatNumber(clicks)}</p>
                                 </div>
+                                {/* Connector Line (Desktop) */}
+                                <div className="hidden sm:block absolute top-1/2 -right-4 w-4 h-[2px] bg-slate-200 z-10" />
                             </div>
-                            <div>
-                                <div className="flex justify-between text-xs mb-1">
-                                    <span className="text-slate-500 font-medium flex items-center gap-1.5">
-                                        <Target className="w-3 h-3 text-emerald-500" /> Conversions
+
+                            {/* Step 3: Conversions */}
+                            <div className="bg-emerald-50/50 rounded-xl p-3 border border-emerald-100 flex flex-col justify-between h-full relative group">
+                                <div className="flex items-center justify-between mb-2">
+                                    <div className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg">
+                                        <Target className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-100/50 px-2 py-0.5 rounded-full">
+                                        {convPct}%
                                     </span>
-                                    <span className="font-bold text-slate-900">{formatNumber(conversions)}</span>
                                 </div>
-                                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <div style={{ width: `${convPctBar}%` }} className="h-full bg-emerald-400 rounded-full transition-all duration-500" />
+                                <div>
+                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Sales</p>
+                                    <p className="text-lg font-bold text-slate-900">{formatNumber(conversions)}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Revenue</span>
+                        <div className="mt-2 flex items-center justify-between">
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Revenue</span>
+                                <TooltipProvider delayDuration={100}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                                <Info className="h-3.5 w-3.5" />
+                                            </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                                            Calculated as: Conversions × Average Order Value (AOV)
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
                             <span className="text-lg font-black text-slate-900">{formatCurrency(revenue)}</span>
                         </div>
                     </Card>
@@ -423,18 +479,18 @@ export default function EmailROICalculator() {
             toolComponent={toolComponent}
             howToUseSteps={[
                 {
-                    title: "Input Campaign Data",
-                    description: "Enter your total <strong>List Size</strong> and the complete <strong>Campaign Cost</strong> (including ESP software, design, and copywriting fees).",
+                    title: "Set Your Baseline",
+                    description: "Enter your total <strong>List Size</strong> and total <strong>Campaign Cost</strong>. This establishes your potential reach and the break-even point you need to surpass.",
                     icon: Users
                 },
                 {
-                    title: "Set Engagement Metrics",
-                    description: "Add your estimated <strong>Open Rate</strong> and <strong>Click-Through Rate (CTR)</strong> based on historical performance or industry benchmarks.",
-                    icon: MousePointer
+                    title: "Model the Funnel",
+                    description: "Input your estimated <strong>Open Rate</strong>, <strong>Click-Through Rate (CTR)</strong>, and <strong>Conversion Rate</strong>. The tool will instantly visualize your 'Subscriber Funnel' to show exactly where you are losing potential customers.",
+                    icon: BarChart3
                 },
                 {
-                    title: "Define Conversion Values",
-                    description: "Input your <strong>Conversion Rate</strong> (click to sale) and the <strong>Average Order Value (AOV)</strong> to calculate total campaign revenue and profit.",
+                    title: "Calculate Financials",
+                    description: "Add your <strong>Average Order Value (AOV)</strong> to unlock key profitability metrics like <strong>ROI</strong>, <strong>ROAS</strong>, and <strong>Net Profit</strong>.",
                     icon: DollarSign
                 }
             ]}
@@ -445,55 +501,55 @@ export default function EmailROICalculator() {
             }}
             hiddenTruthInsights={[
                 {
-                    title: "Open Rates Are Vanity",
-                    description: "While high open rates look good in reports, they don't pay the bills. A campaign with lower opens but higher CTR and conversion rates will almost always generate more profit. Focus on the bottom of the funnel.",
-                    icon: Mail,
-                    stat: "Volume",
-                    statLabel: "Isn't Value",
+                    title: "The 'Vanity Metric' Trap",
+                    description: "High open rates feel good, but they don't pay the bills. A campaign with 15% opens and 5% clicks is often far more profitable than 30% opens and 1% clicks. Always optimize for the action closest to the sale.",
+                    icon: Target,
+                    stat: "Profit",
+                    statLabel: "Over Popularity",
                     iconBg: "bg-blue-100",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
                     tooltip: "Don't optimize for opens at the expense of clearer, sales-focused subject lines."
                 },
                 {
-                    title: "The Power of Segmentation",
-                    description: "Blanket emails to your full list rarely perform as well as targeted segments. Sending only to engaged users often increases total ROI by improving deliverability and conversions — even if list size decreases.",
-                    icon: Target,
-                    stat: "760%",
-                    statLabel: "Revenue Uplift",
-                    iconBg: "bg-purple-100",
-                    iconColor: "text-purple-600",
-                    statColor: "text-purple-600",
-                    tooltip: "Segmented campaigns drive significantly higher revenue than non-segmented campaigns."
-                },
-                {
-                    title: "Lifetime Value Matters More",
-                    description: "This calculator measures immediate campaign ROI. But email acquires customers who may buy again. Real long-term ROI is often 3–4x higher than a single campaign's return when you factor in repeat purchases.",
-                    icon: TrendingUp,
-                    stat: "3–4x",
-                    statLabel: "LTV Multiplier",
+                    title: "The $1 Subscriber Rule",
+                    description: "A healthy, engaged email list should generate roughly $1 per subscriber per month. If your <strong>Revenue per Subscriber</strong> is significantly lower (e.g., $0.10), your list may be 'cold' or your offers aren't resonating.",
+                    icon: DollarSign,
+                    stat: "$1.00",
+                    statLabel: "Target Rev/Sub",
                     iconBg: "bg-emerald-100",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600",
-                    tooltip: "Consider the Lifetime Value (LTV) of a customer, not just the revenue from their first order."
+                    tooltip: "Revenue per Subscriber is a key health metric for your email program."
+                },
+                {
+                    title: "CPA vs. LTV Context",
+                    description: "Don't panic if your Cost Per Acquisition (CPA) seems high on a single email. If your Customer Lifetime Value (LTV) is high, you can afford to pay more to acquire a customer because they will buy again later without ad spend.",
+                    icon: TrendingUp,
+                    stat: "LTV",
+                    statLabel: "Wins Long Term",
+                    iconBg: "bg-purple-100",
+                    iconColor: "text-purple-600",
+                    statColor: "text-purple-600",
+                    tooltip: "Consider the long-term value of a customer, not just the first sale."
                 }
             ]}
             faqs={[
                 {
-                    question: "What is a good ROI for email marketing?",
-                    answer: "According to the Data & Marketing Association (DMA), the average ROI for email marketing is around $36 for every $1 spent (3,600%). However, this varies by industry. A 5:1 (500%) ROI is generally considered a strong starting benchmark for most e-commerce brands."
+                    question: "How is 'Total Revenue' calculated?",
+                    answer: "It is the simple product of your estimated <strong>Conversions</strong> (Sales) multiplied by your **Average Order Value (AOV)**. This represents the gross sales generated by the campaign before any costs are subtracted."
                 },
                 {
-                    question: "Is CTR measured from 'Sent' or 'Opened'?",
-                    answer: "Most Email Service Providers (ESPs) report CTR as a percentage of total emails delivered or sent. This calculator follows that standard. 'Click-to-Open Rate' (CTOR) is a different metric — the percentage of openers who clicked — used to measure content effectiveness separately."
+                    question: "Why does my 'Subscriber Funnel' show 0 conversions?",
+                    answer: "If your list size or conversion rate is very small (e.g., 100 subscribers with a 1% conversion rate), the mathematical result might be less than 1 conversion (0.01). The tool rounds to the nearest whole number, showing 0 sales. Try increasing your list size to see projected results."
                 },
                 {
-                    question: "How do I calculate my total Campaign Cost?",
-                    answer: "Include all associated costs: your monthly ESP bill (Klaviyo, Mailchimp, etc.) prorated for the campaign, freelance design or copywriting fees, and the estimated value of your own internal time if you created it yourself."
+                    question: "What is a 'good' Click-Through Rate (CTR)?",
+                    answer: "Across most industries, a <strong>2–5% CTR</strong> is considered average. Anything above 5% indicates highly relevant content or a very engaged list. If you are below 1%, consider testing new subject lines or clearer calls-to-action (CTAs)."
                 },
                 {
-                    question: "Why is my Cost Per Acquisition (CPA) so high?",
-                    answer: "A high CPA typically signals a mismatch between the email offer and the landing page experience, or a stale list with too many inactive subscribers. Ensure your email promise matches the destination, and remove cold subscribers to stop paying to send to dead leads."
+                    question: "Should I include my own time in 'Campaign Cost'?",
+                    answer: "Yes! For an accurate ROI, you should assign a dollar value to the hours you spent writing, designing, and setting up the campaign. This helps you understand if your time is being invested profitably."
                 }
             ]}
         />

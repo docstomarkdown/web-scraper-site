@@ -2,16 +2,9 @@
 
 import React, { useState, useMemo } from "react"
 import {
-    TrendingUp,
-    ChevronUp,
-    ChevronDown,
     Info,
     AlertCircle,
-    CheckCircle2,
-    Warehouse,
-    Target,
-    History,
-    Boxes
+    CheckCircle2
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -141,8 +134,7 @@ Results:
                                     label="Cost of Goods Sold (COGS)"
                                     value={values.cogs}
                                     onChange={(v) => handleInputChange('cogs', v)}
-                                    icon={Target}
-                                    placeholder="e.g. 150000"
+                                    placeholder="Ex: 150000"
                                     tooltip="The total cost of products sold during the period (found on your Income Statement)."
                                 />
 
@@ -150,10 +142,8 @@ Results:
                                     label="Analysis Period (Days)"
                                     value={values.periodInDays}
                                     onChange={(v) => handleInputChange('periodInDays', v)}
-                                    icon={History}
-                                    placeholder="365"
+                                    placeholder="Ex: 365"
                                     tooltip="Length of time analyzed. Standard: 365 (Year), 90 (Quarter), 30 (Month)."
-                                    step={1}
                                     headerRight={
                                         <div className="flex gap-1.5 ml-auto">
                                             {[
@@ -183,21 +173,19 @@ Results:
                                     label="Beginning Inventory"
                                     value={values.beginningInventory}
                                     onChange={(v) => handleInputChange('beginningInventory', v)}
-                                    icon={Warehouse}
-                                    placeholder="e.g. 25000"
+                                    placeholder="Ex: 25000"
                                     tooltip="Value of stock at the start of the period."
                                 />
                                 <TurnoverInput
                                     label="Ending Inventory"
                                     value={values.endingInventory}
                                     onChange={(v) => handleInputChange('endingInventory', v)}
-                                    icon={Boxes}
-                                    placeholder="e.g. 35000"
+                                    placeholder="Ex: 35000"
                                     tooltip="Value of stock at the end of the period."
                                 />
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-slate-50">
+                            <div className="pt-1.5 border-t border-slate-50">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -292,28 +280,35 @@ function TurnoverInput({
     label,
     value,
     onChange,
-    icon: Icon,
     tooltip,
     placeholder,
-    step = 1,
     headerRight
 }: {
     label: string,
     value: string,
     onChange: (v: string) => void,
-    icon: any,
     tooltip: string,
     placeholder: string,
-    step?: number,
     headerRight?: React.ReactNode
 }) {
     return (
         <div className="space-y-2 group/input">
-            <div className="flex items-center gap-2 mb-1 pl-1">
-                <Icon className="w-4 h-4 text-slate-400 group-focus-within/input:text-blue-600 transition-colors" />
+            <div className="flex items-center gap-1.5 mb-1 pl-1">
                 <label className="text-sm font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
                     {label}
                 </label>
+                <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
+                                <Info className="h-3.5 w-3.5" />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="text-[10px] bg-slate-900 text-white border-slate-800 p-2 max-w-[200px]">
+                            {tooltip}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 {headerRight}
             </div>
 
@@ -327,26 +322,7 @@ function TurnoverInput({
                     )}
                     placeholder={placeholder}
                 />
-
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
-                    <button
-                        onClick={() => onChange((parseFloat(value || "0") + step).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"
-                    >
-                        <ChevronUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                        onClick={() => onChange(Math.max(0, (parseFloat(value || "0") - step)).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-red-50 hover:text-red-600 text-slate-400 transition-all"
-                    >
-                        <ChevronDown className="h-3.5 w-3.5" />
-                    </button>
-                </div>
             </div>
-
-            <p className="text-[10px] text-slate-400 font-bold pl-1 leading-relaxed">
-                {tooltip}
-            </p>
         </div>
     )
 }
