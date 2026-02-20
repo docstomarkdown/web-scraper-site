@@ -92,7 +92,7 @@ export function PoshmarkFeeCalculator() {
                                 <Tag className="w-4 h-4 text-slate-400" />
                                 Sale Details
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Sold Price (${currencySymbol})`}
                                     value={soldPrice}
@@ -117,7 +117,7 @@ export function PoshmarkFeeCalculator() {
                                 <DollarSign className="w-4 h-4 text-slate-400" />
                                 My Cost
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Item Cost (${currencySymbol})`}
                                     value={costPrice}
@@ -135,48 +135,54 @@ export function PoshmarkFeeCalculator() {
                     <ResultFeedbackCard
                         title="Net Earnings"
                         titleLabel="Payout Amount"
-                        mainValue={<Counter value={netEarnings} prefix={currencySymbol} />}
-                        valueColor={netEarnings >= 0 ? "text-blue-400" : "text-slate-100"}
+                        mainValue={Number(soldPrice) > 0 ? <Counter value={netEarnings} prefix={currencySymbol} /> : `${currencySymbol}0.00`}
+                        valueColor={Number(soldPrice) > 0 ? (netEarnings >= 0 ? "text-slate-100" : "text-rose-400") : "text-slate-400"}
                         secondaryMetrics={[
                             {
                                 label: "Net Profit",
                                 value: <Counter value={netProfit} prefix={currencySymbol} />,
-                                color: netProfit >= 0 ? "text-blue-600" : "text-red-600"
+                                color: netProfit >= 0 ? "text-emerald-500 font-bold" : "text-rose-400"
                             },
                             {
                                 label: "Poshmark Fee",
                                 value: <Counter value={poshFee} prefix={currencySymbol} />,
-                                color: "text-red-500"
+                                color: "text-rose-400"
                             }
                         ]}
                     />
 
                     {/* Breakdown */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-rose-500">
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Payout Breakdown</p>
-                        </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Sold Price</span>
-                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(soldPrice).toFixed(2)}</span>
+                    {Number(soldPrice) > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-rose-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Payout Breakdown</p>
                             </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Poshmark Fee</span>
-                                <span className="text-sm font-semibold text-red-600">-{currencySymbol}{poshFee.toFixed(2)}</span>
-                            </div>
-                            {Number(shippingDiscount) > 0 && (
+                            <div className="divide-y divide-slate-100">
                                 <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Shipping Discount</span>
-                                    <span className="text-sm font-semibold text-red-600">-{currencySymbol}{Number(shippingDiscount).toFixed(2)}</span>
+                                    <span className="text-sm text-slate-600">Sold Price</span>
+                                    <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(soldPrice).toFixed(2)}</span>
                                 </div>
-                            )}
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-rose-50/20">
-                                <span className="text-sm font-bold text-slate-900">Net Earnings</span>
-                                <span className="text-base font-bold text-rose-600">{currencySymbol}{netEarnings.toFixed(2)}</span>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Poshmark Fee</span>
+                                    <span className="text-sm font-semibold text-rose-600">-{currencySymbol}{poshFee.toFixed(2)}</span>
+                                </div>
+                                {Number(shippingDiscount) > 0 && (
+                                    <div className="flex justify-between items-center px-5 py-3.5">
+                                        <span className="text-sm text-slate-600">Shipping Discount</span>
+                                        <span className="text-sm font-semibold text-rose-600">-{currencySymbol}{Number(shippingDiscount).toFixed(2)}</span>
+                                    </div>
+                                )}
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-rose-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Net Earnings</span>
+                                    <span className="text-base font-bold text-rose-600">{currencySymbol}{netEarnings.toFixed(2)}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter sale details to see payout breakdown.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </FadeIn>

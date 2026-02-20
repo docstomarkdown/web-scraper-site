@@ -11,13 +11,13 @@ export function CLVCalculator() {
     const [currency, setCurrency] = useState("USD");
 
     // Core Value Drivers
-    const [aov, setAov] = useState<number | "">(50);
-    const [frequency, setFrequency] = useState<number | "">(4);
-    const [lifespan, setLifespan] = useState<number | "">(3);
+    const [aov, setAov] = useState<number | "">("")
+    const [frequency, setFrequency] = useState<number | "">("")
+    const [lifespan, setLifespan] = useState<number | "">("")
 
     // Profit & Acquisition
-    const [grossMargin, setGrossMargin] = useState<number | "">(40);
-    const [cac, setCac] = useState<number | "">(30);
+    const [grossMargin, setGrossMargin] = useState<number | "">("")
+    const [cac, setCac] = useState<number | "">("")
 
     const [clvRevenue, setClvRevenue] = useState(0);
     const [clvProfit, setClvProfit] = useState(0);
@@ -65,17 +65,6 @@ export function CLVCalculator() {
         if (element) element.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Determine Health Status
-    let status = "Calculate";
-    let statusColor = "text-slate-400";
-    let statusBg = "bg-slate-100";
-
-    if (cacVal > 0 && clvProfit > 0) {
-        if (ltvCacRatio >= 5) { status = "Elite"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
-        else if (ltvCacRatio >= 3) { status = "Healthy"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
-        else if (ltvCacRatio >= 1) { status = "Caution"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
-        else { status = "At Risk"; statusColor = "text-red-600"; statusBg = "bg-red-100"; }
-    }
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
@@ -155,25 +144,6 @@ export function CLVCalculator() {
                             </div>
                         </CardContent>
                     </Card>
-
-                    {/* Logic Highlight */}
-                    <FadeIn delay={0.2}>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                                <ShieldCheck className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Economic Summary</h4>
-                                <p className="text-[15px] text-slate-600 leading-relaxed max-w-lg font-medium">
-                                    A customer generates <span className="font-bold text-slate-900">{formatCurrency(clvRevenue)}</span> revenue over their lifespan.
-                                    After costs, you keep <span className="font-bold text-blue-600">{formatCurrency(clvProfit)}</span> in lifetime profit.
-                                    {cacVal > 0 && (
-                                        <> This means your LTV is <span className="font-bold text-blue-600">{ltvCacRatio.toFixed(1)}x</span> your acquisition cost.</>
-                                    )}
-                                </p>
-                            </div>
-                        </div>
-                    </FadeIn>
                 </div>
 
                 {/* Right Column: Results */}
@@ -183,6 +153,20 @@ export function CLVCalculator() {
                         mainValue={
                             <Counter value={clvProfit} formatter={formatCurrency} />
                         }
+                        secondaryMetrics={clvProfit !== 0 ? [
+                            {
+                                label: "LTV / CAC Ratio",
+                                value: `${ltvCacRatio.toFixed(2)}x`,
+                                color: "text-blue-400",
+                                tooltip: "Ratio of customer profit to acquisition cost."
+                            },
+                            {
+                                label: "Target CPA",
+                                value: formatCurrency(clvProfit / 3),
+                                color: "text-blue-400",
+                                tooltip: "Ideal max spend to acquire 1 customer (based on a 3:1 ratio)."
+                            }
+                        ] : []}
                     />
 
                     {/* Breakdown Card */}
@@ -225,95 +209,8 @@ export function CLVCalculator() {
                             <p className="text-sm text-slate-400">Enter metrics to calculate LTV.</p>
                         </div>
                     )}
-
-                    {/* Insight Card: Ratio Meter */}
-                    <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                                <Percent className="w-5 h-5 text-blue-600" />
-                                Growth Efficiency
-                            </h3>
-                            {clvProfit > 0 && cacVal > 0 && (
-                                <span className={cn("text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full", statusBg, statusColor)}>
-                                    {status}
-                                </span>
-                            )}
-                        </div>
-
-                        <div className="space-y-4">
-                            <InsightItem
-                                label="LTV / CAC Ratio"
-                                value={`${ltvCacRatio.toFixed(2)}x`}
-                                description="Ratio of customer profit to acquisition cost."
-                                icon={TrendingUp}
-                                color={ltvCacRatio >= 3 ? "text-blue-600" : ltvCacRatio >= 1 ? "text-amber-600" : "text-red-500"}
-                                bg={ltvCacRatio >= 3 ? "bg-blue-50" : ltvCacRatio >= 1 ? "bg-amber-50" : "bg-red-50"}
-                            />
-                            <InsightItem
-                                label="Target CPA"
-                                value={formatCurrency(clvProfit / 3)}
-                                description="Ideal max spend to acquire 1 customer."
-                                icon={DollarSign}
-                                color="text-blue-600"
-                                bg="bg-blue-50"
-                            />
-                        </div>
-
-                        <div className="h-px w-full bg-slate-100" />
-
-                        <div className="pt-2">
-                            <div className="flex items-center justify-between mb-3">
-                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Efficiency Meter</p>
-                                <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">Ratio goal: 3:1+</span>
-                            </div>
-
-                            <div className="relative pt-2 pb-1">
-                                {/* Visual Scale */}
-                                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
-                                    <div className="h-full bg-red-400" style={{ width: '20%' }} /> {/* < 1x */}
-                                    <div className="h-full bg-amber-400" style={{ width: '40%' }} /> {/* 1x - 3x */}
-                                    <div className="h-full bg-blue-400" style={{ width: '40%' }} /> {/* 3x+ */}
-                                </div>
-
-                                {/* Dynamic Pointer */}
-                                {ltvCacRatio > 0 && (
-                                    <motion.div
-                                        initial={{ left: 0 }}
-                                        animate={{
-                                            // Scale: 0 to 5 for point. Caps at 100% (5.0+)
-                                            left: `${Math.min((ltvCacRatio / 5) * 100, 100)}%`
-                                        }}
-                                        className="absolute top-0 -mt-0.5 w-4 h-4 bg-white border-2 border-slate-800 rounded-full shadow-md z-10 -ml-2 transition-all"
-                                    />
-                                )}
-                            </div>
-                            <div className="flex justify-between mt-2 text-[11px] font-bold text-slate-500 italic px-1">
-                                <span>Risk</span>
-                                <span>Breakeven</span>
-                                <span>Healthy</span>
-                                <span>Elite</span>
-                            </div>
-                        </div>
-                    </Card>
                 </div>
             </div>
         </FadeIn>
     );
-}
-
-function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
-    return (
-        <div className="flex gap-4">
-            <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", bg, color)}>
-                <Icon className="w-5 h-5" />
-            </div>
-            <div>
-                <div className="flex items-baseline gap-2 mb-1">
-                    <h4 className="text-sm font-bold text-slate-900 leading-tight">{label}</h4>
-                    <span className={cn("text-sm font-bold", color)}>{value}</span>
-                </div>
-                <p className="text-[13px] text-slate-600 font-medium leading-relaxed">{description}</p>
-            </div>
-        </div>
-    )
 }

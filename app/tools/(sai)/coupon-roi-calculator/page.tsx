@@ -19,9 +19,6 @@ export default function CouponROICalculatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
                             Coupon ROI Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Determine if your discount strategy is actually profitable.
-                        </p>
                     </FadeIn>
                 </div>
 

@@ -19,9 +19,7 @@ export default function EtsyFeeCalculatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
                             Etsy Fee Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            See exactly how much Etsy takes from every sale.
-                        </p>
+
                     </FadeIn>
                 </div>
 

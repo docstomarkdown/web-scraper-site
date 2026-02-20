@@ -9,12 +9,12 @@ import { motion } from "framer-motion";
 
 export function ReturnRateCalculator() {
     const [currency, setCurrency] = useState("USD");
-    const [unitsSold, setUnitsSold] = useState<number | "">(1000);
-    const [unitsReturned, setUnitsReturned] = useState<number | "">(50);
+    const [unitsSold, setUnitsSold] = useState<number | "">("")
+    const [unitsReturned, setUnitsReturned] = useState<number | "">("")
 
     // New Financial Inputs
-    const [sellingPrice, setSellingPrice] = useState<number | "">(25.00);
-    const [returnCost, setReturnCost] = useState<number | "">(5.00);
+    const [sellingPrice, setSellingPrice] = useState<number | "">("")
+    const [returnCost, setReturnCost] = useState<number | "">("")
 
     const [returnRate, setReturnRate] = useState<number>(0);
     const [lostRevenue, setLostRevenue] = useState<number>(0);

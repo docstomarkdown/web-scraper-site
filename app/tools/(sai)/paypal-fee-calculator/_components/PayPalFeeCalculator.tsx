@@ -8,7 +8,7 @@ import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeI
 
 export function PayPalFeeCalculator() {
     const [currency, setCurrency] = useState("USD");
-    const [amount, setAmount] = useState<number | "">(100);
+    const [amount, setAmount] = useState<number | "">("");
     const [feeType, setFeeType] = useState<"standard" | "international" | "micropayment" | "nonprofit">("standard");
 
     const handleReset = () => {
@@ -66,10 +66,10 @@ export function PayPalFeeCalculator() {
                                     <label className="text-xs font-black uppercase tracking-widest text-slate-450">Fee Tier</label>
                                     <Tabs value={feeType} onValueChange={(v) => setFeeType(v as any)} className="w-full">
                                         <TabsList className="grid w-full grid-cols-4 h-12 bg-slate-100/50 p-1">
-                                            <TabsTrigger value="standard" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600">Standard</TabsTrigger>
-                                            <TabsTrigger value="international" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600">Intl.</TabsTrigger>
-                                            <TabsTrigger value="micropayment" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600">Micro</TabsTrigger>
-                                            <TabsTrigger value="nonprofit" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600">Charity</TabsTrigger>
+                                            <TabsTrigger value="standard" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-600">Standard</TabsTrigger>
+                                            <TabsTrigger value="international" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-600">Intl.</TabsTrigger>
+                                            <TabsTrigger value="micropayment" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-600">Micro</TabsTrigger>
+                                            <TabsTrigger value="nonprofit" className="text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-600">Charity</TabsTrigger>
                                         </TabsList>
                                     </Tabs>
                                 </div>
@@ -83,9 +83,9 @@ export function PayPalFeeCalculator() {
                                 />
                             </div>
 
-                            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-100 flex items-center justify-between group hover:border-blue-100 transition-colors">
+                            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-100 flex items-center justify-between group hover:border-emerald-100 transition-colors">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-blue-500 shadow-sm group-hover:scale-110 transition-transform">
+                                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-emerald-500 shadow-sm group-hover:scale-110 transition-transform">
                                         <Percent className="w-5 h-5" />
                                     </div>
                                     <div>
@@ -101,18 +101,6 @@ export function PayPalFeeCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Logic Insight */}
-                    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-white border border-blue-100 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                            <Wallet className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h4 className="text-base font-bold text-slate-900 mb-1 leading-tight">Invoicing Insight</h4>
-                            <p className="text-sm text-blue-700 leading-relaxed font-medium">
-                                To receive a clean <span className="font-bold">{formatCurrency(amountVal)}</span>, you should ask the sender for <span className="font-bold underline underline-offset-4">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>. This covers the {ratePercent}% merchant fee.
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
@@ -123,15 +111,15 @@ export function PayPalFeeCalculator() {
                                 <div className="flex items-baseline gap-1">
                                     <Counter value={netAmount > 0 ? netAmount : 0} formatter={formatCurrency} />
                                 </div> :
-                                "—"
+                                formatCurrency(0)
                         }
-                        valueColor="text-blue-400"
+                        valueColor={amountVal > 0 ? (netAmount >= 0 ? "text-slate-100" : "text-rose-400") : "text-slate-400"}
                         secondaryMetrics={[]}
                     />
 
                     {/* Breakdown Card */}
                     {amountVal > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                             </div>
@@ -142,15 +130,15 @@ export function PayPalFeeCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-3.5">
                                     <span className="text-sm text-slate-600">Total PayPal Fee</span>
-                                    <span className="text-sm font-semibold text-red-500">- {formatCurrency(totalFee)}</span>
+                                    <span className="text-sm font-semibold text-rose-500">- {formatCurrency(totalFee)}</span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-3.5">
                                     <span className="text-sm text-slate-600">Net Keep %</span>
                                     <span className="text-sm font-semibold text-slate-800">{((netAmount / (amountVal || 1)) * 100).toFixed(1)}%</span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4">
-                                    <span className="text-sm font-bold text-blue-600">Ask For (To Cover Fees)</span>
-                                    <span className="text-base font-bold text-blue-600">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>
+                                    <span className="text-sm font-bold text-emerald-600">Ask For (To Cover Fees)</span>
+                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +151,7 @@ export function PayPalFeeCalculator() {
                     <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white overflow-hidden relative">
                         <div className="flex items-center justify-between relative z-10">
                             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                                <BarChart3 className="w-5 h-5 text-blue-600" />
+                                <BarChart3 className="w-5 h-5 text-emerald-600" />
                                 Efficiency Meter
                             </h3>
                             <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
@@ -174,7 +162,7 @@ export function PayPalFeeCalculator() {
                         <div className="space-y-4 relative z-10">
                             <div className="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50 p-1 flex items-center">
                                 <div
-                                    className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-500 transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(59,130,246,0.4)]"
+                                    className="h-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-500 transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(16,185,129,0.4)]"
                                     style={{ width: `${Math.min(100, (netAmount / (amountVal || 1)) * 100)}%` }}
                                 />
                             </div>
@@ -187,7 +175,7 @@ export function PayPalFeeCalculator() {
                                 </div>
                                 <div className="text-right">
                                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 leading-none">Fee Leakage</p>
-                                    <p className="text-lg font-bold text-red-500 leading-none">
+                                    <p className="text-lg font-bold text-rose-500 leading-none">
                                         {((totalFee / (amountVal || 1)) * 100).toFixed(1)}%
                                     </p>
                                 </div>

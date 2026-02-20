@@ -9,8 +9,8 @@ import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeI
 
 export function TACoSCalculator() {
     const [currency, setCurrency] = useState("USD");
-    const [totalAdSpend, setTotalAdSpend] = useState<number | "">(5000);
-    const [totalRevenue, setTotalRevenue] = useState<number | "">(50000);
+    const [totalAdSpend, setTotalAdSpend] = useState<number | "">("")
+    const [totalRevenue, setTotalRevenue] = useState<number | "">("")
     const [grossMargin, setGrossMargin] = useState<number | "">("");
 
     const [tacos, setTacos] = useState<number>(0);
@@ -135,8 +135,6 @@ export function TACoSCalculator() {
                                 />
                             </div>
 
-                            <Separator />
-
                             {/* Group 2: Profitability */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 mb-2">
@@ -158,26 +156,6 @@ export function TACoSCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Logic Highlight */}
-                    <FadeIn delay={0.2}>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                                <Percent className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Net Margin Impact</h4>
-                                <p className={cn(
-                                    "text-base leading-relaxed max-w-lg transition-colors duration-300 font-medium",
-                                    margin > 0 ? "text-slate-600" : "text-slate-400"
-                                )}>
-                                    Advertising is consuming <span className="font-bold text-slate-900">{tacos.toFixed(1)}%</span> of your revenue.
-                                    {margin > 0 && (
-                                        <> This leaves you with a Net Profit Margin of <span className={cn("font-bold", netMargin > 0 ? "text-blue-600" : "text-red-500")}>{netMargin.toFixed(1)}%</span>.</>
-                                    )}
-                                </p>
-                            </div>
-                        </div>
-                    </FadeIn>
                 </div>
 
                 {/* Right Column: Results */}
@@ -239,26 +217,6 @@ export function TACoSCalculator() {
                             )}
                         </div>
 
-                        <div className="space-y-4">
-                            <InsightItem
-                                label="Net Profit Margin"
-                                value={margin > 0 ? `${netMargin.toFixed(2)}%` : "-"}
-                                description="Real profit % after deducting ad spend."
-                                icon={Percent}
-                                color={netMargin > 0 ? "text-blue-600" : netMargin < 0 ? "text-red-500" : "text-slate-400"}
-                                bg={netMargin > 0 ? "bg-blue-50" : netMargin < 0 ? "bg-red-50" : "bg-slate-50"}
-                            />
-                            <InsightItem
-                                label="Ad Cost Impact"
-                                value={`${tacos.toFixed(2)}%`}
-                                description="Portion of revenue consumed by ads."
-                                icon={DollarSign}
-                                color="text-amber-600"
-                                bg="bg-amber-50"
-                            />
-                        </div>
-
-                        <Separator />
 
                         <div className="pt-2">
                             <div className="flex items-center justify-between mb-3">
@@ -306,20 +264,3 @@ export function TACoSCalculator() {
 }
 
 const Separator = () => <div className="h-px w-full bg-slate-100" />
-
-function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
-    return (
-        <div className="flex gap-4">
-            <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", bg, color)}>
-                <Icon className="w-6 h-6" />
-            </div>
-            <div>
-                <div className="flex items-baseline gap-2 mb-1">
-                    <h4 className="text-base font-bold text-slate-900 leading-tight">{label}</h4>
-                    <span className={cn("text-base font-bold", color)}>{value}</span>
-                </div>
-                <p className="text-sm text-slate-600 font-medium leading-relaxed">{description}</p>
-            </div>
-        </div>
-    )
-}

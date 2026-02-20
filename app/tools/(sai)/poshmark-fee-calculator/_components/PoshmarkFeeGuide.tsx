@@ -15,6 +15,8 @@ export function PoshmarkFeeGuide() {
                     icon: DollarSign,
                     iconBg: "bg-rose-50",
                     iconColor: "text-rose-500",
+                    stat: "$2.95",
+                    statLabel: "Flat Fee"
                 },
                 {
                     title: "Percentage Fee (20%)",
@@ -31,6 +33,8 @@ export function PoshmarkFeeGuide() {
                     icon: Truck,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
+                    stat: "Varies",
+                    statLabel: "Discount"
                 }
             ]}
         />

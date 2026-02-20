@@ -111,23 +111,7 @@ export function PPCBidCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Logic Highlight */}
-                    <FadeIn delay={0.2}>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                                <MousePointer2 className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Click Value Analysis</h4>
-                                <p className={cn(
-                                    "text-[15px] leading-relaxed max-w-sm transition-colors duration-300 font-medium",
-                                    maxBid > 0 ? "text-slate-600" : "text-slate-400"
-                                )}>
-                                    Based on your conversion rate, every click on your ad is worth <span className={cn("font-bold", maxBid > 0 ? "text-slate-900" : "text-slate-400")}>${((Number(price) || 0) * (Number(conversionRate) || 0) / 100).toFixed(2)}</span> in potential revenue.
-                                </p>
-                            </div>
-                        </div>
-                    </FadeIn>
+
                 </div>
 
                 {/* Right Column: Results */}
@@ -199,26 +183,6 @@ export function PPCBidCalculator() {
                             )}
                         </div>
 
-                        <div className="space-y-4">
-                            <InsightItem
-                                label="Advertising Allowance"
-                                value={targetACoS ? `${targetACoS}%` : "0%"}
-                                description="Portion of sale price allocated to ads."
-                                icon={CheckCircle2}
-                                color={targetACoS ? "text-blue-600" : "text-slate-400"}
-                                bg={targetACoS ? "bg-blue-50" : "bg-slate-50"}
-                            />
-                            <InsightItem
-                                label="Risk Level"
-                                value={!targetACoS ? "Neutral" : Number(targetACoS) > 40 ? "High" : Number(targetACoS) > 20 ? "Moderate" : "Conservative"}
-                                description="Current setting vs market average."
-                                icon={AlertCircle}
-                                color={!targetACoS ? "text-slate-400" : Number(targetACoS) > 40 ? "text-amber-600" : "text-blue-600"}
-                                bg={!targetACoS ? "bg-slate-50" : Number(targetACoS) > 40 ? "bg-amber-50" : "bg-blue-50"}
-                            />
-                        </div>
-
-                        <Separator />
 
                         <div className="pt-2">
                             <div className="flex items-center justify-between mb-3">
@@ -259,19 +223,3 @@ export function PPCBidCalculator() {
 
 const Separator = () => <div className="h-px w-full bg-slate-100" />
 
-function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
-    return (
-        <div className="flex gap-4">
-            <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", bg, color)}>
-                <Icon className="w-6 h-6" />
-            </div>
-            <div>
-                <div className="flex items-baseline gap-2 mb-1">
-                    <h4 className="text-sm font-bold text-slate-900 leading-tight">{label}</h4>
-                    <span className={cn("text-sm font-bold", color)}>{value}</span>
-                </div>
-                <p className="text-[13px] text-slate-600 font-medium leading-relaxed">{description}</p>
-            </div>
-        </div>
-    )
-}

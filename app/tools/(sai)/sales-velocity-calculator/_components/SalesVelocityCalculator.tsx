@@ -153,25 +153,31 @@ export function SalesVelocityCalculator() {
                     />
 
                     {/* Breakdown Card */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Velocity Breakdown</p>
+                    {days > 0 || totalSold > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Velocity Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Raw Velocity</span>
+                                    <span className="text-sm font-semibold text-slate-800">{rawVelocity.toFixed(1)} / day</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Active Selling Days</span>
+                                    <span className="text-sm font-semibold text-slate-800">{activeDays} days</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">True Velocity</span>
+                                    <span className="text-base font-bold text-blue-600">{trueVelocity.toFixed(1)} / day</span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Raw Velocity</span>
-                                <span className="text-sm font-semibold text-slate-800">{rawVelocity.toFixed(1)} / day</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Active Selling Days</span>
-                                <span className="text-sm font-semibold text-slate-800">{activeDays} days</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                <span className="text-sm font-bold text-slate-900">True Velocity</span>
-                                <span className="text-base font-bold text-blue-600">{trueVelocity.toFixed(1)} / day</span>
-                            </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter sales history to see velocity breakdown.</p>
                         </div>
-                    </div>
+                    )}
 
                     {/* Revenue Card */}
                     {unitPrice > 0 && (

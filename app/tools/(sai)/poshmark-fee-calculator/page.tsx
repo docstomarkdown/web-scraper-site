@@ -19,9 +19,7 @@ export default function PoshmarkFeeCalculatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
                             Poshmark Fee Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Know exactly what you'll earn before you accept that offer.
-                        </p>
+
                     </FadeIn>
                 </div>
 

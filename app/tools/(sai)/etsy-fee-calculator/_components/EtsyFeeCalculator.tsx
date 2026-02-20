@@ -128,7 +128,7 @@ export function EtsyFeeCalculator() {
                                 <Tag className="w-4 h-4 text-slate-400" />
                                 Sale Info
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Sale Price (${currencySymbol})`}
                                     value={price}
@@ -152,7 +152,7 @@ export function EtsyFeeCalculator() {
                                 <DollarSign className="w-4 h-4 text-slate-400" />
                                 Product Costs
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Item Cost (${currencySymbol})`}
                                     value={itemCost}
@@ -178,7 +178,7 @@ export function EtsyFeeCalculator() {
                                 <CreditCard className="w-4 h-4 text-slate-400" />
                                 Fee Settings
                             </h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Listing Fee (${currencySymbol})`}
                                     value={listingFee}
@@ -222,58 +222,64 @@ export function EtsyFeeCalculator() {
                     <ResultFeedbackCard
                         title="Net Profit"
                         titleLabel="Money in Pocket"
-                        mainValue={<Counter value={netProfit} prefix={currencySymbol} />}
-                        valueColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
+                        mainValue={totalRevenue > 0 ? <Counter value={netProfit} prefix={currencySymbol} /> : `${currencySymbol}0.00`}
+                        valueColor={totalRevenue > 0 ? (netProfit >= 0 ? "text-slate-100" : "text-rose-400") : "text-slate-400"}
                         secondaryMetrics={[
                             {
                                 label: "Profit Margin",
                                 value: <Counter value={margin} formatter={(v) => `${v.toFixed(1)}%`} />,
-                                color: margin >= 30 ? "text-blue-600" : (margin > 0 ? "text-blue-600" : "text-red-600")
+                                color: margin >= 30 ? "text-emerald-500 font-bold" : (margin > 0 ? "text-emerald-500" : "text-rose-400")
                             },
                             {
                                 label: "Total Fees",
                                 value: <Counter value={totalFees} prefix={currencySymbol} />,
-                                color: "text-red-500"
+                                color: "text-rose-400"
                             }
                         ]}
                     />
 
                     {/* Breakdown */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-orange-500">
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
+                    {totalRevenue > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Listing Fee</span>
+                                    <span className="text-sm font-medium text-slate-700">{currencySymbol}{Number(listingFee).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Transaction Fee</span>
+                                    <span className="text-sm font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(transactionFeeVar) / 100)).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Processing Fee</span>
+                                    <span className="text-sm font-medium text-slate-700">{currencySymbol}{(((Number(price) + Number(shippingCharged)) * (Number(paymentFeeVar) / 100)) + Number(paymentFeeFixed)).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3">
+                                    <span className="text-sm text-slate-500">Offsite Ads</span>
+                                    <span className="text-sm font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(offsiteAdsFee) / 100)).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center px-4 py-3 bg-rose-50/50">
+                                    <span className="text-sm text-slate-500">Total Fees</span>
+                                    <span className="text-sm font-bold text-rose-600">
+                                        -{currencySymbol}{totalFees.toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
+                                    <span className="text-sm font-bold text-slate-900">Net Profit</span>
+                                    <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-rose-600")}>
+                                        {currencySymbol}{netProfit.toFixed(2)}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-4 py-3">
-                                <span className="text-sm text-slate-500">Listing Fee</span>
-                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{Number(listingFee).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center px-4 py-3">
-                                <span className="text-sm text-slate-500">Transaction Fee</span>
-                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(transactionFeeVar) / 100)).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center px-4 py-3">
-                                <span className="text-sm text-slate-500">Processing Fee</span>
-                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{(((Number(price) + Number(shippingCharged)) * (Number(paymentFeeVar) / 100)) + Number(paymentFeeFixed)).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center px-4 py-3">
-                                <span className="text-sm text-slate-500">Offsite Ads</span>
-                                <span className="text-sm font-medium text-slate-700">{currencySymbol}{((Number(price) + Number(shippingCharged)) * (Number(offsiteAdsFee) / 100)).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center px-4 py-3 bg-red-50/50">
-                                <span className="text-sm text-slate-500">Total Fees</span>
-                                <span className="text-sm font-bold text-red-600">
-                                    -{currencySymbol}{totalFees.toFixed(2)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
-                                <span className="text-sm font-bold text-slate-900">Net Profit</span>
-                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-blue-600" : "text-red-600")}>
-                                    {currencySymbol}{netProfit.toFixed(2)}
-                                </span>
-                            </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter sale info to see fee breakdown.</p>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </FadeIn >

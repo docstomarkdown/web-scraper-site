@@ -24,6 +24,8 @@ export function PODProfitGuide() {
                     icon: Truck,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
+                    stat: "2x",
+                    statLabel: "Shipping Costs"
                 },
                 {
                     title: "Platform Fees",
@@ -31,6 +33,8 @@ export function PODProfitGuide() {
                     icon: DollarSign,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
+                    stat: "Gross",
+                    statLabel: "Fee Basis"
                 }
             ]}
         />

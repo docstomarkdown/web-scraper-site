@@ -3,6 +3,7 @@
 import { BookOpen, LucideIcon, Info } from "lucide-react"
 import { ToolSectionHeader } from "./ToolSectionHeader"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
 export interface GuideItem {
     title: string
@@ -71,7 +72,10 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                                         <div className={`text-2xl md:text-3xl font-extrabold ${item.statColor || "text-slate-900"} tracking-tight leading-tight text-center px-1`}>
                                             {item.stat}
                                         </div>
-                                        <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400 bg-white border border-slate-100 px-2.5 py-0.5 rounded-full shadow-sm">
+                                        <div className={cn(
+                                            "text-[10px] font-black uppercase tracking-[0.12em] px-2.5 py-0.5 rounded-full shadow-sm border",
+                                            item.statColor ? `${item.statColor} bg-white border-current/20` : "text-blue-600 bg-blue-50 border-blue-100"
+                                        )}>
                                             Takeaway
                                         </div>
                                         {item.statLabel && (

@@ -177,7 +177,8 @@ export function ROICalculator() {
                                                     type="date"
                                                     value={fromDate}
                                                     onChange={(e) => setFromDate(e.target.value)}
-                                                    className="h-10 px-3 rounded-md border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium bg-white w-36 md:w-44 text-right hover:border-blue-300"
+                                                    onClick={(e) => e.currentTarget.showPicker?.()}
+                                                    className="h-10 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-bold bg-white w-36 md:w-44 text-right hover:border-blue-400 cursor-pointer shadow-sm"
                                                 />
                                             </div>
                                             <div className="flex items-center justify-between gap-4 group">
@@ -186,7 +187,8 @@ export function ROICalculator() {
                                                     type="date"
                                                     value={toDate}
                                                     onChange={(e) => setToDate(e.target.value)}
-                                                    className="h-10 px-3 rounded-md border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium bg-white w-36 md:w-44 text-right hover:border-blue-300"
+                                                    onClick={(e) => e.currentTarget.showPicker?.()}
+                                                    className="h-10 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-bold bg-white w-36 md:w-44 text-right hover:border-blue-400 cursor-pointer shadow-sm"
                                                 />
                                             </div>
                                         </div>
@@ -204,7 +206,7 @@ export function ROICalculator() {
                                                 <select
                                                     value={lengthUnit}
                                                     onChange={(e) => setLengthUnit(e.target.value as any)}
-                                                    className="h-10 px-2 rounded-md border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium bg-white cursor-pointer hover:border-blue-300"
+                                                    className="h-10 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-bold bg-white cursor-pointer hover:border-blue-400 shadow-sm appearance-none pr-8 relative"
                                                 >
                                                     <option value="days">Days</option>
                                                     <option value="months">Months</option>

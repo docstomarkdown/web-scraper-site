@@ -19,9 +19,7 @@ export default function ConversionCalculatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
                             Conversion Rate Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Measure the effectiveness of your marketing by calculating your conversion percentage.
-                        </p>
+
                     </FadeIn>
                 </div>
 

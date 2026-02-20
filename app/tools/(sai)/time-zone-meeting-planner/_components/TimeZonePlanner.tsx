@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe } from "lucide-react"
+import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { CalculatorCardHeader, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
 
@@ -182,7 +182,7 @@ const formatTime = (minutesSinceMidnight: number) => {
 const getTimeOfDayStatus = (hour: number) => {
     if (hour >= 9 && hour < 17) return { label: "Business Hours", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Sun };
     if (hour >= 6 && hour < 9) return { label: "Morning", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-100", icon: Sun };
-    if (hour >= 17 && hour < 22) return { label: "Evening", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Moon };
+    if (hour >= 17 && hour < 22) return { label: "Evening", color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-100", icon: Moon };
     return { label: "Off Hours", color: "text-slate-500", bg: "bg-slate-50", border: "border-slate-200", icon: Moon };
 };
 
@@ -266,43 +266,59 @@ export function TimeZonePlanner() {
 
                             {/* Date Picker */}
                             <div className="space-y-3">
-                                <Label className="text-xs font-black uppercase text-slate-400 tracking-widest flex items-center gap-2">
-                                    <CalendarIcon className="h-3 w-3" /> Selected Date
+                                <Label className="text-[13px] font-bold text-slate-600 flex items-center gap-2 mb-2 px-1">
+                                    <CalendarIcon className="h-4 w-4 text-blue-500" /> Selected Date
                                 </Label>
-                                <Input
-                                    type="date"
-                                    value={selectedDate}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedDate(e.target.value)}
-                                    className="h-12 bg-slate-50 border-slate-200 focus:ring-blue-500 rounded-lg font-bold text-slate-800"
-                                />
+                                <div className="relative group">
+                                    <Input
+                                        type="date"
+                                        value={selectedDate}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedDate(e.target.value)}
+                                        onClick={(e) => e.currentTarget.showPicker?.()}
+                                        className="h-14 bg-white border-slate-200 hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 rounded-2xl font-bold text-slate-800 transition-all shadow-sm px-4 cursor-pointer"
+                                    />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <CalendarIcon className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Base Time */}
                             <div className="space-y-3">
-                                <Label className="text-xs font-black uppercase text-slate-400 tracking-widest flex items-center gap-2">
-                                    <Clock className="h-3 w-3" /> Start Time
+                                <Label className="text-[13px] font-bold text-slate-600 flex items-center gap-2 mb-2 px-1">
+                                    <Clock className="h-4 w-4 text-blue-500" /> Start Time
                                 </Label>
-                                <Input
-                                    type="time"
-                                    value={baseTime}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setBaseTime(e.target.value)}
-                                    className="h-12 bg-slate-50 border-slate-200 focus:ring-blue-500 rounded-lg font-bold text-slate-800"
-                                />
+                                <div className="relative group">
+                                    <Input
+                                        type="time"
+                                        value={baseTime}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setBaseTime(e.target.value)}
+                                        onClick={(e) => e.currentTarget.showPicker?.()}
+                                        className="h-14 bg-white border-slate-200 hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 rounded-2xl font-bold text-slate-800 transition-all shadow-sm px-4 cursor-pointer"
+                                    />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <Clock className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                    </div>
+                                </div>
                             </div>
 
                             {/* My Location - Country Dropdown */}
                             <div className="space-y-3">
-                                <Label className="text-xs font-black uppercase text-slate-400 tracking-widest flex items-center gap-2">
-                                    <MapPin className="h-3 w-3" /> My Location
+                                <Label className="text-[13px] font-bold text-slate-600 flex items-center gap-2 mb-2 px-1">
+                                    <MapPin className="h-4 w-4 text-blue-500" /> My Location
                                 </Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant={"outline"} role={"combobox"} className={"w-full h-12 justify-between bg-white border-slate-200 hover:bg-slate-50 rounded-lg px-4 font-bold text-slate-800 shadow-sm border-b-2"}>
-                                            <div className="flex items-center gap-2">
-                                                {baseCountry && <Flag code={baseCountry.code} className="w-5 h-3.5" />}
-                                                {baseCountry ? baseCountry.name : "Select Country..."}
+                                        <Button
+                                            variant={"outline"}
+                                            role={"combobox"}
+                                            className="w-full h-14 justify-between bg-white border-slate-200 hover:border-blue-400 hover:bg-white rounded-2xl px-4 font-bold text-slate-800 shadow-sm transition-all group focus:ring-4 focus:ring-blue-500/5 group"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                {baseCountry && <Flag code={baseCountry.code} className="w-5 h-3.5 rounded-sm overflow-hidden" />}
+                                                <span>{baseCountry ? baseCountry.name : "Select Country..."}</span>
                                             </div>
-                                            <Search className="ml-2 h-4 w-4 shrink-0 opacity-50 text-blue-500" />
+                                            <ChevronDown className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-[320px] p-0 shadow-2xl border-none">
@@ -358,8 +374,10 @@ export function TimeZonePlanner() {
                             </div>
                             <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                                 <PopoverTrigger asChild>
-                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50 px-8 h-12 rounded-xl font-bold flex gap-2 transition-all hover:scale-105 active:scale-95">
-                                        <Plus className="h-4 w-4" /> Add Country
+                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-500/20 px-10 h-14 rounded-2xl font-bold flex gap-3 transition-all hover:scale-[1.02] active:scale-95 border-b-4 border-blue-800/50">
+                                        <Plus className="h-5 w-5" />
+                                        <span>Add Country</span>
+                                        <ChevronDown className="h-4 w-4 opacity-50 ml-1" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-[320px] p-0 shadow-2xl border border-slate-100">
@@ -464,10 +482,10 @@ export function TimeZonePlanner() {
                                         )}
                                         className={cn(
                                             "group transition-all duration-500 hover:translate-y-[-8px] hover:shadow-2xl relative overflow-hidden",
-                                            result.status.label === "Business Hours" ? "bg-blue-50/50 border-blue-200" :
-                                                result.status.label === "Morning" ? "bg-amber-50/50 border-amber-200" :
-                                                    result.status.label === "Evening" ? "bg-blue-50/50 border-blue-100" :
-                                                        "bg-slate-50/50 border-slate-200"
+                                            result.status.label === "Business Hours" ? "bg-blue-50 border-blue-100" :
+                                                result.status.label === "Morning" ? "bg-amber-50 border-amber-100" :
+                                                    result.status.label === "Evening" ? "bg-indigo-50 border-indigo-100" :
+                                                        "bg-slate-50 border-slate-200"
                                         )}
                                         mainValue={
                                             <div className="space-y-8">

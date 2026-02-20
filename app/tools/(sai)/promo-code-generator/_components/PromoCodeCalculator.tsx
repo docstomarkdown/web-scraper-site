@@ -15,8 +15,8 @@ export function PromoCodeCalculator() {
     // --- State ---
     const [prefix, setPrefix] = useState("")
     const [suffix, setSuffix] = useState("")
-    const [length, setLength] = useState<number | "">(8)
-    const [count, setCount] = useState<number | "">(5)
+    const [length, setLength] = useState<number | "">("")
+    const [count, setCount] = useState<number | "">("")
 
     const [useUppercase, setUseUppercase] = useState(true)
     const [useNumbers, setUseNumbers] = useState(true)

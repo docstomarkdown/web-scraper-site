@@ -16,6 +16,7 @@ export function PackagingGuide() {
                     iconColor: "text-blue-500",
                     stat: "$2.50",
                     statLabel: "Avg. Hidden Cost",
+                    statColor: "text-rose-600",
                     tooltip: "Average packaging cost for a standard e-commerce parcel."
                 },
                 {
@@ -24,13 +25,19 @@ export function PackagingGuide() {
                     icon: Timer,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
+                    stat: "5-10 MIN",
+                    statLabel: "Manual Labor",
+                    statColor: "text-amber-600"
                 },
                 {
                     title: "Optimizing Materials",
                     description: "Switching from a box to a poly mailer can save $0.50-$1.00 per shipment. Buying tape and labels in bulk can reduce costs by 40%.",
                     icon: Scissors,
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-500",
+                    stat: "40% SAVE",
+                    statLabel: "Bulk Discount",
+                    statColor: "text-emerald-600"
                 }
             ]}
         />

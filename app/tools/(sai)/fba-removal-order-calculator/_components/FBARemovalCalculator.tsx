@@ -123,9 +123,6 @@ export function FBARemovalCalculator() {
                     <h2 className="text-2xl font-bold tracking-tight text-slate-900">
                         Removal Order Cost Calculator
                     </h2>
-                    <p className="text-slate-500">
-                        Calculate the cost to remove or dispose of FBA inventory based on 2025 rates.
-                    </p>
                 </div>
 
             </div>
@@ -155,7 +152,7 @@ export function FBARemovalCalculator() {
                                     Dimensions (Inches)
                                 </label>
                             </div>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label="Length"
                                     value={length}
@@ -180,7 +177,7 @@ export function FBARemovalCalculator() {
                         <Separator className="bg-slate-100" />
 
                         {/* Weight & Quantity */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6">
                             <div className="space-y-4">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Scale className="w-4 h-4 text-slate-400" />
@@ -216,12 +213,12 @@ export function FBARemovalCalculator() {
                                 <div className={cn(
                                     "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
                                     sizeTier === "Standard"
-                                        ? "bg-blue-50/50 border-blue-100"
+                                        ? "bg-emerald-50/50 border-emerald-100"
                                         : "bg-amber-50/50 border-amber-100"
                                 )}>
                                     <div className={cn(
                                         "p-2 rounded-lg bg-white shadow-sm ring-1",
-                                        sizeTier === "Standard" ? "ring-blue-100 text-blue-600" : "ring-amber-100 text-amber-600"
+                                        sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
                                     )}>
                                         <Box className="w-4 h-4" />
                                     </div>
@@ -234,7 +231,7 @@ export function FBARemovalCalculator() {
                                         </p>
                                         <p className={cn(
                                             "text-xs mt-0.5",
-                                            sizeTier === "Standard" ? "text-blue-700" : "text-amber-700"
+                                            sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
                                         )}>
                                             Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
                                         </p>
@@ -251,6 +248,7 @@ export function FBARemovalCalculator() {
                         title="Estimated Removal Cost"
                         titleLabel="Total Fees"
                         mainValue={<Counter value={totalCost} prefix={currencySymbol} />}
+                        valueColor="text-slate-100"
                         secondaryMetrics={[
                             {
                                 label: "Fee Per Unit",
@@ -272,7 +270,7 @@ export function FBARemovalCalculator() {
 
                     {/* Breakdown Card */}
                     {totalCost > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
                             </div>
@@ -287,7 +285,7 @@ export function FBARemovalCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
                                     <span className="text-sm font-bold text-slate-900">Total Removal Cost</span>
-                                    <span className="text-base font-bold text-blue-600">{currencySymbol}{totalCost.toFixed(2)}</span>
+                                    <span className="text-base font-bold text-emerald-600">{currencySymbol}{totalCost.toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
@@ -296,20 +294,7 @@ export function FBARemovalCalculator() {
                             <p className="text-sm text-slate-400">Enter details to calculate removal cost.</p>
                         </div>
                     )}
-                    <Card className="border border-slate-200 shadow-sm bg-white p-5">
-                        <div className="flex gap-4">
-                            <div className="p-2.5 bg-blue-50 text-blue-600 rounded-lg h-fit shrink-0">
-                                <Info className="w-5 h-5" />
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="text-sm font-semibold text-slate-900">How fees are calculated</h4>
-                                <p className="text-xs text-slate-500 leading-relaxed">
-                                    Fees vary by size tier (Standard vs Large) and weight. We automatically use the greater of unit weight vs dimensional weight to determine the final fee.
-                                </p>
-                            </div>
-                        </div>
 
-                    </Card>
                 </div>
             </div>
         </div>

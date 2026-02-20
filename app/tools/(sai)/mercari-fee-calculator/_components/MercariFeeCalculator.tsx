@@ -8,11 +8,11 @@ import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHea
 import { cn } from "@/lib/utils";
 
 export function MercariFeeCalculator() {
-    const [salePrice, setSalePrice] = useState<number | "">(50);
-    const [itemCost, setItemCost] = useState<number | "">(20);
-    const [shippingCost, setShippingCost] = useState<number | "">(0);
-    const [otherCosts, setOtherCosts] = useState<number | "">(0);
-    const [soldQuantity, setSoldQuantity] = useState<number | "">(1);
+    const [salePrice, setSalePrice] = useState<number | "">("")
+    const [itemCost, setItemCost] = useState<number | "">("")
+    const [shippingCost, setShippingCost] = useState<number | "">("")
+    const [otherCosts, setOtherCosts] = useState<number | "">("")
+    const [soldQuantity, setSoldQuantity] = useState<number | "">("")
 
     const handleReset = () => {
         setSalePrice("")
@@ -54,22 +54,6 @@ export function MercariFeeCalculator() {
 
 
 
-    // Quick Presets
-    const applyPreset = (type: 'clothing' | 'electronics' | 'cards') => {
-        if (type === 'clothing') {
-            setSalePrice(25);
-            setShippingCost(0); // Buyer pays widely used for clothing
-            setItemCost(5);
-        } else if (type === 'electronics') {
-            setSalePrice(150);
-            setShippingCost(12); // Seller often pays for expensive items
-            setItemCost(80);
-        } else if (type === 'cards') {
-            setSalePrice(5);
-            setShippingCost(0.60); // Envelope shipping
-            setItemCost(0.50);
-        }
-    };
 
     // Strategic Insights
     const insight = useMemo(() => {
@@ -95,8 +79,8 @@ export function MercariFeeCalculator() {
         if (netProfit < 3 && netProfit > -5 && price > 0) {
             return {
                 icon: TrendingUp,
-                color: "text-blue-600",
-                bg: "bg-blue-50",
+                color: "text-emerald-600",
+                bg: "bg-emerald-50",
                 title: "Low Profit Item",
                 message: "Profit is thin. Try bundling this with other items to save on shipping and fees."
             };
@@ -104,8 +88,8 @@ export function MercariFeeCalculator() {
         if (netProfit <= -5) {
             return {
                 icon: AlertTriangle,
-                color: "text-red-600",
-                bg: "bg-red-50",
+                color: "text-rose-600",
+                bg: "bg-rose-50",
                 title: "Negative Profit",
                 message: "You are losing money on this listing. Increase sale price or reduce costs."
             };
@@ -113,8 +97,8 @@ export function MercariFeeCalculator() {
         if (price > 200) {
             return {
                 icon: CheckCircle2,
-                color: "text-blue-600",
-                bg: "bg-blue-50",
+                color: "text-emerald-600",
+                bg: "bg-emerald-50",
                 title: "High Value Item",
                 message: "Excellent resale price. Ensure you use shipping insurance for items over $200."
             };
@@ -141,16 +125,8 @@ export function MercariFeeCalculator() {
                                 description="Enter your listing details."
                                 onReset={handleReset}
                             />
-                            <div className="px-6 pb-3 flex items-center gap-2">
-                                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Presets:</span>
-                                <div className="flex gap-2">
-                                    <button onClick={() => applyPreset('clothing')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Clothing</button>
-                                    <button onClick={() => applyPreset('electronics')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Electronics</button>
-                                    <button onClick={() => applyPreset('cards')} className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 px-2 py-1 rounded-md transition-colors font-medium">Cards</button>
-                                </div>
-                            </div>
                             <CardContent className="space-y-6 pt-6">
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4">
                                     <CalculatorInput
                                         label="Sale Price ($)"
                                         value={salePrice}
@@ -204,29 +180,29 @@ export function MercariFeeCalculator() {
                             mainValue={
                                 price > 0 ?
                                     <Counter value={netProfit} formatter={formatCurrency} /> :
-                                    "—"
+                                    formatCurrency(0)
                             }
-                            valueColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
+                            valueColor={price > 0 ? (netProfit >= 0 ? "text-slate-100" : "text-rose-400") : "text-slate-400"}
                             mainMetricLabel="Status"
                             mainMetricValue={price > 0 ? (netProfit >= 0 ? "PROFITABLE" : "LOSS") : "WAITING"}
-                            mainMetricColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
+                            mainMetricColor={price > 0 ? (netProfit >= 0 ? "text-emerald-400" : "text-rose-400") : "text-slate-400"}
                             secondaryMetrics={price > 0 ? [
                                 {
                                     label: "Total Fees",
                                     value: <Counter value={totalFees} formatter={formatCurrency} />,
-                                    color: "text-blue-400"
+                                    color: "text-rose-400"
                                 },
                                 ...(quantity > 1 ? [{
                                     label: `Batch Profit (×${quantity})`,
                                     value: <Counter value={batchProfit} formatter={formatCurrency} />,
-                                    color: "text-blue-400 font-bold"
+                                    color: "text-emerald-500 font-bold"
                                 }] : [])
                             ] : []}
                         />
 
                         {/* Breakdown Card */}
                         {price > 0 ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
                                 <div className="px-5 py-3.5 border-b border-slate-100">
                                     <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fees & Profit</p>
                                 </div>
@@ -237,15 +213,15 @@ export function MercariFeeCalculator() {
                                     </div>
                                     <div className="flex justify-between items-center px-5 py-3.5">
                                         <span className="text-sm text-slate-600">Item Cost & Shipping</span>
-                                        <span className="text-sm font-semibold text-red-500">- {formatCurrency(cost + ship + other)}</span>
+                                        <span className="text-sm font-semibold text-rose-500">- {formatCurrency(cost + ship + other)}</span>
                                     </div>
                                     <div className="flex justify-between items-center px-5 py-3.5">
                                         <span className="text-sm text-slate-600">Mercari Fees</span>
-                                        <span className="text-sm font-semibold text-red-500">- {formatCurrency(totalFees)}</span>
+                                        <span className="text-sm font-semibold text-rose-500">- {formatCurrency(totalFees)}</span>
                                     </div>
                                     <div className="flex justify-between items-center px-5 py-4">
-                                        <span className="text-sm font-bold text-blue-600">Net Margin</span>
-                                        <span className="text-base font-bold text-blue-600">{margin.toFixed(1)}%</span>
+                                        <span className="text-sm font-bold text-emerald-600">Net Margin</span>
+                                        <span className="text-base font-bold text-emerald-600">{margin.toFixed(1)}%</span>
                                     </div>
                                 </div>
                             </div>

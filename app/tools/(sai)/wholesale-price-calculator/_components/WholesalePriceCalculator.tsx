@@ -100,9 +100,7 @@ export function WholesalePriceCalculator() {
                     <ResultFeedbackCard
                         title="Recommended Wholesale Price"
                         mainValue={
-                            effectiveCost > 0 ?
-                                <Counter value={wholesalePrice} formatter={formatCurrency} key={currency} /> :
-                                "—"
+                            <Counter value={wholesalePrice} formatter={formatCurrency} key={currency} />
                         }
                         valueColor="text-white"
                         secondaryMetrics={[]}

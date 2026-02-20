@@ -8,6 +8,7 @@ interface SecondaryMetric {
     label: string
     value: React.ReactNode
     color?: string
+    tooltip?: string
 }
 
 interface ResultFeedbackCardProps {
@@ -168,7 +169,26 @@ export function ResultFeedbackCard({
                             <div className="grid grid-cols-2 gap-4">
                                 {secondaryMetrics.map((metric, index) => (
                                     <div key={index}>
-                                        <p className={cn("text-sm mb-1", variant === "compact" ? "text-slate-500" : "text-slate-300")}>{metric.label}</p>
+                                        <div className="flex items-center gap-1.5 mb-1">
+                                            <p className={cn("text-sm", variant === "compact" ? "text-slate-500" : "text-slate-400")}>{metric.label}</p>
+                                            {metric.tooltip && (
+                                                <TooltipProvider delayDuration={100}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className={cn(
+                                                                "transition-colors",
+                                                                variant === "compact" ? "text-slate-400 hover:text-blue-600" : "text-slate-500 hover:text-white"
+                                                            )}>
+                                                                <Info className="h-3 w-3" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-xs text-[11px] bg-slate-900 text-white border-slate-800">
+                                                            {metric.tooltip}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                        </div>
                                         <div className={cn("text-2xl font-bold break-all", metric.color || "text-blue-400")}>
                                             {metric.value}
                                         </div>

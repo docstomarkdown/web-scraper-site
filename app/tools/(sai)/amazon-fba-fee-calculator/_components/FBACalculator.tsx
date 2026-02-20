@@ -359,61 +359,25 @@ export function FBACalculator() {
                                                     <span>Dimensions ({units.dim})</span>
                                                     <span className="text-[11px] font-medium text-slate-400/80 bg-slate-50 px-2 py-0.5 rounded">L x W x H</span>
                                                 </label>
-                                                <div className="grid grid-cols-3 gap-3">
-                                                    <div className="relative group">
-                                                        <Input
-                                                            type="number"
-                                                            value={length}
-                                                            onChange={(e) => {
-                                                                const val = e.target.value;
-                                                                if (val === "") setLength("");
-                                                                else {
-                                                                    const num = parseFloat(val);
-                                                                    if (!isNaN(num)) setLength(num);
-                                                                }
-                                                            }}
-                                                            placeholder="Length"
-                                                            max={1000}
-                                                            className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full text-center hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
-                                                        />
-                                                        <div className="absolute -bottom-5 inset-x-0 text-center text-[10px] text-slate-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Length</div>
-                                                    </div>
-                                                    <div className="relative group">
-                                                        <Input
-                                                            type="number"
-                                                            value={width}
-                                                            onChange={(e) => {
-                                                                const val = e.target.value;
-                                                                if (val === "") setWidth("");
-                                                                else {
-                                                                    const num = parseFloat(val);
-                                                                    if (!isNaN(num)) setWidth(num);
-                                                                }
-                                                            }}
-                                                            placeholder="Width"
-                                                            max={1000}
-                                                            className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full text-center hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
-                                                        />
-                                                        <div className="absolute -bottom-5 inset-x-0 text-center text-[10px] text-slate-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Width</div>
-                                                    </div>
-                                                    <div className="relative group">
-                                                        <Input
-                                                            type="number"
-                                                            value={height}
-                                                            onChange={(e) => {
-                                                                const val = e.target.value;
-                                                                if (val === "") setHeight("");
-                                                                else {
-                                                                    const num = parseFloat(val);
-                                                                    if (!isNaN(num)) setHeight(num);
-                                                                }
-                                                            }}
-                                                            placeholder="Height"
-                                                            max={1000}
-                                                            className="h-10 text-base border-slate-300 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic w-full text-center hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
-                                                        />
-                                                        <div className="absolute -bottom-5 inset-x-0 text-center text-[10px] text-slate-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Height</div>
-                                                    </div>
+                                                <div className="grid grid-cols-1 gap-6 pt-2">
+                                                    <CalculatorInput
+                                                        label="Length"
+                                                        value={length}
+                                                        onChange={setLength}
+                                                        placeholder="Length"
+                                                    />
+                                                    <CalculatorInput
+                                                        label="Width"
+                                                        value={width}
+                                                        onChange={setWidth}
+                                                        placeholder="Width"
+                                                    />
+                                                    <CalculatorInput
+                                                        label="Height"
+                                                        value={height}
+                                                        onChange={setHeight}
+                                                        placeholder="Height"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -429,19 +393,19 @@ export function FBACalculator() {
                                         className={cn(
                                             "flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-200 group select-none",
                                             showAdvanced
-                                                ? "bg-blue-50/50 border-blue-200 shadow-sm"
-                                                : "bg-slate-50 border-slate-200 hover:border-blue-300 hover:bg-slate-100"
+                                                ? "bg-emerald-50/50 border-emerald-200 shadow-sm"
+                                                : "bg-slate-50 border-slate-200 hover:border-emerald-300 hover:bg-slate-100"
                                         )}
                                     >
                                         <div className="flex items-center gap-3">
                                             <div className={cn(
                                                 "w-8 h-8 rounded-full flex items-center justify-center transition-colors",
-                                                showAdvanced ? "bg-blue-100 text-blue-600" : "bg-white text-slate-400 group-hover:text-blue-500"
+                                                showAdvanced ? "bg-emerald-100 text-emerald-600" : "bg-white text-slate-400 group-hover:text-emerald-500"
                                             )}>
                                                 <ChevronsUpDown className="w-4 h-4" />
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className={cn("text-sm font-semibold transition-colors", showAdvanced ? "text-blue-700" : "text-slate-700")}>
+                                                <span className={cn("text-sm font-semibold transition-colors", showAdvanced ? "text-emerald-700" : "text-slate-700")}>
                                                     Advanced Settings
                                                 </span>
                                                 <span className="text-[11px] text-slate-400 font-medium">
@@ -452,11 +416,11 @@ export function FBACalculator() {
                                         <div className="flex items-center gap-3">
                                             <span className={cn(
                                                 "text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wide uppercase transition-colors",
-                                                showAdvanced ? "bg-blue-100 text-blue-700" : "bg-slate-200 text-slate-500"
+                                                showAdvanced ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-500"
                                             )}>
                                                 Optional
                                             </span>
-                                            {showAdvanced ? <ChevronUp className="w-4 h-4 text-blue-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                                            {showAdvanced ? <ChevronUp className="w-4 h-4 text-emerald-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
                                         </div>
                                     </div>
 
@@ -473,7 +437,7 @@ export function FBACalculator() {
                                                                     <button
                                                                         type="button"
                                                                         tabIndex={-1}
-                                                                        className="text-slate-400 hover:text-blue-600 transition-colors cursor-default"
+                                                                        className="text-slate-400 hover:text-emerald-600 transition-colors cursor-default"
                                                                     >
                                                                         <Info className="h-3.5 w-3.5" />
                                                                     </button>
@@ -485,7 +449,7 @@ export function FBACalculator() {
                                                         </TooltipProvider>
                                                     </div>
                                                     <span className="text-xs font-medium text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200 shadow-sm">
-                                                        Fee: <span className="text-blue-600 font-bold">{Math.round(categories[category] * 100)}%</span>
+                                                        Fee: <span className="text-emerald-600 font-bold">{Math.round(categories[category] * 100)}%</span>
                                                     </span>
                                                 </div>
 
@@ -494,7 +458,7 @@ export function FBACalculator() {
                                                         <Button
                                                             variant="outline"
                                                             role="combobox"
-                                                            className="w-full justify-between h-11 bg-white border-slate-200 text-slate-700 hover:border-blue-400 hover:text-slate-900 shadow-sm transition-all"
+                                                            className="w-full justify-between h-11 bg-white border-slate-200 text-slate-700 hover:border-emerald-400 hover:text-slate-900 shadow-sm transition-all"
                                                         >
                                                             <span className="truncate">{category}</span>
                                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -518,10 +482,10 @@ export function FBACalculator() {
                                                                         >
                                                                             <span className="text-sm truncate mr-2">{cat}</span>
                                                                             <div className="flex items-center gap-2 shrink-0">
-                                                                                <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded", category === cat ? "bg-blue-50 text-blue-600" : "text-slate-400")}>
+                                                                                <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded", category === cat ? "bg-emerald-50 text-emerald-600" : "text-slate-400")}>
                                                                                     {Math.round(categories[cat] * 100)}%
                                                                                 </span>
-                                                                                {category === cat && <Check className="h-3.5 w-3.5 text-blue-600" />}
+                                                                                {category === cat && <Check className="h-3.5 w-3.5 text-emerald-600" />}
                                                                             </div>
                                                                         </CommandItem>
                                                                     ))}
@@ -570,13 +534,13 @@ export function FBACalculator() {
                             mainValue={
                                 <Counter value={totalFees} formatter={formatCurrency} key={currency} />
                             }
-                            // valueColor removed to use default white text on dark background
+                            valueColor="text-slate-100"
                             secondaryMetrics={[]}
                         />
 
                         {/* Fee Breakdown Card */}
                         {salesPriceVal > 0 ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
                                 <div className="px-5 py-3.5 border-b border-slate-100 flex justify-between items-center">
                                     <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                                     <span className="text-[10px] font-semibold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{getSizeTier()}</span>
@@ -602,9 +566,9 @@ export function FBACalculator() {
                                             <span className="text-sm font-semibold text-slate-800">{formatCurrency(storageFee)}</span>
                                         </div>
                                     )}
-                                    <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
+                                    <div className="flex justify-between items-center px-5 py-4 bg-emerald-50/20">
                                         <span className="text-sm font-bold text-slate-900">Total Fees</span>
-                                        <span className="text-base font-bold text-slate-900">{formatCurrency(totalFees)}</span>
+                                        <span className="text-base font-bold text-emerald-600">{formatCurrency(totalFees)}</span>
                                     </div>
                                 </div>
                             </div>

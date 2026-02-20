@@ -170,39 +170,45 @@ export function FreeShippingCalculator() {
                     />
 
                     {/* Breakdown Card */}
-                    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${isViable ? 'border-l-blue-500' : 'border-l-red-500'}`}>
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
+                    {currentAOV > 0 || shipCost > 0 || threshold > 0 ? (
+                        <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${isViable ? 'border-l-blue-500' : 'border-l-red-500'}`}>
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Gross Profit per Order</span>
+                                    <span className="text-sm font-semibold text-slate-800">
+                                        {formatCurrency(grossProfitPerOrder)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Shipping Cost</span>
+                                    <span className="text-sm font-semibold text-red-500">
+                                        - {formatCurrency(shipCost)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Net Profit After Shipping</span>
+                                    <span className="text-sm font-semibold text-slate-800">
+                                        {formatCurrency(netProfitWithFreeShipping)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-4">
+                                    <span className={`text-sm font-bold ${isViable ? 'text-blue-600' : 'text-red-600'}`}>
+                                        {isViable ? 'Sales Lift Needed' : 'Not Viable'}
+                                    </span>
+                                    <span className={`text-base font-bold ${isViable ? 'text-blue-600' : 'text-red-600'}`}>
+                                        {isViable ? `+${salesIncreaseNeeded.toFixed(1)}%` : formatCurrency(Math.abs(netProfitWithFreeShipping)) + ' loss'}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Gross Profit per Order</span>
-                                <span className="text-sm font-semibold text-slate-800">
-                                    {formatCurrency(grossProfitPerOrder)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Shipping Cost</span>
-                                <span className="text-sm font-semibold text-red-500">
-                                    - {formatCurrency(shipCost)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Net Profit After Shipping</span>
-                                <span className="text-sm font-semibold text-slate-800">
-                                    {formatCurrency(netProfitWithFreeShipping)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-4">
-                                <span className={`text-sm font-bold ${isViable ? 'text-blue-600' : 'text-red-600'}`}>
-                                    {isViable ? 'Sales Lift Needed' : 'Not Viable'}
-                                </span>
-                                <span className={`text-base font-bold ${isViable ? 'text-blue-600' : 'text-red-600'}`}>
-                                    {isViable ? `+${salesIncreaseNeeded.toFixed(1)}%` : formatCurrency(Math.abs(netProfitWithFreeShipping)) + ' loss'}
-                                </span>
-                            </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter current metrics to see price breakdown.</p>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </FadeIn>

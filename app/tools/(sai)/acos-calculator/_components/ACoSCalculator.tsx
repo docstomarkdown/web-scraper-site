@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
 export function ACoSCalculator() {
-    const [adSpend, setAdSpend] = useState<number | "">(200)
-    const [adRevenue, setAdRevenue] = useState<number | "">(800)
+    const [adSpend, setAdSpend] = useState<number | "">("")
+    const [adRevenue, setAdRevenue] = useState<number | "">("")
     const [profitMargin, setProfitMargin] = useState<number | "">("")
 
     const [acos, setAcos] = useState<number>(0)
@@ -132,23 +132,7 @@ export function ACoSCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Logic Highlight */}
-                    <FadeIn delay={0.2}>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                                <DollarSign className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Net Profit Analysis</h4>
-                                <p className={cn(
-                                    "text-base leading-relaxed max-w-sm transition-colors duration-300 font-medium",
-                                    netProfit !== 0 ? "text-slate-600" : "text-slate-400"
-                                )}>
-                                    After deducting ad spend from your gross profit, your net return is <span className={cn("font-bold", netProfit > 0 ? "text-blue-600" : netProfit < 0 ? "text-red-500" : "text-slate-900")}>${netProfit.toFixed(2)}</span>.
-                                </p>
-                            </div>
-                        </div>
-                    </FadeIn>
+
                 </div>
 
                 {/* Right Column: Results */}
