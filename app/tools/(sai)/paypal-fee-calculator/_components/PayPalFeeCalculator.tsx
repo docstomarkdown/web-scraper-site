@@ -107,7 +107,7 @@ export function PayPalFeeCalculator() {
                             <Wallet className="w-6 h-6" />
                         </div>
                         <div>
-                            <h4 className="text-base font-bold text-blue-900 mb-1 leading-tight">Invoicing Insight</h4>
+                            <h4 className="text-base font-bold text-slate-900 mb-1 leading-tight">Invoicing Insight</h4>
                             <p className="text-sm text-blue-700 leading-relaxed font-medium">
                                 To receive a clean <span className="font-bold">{formatCurrency(amountVal)}</span>, you should ask the sender for <span className="font-bold underline underline-offset-4">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>. This covers the {ratePercent}% merchant fee.
                             </p>
@@ -125,13 +125,13 @@ export function PayPalFeeCalculator() {
                                 </div> :
                                 "—"
                         }
-                        valueColor="text-emerald-400"
+                        valueColor="text-blue-400"
                         secondaryMetrics={[]}
                     />
 
                     {/* Breakdown Card */}
                     {amountVal > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                             </div>
@@ -149,8 +149,8 @@ export function PayPalFeeCalculator() {
                                     <span className="text-sm font-semibold text-slate-800">{((netAmount / (amountVal || 1)) * 100).toFixed(1)}%</span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4">
-                                    <span className="text-sm font-bold text-emerald-600">Ask For (To Cover Fees)</span>
-                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>
+                                    <span className="text-sm font-bold text-blue-600">Ask For (To Cover Fees)</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(toReceiveAmount > 0 ? toReceiveAmount : 0)}</span>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +174,7 @@ export function PayPalFeeCalculator() {
                         <div className="space-y-4 relative z-10">
                             <div className="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50 p-1 flex items-center">
                                 <div
-                                    className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-emerald-500 transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(59,130,246,0.4)]"
+                                    className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-500 transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(59,130,246,0.4)]"
                                     style={{ width: `${Math.min(100, (netAmount / (amountVal || 1)) * 100)}%` }}
                                 />
                             </div>

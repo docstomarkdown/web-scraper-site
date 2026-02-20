@@ -92,7 +92,7 @@ export function PPCBidCalculator() {
                             {/* Group 2: Campaign Goals */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <Target className="w-4 h-4" />
                                     </div>
                                     <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Campaign Goals</h3>
@@ -148,7 +148,7 @@ export function PPCBidCalculator() {
                             {
                                 label: "Max CPA",
                                 value: `$${maxCPA.toFixed(2)}`,
-                                color: "text-emerald-400"
+                                color: "text-blue-400"
                             },
                             {
                                 label: "Breakeven Bid",
@@ -193,7 +193,7 @@ export function PPCBidCalculator() {
                                 Profitability Insight
                             </h3>
                             {maxBid > 0 ? (
-                                <span className="text-[10px] font-bold uppercase tracking-widest bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Optimal</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Optimal</span>
                             ) : (
                                 <span className="text-[10px] font-bold uppercase tracking-widest bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">Waiting</span>
                             )}
@@ -205,8 +205,8 @@ export function PPCBidCalculator() {
                                 value={targetACoS ? `${targetACoS}%` : "0%"}
                                 description="Portion of sale price allocated to ads."
                                 icon={CheckCircle2}
-                                color={targetACoS ? "text-emerald-600" : "text-slate-400"}
-                                bg={targetACoS ? "bg-emerald-50" : "bg-slate-50"}
+                                color={targetACoS ? "text-blue-600" : "text-slate-400"}
+                                bg={targetACoS ? "bg-blue-50" : "bg-slate-50"}
                             />
                             <InsightItem
                                 label="Risk Level"
@@ -232,7 +232,7 @@ export function PPCBidCalculator() {
                             <div className="relative pt-2 pb-1">
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
                                     <div className="h-full bg-blue-400 border-r border-white" style={{ width: '33.33%' }} />
-                                    <div className="h-full bg-emerald-400 border-r border-white" style={{ width: '33.33%' }} />
+                                    <div className="h-full bg-blue-400 border-r border-white" style={{ width: '33.33%' }} />
                                     <div className="h-full bg-amber-400" style={{ width: '33.33%' }} />
                                 </div>
                                 {/* Dynamic Pointer */}

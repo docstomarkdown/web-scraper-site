@@ -68,8 +68,11 @@ export function ReturnOnAdSpendCalculator() {
         else if (roasValue < 2) label = "Break Even / Low Profit"
         else if (roasValue < 4) label = "Profitable"
 
-        // Always return blue styling
-        return { color: "text-blue-400", bg: "bg-slate-900", label }
+        let color = "text-blue-400"
+        if (roasValue < 1) color = "text-red-400"
+        else if (roasValue < 2) color = "text-amber-400"
+
+        return { color, bg: "bg-slate-900", label }
     }
 
     const currentHealth = mode === "calculate-roas" ? getROASHealth(roas) : getROASHealth(targetRoasVal)
@@ -174,7 +177,7 @@ export function ReturnOnAdSpendCalculator() {
                                 <Counter value={calculatedRevenue} formatter={formatCurrency} key={currency} />
                             )
                         }
-                        valueColor={mode === "calculate-roas" ? (roas > 1 ? "text-emerald-400" : (roas < 1 ? "text-red-400" : "text-white")) : "text-white"}
+                        valueColor={mode === "calculate-roas" ? (roas > 1 ? "text-blue-400" : (roas < 1 ? "text-red-400" : "text-white")) : "text-white"}
                         secondaryMetrics={[
                             {
                                 label: mode === "calculate-roas" ? "ROAS %" : "Target ROAS (x)",
@@ -190,7 +193,7 @@ export function ReturnOnAdSpendCalculator() {
 
                     {/* Performance Breakdown Card */}
                     {spend > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Performance Breakdown</p>
                             </div>
@@ -204,8 +207,8 @@ export function ReturnOnAdSpendCalculator() {
                                     <span className="text-sm font-semibold text-slate-800">{formatCurrency(mode === "calculate-roas" ? revenue : calculatedRevenue)}</span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
-                                    <span className="text-sm font-bold text-emerald-600">Net Profit (Ads)</span>
-                                    <span className={cn("text-base font-bold", (mode === "calculate-roas" ? profit : plannedProfit) >= 0 ? "text-emerald-600" : "text-red-500")}>
+                                    <span className="text-sm font-bold text-blue-600">Net Profit (Ads)</span>
+                                    <span className={cn("text-base font-bold", (mode === "calculate-roas" ? profit : plannedProfit) >= 0 ? "text-blue-600" : "text-red-500")}>
                                         {formatCurrency(mode === "calculate-roas" ? profit : plannedProfit)}
                                     </span>
                                 </div>
@@ -221,7 +224,7 @@ export function ReturnOnAdSpendCalculator() {
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
                         <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
-                            <h4 className="text-sm font-semibold text-blue-900 mb-1">Pro Tip</h4>
+                            <h4 className="text-sm font-semibold text-emerald-900 mb-1">Pro Tip</h4>
                             <p className="text-sm text-blue-700 leading-relaxed">
                                 {mode === "calculate-roas" ?
                                     "A Return on Ad Spend (ROAS) of 4.0x (400%) means for every $1 you spend on ads, you get $4 back in revenue. Aim for at least 2.5x - 3.0x to cover product costs and other expenses." :

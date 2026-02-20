@@ -71,7 +71,7 @@ export function ReturnRateCalculator() {
     let statusBg = "bg-slate-100";
 
     if (sold > 0) {
-        if (returnRate < 5) { status = "Excellent"; statusColor = "text-emerald-600"; statusBg = "bg-emerald-100"; }
+        if (returnRate < 5) { status = "Excellent"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
         else if (returnRate < 10) { status = "Healthy"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
         else if (returnRate < 15) { status = "Warning"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
         else { status = "High Risk"; statusColor = "text-red-600"; statusBg = "bg-red-100"; }
@@ -244,7 +244,7 @@ export function ReturnRateCalculator() {
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Rate Benchmarks</p>
                                 {sold > 0 && (
                                     <span className={cn("text-xs font-bold px-2 py-0.5 rounded-md border",
-                                        returnRate < 5 ? "text-emerald-600 bg-emerald-50 border-emerald-100" :
+                                        returnRate < 5 ? "text-blue-600 bg-blue-50 border-blue-100" :
                                             returnRate < 10 ? "text-blue-600 bg-blue-50 border-blue-100" :
                                                 "text-red-600 bg-red-50 border-red-100"
                                     )}>
@@ -256,7 +256,7 @@ export function ReturnRateCalculator() {
                             <div className="relative pt-2 pb-1">
                                 {/* Visual Scale: Green -> Blue -> Red */}
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
-                                    <div className="h-full bg-emerald-400" style={{ width: '25%' }} /> {/* < 5% */}
+                                    <div className="h-full bg-blue-400" style={{ width: '25%' }} /> {/* < 5% */}
                                     <div className="h-full bg-blue-400" style={{ width: '25%' }} /> {/* < 10% */}
                                     <div className="h-full bg-amber-400" style={{ width: '25%' }} /> {/* < 15% */}
                                     <div className="h-full bg-red-400" style={{ width: '25%' }} /> {/* > 15% */}

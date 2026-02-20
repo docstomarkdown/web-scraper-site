@@ -34,10 +34,10 @@ export function BundleGuide() {
                     title: "Reduce Customer Acquisition Cost",
                     description: "By selling more items per customer, you effectively lower the marketing cost required to sell each individual unit.",
                     icon: Users,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "-20%",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Lower CAC Per Unit",
                 },
             ]}

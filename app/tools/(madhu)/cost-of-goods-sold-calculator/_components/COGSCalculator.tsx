@@ -266,30 +266,30 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                     <p className="text-xs font-bold text-slate-300 mb-1">Return Cost</p>
                                     <div className="flex items-baseline gap-1">
                                         <span className="text-lg font-medium text-slate-400">$</span>
-                                        <span className="text-xl font-bold text-emerald-400">{results.returnRiskCost.toFixed(2)}</span>
+                                        <span className="text-xl font-bold text-blue-400">{results.returnRiskCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Profit Card */}
-                            <div className="bg-emerald-500/5 rounded-xl p-5 border border-emerald-500/10 mt-4">
+                            <div className="bg-blue-500/5 rounded-xl p-5 border border-blue-500/10 mt-4">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2">
-                                        <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-600">
+                                        <div className="p-1.5 rounded-md bg-blue-500/10 text-blue-600">
                                             <TrendingUp className="w-4 h-4" />
                                         </div>
-                                        <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Gross Profit</p>
+                                        <p className="text-xs font-bold text-blue-700 uppercase tracking-wider">Gross Profit</p>
                                     </div>
                                     <span className={cn(
                                         "text-xs font-black px-2 py-1 rounded-full",
-                                        results.grossMargin >= 30 ? "bg-emerald-100 text-emerald-700" : "bg-yellow-100 text-yellow-700"
+                                        results.grossMargin >= 30 ? "bg-blue-100 text-blue-700" : "bg-yellow-100 text-yellow-700"
                                     )}>
                                         {results.grossMargin.toFixed(1)}% Margin
                                     </span>
                                 </div>
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-lg font-medium text-emerald-600/60">$</span>
-                                    <span className="text-3xl font-black text-emerald-700">
+                                    <span className="text-lg font-medium text-blue-600/60">$</span>
+                                    <span className="text-3xl font-black text-blue-700">
                                         {results.grossProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </span>
                                 </div>

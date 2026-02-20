@@ -165,7 +165,7 @@ export function AdBudgetCalculator() {
                         }
                         secondaryMetrics={[
                             { label: "Daily Spend", value: formatCurrency(dailySpend), color: "text-slate-300" },
-                            { label: "Est. Orders", value: Math.round(estOrders).toLocaleString(), color: "text-emerald-400" }
+                            { label: "Est. Orders", value: Math.round(estOrders).toLocaleString(), color: "text-blue-400" }
                         ]}
                     />
 

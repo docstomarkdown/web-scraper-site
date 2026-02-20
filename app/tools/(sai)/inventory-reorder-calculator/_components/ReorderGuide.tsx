@@ -34,10 +34,10 @@ export function ReorderGuide() {
                     title: "Safety Stock: Your Insurance",
                     description: "Safety stock protects you against sudden spikes in demand or shipping delays. It's better to hold a few extra days of stock than to lose sales due to a stockout.",
                     icon: ShieldCheck,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "+Stocks",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Buffer Zone",
                     tooltip: "Prevents lost revenue."
                 }

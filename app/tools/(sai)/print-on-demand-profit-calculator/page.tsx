@@ -47,7 +47,7 @@ export default function PODProfitCalculatorPage() {
                                 },
                                 {
                                     question: "What is a good profit margin for POD?",
-                                    answer: "A net margin of 20-30% is a healthy target for Print on Demand. Lower margins are risky because unforeseen returns or ads can wipe out profits."
+                                    answer: "A net margin of 20-30% is a healthy target for Print on Demand. Lower margins are riemerald because unforeseen returns or ads can wipe out profits."
                                 },
                                 {
                                     question: "Do platform fees apply to shipping?",

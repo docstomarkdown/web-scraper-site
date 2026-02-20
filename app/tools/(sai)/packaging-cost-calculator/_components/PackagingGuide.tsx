@@ -29,8 +29,8 @@ export function PackagingGuide() {
                     title: "Optimizing Materials",
                     description: "Switching from a box to a poly mailer can save $0.50-$1.00 per shipment. Buying tape and labels in bulk can reduce costs by 40%.",
                     icon: Scissors,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                 }
             ]}
         />

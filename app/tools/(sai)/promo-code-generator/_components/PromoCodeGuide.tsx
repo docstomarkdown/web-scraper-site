@@ -22,8 +22,8 @@ export function PromoCodeGuide() {
                     title: "Ensure Uniqueness",
                     description: "Avoid generic codes like 'SAVE10' for high-value promotions. Use randomized strings to prevent code leakage and unauthorized sharing.",
                     icon: ShieldCheck,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     tooltip: "Randomized codes are harder to leak",
                 },
                 {

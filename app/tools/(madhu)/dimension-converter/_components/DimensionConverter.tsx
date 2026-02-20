@@ -245,7 +245,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Cubic Centimeters</p>
-                                    <p className="text-xl font-bold text-emerald-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         <Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />
                                         <span className="text-xs font-normal opacity-50 ml-1">CM³</span>
                                     </p>

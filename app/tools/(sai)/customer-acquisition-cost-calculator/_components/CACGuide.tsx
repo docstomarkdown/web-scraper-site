@@ -33,10 +33,10 @@ export function CACGuide() {
                 {
                     title: "LTV:CAC Ratio",
                     icon: Target,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "3:1",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Ideal Ratio",
                     tooltip: "Lifetime Value (LTV) should ideally be 3x your CAC.",
                     description: "The golden rule for business sustainability is an LTV:CAC ratio of 3:1. If your ratio is 1:1, you are spending too much. If it's 5:1, you might be under-spending and missing growth opportunities."

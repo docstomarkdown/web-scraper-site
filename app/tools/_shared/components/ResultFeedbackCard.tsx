@@ -13,9 +13,9 @@ interface SecondaryMetric {
 interface ResultFeedbackCardProps {
     title: React.ReactNode
     titleLabel?: string | React.ReactNode // e.g. "High Performance"
-    labelClassName?: string // e.g. "text-emerald-400"
+    labelClassName?: string // e.g. "text-blue-400"
     mainValue?: React.ReactNode
-    valueColor?: string // e.g. "text-emerald-400"
+    valueColor?: string // e.g. "text-blue-400"
     mainMetricLabel?: string // e.g. "ROAS %"
     mainMetricValue?: React.ReactNode // e.g. "420%"
     mainMetricColor?: string
@@ -36,7 +36,7 @@ export function ResultFeedbackCard({
     valueColor,
     mainMetricLabel,
     mainMetricValue,
-    mainMetricColor = "text-blue-400",
+    mainMetricColor = "text-white",
     secondaryMetrics = [],
     className,
     variant = "default",
@@ -60,7 +60,7 @@ export function ResultFeedbackCard({
     const getLabelStyles = () => {
         if (labelClassName) return labelClassName
         if (variant === "compact") return "bg-slate-100 text-slate-600"
-        return "text-emerald-400 bg-slate-600/50 border-slate-500/50"
+        return "text-blue-400 bg-slate-600/50 border-slate-500/50"
     }
 
     const getValueColor = () => {
@@ -87,7 +87,7 @@ export function ResultFeedbackCard({
                     )} />
                     <div className={cn(
                         "absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none opacity-10",
-                        variant === "warning" ? "bg-orange-500" : "bg-emerald-500"
+                        variant === "warning" ? "bg-orange-500" : "bg-blue-500"
                     )} />
                 </>
             )}
@@ -169,7 +169,7 @@ export function ResultFeedbackCard({
                                 {secondaryMetrics.map((metric, index) => (
                                     <div key={index}>
                                         <p className={cn("text-sm mb-1", variant === "compact" ? "text-slate-500" : "text-slate-300")}>{metric.label}</p>
-                                        <div className={cn("text-2xl font-bold break-all", metric.color || "text-emerald-400")}>
+                                        <div className={cn("text-2xl font-bold break-all", metric.color || "text-blue-400")}>
                                             {metric.value}
                                         </div>
                                     </div>

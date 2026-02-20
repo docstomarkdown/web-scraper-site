@@ -23,10 +23,10 @@ export function FreeShippingGuide() {
                     title: "Setting the Right Threshold",
                     description: "A common strategy is to set your free shipping threshold 15-30% higher than your current Average Order Value (AOV). This encourages customers to add 'one more item'.",
                     icon: Target,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "+20%",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Ideal Threshold Uplift",
                     tooltip: "Target Threshold = Current AOV * 1.2"
                 },

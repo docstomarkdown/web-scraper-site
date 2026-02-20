@@ -88,23 +88,16 @@ export function DiscountCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter your details."
-
                             onReset={handleReset}
-
                             guideId="discount-guide"
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-4 mb-2 pb-6 border-b border-slate-50">
                                 <label className="text-sm font-bold text-slate-600">Calculation Mode</label>
                                 <div className="relative flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-fit">
-                                    {/* Animated Background Pill */}
                                     <motion.div
                                         className="absolute bg-white rounded-lg shadow-sm border border-slate-200"
                                         initial={false}
@@ -199,7 +192,7 @@ export function DiscountCalculator() {
                                 <Counter value={calculatedDiscount} formatter={(v) => `${v.toFixed(2)}%`} />
                             )
                         }
-                        valueColor="text-blue-600"
+                        valueColor="text-white"
                         secondaryMetrics={[]}
                     />
 
@@ -211,7 +204,7 @@ export function DiscountCalculator() {
                             className={cn(
                                 "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
                                 (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 40
-                                    ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                    ? "bg-blue-50 border-blue-200 text-blue-700"
                                     : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 20
                                         ? "bg-blue-50 border-blue-200 text-blue-700"
                                         : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 10
@@ -220,12 +213,12 @@ export function DiscountCalculator() {
                             )}
                         >
                             {(mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 40
-                                ? "🔥 Amazing Deal!"
+                                ? " Amazing Deal!"
                                 : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 20
-                                    ? "✨ Great Savings!"
+                                    ? " Great Savings!"
                                     : (mode === "find-price" ? val(discountValue) : calculatedDiscount) >= 10
-                                        ? "👍 Decent Discount"
-                                        : "💡 Modest Savings"}
+                                        ? " Decent Discount"
+                                        : " Modest Savings"}
                         </motion.div>
                     )}
 
@@ -234,7 +227,7 @@ export function DiscountCalculator() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500"
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500"
                         >
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
@@ -263,15 +256,15 @@ export function DiscountCalculator() {
                                             <span className="text-sm font-semibold text-slate-800">× {val(quantity)}</span>
                                         </div>
                                         <div className="flex justify-between items-center px-5 py-4">
-                                            <span className="text-sm font-bold text-emerald-600">Grand Total</span>
-                                            <span className="text-base font-bold text-emerald-600">{formatCurrency(finalPrice)}</span>
+                                            <span className="text-sm font-bold text-blue-600">Grand Total</span>
+                                            <span className="text-base font-bold text-blue-600">{formatCurrency(finalPrice)}</span>
                                         </div>
                                     </>
                                 )}
                                 {val(quantity) === 1 && (
                                     <div className="flex justify-between items-center px-5 py-4">
-                                        <span className="text-sm font-bold text-emerald-600">Final Price</span>
-                                        <span className="text-base font-bold text-emerald-600">{formatCurrency(finalPrice)}</span>
+                                        <span className="text-sm font-bold text-blue-600">Final Price</span>
+                                        <span className="text-base font-bold text-blue-600">{formatCurrency(finalPrice)}</span>
                                     </div>
                                 )}
                             </div>
@@ -286,5 +279,3 @@ export function DiscountCalculator() {
         </FadeIn>
     )
 }
-
-

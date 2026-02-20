@@ -127,7 +127,7 @@ export function ABDurationCalculator() {
                     {duration > 0 && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            duration <= 14 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                            duration <= 14 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                 duration <= 30 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                     "bg-amber-50 border-amber-200 text-amber-700"
                         )}>

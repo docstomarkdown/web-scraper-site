@@ -74,7 +74,7 @@ export function MOQCalculator() {
             setMonthsInventory(months);
 
             if (months <= 3) {
-                setRiskAssessment({ level: "good", text: "Low Risk", color: "text-emerald-400" });
+                setRiskAssessment({ level: "good", text: "Low Risk", color: "text-blue-400" });
             } else if (months <= 6) {
                 setRiskAssessment({ level: "neutral", text: "Moderate Risk", color: "text-yellow-400" });
             } else {
@@ -146,7 +146,7 @@ export function MOQCalculator() {
                         titleLabel="Landed Cost"
                         labelClassName="bg-blue-500/10 text-blue-400"
                         mainValue={formatCurrency(totalInvestment)}
-                        valueColor="text-blue-500"
+                        valueColor="text-white"
                         secondaryMetrics={[
                             {
                                 label: "Inventory Coverage",
@@ -195,7 +195,7 @@ export function MOQCalculator() {
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <div className="flex items-start gap-3">
-                            <AlertTriangle className={`w-5 h-5 mt-0.5 ${riskAssessment.level === "bad" ? "text-rose-500" : riskAssessment.level === "good" ? "text-emerald-500" : "text-amber-500"}`} />
+                            <AlertTriangle className={`w-5 h-5 mt-0.5 ${riskAssessment.level === "bad" ? "text-rose-500" : riskAssessment.level === "good" ? "text-blue-500" : "text-amber-500"}`} />
                             <div>
                                 <h4 className="font-semibold text-slate-800 mb-1">
                                     Investment Insight

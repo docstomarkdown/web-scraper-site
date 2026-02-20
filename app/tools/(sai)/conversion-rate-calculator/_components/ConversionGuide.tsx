@@ -22,10 +22,10 @@ export function ConversionGuide() {
                 {
                     title: "Why it Matters?",
                     icon: TrendingUp,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Growth",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Efficiency metric",
                     tooltip: "Improving conversion rate increases revenue without increasing traffic costs.",
                     description: "Improving your conversion rate is often more cost-effective than acquiring new traffic. It means you are getting more value from the visitors you already have."

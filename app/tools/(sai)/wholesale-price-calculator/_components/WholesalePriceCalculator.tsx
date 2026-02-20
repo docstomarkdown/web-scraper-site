@@ -104,13 +104,13 @@ export function WholesalePriceCalculator() {
                                 <Counter value={wholesalePrice} formatter={formatCurrency} key={currency} /> :
                                 "—"
                         }
-                        valueColor="text-blue-500"
+                        valueColor="text-white"
                         secondaryMetrics={[]}
                     />
 
                     {/* Breakdown Card */}
                     {effectiveCost > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
                             </div>
@@ -128,8 +128,8 @@ export function WholesalePriceCalculator() {
                                     <span className="text-sm font-semibold text-slate-800">{markup.toFixed(2)}%</span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4">
-                                    <span className="text-sm font-bold text-emerald-600">Profit per Unit</span>
-                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(profitPerUnit)}</span>
+                                    <span className="text-sm font-bold text-blue-600">Profit per Unit</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(profitPerUnit)}</span>
                                 </div>
                             </div>
                         </div>

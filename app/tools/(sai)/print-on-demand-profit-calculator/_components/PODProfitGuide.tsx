@@ -13,8 +13,8 @@ export function PODProfitGuide() {
                     title: "Base vs. Retail Price",
                     description: "Your profit starts with the difference between what your provider charges (Base Cost) and what your customer pays (Retail Price). Don't forget to markup enough to cover fees.",
                     icon: DollarSign,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "30%+",
                     statLabel: "Ideal Margin"
                 },

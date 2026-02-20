@@ -103,7 +103,7 @@ export function BreakEvenCalculator() {
                             {
                                 label: "Break-Even Revenue",
                                 value: <Counter value={breakEvenRevenue} formatter={formatCurrency} key={`rev - ${currency} `} />,
-                                color: "text-emerald-400"
+                                color: "text-blue-400"
                             },
                         ]}
                     />
@@ -117,7 +117,7 @@ export function BreakEvenCalculator() {
 
                     {/* Breakdown Card */}
                     {breakEvenUnits > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Unit Economics</p>
                             </div>
@@ -132,11 +132,11 @@ export function BreakEvenCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
                                     <span className="text-sm font-semibold text-slate-900">Contribution Margin</span>
-                                    <span className="text-sm font-bold text-emerald-600">{formatCurrency(contributionMargin)}</span>
+                                    <span className="text-sm font-bold text-blue-600">{formatCurrency(contributionMargin)}</span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4">
-                                    <span className="text-sm font-bold text-emerald-600">Fixed Costs</span>
-                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(fixed)}</span>
+                                    <span className="text-sm font-bold text-blue-600">Fixed Costs</span>
+                                    <span className="text-base font-bold text-blue-600">{formatCurrency(fixed)}</span>
                                 </div>
                             </div>
                         </div>

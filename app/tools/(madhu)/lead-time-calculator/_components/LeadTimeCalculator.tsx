@@ -205,7 +205,7 @@ Estimated Delivery Date: ${deliveryDate}
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Shipping Time</p>
-                                    <p className="text-xl font-bold text-emerald-400">{hasInputs ? Math.round(totals.pct.shipping) : 0}%</p>
+                                    <p className="text-xl font-bold text-blue-400">{hasInputs ? Math.round(totals.pct.shipping) : 0}%</p>
                                 </div>
                             </div>
                         </div>

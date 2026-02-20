@@ -84,7 +84,7 @@ export function CubicFeetCalculator() {
             tierRule = "Fits standard courier limits"
             costRange = "$15 – $45"
             status = "Standard Shipping"
-            statusColor = "text-emerald-500 bg-emerald-50 border-emerald-100"
+            statusColor = "text-blue-500 bg-blue-50 border-blue-100"
         } else if (cft <= 15) {
             tierName = "Oversized Parcel"
             tierRule = "Likely triggers 'Oversize' surcharges"
@@ -327,7 +327,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                             </div>
                             <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                 <p className="text-xs font-bold text-slate-300 mb-1">Cubic inches</p>
-                                <p className="text-xl font-bold text-emerald-400">
+                                <p className="text-xl font-bold text-blue-400">
                                     <Counter
                                         value={results.inches}
                                         formatter={(val) => Math.round(val).toLocaleString()}
@@ -415,7 +415,7 @@ ${results.inches.toLocaleString()} Cubic Inches
 
                                     {/* Floating Insight Card */}
                                     <div className="absolute inset-0 flex items-center justify-center p-6 bg-white/20 backdrop-blur-[0.5px]">
-                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-blue-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
+                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
                                             <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-500 mx-auto shadow-inner">
                                                 <Truck className="w-7 h-7 animate-pulse" />
                                             </div>

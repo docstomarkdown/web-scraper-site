@@ -172,12 +172,12 @@ export function PODProfitCalculator() {
                         title="Net Profit"
                         titleLabel="Total Earnings"
                         mainValue={<Counter value={netProfit} prefix={currencySymbol} />}
-                        valueColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
+                        valueColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
                         secondaryMetrics={[
                             {
                                 label: "Profit Margin",
                                 value: <Counter value={margin} formatter={(v) => `${v.toFixed(1)}%`} />,
-                                color: margin >= 15 ? "text-emerald-600" : (margin > 0 ? "text-blue-600" : "text-red-600")
+                                color: margin >= 15 ? "text-blue-600" : (margin > 0 ? "text-blue-600" : "text-red-600")
                             },
                             {
                                 label: "Total Revenue",

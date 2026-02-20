@@ -71,9 +71,9 @@ export function PalletConfigurationCalculatorContent() {
             icon: DollarSign,
             stat: "1,500 lb",
             statLabel: "Amazon FBA Max Weight",
-            iconBg: "bg-emerald-50",
-            iconColor: "text-emerald-600",
-            statColor: "text-emerald-700",
+            iconBg: "bg-blue-50",
+            iconColor: "text-blue-600",
+            statColor: "text-blue-700",
             tooltip: "Use our Amazon FBA preset to ensure compliance with warehouse standards."
         }
     ]

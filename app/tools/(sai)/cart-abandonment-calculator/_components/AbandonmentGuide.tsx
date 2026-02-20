@@ -44,10 +44,10 @@ export function AbandonmentGuide() {
                 {
                     title: "How to Recover?",
                     icon: Mail,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Email",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Recovery Campaigns",
                     tooltip: "Send automated emails to users who left items in their cart.",
                     description: "Cart recovery emails are highly effective. Sending a reminder email 1 hour, 24 hours, and 72 hours after abandonment can recover a significant portion of lost sales."

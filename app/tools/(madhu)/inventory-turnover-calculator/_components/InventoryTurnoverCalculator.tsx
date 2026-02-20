@@ -116,7 +116,7 @@ Results:
         switch (status) {
             case "low": return "text-red-500 bg-red-50 border-red-100"
             case "moderate": return "text-amber-500 bg-amber-50 border-amber-100"
-            case "high": return "text-emerald-500 bg-emerald-50 border-emerald-100"
+            case "high": return "text-blue-500 bg-blue-50 border-blue-100"
             case "excellent": return "text-blue-500 bg-blue-50 border-blue-100"
             default: return "text-slate-400 bg-slate-50 border-slate-100"
         }
@@ -269,7 +269,7 @@ Results:
                                                     Avg. Inventory
                                                     <Info className="w-3 h-3 text-slate" />
                                                 </p>
-                                                <p className="text-xl font-bold text-emerald-400">
+                                                <p className="text-xl font-bold text-blue-400">
                                                     {hasInputs ? `$${(results.avgInventory / 1000).toFixed(1)}k` : "$0k"}
                                                 </p>
                                             </div>

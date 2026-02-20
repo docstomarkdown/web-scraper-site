@@ -167,7 +167,7 @@ Result:
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Lead time demand</p>
-                                    <p className="text-xl font-bold text-emerald-400">{Math.round(results.leadTimeDemand)}</p>
+                                    <p className="text-xl font-bold text-blue-400">{Math.round(results.leadTimeDemand)}</p>
                                 </div>
                             </div>
 

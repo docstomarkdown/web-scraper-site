@@ -34,10 +34,10 @@ export function SalesVelocityGuide() {
                     title: "Revenue Run Rate",
                     description: "Multiplying your true daily velocity by 30 gives you your potential annual revenue. This helps justify cash flow for larger inventory orders.",
                     icon: TrendingUp,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Growth",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Potential",
                     tooltip: "See your real potential."
                 }

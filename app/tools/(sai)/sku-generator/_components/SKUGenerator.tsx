@@ -334,7 +334,7 @@ export function SKUGenerator() {
                                 disabled={!generatedSKU}
                                 className={cn(
                                     "py-6 text-sm font-bold transition-all duration-300",
-                                    copied ? "bg-emerald-500 hover:bg-emerald-600" : "bg-slate-800 hover:bg-slate-900"
+                                    copied ? "bg-blue-500 hover:bg-blue-600" : "bg-slate-800 hover:bg-slate-900"
                                 )}
                             >
                                 {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
@@ -364,7 +364,7 @@ export function SKUGenerator() {
                                 <Button
                                     size="sm"
                                     onClick={downloadCSV}
-                                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
                                 >
                                     <Download className="w-4 h-4 mr-2" />
                                     CSV

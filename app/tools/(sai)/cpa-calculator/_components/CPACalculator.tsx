@@ -74,11 +74,11 @@ export function CPACalculator() {
 
     if (validCalculation && target > 0) {
         if (cpa <= target) {
-            valueColor = "text-emerald-400"
+            valueColor = "text-blue-400"
             statusLabel = "Under Target"
-            statusColor = "bg-emerald-500/20 text-emerald-300"
+            statusColor = "bg-blue-500/20 text-blue-300"
             // Clean, standard success colors for the external badge
-            badgeClasses = "bg-emerald-50 border-emerald-200 text-emerald-700"
+            badgeClasses = "bg-blue-50 border-blue-200 text-blue-700"
         } else {
             valueColor = "text-red-400"
             statusLabel = "Over Target"
@@ -257,7 +257,7 @@ export function CPACalculator() {
                     {validCalculation ? (
                         <div className={cn(
                             "bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4",
-                            cpa <= (target || cpa) ? "border-l-emerald-500" : "border-l-red-500"
+                            cpa <= (target || cpa) ? "border-l-blue-500" : "border-l-red-500"
                         )}>
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">
@@ -298,11 +298,11 @@ export function CPACalculator() {
                                     </div>
                                 )}
 
-                                <div className={cn("flex justify-between items-center px-5 py-4", cpa <= (target || cpa) ? "bg-emerald-50/50" : "bg-red-50/50")}>
-                                    <span className={cn("text-sm font-bold", cpa <= (target || cpa) ? "text-emerald-700" : "text-red-700")}>
+                                <div className={cn("flex justify-between items-center px-5 py-4", cpa <= (target || cpa) ? "bg-blue-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-bold", cpa <= (target || cpa) ? "text-blue-700" : "text-red-700")}>
                                         Measured CPA
                                     </span>
-                                    <span className={cn("text-base font-bold", cpa <= (target || cpa) ? "text-emerald-700" : "text-red-700")}>
+                                    <span className={cn("text-base font-bold", cpa <= (target || cpa) ? "text-blue-700" : "text-red-700")}>
                                         {formatCurrency(cpa)}
                                     </span>
                                 </div>
@@ -336,7 +336,7 @@ export function CPACalculator() {
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
-                            <h4 className="text-sm font-semibold text-blue-900 mb-1">Pro Tip</h4>
+                            <h4 className="text-sm font-semibold text-slate-900 mb-1">Pro Tip</h4>
                             <p className="text-sm text-blue-700 leading-relaxed">
                                 {mode === "campaign-data" ?
                                     "A lower CPA is generally better, but ensure it's profitable relative to your Customer Lifetime Value (LTV)." :

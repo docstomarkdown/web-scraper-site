@@ -36,13 +36,9 @@ export function ConversionCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter traffic and conversion data."
-
                             onReset={handleReset}
-
                             guideId="conversion-guide"
-
                         />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
@@ -72,7 +68,7 @@ export function ConversionCalculator() {
                         mainValue={
                             <Counter value={rate} formatter={(v) => `${v.toFixed(2)}%`} />
                         }
-                        valueColor={isValid ? "text-emerald-400" : "text-white"}
+                        valueColor={isValid ? "text-blue-400" : "text-white"}
                         secondaryMetrics={[
                             {
                                 label: "Visitors",
@@ -91,7 +87,7 @@ export function ConversionCalculator() {
                     {isValid && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            rate >= 3 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                            rate >= 3 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                 rate >= 1 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                     "bg-red-50 border-red-200 text-red-700"
                         )}>
@@ -110,9 +106,9 @@ export function ConversionCalculator() {
                                     <span className="text-sm text-slate-500">Total Visitors</span>
                                     <span className="text-sm font-medium text-slate-700">{visitorsVal.toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-emerald-50/50">
-                                    <span className="text-sm text-emerald-600 font-medium">Converted Users</span>
-                                    <span className="text-sm font-bold text-emerald-600">{conversionsVal.toLocaleString()}</span>
+                                <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                    <span className="text-sm text-blue-600 font-medium">Converted Users</span>
+                                    <span className="text-sm font-bold text-blue-600">{conversionsVal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
                                     <span className="text-sm text-slate-500">Non-Converted Users</span>
@@ -127,11 +123,11 @@ export function ConversionCalculator() {
                     )}
 
                     {/* Insight Card */}
-                    <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex gap-3 items-start mt-4">
-                        <TrendingUp className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
+                        <TrendingUp className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
                             <h4 className="text-sm font-semibold text-emerald-900 mb-1">Benchmarks</h4>
-                            <p className="text-sm text-emerald-700 leading-relaxed">
+                            <p className="text-sm text-blue-700 leading-relaxed">
                                 E-commerce conversion rates typically range from 1% to 3%. A rate above 3% is generally considered excellent, though this varies by industry.
                             </p>
                         </div>

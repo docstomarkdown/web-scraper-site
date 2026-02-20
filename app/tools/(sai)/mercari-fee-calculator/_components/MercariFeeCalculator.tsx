@@ -113,8 +113,8 @@ export function MercariFeeCalculator() {
         if (price > 200) {
             return {
                 icon: CheckCircle2,
-                color: "text-emerald-600",
-                bg: "bg-emerald-50",
+                color: "text-blue-600",
+                bg: "bg-blue-50",
                 title: "High Value Item",
                 message: "Excellent resale price. Ensure you use shipping insurance for items over $200."
             };
@@ -200,33 +200,33 @@ export function MercariFeeCalculator() {
                         <ResultFeedbackCard
                             title="Net Profit"
                             titleLabel="Live"
-                            labelClassName="text-emerald-400 bg-slate-800/50 border-slate-700/50"
+                            labelClassName="text-blue-400 bg-slate-800/50 border-slate-700/50"
                             mainValue={
                                 price > 0 ?
                                     <Counter value={netProfit} formatter={formatCurrency} /> :
                                     "—"
                             }
-                            valueColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
+                            valueColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
                             mainMetricLabel="Status"
                             mainMetricValue={price > 0 ? (netProfit >= 0 ? "PROFITABLE" : "LOSS") : "WAITING"}
-                            mainMetricColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
+                            mainMetricColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
                             secondaryMetrics={price > 0 ? [
                                 {
                                     label: "Total Fees",
                                     value: <Counter value={totalFees} formatter={formatCurrency} />,
-                                    color: "text-slate-400"
+                                    color: "text-blue-400"
                                 },
                                 ...(quantity > 1 ? [{
                                     label: `Batch Profit (×${quantity})`,
                                     value: <Counter value={batchProfit} formatter={formatCurrency} />,
-                                    color: "text-emerald-400 font-bold"
+                                    color: "text-blue-400 font-bold"
                                 }] : [])
                             ] : []}
                         />
 
                         {/* Breakdown Card */}
                         {price > 0 ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                                 <div className="px-5 py-3.5 border-b border-slate-100">
                                     <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fees & Profit</p>
                                 </div>
@@ -244,8 +244,8 @@ export function MercariFeeCalculator() {
                                         <span className="text-sm font-semibold text-red-500">- {formatCurrency(totalFees)}</span>
                                     </div>
                                     <div className="flex justify-between items-center px-5 py-4">
-                                        <span className="text-sm font-bold text-emerald-600">Net Margin</span>
-                                        <span className="text-base font-bold text-emerald-600">{margin.toFixed(1)}%</span>
+                                        <span className="text-sm font-bold text-blue-600">Net Margin</span>
+                                        <span className="text-base font-bold text-blue-600">{margin.toFixed(1)}%</span>
                                     </div>
                                 </div>
                             </div>

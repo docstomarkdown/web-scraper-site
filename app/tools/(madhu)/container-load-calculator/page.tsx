@@ -409,9 +409,9 @@ Calculated via Container Load Calculator
             icon: Layers,
             stat: "Top Tip",
             statLabel: "Use High Cube",
-            iconBg: "bg-emerald-100",
-            iconColor: "text-emerald-600",
-            statColor: "text-emerald-600"
+            iconBg: "bg-blue-100",
+            iconColor: "text-blue-600",
+            statColor: "text-blue-600"
         }
     ]
 
@@ -553,7 +553,7 @@ Calculated via Container Load Calculator
                                 {
                                     label: "Total Weight",
                                     value: result ? `${Math.round(result.totalWeight).toLocaleString()} kg` : "0 kg",
-                                    color: result?.limitReason === "Weight Limit" ? "text-amber-500" : "text-emerald-400"
+                                    color: result?.limitReason === "Weight Limit" ? "text-amber-500" : "text-blue-400"
                                 },
                                 {
                                     label: "Volume Usage",

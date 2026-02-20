@@ -226,7 +226,7 @@ export function ROICalculator() {
                         mainValue={
                             <Counter value={safeROI} formatter={(v) => `${v.toFixed(2)}%`} />
                         }
-                        valueColor={safeGain > 0 ? "text-emerald-400" : (safeGain < 0 ? "text-red-400" : "text-white")}
+                        valueColor={safeGain > 0 ? "text-blue-400" : (safeGain < 0 ? "text-red-400" : "text-white")}
                     />
 
                     {/* Return Indicator */}
@@ -237,7 +237,7 @@ export function ROICalculator() {
                             className={cn(
                                 "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
                                 safeROI >= 100
-                                    ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                    ? "bg-blue-50 border-blue-200 text-blue-700"
                                     : safeROI >= 20
                                         ? "bg-blue-50 border-blue-200 text-blue-700"
                                         : safeROI >= 0
@@ -246,12 +246,12 @@ export function ROICalculator() {
                             )}
                         >
                             {safeROI >= 100
-                                ? "🔥 Excellent Return!"
+                                ? " Excellent Return!"
                                 : safeROI >= 20
-                                    ? "✨ Strong Return!"
+                                    ? " Strong Return!"
                                     : safeROI >= 0
-                                        ? "👍 Positive Return"
-                                        : "⚠️ Loss on Investment"}
+                                        ? " Positive Return"
+                                        : " Loss on Investment"}
                         </motion.div>
                     )}
 
@@ -260,7 +260,7 @@ export function ROICalculator() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500"
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500"
                         >
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Investment Breakdown</p>
@@ -274,11 +274,11 @@ export function ROICalculator() {
                                     <span className="text-sm text-slate-600">Amount Returned</span>
                                     <span className="text-sm font-semibold text-slate-800">{formatCurrency(returned)}</span>
                                 </div>
-                                <div className={cn("flex justify-between items-center px-5 py-3.5", safeGain >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
-                                    <span className={cn("text-sm font-semibold", safeGain >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                <div className={cn("flex justify-between items-center px-5 py-3.5", safeGain >= 0 ? "bg-blue-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-semibold", safeGain >= 0 ? "text-blue-700" : "text-red-700")}>
                                         {safeGain >= 0 ? "Net Gain" : "Net Loss"}
                                     </span>
-                                    <span className={cn("text-sm font-bold", safeGain >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                    <span className={cn("text-sm font-bold", safeGain >= 0 ? "text-blue-700" : "text-red-700")}>
                                         {safeGain >= 0 ? "+" : ""}{formatCurrency(safeGain)}
                                     </span>
                                 </div>

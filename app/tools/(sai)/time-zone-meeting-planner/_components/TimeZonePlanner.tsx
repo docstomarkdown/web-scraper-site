@@ -68,7 +68,7 @@ const COUNTRY_LIST: { name: string; flag: string; code: string; timezone: string
     { name: "Ireland", flag: "🇮🇪", code: "ie", timezone: "Europe/Dublin" },
     { name: "Israel", flag: "🇮🇱", code: "il", timezone: "Asia/Jerusalem" },
     { name: "Italy", flag: "🇮🇹", code: "it", timezone: "Europe/Rome" },
-    { name: "Jamaica", flag: "🇯🇲", code: "jm", timezone: "America/Jamaica" },
+    { name: "Jamaica", flag: "🇮🇲", code: "jm", timezone: "America/Jamaica" },
     { name: "Jordan", flag: "🇯🇴", code: "jo", timezone: "Asia/Amman" },
     { name: "Kazakhstan", flag: "🇰🇿", code: "kz", timezone: "Asia/Almaty" },
     { name: "Kenya", flag: "🇰🇪", code: "ke", timezone: "Africa/Nairobi" },
@@ -180,7 +180,7 @@ const formatTime = (minutesSinceMidnight: number) => {
 };
 
 const getTimeOfDayStatus = (hour: number) => {
-    if (hour >= 9 && hour < 17) return { label: "Business Hours", color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-100", icon: Sun };
+    if (hour >= 9 && hour < 17) return { label: "Business Hours", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Sun };
     if (hour >= 6 && hour < 9) return { label: "Morning", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-100", icon: Sun };
     if (hour >= 17 && hour < 22) return { label: "Evening", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Moon };
     return { label: "Off Hours", color: "text-slate-500", bg: "bg-slate-50", border: "border-slate-200", icon: Moon };
@@ -258,11 +258,8 @@ export function TimeZonePlanner() {
                 {/* Main Controls Card */}
                 <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                     <CalculatorCardHeader
-
                         description="Enter your details."
-
                         onReset={() => { setBaseTime("09:00"); setCompareTimezones(["Europe/London", "Asia/Tokyo", "America/New_York"]); }}
-
                     />
                     <CardContent className="p-8">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -300,7 +297,7 @@ export function TimeZonePlanner() {
                                 </Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button {...({ variant: "outline", role: "combobox", className: "w-full h-12 justify-between bg-white border-slate-200 hover:bg-slate-50 rounded-lg px-4 font-bold text-slate-800 shadow-sm border-b-2" } as any)}>
+                                        <Button variant={"outline"} role={"combobox"} className={"w-full h-12 justify-between bg-white border-slate-200 hover:bg-slate-50 rounded-lg px-4 font-bold text-slate-800 shadow-sm border-b-2"}>
                                             <div className="flex items-center gap-2">
                                                 {baseCountry && <Flag code={baseCountry.code} className="w-5 h-3.5" />}
                                                 {baseCountry ? baseCountry.name : "Select Country..."}
@@ -424,12 +421,10 @@ export function TimeZonePlanner() {
                         </div>
                         {compareTimezones.length > 0 && (
                             <Button
-                                {...({
-                                    variant: "outline",
-                                    size: "sm",
-                                    onClick: () => setCompareTimezones([]),
-                                    className: "text-xs font-bold text-slate-500 hover:text-red-500 border-slate-200 bg-white"
-                                } as any)}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setCompareTimezones([])}
+                                className="text-xs font-bold text-slate-500 hover:text-red-500 border-slate-200 bg-white"
                             >
                                 Reset View
                             </Button>
@@ -469,9 +464,9 @@ export function TimeZonePlanner() {
                                         )}
                                         className={cn(
                                             "group transition-all duration-500 hover:translate-y-[-8px] hover:shadow-2xl relative overflow-hidden",
-                                            result.status.label === "Business Hours" ? "bg-emerald-50/50 border-emerald-200" :
+                                            result.status.label === "Business Hours" ? "bg-blue-50/50 border-blue-200" :
                                                 result.status.label === "Morning" ? "bg-amber-50/50 border-amber-200" :
-                                                    result.status.label === "Evening" ? "bg-blue-50/50 border-blue-200" :
+                                                    result.status.label === "Evening" ? "bg-blue-50/50 border-blue-100" :
                                                         "bg-slate-50/50 border-slate-200"
                                         )}
                                         mainValue={
@@ -487,7 +482,6 @@ export function TimeZonePlanner() {
                                                     )}
                                                 </div>
 
-                                                {/* Metadata inside mainValue to avoid automatic children border */}
                                                 <div className="flex items-center justify-between pt-4 opacity-60">
                                                     <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
                                                         <Globe className="h-3.5 w-3.5 opacity-40 text-blue-500" />
@@ -517,5 +511,3 @@ export function TimeZonePlanner() {
         </FadeIn>
     );
 }
-
-

@@ -77,7 +77,7 @@ export function WeightConverter() {
             tierRule = "Best for USPS ground advantage (under 1 lb)"
             costRange = "$4.50 – $7.50"
             status = "High margin safe"
-            statusColor = "text-emerald-500 bg-emerald-50 border-emerald-100"
+            statusColor = "text-blue-500 bg-blue-50 border-blue-100"
 
             if (oz >= 12) {
                 thresholdAlert = "⚠ Shipping costs increase once you exceed 1 lb."
@@ -340,7 +340,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                     </p>
                                     <p className={cn(
                                         "text-xl font-bold break-all",
-                                        index === 0 ? "text-indigo-400" : "text-emerald-400"
+                                        index === 0 ? "text-indigo-400" : "text-blue-400"
                                     )}>
                                         <Counter value={conversions[unit]} />
                                         <span className="text-xs font-normal opacity-50 ml-1 uppercase">{unit}</span>
@@ -423,7 +423,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
 
                                     {/* Floating Insight Card */}
                                     <div className="absolute inset-0 flex items-center justify-center p-6 bg-white/20 backdrop-blur-[0.5px]">
-                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-blue-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
+                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
                                             <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-500 mx-auto shadow-inner">
                                                 <Truck className="w-7 h-7 animate-pulse" />
                                             </div>

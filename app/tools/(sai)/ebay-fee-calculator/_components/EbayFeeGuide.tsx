@@ -29,8 +29,8 @@ export function EbayFeeGuide() {
                     title: "Promoted Listings",
                     description: "If you promote your item, you pay an extra ad fee percentage based on the final sale price. This is optional but common for visibility.",
                     icon: DollarSign,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                 }
             ]}
         />

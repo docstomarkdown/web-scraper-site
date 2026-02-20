@@ -82,7 +82,7 @@ export function SafetyStockCalculator() {
                                 <span className="text-2xl font-normal opacity-80">Units</span>
                             </div>
                         }
-                        valueColor="text-emerald-400"
+                        valueColor="text-blue-400"
                         mainMetricLabel="Impact"
                         mainMetricValue="Prevents Stockouts"
                         mainMetricColor="text-blue-400"
@@ -124,7 +124,7 @@ export function SafetyStockCalculator() {
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <div className="flex items-start gap-3">
-                            <ShieldCheck className="w-5 h-5 text-emerald-500 mt-0.5" />
+                            <ShieldCheck className="w-5 h-5 text-blue-500 mt-0.5" />
                             <div>
                                 <h4 className="font-semibold text-slate-800 mb-1">
                                     Inventory Protection

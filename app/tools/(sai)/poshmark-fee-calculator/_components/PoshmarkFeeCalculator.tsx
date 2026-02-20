@@ -136,12 +136,12 @@ export function PoshmarkFeeCalculator() {
                         title="Net Earnings"
                         titleLabel="Payout Amount"
                         mainValue={<Counter value={netEarnings} prefix={currencySymbol} />}
-                        valueColor={netEarnings >= 0 ? "text-emerald-400" : "text-slate-100"}
+                        valueColor={netEarnings >= 0 ? "text-blue-400" : "text-slate-100"}
                         secondaryMetrics={[
                             {
                                 label: "Net Profit",
                                 value: <Counter value={netProfit} prefix={currencySymbol} />,
-                                color: netProfit >= 0 ? "text-emerald-600" : "text-red-600"
+                                color: netProfit >= 0 ? "text-blue-600" : "text-red-600"
                             },
                             {
                                 label: "Poshmark Fee",

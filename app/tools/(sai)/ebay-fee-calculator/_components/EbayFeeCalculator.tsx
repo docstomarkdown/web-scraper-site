@@ -198,12 +198,12 @@ export function EbayFeeCalculator() {
                         title="Net Profit"
                         titleLabel="Cash in Hand"
                         mainValue={<Counter value={netProfit} prefix={currencySymbol} />}
-                        valueColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
+                        valueColor={netProfit >= 0 ? "text-blue-400" : "text-red-400"}
                         secondaryMetrics={[
                             {
                                 label: "Profit Margin",
                                 value: <Counter value={margin} formatter={(v) => `${v.toFixed(1)}%`} />,
-                                color: margin >= 20 ? "text-emerald-600" : (margin > 0 ? "text-blue-600" : "text-red-600")
+                                color: margin >= 20 ? "text-blue-600" : (margin > 0 ? "text-blue-600" : "text-red-600")
                             },
                             {
                                 label: "Total Fees",
@@ -239,7 +239,7 @@ export function EbayFeeCalculator() {
                             </div>
                             <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
                                 <span className="text-sm font-bold text-slate-900">Net Profit</span>
-                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-blue-600" : "text-red-600")}>
                                     {currencySymbol}{netProfit.toFixed(2)}
                                 </span>
                             </div>

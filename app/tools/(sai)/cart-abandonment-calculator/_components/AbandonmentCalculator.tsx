@@ -38,11 +38,8 @@ export function AbandonmentCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter cart and transaction data."
-
                             onReset={handleReset}
-
                             guideId="abandonment-guide"
                         />
                         <CardContent className="space-y-5 pt-6">
@@ -73,7 +70,7 @@ export function AbandonmentCalculator() {
                         mainValue={
                             <Counter value={rate} formatter={(v) => `${v.toFixed(2)}%`} />
                         }
-                        valueColor={isValid ? (rate < 70 ? "text-emerald-400" : "text-red-400") : "text-white"}
+                        valueColor={isValid ? (rate < 70 ? "text-blue-400" : "text-red-400") : "text-white"}
                         secondaryMetrics={[
                             {
                                 label: "Carts Created",
@@ -92,7 +89,7 @@ export function AbandonmentCalculator() {
                     {isValid && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            rate < 60 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                            rate < 60 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                 rate < 75 ? "bg-yellow-50 border-yellow-200 text-yellow-700" :
                                     "bg-red-50 border-red-200 text-red-700"
                         )}>
@@ -115,9 +112,9 @@ export function AbandonmentCalculator() {
                                     <span className="text-sm text-red-600 font-medium">Abandoned Carts</span>
                                     <span className="text-sm font-bold text-red-600">{(cartsVal - transactionsVal).toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-emerald-50/50">
-                                    <span className="text-sm text-emerald-600 font-medium">Completed Orders</span>
-                                    <span className="text-sm font-bold text-emerald-600">{transactionsVal.toLocaleString()}</span>
+                                <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
+                                    <span className="text-sm text-blue-600 font-medium">Completed Orders</span>
+                                    <span className="text-sm font-bold text-blue-600">{transactionsVal.toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>

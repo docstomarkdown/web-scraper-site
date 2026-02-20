@@ -216,12 +216,12 @@ export function FBARemovalCalculator() {
                                 <div className={cn(
                                     "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
                                     sizeTier === "Standard"
-                                        ? "bg-emerald-50/50 border-emerald-100"
+                                        ? "bg-blue-50/50 border-blue-100"
                                         : "bg-amber-50/50 border-amber-100"
                                 )}>
                                     <div className={cn(
                                         "p-2 rounded-lg bg-white shadow-sm ring-1",
-                                        sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
+                                        sizeTier === "Standard" ? "ring-blue-100 text-blue-600" : "ring-amber-100 text-amber-600"
                                     )}>
                                         <Box className="w-4 h-4" />
                                     </div>
@@ -234,7 +234,7 @@ export function FBARemovalCalculator() {
                                         </p>
                                         <p className={cn(
                                             "text-xs mt-0.5",
-                                            sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
+                                            sizeTier === "Standard" ? "text-blue-700" : "text-amber-700"
                                         )}>
                                             Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
                                         </p>

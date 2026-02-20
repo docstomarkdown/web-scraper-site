@@ -125,7 +125,7 @@ export function PackagingCostCalculator() {
 
         return (
             <p className="text-sm text-slate-600 leading-relaxed">
-                Your packaging cost looks well-optimized at <span className="font-bold text-emerald-600">{formatCurrency(totalPackagingCost)}</span> per unit.
+                Your packaging cost looks well-optimized at <span className="font-bold text-blue-600">{formatCurrency(totalPackagingCost)}</span> per unit.
                 To save further, negotiate <span className="text-blue-600 font-semibold">supplier contracts</span> or consolidate orders for volume discounts.
             </p>
         )
@@ -307,12 +307,12 @@ export function PackagingCostCalculator() {
                         mainValue={
                             <Counter value={totalPackagingCost} formatter={formatCurrency} key={`tpc-${currency}`} />
                         }
-                        valueColor="text-blue-600"
+                        valueColor="text-white"
                         secondaryMetrics={[
                             ...(qty > 1 ? [{
                                 label: `Batch Total (×${qty.toLocaleString()})`,
                                 value: <Counter value={batchTotal} formatter={formatCurrency} key={`bt-${currency}-${qty}`} />,
-                                color: "text-emerald-500"
+                                color: "text-blue-500"
                             }] : [])
                         ]}
                     />

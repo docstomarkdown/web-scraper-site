@@ -29,9 +29,9 @@ const insights = [
     },
     {
         icon: Ship,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-500",
-        statColor: "text-emerald-600",
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-500",
+        statColor: "text-blue-600",
         title: "Shipping & Insurance",
         stat: "Freight",
         statLabel: "Getting goods to your door",

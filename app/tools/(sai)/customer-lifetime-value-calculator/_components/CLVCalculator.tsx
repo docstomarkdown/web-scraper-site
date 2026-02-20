@@ -71,7 +71,7 @@ export function CLVCalculator() {
     let statusBg = "bg-slate-100";
 
     if (cacVal > 0 && clvProfit > 0) {
-        if (ltvCacRatio >= 5) { status = "Elite"; statusColor = "text-emerald-600"; statusBg = "bg-emerald-100"; }
+        if (ltvCacRatio >= 5) { status = "Elite"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
         else if (ltvCacRatio >= 3) { status = "Healthy"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
         else if (ltvCacRatio >= 1) { status = "Caution"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
         else { status = "At Risk"; statusColor = "text-red-600"; statusBg = "bg-red-100"; }
@@ -133,7 +133,7 @@ export function CLVCalculator() {
                             {/* Group 2: Unit Economics */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <TrendingUp className="w-4 h-4" />
                                     </div>
                                     <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Unit Economics</h3>
@@ -166,7 +166,7 @@ export function CLVCalculator() {
                                 <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Economic Summary</h4>
                                 <p className="text-[15px] text-slate-600 leading-relaxed max-w-lg font-medium">
                                     A customer generates <span className="font-bold text-slate-900">{formatCurrency(clvRevenue)}</span> revenue over their lifespan.
-                                    After costs, you keep <span className="font-bold text-emerald-600">{formatCurrency(clvProfit)}</span> in lifetime profit.
+                                    After costs, you keep <span className="font-bold text-blue-600">{formatCurrency(clvProfit)}</span> in lifetime profit.
                                     {cacVal > 0 && (
                                         <> This means your LTV is <span className="font-bold text-blue-600">{ltvCacRatio.toFixed(1)}x</span> your acquisition cost.</>
                                     )}
@@ -187,7 +187,7 @@ export function CLVCalculator() {
 
                     {/* Breakdown Card */}
                     {clvRevenue > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Lifetime Value Breakdown</p>
                             </div>
@@ -212,9 +212,9 @@ export function CLVCalculator() {
                                     </div>
                                 )}
 
-                                <div className="flex justify-between items-center px-5 py-4 bg-emerald-50/30">
+                                <div className="flex justify-between items-center px-5 py-4 bg-blue-50/30">
                                     <span className="text-sm font-bold text-slate-900">Net Lifetime Profit</span>
-                                    <span className={cn("text-base font-bold text-emerald-600")}>
+                                    <span className={cn("text-base font-bold text-blue-600")}>
                                         {formatCurrency(clvProfit)}
                                     </span>
                                 </div>
@@ -246,8 +246,8 @@ export function CLVCalculator() {
                                 value={`${ltvCacRatio.toFixed(2)}x`}
                                 description="Ratio of customer profit to acquisition cost."
                                 icon={TrendingUp}
-                                color={ltvCacRatio >= 3 ? "text-emerald-600" : ltvCacRatio >= 1 ? "text-amber-600" : "text-red-500"}
-                                bg={ltvCacRatio >= 3 ? "bg-emerald-50" : ltvCacRatio >= 1 ? "bg-amber-50" : "bg-red-50"}
+                                color={ltvCacRatio >= 3 ? "text-blue-600" : ltvCacRatio >= 1 ? "text-amber-600" : "text-red-500"}
+                                bg={ltvCacRatio >= 3 ? "bg-blue-50" : ltvCacRatio >= 1 ? "bg-amber-50" : "bg-red-50"}
                             />
                             <InsightItem
                                 label="Target CPA"
@@ -272,7 +272,7 @@ export function CLVCalculator() {
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
                                     <div className="h-full bg-red-400" style={{ width: '20%' }} /> {/* < 1x */}
                                     <div className="h-full bg-amber-400" style={{ width: '40%' }} /> {/* 1x - 3x */}
-                                    <div className="h-full bg-emerald-400" style={{ width: '40%' }} /> {/* 3x+ */}
+                                    <div className="h-full bg-blue-400" style={{ width: '40%' }} /> {/* 3x+ */}
                                 </div>
 
                                 {/* Dynamic Pointer */}

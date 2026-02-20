@@ -16,15 +16,15 @@ export function CLVGuide() {
           iconBg: "bg-blue-50",
           iconColor: "text-blue-500",
           stat: "3:1+",
-          statColor: "text-emerald-500",
+          statColor: "text-blue-500",
           statLabel: "Ideal Ratio"
         },
         {
           title: "Retention Power",
           description: "Increasing CLV is cheaper than finding new customers. A 5% increase in retention can boost profits by up to 95%.",
           icon: Users,
-          iconBg: "bg-emerald-50",
-          iconColor: "text-emerald-500",
+          iconBg: "bg-blue-50",
+          iconColor: "text-blue-500",
           stat: "5% Ret",
           statColor: "text-blue-500",
           statLabel: "Profit Multiplier"

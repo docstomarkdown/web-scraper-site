@@ -51,11 +51,8 @@ export function ReorderCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter your sales velocity and lead times."
-
                             onReset={handleReset}
-
                         />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
@@ -95,14 +92,14 @@ export function ReorderCalculator() {
                     <ResultFeedbackCard
                         title="Reorder Point"
                         titleLabel={titleLabel}
-                        labelClassName={!isReorderNeeded ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}
+                        labelClassName={!isReorderNeeded ? "bg-blue-50 border-blue-200 text-blue-700" : "bg-red-50 border-red-200 text-red-700"}
                         mainValue={
                             <div className="flex items-baseline gap-1">
                                 <Counter value={reorderPoint} />
                                 <span className="text-2xl font-normal opacity-80">Units</span>
                             </div>
                         }
-                        valueColor={!isReorderNeeded ? "text-emerald-400" : "text-red-400"}
+                        valueColor="text-white"
                         mainMetricLabel="Status"
                         mainMetricValue={isReorderNeeded ? "Place Order" : `~${daysUntilReorder} Days Left`}
                         secondaryMetrics={[
@@ -114,7 +111,7 @@ export function ReorderCalculator() {
                             {
                                 label: "Safety Stock",
                                 value: <><Counter value={safetyStockUnits} /> Units</>,
-                                color: "text-blue-300"
+                                color: "text-blue-400"
                             }
                         ]}
                     />
@@ -145,7 +142,7 @@ export function ReorderCalculator() {
                         <div className="flex items-start gap-3">
                             {isReorderNeeded ?
                                 <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" /> :
-                                <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5" />
+                                <CheckCircle2 className="w-5 h-5 text-blue-500 mt-0.5" />
                             }
                             <div>
                                 <h4 className="font-semibold text-slate-800 mb-1">

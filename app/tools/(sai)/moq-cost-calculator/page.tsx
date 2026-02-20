@@ -26,7 +26,7 @@ const faqs = [
     {
         question: "What is a 'healthy' inventory coverage?",
         answer:
-            "Generally, 3-4 months of inventory is considered healthy for most e-commerce businesses. Anything above 6 months is risky because it ties up cash and incurs long-term storage fees. Anything under 1 month risks stockouts.",
+            "Generally, 3-4 months of inventory is considered healthy for most e-commerce businesses. Anything above 6 months is riemerald because it ties up cash and incurs long-term storage fees. Anything under 1 month risks stockouts.",
     },
     {
         question: "Can I negotiate Minimum Order Quantity (MOQ)?",

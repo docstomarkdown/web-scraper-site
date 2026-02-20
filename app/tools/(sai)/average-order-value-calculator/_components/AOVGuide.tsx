@@ -22,10 +22,10 @@ export function AOVGuide() {
                 {
                     title: "Why it Matters?",
                     icon: TrendingUp,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Profit",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Efficiency metric",
                     tooltip: "Higher AOV means more revenue for the same marketing cost.",
                     description: "Improving your AOV directly increases your revenue growth without the added cost of acquiring new customers. It helps you get more value from every transaction."

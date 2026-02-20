@@ -146,13 +146,13 @@ export function FreeShippingCalculator() {
                     <ResultFeedbackCard
                         title="Required Sales Increase"
                         titleLabel={isViable ? "Feasible" : "High Risk"}
-                        labelClassName={isViable ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}
+                        labelClassName={isViable ? "bg-blue-50 border-blue-200 text-blue-700" : "bg-red-50 border-red-200 text-red-700"}
                         mainValue={
                             isViable ?
                                 <Counter value={salesIncreaseNeeded} formatter={(v) => `+${v.toFixed(1)}%`} /> :
                                 <span>Unprofitable</span>
                         }
-                        valueColor={isViable ? (salesIncreaseNeeded < 20 ? "text-emerald-400" : "text-yellow-400") : "text-red-400"}
+                        valueColor={isViable ? (salesIncreaseNeeded < 20 ? "text-blue-400" : "text-yellow-400") : "text-red-400"}
                         mainMetricLabel="Impact"
                         mainMetricValue={isViable ? "To Break Even" : "Loss per Order"}
                         secondaryMetrics={[
@@ -170,7 +170,7 @@ export function FreeShippingCalculator() {
                     />
 
                     {/* Breakdown Card */}
-                    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${isViable ? 'border-l-emerald-500' : 'border-l-red-500'}`}>
+                    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${isViable ? 'border-l-blue-500' : 'border-l-red-500'}`}>
                         <div className="px-5 py-3.5 border-b border-slate-100">
                             <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Price Breakdown</p>
                         </div>
@@ -194,10 +194,10 @@ export function FreeShippingCalculator() {
                                 </span>
                             </div>
                             <div className="flex justify-between items-center px-5 py-4">
-                                <span className={`text-sm font-bold ${isViable ? 'text-emerald-600' : 'text-red-600'}`}>
+                                <span className={`text-sm font-bold ${isViable ? 'text-blue-600' : 'text-red-600'}`}>
                                     {isViable ? 'Sales Lift Needed' : 'Not Viable'}
                                 </span>
-                                <span className={`text-base font-bold ${isViable ? 'text-emerald-600' : 'text-red-600'}`}>
+                                <span className={`text-base font-bold ${isViable ? 'text-blue-600' : 'text-red-600'}`}>
                                     {isViable ? `+${salesIncreaseNeeded.toFixed(1)}%` : formatCurrency(Math.abs(netProfitWithFreeShipping)) + ' loss'}
                                 </span>
                             </div>

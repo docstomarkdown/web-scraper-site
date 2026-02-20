@@ -18,9 +18,9 @@ const insights = [
     },
     {
         icon: Percent,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-500",
-        statColor: "text-emerald-600",
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-500",
+        statColor: "text-blue-600",
         title: "Profit Margin",
         stat: "Margin",
         statLabel: "% of price that is profit",

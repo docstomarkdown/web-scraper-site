@@ -105,7 +105,7 @@ export function CACCalculator() {
                             {
                                 label: "Customers Won",
                                 value: <Counter value={customersVal} formatter={(v) => v.toFixed(0)} />,
-                                color: "text-emerald-400"
+                                color: "text-blue-400"
                             }
                         ]}
                     />
@@ -114,7 +114,7 @@ export function CACCalculator() {
                     {isValid && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            cac < 50 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                            cac < 50 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                 cac < 100 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                     "bg-slate-50 border-slate-200 text-slate-700"
                         )}>
@@ -153,7 +153,7 @@ export function CACCalculator() {
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
-                            <h4 className="text-sm font-semibold text-blue-900 mb-1">Benchmarks</h4>
+                            <h4 className="text-sm font-semibold text-slate-900 mb-1">Benchmarks</h4>
                             <p className="text-sm text-blue-700 leading-relaxed">
                                 A good CAC depends on your industry and LTV (Lifetime Value). A healthy business model typically aims for an LTV:CAC ratio of 3:1 or higher.
                             </p>

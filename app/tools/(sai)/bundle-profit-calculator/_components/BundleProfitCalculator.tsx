@@ -114,7 +114,7 @@ export function BundleProfitCalculator() {
         const colors = [
             "bg-blue-100 text-blue-600",
             "bg-purple-100 text-purple-600",
-            "bg-emerald-100 text-emerald-600",
+            "bg-blue-100 text-blue-600",
             "bg-amber-100 text-amber-600",
             "bg-rose-100 text-rose-600",
             "bg-indigo-100 text-indigo-600",
@@ -130,15 +130,10 @@ export function BundleProfitCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter costs and selling prices for each item in the bundle."
-
                             onReset={handleReset}
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
                         <CardContent className="space-y-6 pt-6">
 
@@ -263,18 +258,18 @@ export function BundleProfitCalculator() {
                     <ResultFeedbackCard
                         title="Bundle Profit Margin"
                         titleLabel={margin >= 20 ? "Highly Profitable" : (margin > 0 ? "Profitable" : "Unprofitable")}
-                        labelClassName={margin >= 20 ? "text-emerald-400" : (margin > 0 ? "text-yellow-400" : "text-red-400")}
+                        labelClassName={margin >= 20 ? "text-blue-400" : (margin > 0 ? "text-yellow-400" : "text-red-400")}
                         mainValue={
                             bundlePrice > 0 ?
                                 <Counter value={margin} formatter={(v) => `${v.toFixed(2)}%`} /> :
                                 "—"
                         }
-                        valueColor={margin >= 20 ? "text-emerald-400" : (margin > 0 ? "text-yellow-400" : (margin < 0 ? "text-red-400" : "text-white"))}
+                        valueColor={margin >= 20 ? "text-blue-400" : (margin > 0 ? "text-yellow-400" : (margin < 0 ? "text-red-400" : "text-white"))}
                         secondaryMetrics={bundlePrice > 0 ? [
                             {
                                 label: "Net Profit",
                                 value: <Counter value={profit} formatter={formatCurrency} key={currency} />,
-                                color: profit >= 0 ? 'text-emerald-400' : 'text-red-400'
+                                color: profit >= 0 ? 'text-blue-400' : 'text-red-400'
                             },
                             {
                                 label: "Consumer Savings",
@@ -288,7 +283,7 @@ export function BundleProfitCalculator() {
                     {margin !== 0 && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            margin >= 20 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                            margin >= 20 ? "bg-blue-50 border-blue-200 text-blue-700" :
                                 margin > 0 ? "bg-yellow-50 border-yellow-200 text-yellow-700" :
                                     "bg-red-50 border-red-200 text-red-700"
                         )}>
@@ -298,7 +293,7 @@ export function BundleProfitCalculator() {
 
                     {/* Breakdown Card */}
                     {margin !== 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Profit Breakdown</p>
                             </div>
@@ -313,7 +308,7 @@ export function BundleProfitCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50">
                                     <span className="text-sm font-semibold text-slate-900">Net Profit per Bundle</span>
-                                    <span className={cn("text-sm font-bold", profit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                    <span className={cn("text-sm font-bold", profit >= 0 ? "text-blue-600" : "text-red-600")}>
                                         {formatCurrency(profit)}
                                     </span>
                                 </div>
@@ -338,5 +333,3 @@ export function BundleProfitCalculator() {
         </FadeIn>
     )
 }
-
-

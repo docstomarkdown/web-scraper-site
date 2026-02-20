@@ -54,8 +54,8 @@ export function PriceElasticityCalculator() {
         elasticityDescription = "Consumers are highly sensitive to price changes."
     } else if (absolutePed < 1 && absolutePed > 0) {
         elasticityType = "Inelastic Demand"
-        elasticityColor = "text-emerald-400"
-        elasticityBg = "bg-emerald-500/10"
+        elasticityColor = "text-blue-400"
+        elasticityBg = "bg-blue-500/10"
         elasticityDescription = "Demand is relatively stable despite price changes."
     } else if (absolutePed === 0 && (p1 > 0 || q1 > 0)) {
         elasticityType = "Perfectly Inelastic"
@@ -170,22 +170,22 @@ export function PriceElasticityCalculator() {
                         mainMetricValue={
                             <div className="flex items-center gap-1">
                                 {revenueChange >= 0 ? "+" : ""}{formatCurrency(revenueChange)}
-                                <span className={`text-sm font-normal ml-1 ${revenueChange >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                                <span className={`text-sm font-normal ml-1 ${revenueChange >= 0 ? "text-blue-400" : "text-red-400"}`}>
                                     ({revenueChangePercent >= 0 ? "+" : ""}{revenueChangePercent.toFixed(1)}%)
                                 </span>
                             </div>
                         }
-                        mainMetricColor={revenueChange >= 0 ? "text-emerald-400" : "text-red-400"}
+                        mainMetricColor={revenueChange >= 0 ? "text-blue-400" : "text-red-400"}
                         secondaryMetrics={[
                             {
                                 label: "Price Change",
                                 value: `${percentChangePrice >= 0 ? "+" : ""}${(percentChangePrice * 100).toFixed(1)}%`,
-                                color: percentChangePrice > 0 ? "text-slate-400" : "text-emerald-400"
+                                color: percentChangePrice > 0 ? "text-slate-400" : "text-blue-400"
                             },
                             {
                                 label: "Quantity Change",
                                 value: `${percentChangeQuantity >= 0 ? "+" : ""}${(percentChangeQuantity * 100).toFixed(1)}%`,
-                                color: percentChangeQuantity > 0 ? "text-emerald-400" : "text-red-400"
+                                color: percentChangeQuantity > 0 ? "text-blue-400" : "text-red-400"
                             }
                         ]}
                     />
@@ -198,19 +198,19 @@ export function PriceElasticityCalculator() {
                         <div className="divide-y divide-slate-100">
                             <div className="flex justify-between items-center px-5 py-3.5">
                                 <span className="text-sm text-slate-600">% Change in Price</span>
-                                <span className={cn("text-sm font-semibold", percentChangePrice > 0 ? "text-slate-800" : "text-emerald-600")}>
+                                <span className={cn("text-sm font-semibold", percentChangePrice > 0 ? "text-slate-800" : "text-blue-600")}>
                                     {percentChangePrice > 0 ? "+" : ""}{(percentChangePrice * 100).toFixed(1)}%
                                 </span>
                             </div>
                             <div className="flex justify-between items-center px-5 py-3.5">
                                 <span className="text-sm text-slate-600">% Change in Demand</span>
-                                <span className={cn("text-sm font-semibold", percentChangeQuantity >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                <span className={cn("text-sm font-semibold", percentChangeQuantity >= 0 ? "text-blue-600" : "text-red-600")}>
                                     {percentChangeQuantity > 0 ? "+" : ""}{(percentChangeQuantity * 100).toFixed(1)}%
                                 </span>
                             </div>
                             <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
                                 <span className="text-sm font-bold text-slate-900">Revenue Impact</span>
-                                <span className={cn("text-base font-bold", revenueChange >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                <span className={cn("text-base font-bold", revenueChange >= 0 ? "text-blue-600" : "text-red-600")}>
                                     {revenueChange >= 0 ? "+" : ""}{formatCurrency(revenueChange)}
                                 </span>
                             </div>
@@ -226,7 +226,7 @@ export function PriceElasticityCalculator() {
                                 <span>Unitary</span>
                                 <span>Elastic</span>
                             </div>
-                            <div className="relative h-4 rounded-full bg-gradient-to-r from-emerald-400 via-blue-400 to-orange-400 w-full">
+                            <div className="relative h-4 rounded-full bg-gradient-to-r from-blue-400 via-blue-400 to-orange-400 w-full">
                                 {/* Marker */}
                                 <div
                                     className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-slate-600 rounded-full shadow-md transition-all duration-500"
@@ -257,7 +257,7 @@ export function PriceElasticityCalculator() {
                                         {elasticityDescription}
                                     </p>
 
-                                    <div className={`text-sm p-4 rounded-xl border ${absolutePed > 1 ? "bg-orange-50 border-orange-100 text-orange-800" : "bg-emerald-50 border-emerald-100 text-emerald-800"}`}>
+                                    <div className={`text-sm p-4 rounded-xl border ${absolutePed > 1 ? "bg-orange-50 border-orange-100 text-orange-800" : "bg-blue-50 border-blue-100 text-blue-800"}`}>
                                         <div className="flex items-center gap-2 font-bold mb-1">
                                             <ArrowRight className="w-4 h-4" />
                                             Recommendation
