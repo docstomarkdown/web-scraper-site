@@ -20,7 +20,7 @@ export function PackagingCostCalculator() {
     const [laborTime, setLaborTime] = useState<number | "">("")
     const [hourlyWage, setHourlyWage] = useState<number | "">("")
 
-    const [orderQuantity, setOrderQuantity] = useState<number | "">(1)
+    const [orderQuantity, setOrderQuantity] = useState<number | "">("")
 
     const handleReset = () => {
         setBoxCost("")
@@ -83,53 +83,6 @@ export function PackagingCostCalculator() {
         }).format(v)
     }
 
-    // Smart insight logic
-    const insightMessage = useMemo(() => {
-        if (!hasInput) return null
-
-        if (laborPercentage > 60) {
-            return (
-                <p className="text-sm text-slate-600 leading-relaxed">
-                    <span className="text-amber-600 font-semibold">Labor is {laborPercentage.toFixed(0)}%</span> of your packaging cost.
-                    Consider <span className="text-blue-600 font-semibold">batch packing</span> multiple orders at once, or outsourcing fulfillment if volume exceeds 100+ orders/day.
-                </p>
-            )
-        }
-
-        if (totalMaterialCost > 0 && box > totalMaterialCost * 0.6) {
-            return (
-                <p className="text-sm text-slate-600 leading-relaxed">
-                    Your <span className="text-blue-600 font-semibold">box/mailer</span> is the biggest cost driver.
-                    Try <span className="font-semibold text-slate-900">right-sizing</span> your packaging or switching to poly mailers for non-fragile items — this alone can cut material costs by up to 60%.
-                </p>
-            )
-        }
-
-        if (totalMaterialCost > 0 && branding > totalMaterialCost * 0.3) {
-            return (
-                <p className="text-sm text-slate-600 leading-relaxed">
-                    <span className="text-blue-600 font-semibold">Branding materials</span> are a significant portion of your cost.
-                    Consider simplifying inserts or switching to <span className="font-semibold text-slate-900">printed tape</span> instead of separate stickers and cards to maintain brand presence at lower cost.
-                </p>
-            )
-        }
-
-        if (totalPackagingCost > 2) {
-            return (
-                <p className="text-sm text-slate-600 leading-relaxed">
-                    Your packaging cost is above <span className="font-bold text-slate-900">{formatCurrency(2)}</span>.
-                    Consider <span className="text-blue-600 font-semibold">bulk purchasing</span> materials — buying in quantities of 500+ typically saves 15-20% per unit.
-                </p>
-            )
-        }
-
-        return (
-            <p className="text-sm text-slate-600 leading-relaxed">
-                Your packaging cost looks well-optimized at <span className="font-bold text-emerald-600">{formatCurrency(totalPackagingCost)}</span> per unit.
-                To save further, negotiate <span className="text-blue-600 font-semibold">supplier contracts</span> or consolidate orders for volume discounts.
-            </p>
-        )
-    }, [hasInput, laborPercentage, totalMaterialCost, box, branding, totalPackagingCost, formatCurrency])
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
@@ -141,14 +94,14 @@ export function PackagingCostCalculator() {
                         <div className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0 p-6">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                    <h2 className="text-xl font-bold text-blue-600">
+                                    <h2 className="text-xl font-bold text-slate-800">
                                         Inputs
                                     </h2>
                                     <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={scrollToGuide}
-                                        className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 h-6 w-6 rounded-full"
+                                        className="text-slate-400 hover:text-emerald-600 hover:bg-slate-100 h-6 w-6 rounded-full"
                                     >
                                         <HelpCircle className="w-4 h-4" />
                                     </Button>
@@ -170,7 +123,7 @@ export function PackagingCostCalculator() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 </div>
-                                <p className="text-sm text-slate-500 font-medium tracking-tight">Enter costs for materials and labor per unit.</p>
+
                             </div>
                             <div className="w-[140px]">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
@@ -307,12 +260,12 @@ export function PackagingCostCalculator() {
                         mainValue={
                             <Counter value={totalPackagingCost} formatter={formatCurrency} key={`tpc-${currency}`} />
                         }
-                        valueColor="text-blue-600"
+                        valueColor="text-white"
                         secondaryMetrics={[
                             ...(qty > 1 ? [{
                                 label: `Batch Total (×${qty.toLocaleString()})`,
                                 value: <Counter value={batchTotal} formatter={formatCurrency} key={`bt-${currency}-${qty}`} />,
-                                color: "text-emerald-500"
+                                color: "text-emerald-500 font-bold"
                             }] : [])
                         ]}
                     />
@@ -338,7 +291,7 @@ export function PackagingCostCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
                                     <span className="text-sm font-bold text-slate-900">Total Per Unit</span>
-                                    <span className="text-base font-bold text-blue-600">{formatCurrency(totalPackagingCost)}</span>
+                                    <span className="text-base font-bold text-emerald-600">{formatCurrency(totalPackagingCost)}</span>
                                 </div>
                             </div>
                         </div>
@@ -348,24 +301,6 @@ export function PackagingCostCalculator() {
                         </div>
                     )}
 
-                    {/* Smart Optimization Insight */}
-                    <Card className="border border-blue-100 shadow-sm bg-gradient-to-br from-blue-50/50 to-white overflow-hidden">
-                        <div className="p-5">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="p-2 bg-blue-100 rounded-lg">
-                                    <Star className="w-4 h-4 text-blue-600" />
-                                </div>
-                                <h3 className="font-bold text-slate-800">Optimization Insight</h3>
-                            </div>
-                            <div className="space-y-4">
-                                {insightMessage || (
-                                    <p className="text-sm text-slate-500 italic">
-                                        Enter your details to see optimization tips for your business.
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                    </Card>
 
                 </div>
             </div>

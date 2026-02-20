@@ -11,10 +11,10 @@ export function MarginGuide() {
                 {
                     title: "Gross Margin",
                     icon: CircleDollarSign,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Keep %",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Percentage of revenue you keep",
                     tooltip: "Gross Margin %: (Revenue - Cost) / Revenue. Shows how much of your sales revenue is actually profit.",
                     description: "Your Gross Margin is the percentage of every dollar of sales that is profit after subtracting the cost of goods sold. A higher margin means more money left for other expenses."

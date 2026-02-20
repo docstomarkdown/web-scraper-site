@@ -16,6 +16,7 @@ export function PackagingGuide() {
                     iconColor: "text-blue-500",
                     stat: "$2.50",
                     statLabel: "Avg. Hidden Cost",
+                    statColor: "text-rose-600",
                     tooltip: "Average packaging cost for a standard e-commerce parcel."
                 },
                 {
@@ -24,6 +25,9 @@ export function PackagingGuide() {
                     icon: Timer,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
+                    stat: "5-10 MIN",
+                    statLabel: "Manual Labor",
+                    statColor: "text-amber-600"
                 },
                 {
                     title: "Optimizing Materials",
@@ -31,6 +35,9 @@ export function PackagingGuide() {
                     icon: Scissors,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-500",
+                    stat: "40% SAVE",
+                    statLabel: "Bulk Discount",
+                    statColor: "text-emerald-600"
                 }
             ]}
         />

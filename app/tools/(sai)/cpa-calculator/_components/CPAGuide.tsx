@@ -22,10 +22,10 @@ export function CPAGuide() {
                 {
                     title: "How is it calculated?",
                     icon: Calculator,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Math",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Spend ÷ Conversions",
                     description: (
                         <div className="space-y-3">

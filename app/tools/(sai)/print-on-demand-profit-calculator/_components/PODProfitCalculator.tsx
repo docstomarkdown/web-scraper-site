@@ -90,7 +90,7 @@ export function PODProfitCalculator() {
                                 <Tag className="w-4 h-4 text-slate-400" />
                                 Revenue
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Selling Price (${currencySymbol})`}
                                     value={sellingPrice}
@@ -115,7 +115,7 @@ export function PODProfitCalculator() {
                                 <Package className="w-4 h-4 text-slate-400" />
                                 Base Costs
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Product Cost (${currencySymbol})`}
                                     value={baseCost}
@@ -141,7 +141,7 @@ export function PODProfitCalculator() {
                                 <CreditCard className="w-4 h-4 text-slate-400" />
                                 Platform Fees
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label="Platform Fee (%)"
                                     value={platformFeePercent}
@@ -172,12 +172,12 @@ export function PODProfitCalculator() {
                         title="Net Profit"
                         titleLabel="Total Earnings"
                         mainValue={<Counter value={netProfit} prefix={currencySymbol} />}
-                        valueColor={netProfit >= 0 ? "text-emerald-400" : "text-red-400"}
+                        valueColor={netProfit >= 0 ? "text-slate-100" : "text-rose-400"}
                         secondaryMetrics={[
                             {
                                 label: "Profit Margin",
                                 value: <Counter value={margin} formatter={(v) => `${v.toFixed(1)}%`} />,
-                                color: margin >= 15 ? "text-emerald-600" : (margin > 0 ? "text-blue-600" : "text-red-600")
+                                color: margin >= 15 ? "text-emerald-500 font-bold" : (margin > 0 ? "text-emerald-500 font-bold" : "text-rose-400")
                             },
                             {
                                 label: "Total Revenue",

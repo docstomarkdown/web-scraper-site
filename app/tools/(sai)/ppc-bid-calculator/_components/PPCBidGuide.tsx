@@ -24,10 +24,10 @@ export function PPCBidGuide() {
                     title: "Optimal Bid Logic",
                     description: "The formula (Price × CR × Target ACoS) ensures your bids remain perfectly aligned with your business goals and conversion efficiency.",
                     icon: MousePointer,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Calculated",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Data Driven",
                     tooltip: "Math over guesswork."
                 },

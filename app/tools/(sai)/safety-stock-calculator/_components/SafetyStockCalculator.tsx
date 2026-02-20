@@ -82,7 +82,7 @@ export function SafetyStockCalculator() {
                                 <span className="text-2xl font-normal opacity-80">Units</span>
                             </div>
                         }
-                        valueColor="text-emerald-400"
+                        valueColor="text-blue-400"
                         mainMetricLabel="Impact"
                         mainMetricValue="Prevents Stockouts"
                         mainMetricColor="text-blue-400"
@@ -101,30 +101,36 @@ export function SafetyStockCalculator() {
                     />
 
                     {/* Breakdown Card */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Stock Calculation</p>
+                    {maxSales > 0 || maxLead > 0 || avgSales > 0 || avgLead > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Stock Calculation</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Max Usage (Worst Case)</span>
+                                    <span className="text-sm font-semibold text-slate-800"><Counter value={maxUsage} /> units</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Avg Usage (Normal Case)</span>
+                                    <span className="text-sm font-semibold text-slate-800">- <Counter value={avgUsage} /> units</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">Safety Buffer</span>
+                                    <span className="text-base font-bold text-blue-600"><Counter value={safetyStock} /> units</span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Max Usage (Worst Case)</span>
-                                <span className="text-sm font-semibold text-slate-800"><Counter value={maxUsage} /> units</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Avg Usage (Normal Case)</span>
-                                <span className="text-sm font-semibold text-slate-800">- <Counter value={avgUsage} /> units</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                <span className="text-sm font-bold text-slate-900">Safety Buffer</span>
-                                <span className="text-base font-bold text-blue-600"><Counter value={safetyStock} /> units</span>
-                            </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter sales and lead times to see stock calculation.</p>
                         </div>
-                    </div>
+                    )}
 
                     {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <div className="flex items-start gap-3">
-                            <ShieldCheck className="w-5 h-5 text-emerald-500 mt-0.5" />
+                            <ShieldCheck className="w-5 h-5 text-blue-500 mt-0.5" />
                             <div>
                                 <h4 className="font-semibold text-slate-800 mb-1">
                                     Inventory Protection

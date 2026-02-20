@@ -15,8 +15,8 @@ export function PromoCodeCalculator() {
     // --- State ---
     const [prefix, setPrefix] = useState("")
     const [suffix, setSuffix] = useState("")
-    const [length, setLength] = useState<number | "">(8)
-    const [count, setCount] = useState<number | "">(5)
+    const [length, setLength] = useState<number | "">("")
+    const [count, setCount] = useState<number | "">("")
 
     const [useUppercase, setUseUppercase] = useState(true)
     const [useNumbers, setUseNumbers] = useState(true)
@@ -75,11 +75,8 @@ export function PromoCodeCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Set your prefix, suffix and randomization rules."
-
                             onReset={() => { setPrefix(""); setSuffix(""); setLength(8); setCount(5); setGeneratedCodes([]); }}
-
                         />
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-5">
@@ -220,7 +217,7 @@ export function PromoCodeCalculator() {
                                                 onClick={() => copyToClipboard(code, idx)}
                                                 className="text-blue-500 hover:text-blue-700 hover:bg-blue-50"
                                             >
-                                                {copiedIndex === idx ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                                                {copiedIndex === idx ? <Check className="w-4 h-4 text-blue-500" /> : <Copy className="w-4 h-4 font-bold" />}
                                             </Button>
                                         </div>
                                     ))}
@@ -235,13 +232,13 @@ export function PromoCodeCalculator() {
                     <ResultFeedbackCard
                         title="Latest Reward Code"
                         titleLabel="Active"
-                        labelClassName="bg-emerald-500/10 text-emerald-500"
+                        labelClassName="bg-blue-500/10 text-blue-500"
                         mainValue={
                             <div className="text-3xl font-mono font-bold tracking-wider truncate max-w-full">
                                 {generatedCodes.length > 0 ? generatedCodes[0] : "---- ----"}
                             </div>
                         }
-                        valueColor="text-blue-600"
+                        valueColor="text-white"
                         mainMetricLabel="Total Unique Codes"
                         mainMetricValue={<Counter value={generatedCodes.length} />}
                         mainMetricColor="text-slate-600"
@@ -259,30 +256,11 @@ export function PromoCodeCalculator() {
                         ]}
                     />
 
-                    {/* Tip Card */}
-                    <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex gap-4">
-                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                            <Ticket className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div>
-                            <h4 className="font-semibold text-blue-900 mb-1">E-commerce Pro Tip</h4>
-                            <p className="text-sm text-blue-800/80 leading-relaxed">
-                                Use short, memorable prefixes like <span className="font-mono bg-blue-100 px-1 rounded">FLASH</span> or <span className="font-mono bg-blue-100 px-1 rounded">VIP</span> to increase conversion rates by up to 15%.
-                            </p>
-                        </div>
-                    </div>
-                </div>
 
+                </div>
             </div>
+
         </FadeIn>
-    )
-}
-function ReadOnlyField({ label, value, color = "text-slate-700" }: { label: string, value: string, color?: string }) {
-    return (
-        <div className="flex items-center justify-between gap-4 py-1">
-            <span className="text-sm font-medium text-slate-500">{label}</span>
-            <span className={`text-lg font-bold ${color}`}>{value}</span>
-        </div>
     )
 }
 

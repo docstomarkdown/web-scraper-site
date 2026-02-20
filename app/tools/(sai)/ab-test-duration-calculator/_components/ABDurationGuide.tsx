@@ -33,10 +33,10 @@ export function ABDurationGuide() {
                 {
                     title: "Statistical Significance",
                     icon: BarChart2,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "95%",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Confidence Level",
                     tooltip: "Standard significance level is 95%.",
                     description: "This calculator assumes a 95% confidence level, meaning there's only a 5% chance that a 'winning' result is actually due to random chance."

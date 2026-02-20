@@ -16,6 +16,7 @@ export function MeetingPlannerGuide() {
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
                     stat: "8PM - 10PM",
+                    statColor: "text-blue-600",
                     statLabel: "US-China Sync"
                 },
                 {
@@ -25,6 +26,7 @@ export function MeetingPlannerGuide() {
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600",
                     stat: "9AM - 5PM",
+                    statColor: "text-indigo-600",
                     statLabel: "Target Local Time"
                 },
             ]}

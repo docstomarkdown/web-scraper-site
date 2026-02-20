@@ -22,9 +22,11 @@ export function PromoCodeGuide() {
                     title: "Ensure Uniqueness",
                     description: "Avoid generic codes like 'SAVE10' for high-value promotions. Use randomized strings to prevent code leakage and unauthorized sharing.",
                     icon: ShieldCheck,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     tooltip: "Randomized codes are harder to leak",
+                    stat: "Unique",
+                    statLabel: "Anti-Leakage"
                 },
                 {
                     title: "Strategic Prefixing",
@@ -32,6 +34,8 @@ export function PromoCodeGuide() {
                     icon: Target,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
+                    stat: "Prefix",
+                    statLabel: "Attribution"
                 },
                 {
                     title: "Avoid Ambiguous Characters",
@@ -39,6 +43,8 @@ export function PromoCodeGuide() {
                     icon: MousePointer2,
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-500",
+                    stat: "Clear",
+                    statLabel: "No 'O' or '0'"
                 },
             ]}
         />

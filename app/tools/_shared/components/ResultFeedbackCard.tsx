@@ -8,14 +8,15 @@ interface SecondaryMetric {
     label: string
     value: React.ReactNode
     color?: string
+    tooltip?: string
 }
 
 interface ResultFeedbackCardProps {
     title: React.ReactNode
     titleLabel?: string | React.ReactNode // e.g. "High Performance"
-    labelClassName?: string // e.g. "text-emerald-400"
+    labelClassName?: string // e.g. "text-blue-400"
     mainValue?: React.ReactNode
-    valueColor?: string // e.g. "text-emerald-400"
+    valueColor?: string // e.g. "text-blue-400"
     mainMetricLabel?: string // e.g. "ROAS %"
     mainMetricValue?: React.ReactNode // e.g. "420%"
     mainMetricColor?: string
@@ -36,7 +37,7 @@ export function ResultFeedbackCard({
     valueColor,
     mainMetricLabel,
     mainMetricValue,
-    mainMetricColor = "text-blue-400",
+    mainMetricColor = "text-white",
     secondaryMetrics = [],
     className,
     variant = "default",
@@ -60,7 +61,7 @@ export function ResultFeedbackCard({
     const getLabelStyles = () => {
         if (labelClassName) return labelClassName
         if (variant === "compact") return "bg-slate-100 text-slate-600"
-        return "text-emerald-400 bg-slate-600/50 border-slate-500/50"
+        return "text-blue-400 bg-slate-600/50 border-slate-500/50"
     }
 
     const getValueColor = () => {
@@ -87,7 +88,7 @@ export function ResultFeedbackCard({
                     )} />
                     <div className={cn(
                         "absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none opacity-10",
-                        variant === "warning" ? "bg-orange-500" : "bg-emerald-500"
+                        variant === "warning" ? "bg-orange-500" : "bg-blue-500"
                     )} />
                 </>
             )}
@@ -168,8 +169,27 @@ export function ResultFeedbackCard({
                             <div className="grid grid-cols-2 gap-4">
                                 {secondaryMetrics.map((metric, index) => (
                                     <div key={index}>
-                                        <p className={cn("text-sm mb-1", variant === "compact" ? "text-slate-500" : "text-slate-300")}>{metric.label}</p>
-                                        <div className={cn("text-2xl font-bold break-all", metric.color || "text-emerald-400")}>
+                                        <div className="flex items-center gap-1.5 mb-1">
+                                            <p className={cn("text-sm", variant === "compact" ? "text-slate-500" : "text-slate-400")}>{metric.label}</p>
+                                            {metric.tooltip && (
+                                                <TooltipProvider delayDuration={100}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className={cn(
+                                                                "transition-colors",
+                                                                variant === "compact" ? "text-slate-400 hover:text-blue-600" : "text-slate-500 hover:text-white"
+                                                            )}>
+                                                                <Info className="h-3 w-3" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-xs text-[11px] bg-slate-900 text-white border-slate-800">
+                                                            {metric.tooltip}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                        </div>
+                                        <div className={cn("text-2xl font-bold break-all", metric.color || "text-blue-400")}>
                                             {metric.value}
                                         </div>
                                     </div>

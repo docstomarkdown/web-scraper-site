@@ -70,13 +70,6 @@ export function DimWeightCalculator() {
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         } else {
-            // Fallback or specific ID for this tool? 
-            // Let's assume the user will scroll down or we can target the section by a known ID if we add one.
-            // The standard wrapper usually puts IDs on sections.
-            // Let's try scrolling to 'tool-guide' as a fallback if 'how-to-use' isn't there, 
-            // but 'how-to-use' is usually what we use. 
-            // Re-checking DimWeightHowToUse... it uses ToolSteps. ToolSteps doesn't enforce an ID, but 
-            // often we wrap it. Let's stick with the pattern.
             const guide = document.querySelector('.max-w-4xl');
             if (guide) guide.scrollIntoView({ behavior: 'smooth' });
         }
@@ -91,11 +84,8 @@ export function DimWeightCalculator() {
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
                             <CalculatorCardHeader
-
                                 description="Enter dimensions and weight."
-
                                 onReset={handleReset}
-
                             />
                             <CardContent className="space-y-6 pt-6">
                                 <CalculatorInput
@@ -223,7 +213,7 @@ export function DimWeightCalculator() {
 
                         {/* Breakdown Card */}
                         {(dimWeight > 0 || actualWeight !== "") ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                                 <div className="px-5 py-3.5 border-b border-slate-100">
                                     <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Weight Breakdown</p>
                                 </div>
@@ -247,8 +237,8 @@ export function DimWeightCalculator() {
                                         </span>
                                     </div>
                                     <div className="flex justify-between items-center px-5 py-4">
-                                        <span className="text-sm font-bold text-emerald-600">Billable Weight</span>
-                                        <span className="text-base font-bold text-emerald-600">
+                                        <span className="text-sm font-bold text-blue-600">Billable Weight</span>
+                                        <span className="text-base font-bold text-blue-600">
                                             {billableWeight} {weightUnit === "lb" ? "lbs" : "kg"}
                                         </span>
                                     </div>

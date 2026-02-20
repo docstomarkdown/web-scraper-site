@@ -15,13 +15,15 @@ export function PoshmarkFeeGuide() {
                     icon: DollarSign,
                     iconBg: "bg-rose-50",
                     iconColor: "text-rose-500",
+                    stat: "$2.95",
+                    statLabel: "Flat Fee"
                 },
                 {
                     title: "Percentage Fee (20%)",
                     description: "For sales of $15 or more, Poshmark keeps 20% of the commission, and you keep 80%. This fee covers shipping labels and payment processing.",
                     icon: ShoppingBag,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "20%",
                     statLabel: "Commission"
                 },
@@ -31,6 +33,8 @@ export function PoshmarkFeeGuide() {
                     icon: Truck,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
+                    stat: "Varies",
+                    statLabel: "Discount"
                 }
             ]}
         />

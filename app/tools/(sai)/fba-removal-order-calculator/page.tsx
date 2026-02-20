@@ -18,10 +18,6 @@ export default function Page() {
                         <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
                             FBA Removal Order Calculator
                         </h1>
-                        <p className="text-lg text-slate-600">
-                            Estimate 2025 removal and disposal fees for your Amazon FBA inventory.
-                            Calculate costs accurately before creating removal orders.
-                        </p>
                     </div>
                 </FadeIn>
 

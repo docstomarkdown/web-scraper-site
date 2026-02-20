@@ -34,10 +34,10 @@ export function SafetyStockGuide() {
                     title: "Cost of Stockouts",
                     description: "Running out of stock costs more than just lost sales. It hurts your search ranking, damages customer trust, and gives competitors an opening.",
                     icon: DollarSign,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Trust",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Long-term Value",
                     tooltip: "Stockouts kill growth."
                 }

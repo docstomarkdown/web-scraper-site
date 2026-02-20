@@ -223,7 +223,7 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        'w-full justify-between h-9 text-sm font-normal',
+                        'w-full justify-between h-10 text-sm font-bold border-slate-200/60 bg-white shadow-sm px-3 transition-all rounded-xl hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
                         !value && 'text-muted-foreground',
                         className
                     )}
@@ -238,6 +238,9 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                                 className="object-contain flex-shrink-0"
                             />
                             <span className="whitespace-nowrap flex-shrink-0">{selectedCurrency.code} ({selectedCurrency.symbol})</span>
+                                className="object-contain rounded-[1px]"
+                            />
+                            <span className="text-slate-700 tracking-tight">{selectedCurrency.code}</span>
                         </div>
                     ) : (
                         <span className="flex-grow text-left">Select currency</span>
@@ -246,6 +249,7 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                         "h-3 w-3 shrink-0 opacity-40 transition-transform duration-200",
                         open && "rotate-180"
                     )} />
+                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-slate-400" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[280px] p-0" align="start">

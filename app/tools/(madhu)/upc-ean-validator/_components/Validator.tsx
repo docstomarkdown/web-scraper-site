@@ -334,7 +334,7 @@ export function Validator() {
                                                     strokeWidth="2"
                                                     strokeLinecap="round"
                                                     strokeLinejoin="round"
-                                                    className="w-4 h-4 mr-2 text-emerald-500"
+                                                    className="w-4 h-4 mr-2 text-blue-500"
                                                 >
                                                     <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
                                                     <circle cx="9" cy="9" r="2" />

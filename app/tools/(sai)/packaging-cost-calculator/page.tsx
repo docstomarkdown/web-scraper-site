@@ -38,9 +38,7 @@ export default function Page() {
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
                             Packaging Cost Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Uncover the hidden costs of your shipping process. Calculate materials and labor per unit to protect your profit margins.
-                        </p>
+
                     </div>
                 </FadeIn>
 

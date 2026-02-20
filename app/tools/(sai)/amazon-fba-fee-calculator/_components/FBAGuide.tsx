@@ -28,9 +28,9 @@ const insights = [
     },
     {
         icon: Truck,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-500",
-        statColor: "text-emerald-600",
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-500",
+        statColor: "text-blue-600",
         title: "Inbound Shipping",
         stat: "Ship",
         statLabel: "Cost to Warehouse",

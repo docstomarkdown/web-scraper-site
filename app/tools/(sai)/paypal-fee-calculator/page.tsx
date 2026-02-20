@@ -19,9 +19,7 @@ export default function PayPalCalculatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
                             PayPal Fee Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Stop guessing your profits. Calculate exact PayPal fees for invoices, sales, and transfers to ensure you price your products correctly.
-                        </p>
+
                     </FadeIn>
                 </div>
 

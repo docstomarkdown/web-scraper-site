@@ -455,16 +455,16 @@ GTIN-14: ${results.gtin14}
                                 <div
                                     id="status-message"
                                     className={`p-4 rounded-xl border flex flex-col gap-3 transition-colors ${status.isValid
-                                        ? 'bg-emerald-50/50 border-emerald-100'
+                                        ? 'bg-blue-50/50 border-blue-100'
                                         : 'bg-rose-50/50 border-rose-100'
                                         }`}
                                 >
                                     <div className="flex items-start gap-3">
-                                        <div className={`mt-1 ${status.isValid ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                        <div className={`mt-1 ${status.isValid ? 'text-blue-500' : 'text-rose-500'}`}>
                                             {status.isValid ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                                         </div>
                                         <div className="w-full">
-                                            <p className={`text-sm font-bold ${status.isValid ? 'text-emerald-700' : 'text-rose-700'}`}>
+                                            <p className={`text-sm font-bold ${status.isValid ? 'text-blue-700' : 'text-rose-700'}`}>
                                                 {status.isValid
                                                     ? "Valid GTIN"
                                                     : status.correctedCode
@@ -476,10 +476,10 @@ GTIN-14: ${results.gtin14}
                                             {/* Valid State Details */}
                                             {status.isValid && (
                                                 <div className="space-y-1 mt-1">
-                                                    <p className="text-emerald-600 text-xs font-medium">
+                                                    <p className="text-blue-600 text-xs font-medium">
                                                         Detected Type: {status.format === "UPC-A" ? "GTIN-12" : status.format === "EAN-13" ? "GTIN-13" : "GTIN-14"}
                                                     </p>
-                                                    <p className="text-emerald-600/80 text-xs">
+                                                    <p className="text-blue-600/80 text-xs">
                                                         Barcode Format: {status.format === "GTIN-14" ? "ITF-14" : status.format}
                                                     </p>
                                                 </div>

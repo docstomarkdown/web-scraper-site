@@ -17,15 +17,15 @@ export function ACoSGuide() {
                     iconColor: "text-blue-500",
                     tooltip: "Ad Spend ÷ Ad Revenue",
                     stat: "15-25%",
-                    statColor: "text-emerald-500",
+                    statColor: "text-blue-500",
                     statLabel: "Healthy Range"
                 },
                 {
                     title: "The Formula",
                     description: "(Total Ad Spend ÷ Total Ad Revenue) × 100. Lower is generally better.",
                     icon: DollarSign,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Ratio %",
                     statColor: "text-blue-500",
                     statLabel: "Spend vs Sales"

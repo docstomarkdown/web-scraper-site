@@ -17,15 +17,15 @@ export function TACoSGuide() {
                     iconColor: "text-blue-500",
                     tooltip: "Formula: (Total Ad Spend / Total Revenue) * 100",
                     stat: "8-15%",
-                    statColor: "text-emerald-500",
+                    statColor: "text-blue-500",
                     statLabel: "Ideal Target"
                 },
                 {
                     title: "Brand Vitality",
                     description: "A decreasing TACoS while sales grow indicates your organic brand visibility is improving and you rely less on paid ads.",
                     icon: TrendingDown,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Vitals",
                     statColor: "text-blue-500",
                     statLabel: "Organic Growth"

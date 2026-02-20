@@ -97,7 +97,7 @@ export function AOVCalculator() {
                             {
                                 label: "Revenue",
                                 value: <Counter value={revenueVal} formatter={formatCurrency} key={currency} />,
-                                color: "text-emerald-400"
+                                color: "text-blue-400"
                             },
                             {
                                 label: "Orders",

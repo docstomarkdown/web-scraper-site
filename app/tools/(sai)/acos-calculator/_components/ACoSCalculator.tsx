@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
 export function ACoSCalculator() {
-    const [adSpend, setAdSpend] = useState<number | "">(200)
-    const [adRevenue, setAdRevenue] = useState<number | "">(800)
+    const [adSpend, setAdSpend] = useState<number | "">("")
+    const [adRevenue, setAdRevenue] = useState<number | "">("")
     const [profitMargin, setProfitMargin] = useState<number | "">("")
 
     const [acos, setAcos] = useState<number>(0)
@@ -61,7 +61,7 @@ export function ACoSCalculator() {
     if (acos > 0 && breakevenAcos > 0) {
         if (acos < breakevenAcos) {
             status = "Profitable"
-            badgeClasses = "bg-emerald-50 border-emerald-200 text-emerald-700"
+            badgeClasses = "bg-blue-50 border-blue-200 text-blue-700"
         } else if (Math.abs(acos - breakevenAcos) < 0.1) {
             status = "Breakeven"
             badgeClasses = "bg-amber-50 border-amber-200 text-amber-700"
@@ -114,7 +114,7 @@ export function ACoSCalculator() {
                             {/* Group 2: Product Metrics */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <Percent className="w-4 h-4" />
                                     </div>
                                     <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Product Metrics</h3>
@@ -132,23 +132,7 @@ export function ACoSCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Logic Highlight */}
-                    <FadeIn delay={0.2}>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                                <DollarSign className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Net Profit Analysis</h4>
-                                <p className={cn(
-                                    "text-base leading-relaxed max-w-sm transition-colors duration-300 font-medium",
-                                    netProfit !== 0 ? "text-slate-600" : "text-slate-400"
-                                )}>
-                                    After deducting ad spend from your gross profit, your net return is <span className={cn("font-bold", netProfit > 0 ? "text-emerald-600" : netProfit < 0 ? "text-red-500" : "text-slate-900")}>${netProfit.toFixed(2)}</span>.
-                                </p>
-                            </div>
-                        </div>
-                    </FadeIn>
+
                 </div>
 
                 {/* Right Column: Results */}
@@ -174,7 +158,7 @@ export function ACoSCalculator() {
                             {
                                 label: "ROAS",
                                 value: `${roas.toFixed(2)}x`,
-                                color: "text-emerald-400"
+                                color: "text-blue-400"
                             }
                         ]}
                     />
@@ -189,7 +173,7 @@ export function ACoSCalculator() {
                                 badgeClasses
                             )}
                         >
-                            {status === "Profitable" ? "🔥 Profitable Campaign" : status === "Breakeven" ? "👍 Breaking Even" : "⚠️ Unprofitable"}
+                            {status === "Profitable" ? " Profitable Campaign" : status === "Breakeven" ? " Breaking Even" : " Unprofitable"}
                         </motion.div>
                     )}
 
@@ -198,7 +182,7 @@ export function ACoSCalculator() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500"
+                            className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500"
                         >
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Campaign Breakdown</p>
@@ -212,11 +196,11 @@ export function ACoSCalculator() {
                                     <span className="text-sm text-slate-600">Ad Revenue</span>
                                     <span className="text-sm font-semibold text-slate-800">${Number(adRevenue).toFixed(2)}</span>
                                 </div>
-                                <div className={cn("flex justify-between items-center px-5 py-3.5", netProfit >= 0 ? "bg-emerald-50/50" : "bg-red-50/50")}>
-                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                <div className={cn("flex justify-between items-center px-5 py-3.5", netProfit >= 0 ? "bg-blue-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-bold", netProfit >= 0 ? "text-blue-700" : "text-red-700")}>
                                         Net Profit
                                     </span>
-                                    <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-700" : "text-red-700")}>
+                                    <span className={cn("text-base font-bold", netProfit >= 0 ? "text-blue-700" : "text-red-700")}>
                                         {netProfit >= 0 ? "+" : ""}${netProfit.toFixed(2)}
                                     </span>
                                 </div>
@@ -226,7 +210,7 @@ export function ACoSCalculator() {
                                         <span className="text-xs font-bold text-slate-700">{acos.toFixed(1)}% ACoS</span>
                                     </div>
                                     <div className="relative h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
-                                        <div className="h-full bg-emerald-400" style={{ width: '50%' }} />
+                                        <div className="h-full bg-blue-400" style={{ width: '50%' }} />
                                         <div className="h-full bg-red-400" style={{ width: '50%' }} />
                                         {/* Breakeven Marker */}
                                         <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-800 -ml-[1px] h-full z-10" />

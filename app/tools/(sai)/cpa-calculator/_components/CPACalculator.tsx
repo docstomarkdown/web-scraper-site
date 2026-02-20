@@ -68,21 +68,14 @@ export function CPACalculator() {
     // We'll return specific class sets for the badge to ensure consistency
     let badgeClasses = "bg-slate-100 border-slate-200 text-slate-600"
     let valueColor = "text-white"
-    let statusLabel = "Calculated CPA"
-    // Title label background (inside the dark card)
-    let statusColor = "bg-slate-800/50 text-slate-300"
 
     if (validCalculation && target > 0) {
         if (cpa <= target) {
-            valueColor = "text-emerald-400"
-            statusLabel = "Under Target"
-            statusColor = "bg-emerald-500/20 text-emerald-300"
+            valueColor = "text-white"
             // Clean, standard success colors for the external badge
             badgeClasses = "bg-emerald-50 border-emerald-200 text-emerald-700"
         } else {
             valueColor = "text-red-400"
-            statusLabel = "Over Target"
-            statusColor = "bg-red-500/20 text-red-300"
             // Clean, standard error colors for the external badge
             badgeClasses = "bg-red-50 border-red-200 text-red-700"
         }
@@ -245,8 +238,6 @@ export function CPACalculator() {
                 <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Cost Per Acquisition (CPA)"
-                        titleLabel={validCalculation ? statusLabel : "Enter Data"}
-                        labelClassName={validCalculation ? statusColor : "bg-slate-800 text-slate-400"}
                         mainValue={
                             <Counter value={cpa} formatter={formatCurrency} key={`${currency}-${mode}`} />
                         }
@@ -257,7 +248,7 @@ export function CPACalculator() {
                     {validCalculation ? (
                         <div className={cn(
                             "bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4",
-                            cpa <= (target || cpa) ? "border-l-emerald-500" : "border-l-red-500"
+                            cpa <= (target || cpa) ? "border-l-blue-500" : "border-l-red-500"
                         )}>
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">
@@ -298,11 +289,11 @@ export function CPACalculator() {
                                     </div>
                                 )}
 
-                                <div className={cn("flex justify-between items-center px-5 py-4", cpa <= (target || cpa) ? "bg-emerald-50/50" : "bg-red-50/50")}>
-                                    <span className={cn("text-sm font-bold", cpa <= (target || cpa) ? "text-emerald-700" : "text-red-700")}>
+                                <div className={cn("flex justify-between items-center px-5 py-4", cpa <= (target || cpa) ? "bg-blue-50/50" : "bg-red-50/50")}>
+                                    <span className={cn("text-sm font-bold", cpa <= (target || cpa) ? "text-blue-700" : "text-red-700")}>
                                         Measured CPA
                                     </span>
-                                    <span className={cn("text-base font-bold", cpa <= (target || cpa) ? "text-emerald-700" : "text-red-700")}>
+                                    <span className={cn("text-base font-bold", cpa <= (target || cpa) ? "text-blue-700" : "text-red-700")}>
                                         {formatCurrency(cpa)}
                                     </span>
                                 </div>
@@ -332,19 +323,7 @@ export function CPACalculator() {
 
 
 
-                    {/* Pro Tip */}
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
-                        <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                            <h4 className="text-sm font-semibold text-blue-900 mb-1">Pro Tip</h4>
-                            <p className="text-sm text-blue-700 leading-relaxed">
-                                {mode === "campaign-data" ?
-                                    "A lower CPA is generally better, but ensure it's profitable relative to your Customer Lifetime Value (LTV)." :
-                                    "Improving your Conversion Rate by just 1% can significantly lower your CPA without changing your CPC."
-                                }
-                            </p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </FadeIn>

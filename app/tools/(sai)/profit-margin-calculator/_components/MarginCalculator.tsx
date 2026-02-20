@@ -193,29 +193,27 @@ export function MarginCalculator() {
                     <ResultFeedbackCard
                         title={(quantity && quantity > 1) ? 'Total Net Profit' : 'Net Profit per Unit'}
                         mainValue={
-                            totalRevenue > 0 ?
-                                <Counter value={totalNetProfit} formatter={formatCurrency} key={currency} /> :
-                                "—"
+                            <Counter value={totalNetProfit} formatter={formatCurrency} key={currency} />
                         }
-                        valueColor={totalNetProfit > 0 ? "text-emerald-400" : (totalNetProfit < 0 ? "text-red-400" : "text-white")}
+                        valueColor={totalNetProfit > 0 ? "text-blue-400" : (totalNetProfit < 0 ? "text-red-400" : "text-white")}
                         mainMetricColor={totalNetProfit >= 0 ? 'text-white' : 'text-red-200'}
-                        secondaryMetrics={totalRevenue > 0 ? [
+                        secondaryMetrics={[
                             {
                                 label: "Net Margin",
                                 value: <Counter value={netMarginPercent} formatter={(v) => `${v.toFixed(2)}%`} />,
-                                color: totalNetProfit >= 0 ? 'text-emerald-400' : 'text-red-400'
+                                color: totalNetProfit >= 0 ? 'text-blue-400' : 'text-red-400'
                             },
                             {
                                 label: "ROI",
                                 value: <Counter value={roiPercent} formatter={(v) => `${v.toFixed(2)}%`} />,
                                 color: "text-blue-400"
                             }
-                        ] : []}
+                        ]}
                     />
 
                     {/* Breakdown Card */}
                     {totalRevenue > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Financial Breakdown</p>
                             </div>
@@ -239,8 +237,8 @@ export function MarginCalculator() {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-4">
-                                    <span className="text-sm font-bold text-emerald-600">Markup</span>
-                                    <span className="text-base font-bold text-emerald-600">
+                                    <span className="text-sm font-bold text-blue-600">Markup</span>
+                                    <span className="text-base font-bold text-blue-600">
                                         {markupPercent.toFixed(2)}%
                                     </span>
                                 </div>

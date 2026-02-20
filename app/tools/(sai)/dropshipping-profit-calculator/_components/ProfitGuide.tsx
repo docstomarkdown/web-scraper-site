@@ -55,9 +55,9 @@ const insights = [
     },
     {
         icon: Calculator,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-500",
-        statColor: "text-emerald-600",
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-500",
+        statColor: "text-blue-600",
         title: "Break-Even CPA",
         stat: "Know It",
         statLabel: "Your max cost per acquisition",

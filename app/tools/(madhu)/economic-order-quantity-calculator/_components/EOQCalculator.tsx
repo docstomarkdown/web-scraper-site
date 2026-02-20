@@ -173,7 +173,7 @@ Results:
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Holding Cost</p>
-                                    <p className="text-xl font-bold text-emerald-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         {hasInputs ? `$${results.annualHoldingCost.toFixed(0)}` : "$0"}
                                     </p>
                                 </div>

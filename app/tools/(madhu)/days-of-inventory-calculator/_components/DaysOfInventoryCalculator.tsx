@@ -122,7 +122,7 @@ Results:
         switch (status) {
             case "critical": return "text-red-500 bg-red-50 border-red-100"
             case "warning": return "text-amber-500 bg-amber-50 border-amber-100"
-            case "healthy": return "text-emerald-500 bg-emerald-50 border-emerald-100"
+            case "healthy": return "text-blue-500 bg-blue-50 border-blue-100"
             case "overstock": return "text-blue-500 bg-blue-50 border-blue-100"
             default: return "text-slate-400 bg-slate-50 border-slate-100"
         }

@@ -9,8 +9,8 @@ import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeI
 
 export function TACoSCalculator() {
     const [currency, setCurrency] = useState("USD");
-    const [totalAdSpend, setTotalAdSpend] = useState<number | "">(5000);
-    const [totalRevenue, setTotalRevenue] = useState<number | "">(50000);
+    const [totalAdSpend, setTotalAdSpend] = useState<number | "">("")
+    const [totalRevenue, setTotalRevenue] = useState<number | "">("")
     const [grossMargin, setGrossMargin] = useState<number | "">("");
 
     const [tacos, setTacos] = useState<number>(0);
@@ -70,8 +70,8 @@ export function TACoSCalculator() {
         if (margin > 0) {
             if (tacos < (margin * 0.3)) { // Spending < 30% of margin
                 status = "Excellent";
-                statusColor = "text-emerald-600";
-                statusBg = "bg-emerald-100";
+                statusColor = "text-blue-600";
+                statusBg = "bg-blue-100";
             } else if (tacos < (margin * 0.6)) { // Spending < 60% of margin
                 status = "Healthy";
                 statusColor = "text-blue-600";
@@ -87,7 +87,7 @@ export function TACoSCalculator() {
             }
         } else {
             // Fallback if no margin entered (Standard TACoS benchmarks)
-            if (tacos < 10) { status = "Excellent"; statusColor = "text-emerald-600"; statusBg = "bg-emerald-100"; }
+            if (tacos < 10) { status = "Excellent"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
             else if (tacos < 20) { status = "Healthy"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
             else { status = "High"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
         }
@@ -135,12 +135,10 @@ export function TACoSCalculator() {
                                 />
                             </div>
 
-                            <Separator />
-
                             {/* Group 2: Profitability */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <PieChart className="w-4 h-4" />
                                     </div>
                                     <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Profitability</h3>
@@ -158,26 +156,6 @@ export function TACoSCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Logic Highlight */}
-                    <FadeIn delay={0.2}>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
-                                <Percent className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-slate-800 mb-1 leading-tight">Net Margin Impact</h4>
-                                <p className={cn(
-                                    "text-base leading-relaxed max-w-lg transition-colors duration-300 font-medium",
-                                    margin > 0 ? "text-slate-600" : "text-slate-400"
-                                )}>
-                                    Advertising is consuming <span className="font-bold text-slate-900">{tacos.toFixed(1)}%</span> of your revenue.
-                                    {margin > 0 && (
-                                        <> This leaves you with a Net Profit Margin of <span className={cn("font-bold", netMargin > 0 ? "text-emerald-600" : "text-red-500")}>{netMargin.toFixed(1)}%</span>.</>
-                                    )}
-                                </p>
-                            </div>
-                        </div>
-                    </FadeIn>
                 </div>
 
                 {/* Right Column: Results */}
@@ -196,7 +174,7 @@ export function TACoSCalculator() {
                         }
                         secondaryMetrics={[
                             { label: "Ad Spend", value: formatCurrency(spend), color: "text-slate-300" },
-                            { label: "Net Profit", value: formatCurrency(netProfit), color: netProfit >= 0 ? "text-emerald-400" : "text-red-400" }
+                            { label: "Net Profit", value: formatCurrency(netProfit), color: netProfit >= 0 ? "text-blue-400" : "text-red-400" }
                         ]}
                     />
 
@@ -217,7 +195,7 @@ export function TACoSCalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
                                     <span className="text-sm font-bold text-slate-900">Net Margin</span>
-                                    <span className={cn("text-base font-bold", netMargin > 0 ? "text-emerald-600" : "text-red-600")}>
+                                    <span className={cn("text-base font-bold", netMargin > 0 ? "text-blue-600" : "text-red-600")}>
                                         {netMargin.toFixed(2)}%
                                     </span>
                                 </div>
@@ -239,33 +217,13 @@ export function TACoSCalculator() {
                             )}
                         </div>
 
-                        <div className="space-y-4">
-                            <InsightItem
-                                label="Net Profit Margin"
-                                value={margin > 0 ? `${netMargin.toFixed(2)}%` : "-"}
-                                description="Real profit % after deducting ad spend."
-                                icon={Percent}
-                                color={netMargin > 0 ? "text-emerald-600" : netMargin < 0 ? "text-red-500" : "text-slate-400"}
-                                bg={netMargin > 0 ? "bg-emerald-50" : netMargin < 0 ? "bg-red-50" : "bg-slate-50"}
-                            />
-                            <InsightItem
-                                label="Ad Cost Impact"
-                                value={`${tacos.toFixed(2)}%`}
-                                description="Portion of revenue consumed by ads."
-                                icon={DollarSign}
-                                color="text-amber-600"
-                                bg="bg-amber-50"
-                            />
-                        </div>
-
-                        <Separator />
 
                         <div className="pt-2">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Profitability Scale</p>
                                 {margin > 0 && (
                                     <span className={cn("text-xs font-bold px-2 py-0.5 rounded-md border",
-                                        netMargin > 0 ? "text-emerald-600 bg-emerald-50 border-emerald-100" : "text-red-600 bg-red-50 border-red-100"
+                                        netMargin > 0 ? "text-blue-600 bg-blue-50 border-blue-100" : "text-red-600 bg-red-50 border-red-100"
                                     )}>
                                         {netMargin.toFixed(1)}% Net
                                     </span>
@@ -275,7 +233,7 @@ export function TACoSCalculator() {
                             <div className="relative pt-2 pb-1">
                                 {/* Visual Bar: Spend Impact on Margin */}
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
-                                    <div className="h-full bg-emerald-400" style={{ width: '60%' }} /> {/* Healthy Zone */}
+                                    <div className="h-full bg-blue-400" style={{ width: '60%' }} /> {/* Healthy Zone */}
                                     <div className="h-full bg-amber-400" style={{ width: '20%' }} /> {/* Warning Zone */}
                                     <div className="h-full bg-red-400" style={{ width: '20%' }} /> {/* Danger Zone */}
                                 </div>
@@ -306,20 +264,3 @@ export function TACoSCalculator() {
 }
 
 const Separator = () => <div className="h-px w-full bg-slate-100" />
-
-function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
-    return (
-        <div className="flex gap-4">
-            <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", bg, color)}>
-                <Icon className="w-6 h-6" />
-            </div>
-            <div>
-                <div className="flex items-baseline gap-2 mb-1">
-                    <h4 className="text-base font-bold text-slate-900 leading-tight">{label}</h4>
-                    <span className={cn("text-base font-bold", color)}>{value}</span>
-                </div>
-                <p className="text-sm text-slate-600 font-medium leading-relaxed">{description}</p>
-            </div>
-        </div>
-    )
-}

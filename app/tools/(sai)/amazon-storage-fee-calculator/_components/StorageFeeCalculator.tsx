@@ -81,32 +81,26 @@ export function StorageFeeCalculator() {
                         />
                         <CardContent className="space-y-5 pt-6">
 
-                            {/* Dimensions */}
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-base font-semibold text-slate-700">Dimensions (inches)</label>
-                                </div>
-                                <div className="grid grid-cols-3 gap-3">
-                                    <Input
-                                        type="number"
-                                        placeholder="Length"
+                            <div className="space-y-4">
+                                <label className="text-sm font-semibold text-slate-700">Dimensions (inches)</label>
+                                <div className="grid grid-cols-1 gap-4">
+                                    <CalculatorInput
+                                        label="Length"
                                         value={length}
-                                        onChange={(e) => setLength(parseFloat(e.target.value) || "")}
-                                        className="text-center"
+                                        onChange={setLength}
+                                        placeholder="Length"
                                     />
-                                    <Input
-                                        type="number"
-                                        placeholder="Width"
+                                    <CalculatorInput
+                                        label="Width"
                                         value={width}
-                                        onChange={(e) => setWidth(parseFloat(e.target.value) || "")}
-                                        className="text-center"
+                                        onChange={setWidth}
+                                        placeholder="Width"
                                     />
-                                    <Input
-                                        type="number"
-                                        placeholder="Height"
+                                    <CalculatorInput
+                                        label="Height"
                                         value={height}
-                                        onChange={(e) => setHeight(parseFloat(e.target.value) || "")}
-                                        className="text-center"
+                                        onChange={setHeight}
+                                        placeholder="Height"
                                     />
                                 </div>
                             </div>
@@ -121,7 +115,7 @@ export function StorageFeeCalculator() {
                             />
 
                             {/* Dropdowns */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="grid grid-cols-1 gap-5">
                                 <div className="space-y-2">
                                     <label className="text-sm font-semibold text-slate-700">Detailed Season</label>
                                     <Select value={season} onValueChange={(v: "jan-sept" | "oct-dec") => setSeason(v)}>
@@ -160,17 +154,17 @@ export function StorageFeeCalculator() {
                         mainValue={
                             <Counter value={monthlyFee} formatter={formatCurrency} key={`${currency}-${season}`} />
                         }
-                        valueColor={monthlyFee > 0 ? "text-blue-400" : "text-white"}
+                        valueColor={monthlyFee > 0 ? "text-slate-100" : "text-white"}
                         secondaryMetrics={[
                             {
                                 label: "Total Volume (cu ft)",
                                 value: <Counter value={totalVolume} formatter={(v) => v.toFixed(2)} />,
-                                color: "text-slate-300"
+                                color: "text-emerald-500"
                             },
                             {
                                 label: "Rate per cu ft",
                                 value: <Counter value={rate} formatter={(v) => `$${v.toFixed(2)}`} />,
-                                color: "text-slate-300"
+                                color: "text-emerald-500"
                             }
                         ]}
                     />
@@ -179,7 +173,7 @@ export function StorageFeeCalculator() {
                     {monthlyFee > 0 && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            season === "oct-dec" ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-blue-50 border-blue-200 text-blue-700"
+                            season === "oct-dec" ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-emerald-50 border-emerald-200 text-emerald-700"
                         )}>
                             {season === "oct-dec" ? "⚠️ Peak Season Rates (Oct-Dec)" : "✅ Standard Season Rates (Jan-Sept)"}
                         </div>
@@ -187,7 +181,7 @@ export function StorageFeeCalculator() {
 
                     {/* Breakdown Card */}
                     {monthlyFee > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
                             <div className="px-4 py-3 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
                             </div>
@@ -204,9 +198,9 @@ export function StorageFeeCalculator() {
                                     <span className="text-sm text-slate-500">Rate per cu ft</span>
                                     <span className="text-sm font-semibold text-slate-800">${rate.toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-blue-50/20">
+                                <div className="flex justify-between items-center px-4 py-3 bg-emerald-50/20">
                                     <span className="text-sm font-bold text-slate-900">Monthly Fee</span>
-                                    <span className="text-sm font-bold text-blue-600">{formatCurrency(monthlyFee)}</span>
+                                    <span className="text-sm font-bold text-emerald-600">{formatCurrency(monthlyFee)}</span>
                                 </div>
                             </div>
                         </div>

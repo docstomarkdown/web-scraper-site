@@ -24,10 +24,10 @@ export function SKUGuide() {
                         title: "Internal Hierarchy",
                         description: "Organize SKU components from broad to narrow: [Brand] > [Category] > [Model] > [Attribute]. This makes sorting and filtering much easier in your warehouse or store.",
                         icon: ListChecks,
-                        iconBg: "bg-emerald-50",
-                        iconColor: "text-emerald-500",
+                        iconBg: "bg-blue-50",
+                        iconColor: "text-blue-500",
                         stat: "Logic",
-                        statColor: "text-emerald-600",
+                        statColor: "text-blue-600",
                         statLabel: "Hierarchy",
                         tooltip: "Sort from broad to narrow."
                     },

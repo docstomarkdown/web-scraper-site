@@ -19,9 +19,6 @@ export default function AmazonStorageFeeCalculatorPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
                             Amazon Storage Fee Calculator
                         </h1>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Estimate your monthly FBA storage costs and avoid surprise fees during peak season.
-                        </p>
                     </FadeIn>
                 </div>
 

@@ -694,12 +694,12 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                     {
                                         label: "Space efficiency",
                                         value: results ? `${results.areaEfficiency.toFixed(1)}%` : "0.0%",
-                                        color: results ? (results.areaEfficiency >= 90 ? "text-emerald-400" : results.areaEfficiency >= 80 ? "text-amber-400" : "text-red-400") : "text-white/20"
+                                        color: results ? (results.areaEfficiency >= 90 ? "text-blue-400" : results.areaEfficiency >= 80 ? "text-amber-400" : "text-red-400") : "text-white/20"
                                     }
                                 ].map((metric, i) => (
                                     <div key={i}>
                                         <p className="text-[10px] mb-0.5 font-bold opacity-60 text-slate-300">{metric.label}</p>
-                                        <div className={cn("text-base font-bold break-all", metric.color || (results ? "text-emerald-400" : "text-white/20"))}>
+                                        <div className={cn("text-base font-bold break-all", metric.color || (results ? "text-blue-400" : "text-white/20"))}>
                                             {metric.value}
                                         </div>
                                     </div>

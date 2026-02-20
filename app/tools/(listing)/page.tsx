@@ -304,7 +304,7 @@ export default function ToolsPage() {
                                     key={tool.title}
                                 >
                                     <Link href={tool.href} className="block h-full">
-                                        <div className="group h-full bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-xl hover:shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                                        <div className="group h-full bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-xl hover:shadow-slate-900/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
 
                                             {/* Hover Gradient Effect */}
                                             <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

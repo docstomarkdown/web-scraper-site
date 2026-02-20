@@ -138,7 +138,7 @@ export function LandedCostCalculator() {
                         }
                         valueColor={
                             landedCostPerUnit > 0 && costUplift <= 50
-                                ? "text-emerald-400"
+                                ? "text-blue-400"
                                 : (costUplift > 100 ? "text-red-400" : "text-amber-400")
                         }
                     />

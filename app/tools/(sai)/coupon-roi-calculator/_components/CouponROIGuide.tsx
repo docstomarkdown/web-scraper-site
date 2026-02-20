@@ -13,8 +13,8 @@ export function CouponROIGuide() {
                     title: "What is Coupon ROI?",
                     description: "Coupon ROI measures the profitability of a discount campaign. It compares the net profit generated from coupon-driven sales against the total cost of the campaign (media spend + discount value).",
                     icon: TrendingUp,
-                    iconBg: "bg-emerald-50",
-                    iconColor: "text-emerald-500",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-500",
                     stat: "Positive",
                     statLabel: "Target ROI"
                 },

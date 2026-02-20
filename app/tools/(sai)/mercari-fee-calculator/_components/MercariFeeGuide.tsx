@@ -24,15 +24,7 @@ export function MercariFeeGuide() {
             stat: "Costly",
             statLabel: "Shipping Var"
         },
-        {
-            title: "Pro Tip: Pricing for Negotiation",
-            description: "Most items sell via 'Offers' for 10-20% less than list price. Account for this by listing higher to maintain your required net profit.",
-            icon: TrendingUp,
-            iconBg: "bg-emerald-50",
-            iconColor: "text-emerald-600",
-            stat: "Offers",
-            statLabel: "Buyer Strategy"
-        },
+
     ];
 
     return (

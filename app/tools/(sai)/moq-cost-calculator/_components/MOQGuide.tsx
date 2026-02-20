@@ -38,7 +38,7 @@ export function MOQGuide() {
                     iconBg: "bg-green-50",
                     iconColor: "text-green-500",
                     stat: "Strategy",
-                    statColor: "text-emerald-600",
+                    statColor: "text-blue-600",
                     statLabel: "Actionable Tip",
                     tooltip: "Ask for a lower test quantity."
                 }

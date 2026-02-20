@@ -176,14 +176,14 @@ export function DropshippingCalculator() {
                         <ResultFeedbackCard
                             title="Net Profit / Loss"
                             titleLabel="Live"
-                            labelClassName="text-emerald-400 bg-slate-800/50 border-slate-700/50"
+                            labelClassName="text-blue-400 bg-slate-800/50 border-slate-700/50"
                             mainValue={
                                 <Counter value={netProfit} formatter={formatCurrency} key={currency} />
                             }
-                            valueColor={netProfit > 0 ? "text-emerald-400" : (netProfit < 0 ? "text-red-400" : "text-white")}
+                            valueColor={netProfit > 0 ? "text-blue-400" : (netProfit < 0 ? "text-red-400" : "text-white")}
                             mainMetricLabel="Status"
                             mainMetricValue={deliveredOrders > 0 ? (netProfit >= 0 ? "PROFIT" : "LOSS") : "Waiting for Data"}
-                            mainMetricColor={deliveredOrders > 0 ? (netProfit >= 0 ? "text-emerald-400" : "text-red-400") : "text-slate-500"}
+                            mainMetricColor={deliveredOrders > 0 ? (netProfit >= 0 ? "text-blue-400" : "text-red-400") : "text-slate-500"}
                             secondaryMetrics={[
                                 {
                                     label: "Revenue",
@@ -224,7 +224,7 @@ export function DropshippingCalculator() {
 
                         {/* Breakdown Card */}
                         {deliveredOrders > 0 ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                                 <div className="px-5 py-3.5 border-b border-slate-100">
                                     <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">P&L Breakdown</p>
                                 </div>
@@ -248,8 +248,8 @@ export function DropshippingCalculator() {
                                         </div>
                                     )}
                                     <div className="flex justify-between items-center px-5 py-4 bg-slate-50">
-                                        <span className="text-sm font-bold text-emerald-600">Net Profit</span>
-                                        <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-red-600")}>
+                                        <span className="text-sm font-bold text-blue-600">Net Profit</span>
+                                        <span className={cn("text-base font-bold", netProfit >= 0 ? "text-blue-600" : "text-red-600")}>
                                             {formatCurrency(netProfit)}
                                         </span>
                                     </div>

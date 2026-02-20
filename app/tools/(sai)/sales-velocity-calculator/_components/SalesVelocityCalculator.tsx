@@ -61,11 +61,8 @@ export function SalesVelocityCalculator() {
                 <div className="lg:col-span-7 space-y-6">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter sales history and stockout details."
-
                             onReset={handleReset}
-
                         />
                         <CardContent className="space-y-5 pt-6">
                             <CalculatorInput
@@ -99,10 +96,10 @@ export function SalesVelocityCalculator() {
                         </CardContent>
                     </Card>
 
-                    {/* Analysis Card - Moved from Right to Left to fill space */}
+                    {/* Analysis Card */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <div className="flex items-start gap-3">
-                            <TrendingUp className="w-5 h-5 text-emerald-500 mt-0.5" />
+                            <TrendingUp className="w-5 h-5 text-blue-500 mt-0.5" />
                             <div>
                                 <h4 className="text-base font-bold text-slate-800 mb-1">
                                     Forecasting Insight
@@ -130,17 +127,17 @@ export function SalesVelocityCalculator() {
                     <ResultFeedbackCard
                         title="True Sales Velocity"
                         titleLabel="Adjusted Rate"
-                        labelClassName="bg-blue-500/10 text-blue-400"
+                        labelClassName="bg-blue-500/10 text-blue-500"
                         mainValue={
                             <div className="flex items-baseline gap-1">
                                 <Counter value={trueVelocity} formatter={(v) => v.toFixed(1)} />
                                 <span className="text-2xl font-normal opacity-80">/ Day</span>
                             </div>
                         }
-                        valueColor="text-emerald-400"
+                        valueColor="text-white"
                         mainMetricLabel="Impact of Stockouts"
                         mainMetricValue={<><Counter value={velocityIncreasePercent} formatter={(v) => `+${v.toFixed(1)}%`} /> Faster</>}
-                        mainMetricColor={velocityIncreasePercent > 0 ? "text-emerald-400" : "text-slate-400"}
+                        mainMetricColor={velocityIncreasePercent > 0 ? "text-blue-400" : "text-slate-400"}
                         secondaryMetrics={[
                             {
                                 label: "Raw Daily Average",
@@ -150,31 +147,37 @@ export function SalesVelocityCalculator() {
                             {
                                 label: "Monthly Perimeter",
                                 value: <><Counter value={monthlyRunRate} formatter={(v) => v.toFixed(0)} /> Units</>,
-                                color: "text-blue-300"
+                                color: "text-blue-400"
                             }
                         ]}
                     />
 
                     {/* Breakdown Card */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Velocity Breakdown</p>
+                    {days > 0 || totalSold > 0 ? (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                            <div className="px-5 py-3.5 border-b border-slate-100">
+                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Velocity Breakdown</p>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Raw Velocity</span>
+                                    <span className="text-sm font-semibold text-slate-800">{rawVelocity.toFixed(1)} / day</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5">
+                                    <span className="text-sm text-slate-600">Active Selling Days</span>
+                                    <span className="text-sm font-semibold text-slate-800">{activeDays} days</span>
+                                </div>
+                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
+                                    <span className="text-sm font-bold text-slate-900">True Velocity</span>
+                                    <span className="text-base font-bold text-blue-600">{trueVelocity.toFixed(1)} / day</span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Raw Velocity</span>
-                                <span className="text-sm font-semibold text-slate-800">{rawVelocity.toFixed(1)} / day</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Active Selling Days</span>
-                                <span className="text-sm font-semibold text-slate-800">{activeDays} days</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                <span className="text-sm font-bold text-slate-900">True Velocity</span>
-                                <span className="text-base font-bold text-blue-600">{trueVelocity.toFixed(1)} / day</span>
-                            </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+                            <p className="text-sm text-slate-400">Enter sales history to see velocity breakdown.</p>
                         </div>
-                    </div>
+                    )}
 
                     {/* Revenue Card */}
                     {unitPrice > 0 && (
