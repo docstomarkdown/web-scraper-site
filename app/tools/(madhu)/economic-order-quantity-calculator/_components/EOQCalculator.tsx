@@ -2,20 +2,8 @@
 
 import React, { useState, useMemo } from "react"
 import {
-    TrendingUp,
-    ShoppingCart,
-    Warehouse,
     Scale,
-    CheckCircle2,
-    DollarSign,
-    BarChart3,
-    ArrowRight,
-    Activity,
-    ChevronUp,
-    ChevronDown,
-    Zap,
-    Info,
-    LineChart
+    Info
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -119,13 +107,12 @@ Results:
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-8 space-y-10 flex-1 flex flex-col">
-                            <div className="space-y-8">
+                        <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
+                            <div className="space-y-5">
                                 <EOQInput
                                     label="Annual Demand (Units)"
                                     value={values.annualDemand}
                                     onChange={(v) => handleInputChange('annualDemand', v)}
-                                    icon={TrendingUp}
                                     placeholder="e.g. 10000"
                                     tooltip="The total number of units your business sells or uses in one year."
                                 />
@@ -133,7 +120,6 @@ Results:
                                     label="Ordering Cost ($)"
                                     value={values.orderCost}
                                     onChange={(v) => handleInputChange('orderCost', v)}
-                                    icon={ShoppingCart}
                                     placeholder="e.g. 50"
                                     isCurrency
                                     tooltip="Fixed cost per purchase order (shipping, labor, admin processing)."
@@ -142,14 +128,13 @@ Results:
                                     label="Annual Holding Cost ($)"
                                     value={values.holdingCost}
                                     onChange={(v) => handleInputChange('holdingCost', v)}
-                                    icon={Warehouse}
                                     placeholder="e.g. 2.50"
                                     isCurrency
                                     tooltip="Cost to store one unit for one year (storage rent, insurance, capital cost)."
                                 />
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-slate-50">
+                            <div className="pt-1.5 border-t border-slate-50">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -271,7 +256,6 @@ function EOQInput({
     label,
     value,
     onChange,
-    icon: Icon,
     tooltip,
     placeholder,
     isCurrency = false
@@ -279,23 +263,33 @@ function EOQInput({
     label: string,
     value: string,
     onChange: (v: string) => void,
-    icon: any,
     tooltip: string,
     placeholder: string,
     isCurrency?: boolean
 }) {
     return (
         <div className="space-y-2 group/input">
-            <div className="flex items-center gap-2 mb-1 pl-1">
-                <Icon className="w-4 h-4 text-slate-400 group-focus-within/input:text-blue-600 transition-colors" />
-                <label className="text-base font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
+            <div className="flex items-center gap-1.5 mb-1 pl-1">
+                <label className="text-sm font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
                     {label}
                 </label>
+                <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
+                                <Info className="h-3.5 w-3.5" />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="text-[10px] bg-slate-900 text-white border-slate-800 p-2 max-w-[200px]">
+                            {tooltip}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
 
             <div className="relative group">
                 {isCurrency && (
-                    <div className="absolute left-5 top-1/2 -translate-y-1/2 text-lg font-bold text-slate-400 transition-colors group-focus-within:text-blue-600">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base font-bold text-slate-400 transition-colors group-focus-within:text-blue-600">
                         $
                     </div>
                 )}
@@ -304,31 +298,12 @@ function EOQInput({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
-                        isCurrency ? "pl-10 pr-5" : "px-5"
+                        "h-10 w-full text-base border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic shrink-0",
+                        isCurrency ? "pl-8 pr-5" : "px-5"
                     )}
                     placeholder={placeholder}
                 />
-
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
-                    <button
-                        onClick={() => onChange((parseFloat(value || "0") + (isCurrency ? 1 : 100)).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"
-                    >
-                        <ChevronUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                        onClick={() => onChange(Math.max(0, (parseFloat(value || "0") - (isCurrency ? 1 : 100))).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-red-50 hover:text-red-600 text-slate-400 transition-all"
-                    >
-                        <ChevronDown className="h-3.5 w-3.5" />
-                    </button>
-                </div>
             </div>
-
-            <p className="text-[11px] text-slate-400 font-bold pl-1 leading-relaxed">
-                {tooltip}
-            </p>
         </div>
     )
 }

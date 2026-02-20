@@ -124,7 +124,6 @@ Estimated Delivery Date: ${deliveryDate}
                         <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-6">
                                 <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                     Timeline Details (Days)
                                 </label>
 

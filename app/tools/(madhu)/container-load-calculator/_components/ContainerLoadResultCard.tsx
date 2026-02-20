@@ -38,13 +38,13 @@ export function ContainerLoadResultCard({
     return (
         <Card className={cn(
             "border-0 shadow-xl overflow-hidden relative transition-all duration-300",
-            variant === "compact" ? "bg-white border border-slate-100 shadow-sm" : "bg-slate-900 text-white",
+            variant === "compact" ? "bg-white border border-slate-100 shadow-sm" : "bg-slate-700 text-white",
             className
         )}>
             {variant === "default" && (
                 <>
-                    <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-blue-500/10" />
-                    <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none bg-blue-500/5" />
+                    <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none bg-blue-500 opacity-20" />
+                    <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none bg-emerald-500 opacity-10" />
                 </>
             )}
 

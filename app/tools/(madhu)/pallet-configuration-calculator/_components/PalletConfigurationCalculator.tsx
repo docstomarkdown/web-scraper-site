@@ -375,7 +375,6 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between">
                                     <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                         Box details
                                     </label>
                                     <button
@@ -427,7 +426,6 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                 {/* Pallet Selection */}
                                 <div className="space-y-3">
                                     <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                         Pallet type
                                     </label>
                                     <div className="space-y-2">
@@ -469,7 +467,6 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         <label className="text-sm font-bold text-slate-400 flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                             Stack limits
                                         </label>
                                         <button
@@ -733,7 +730,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                         variant="compact"
                         mainValue={null}
                     >
-                        <div className="space-y-4 relative group flex-1 flex flex-col min-h-[300px]">
+                        <div className="space-y-3 relative group flex-1 flex flex-col min-h-[220px]">
                             {(() => {
                                 const isDummy = !results;
                                 const displayResults = isDummy ? {
@@ -749,7 +746,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                     <>
                                         {/* Isometric 3D Visualization */}
                                         <div className={cn(
-                                            "flex-1 flex flex-col items-center justify-center py-6 min-h-[260px] rounded-xl border overflow-hidden relative group transition-all duration-500",
+                                            "flex-1 flex flex-col items-center justify-center py-4 min-h-[200px] rounded-xl border overflow-hidden relative group transition-all duration-500",
                                             isDummy ? "bg-slate-50 border-slate-100" : "bg-slate-50/50 border-slate-200/50"
                                         )}>
                                             {/* Background Grid Pattern */}
@@ -759,9 +756,9 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
 
                                             {/* Ghost Overlay for Dummy State */}
                                             {isDummy && (
-                                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/40 backdrop-blur-[1px]">
-                                                    <div className="bg-white/90 px-4 py-2 rounded-lg shadow-sm border border-slate-200 text-sm font-semibold text-slate-500 flex items-center gap-2">
-                                                        <Grid3x3 className="w-4 h-4" />
+                                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
+                                                    <div className="bg-white/90 px-3 py-1.5 rounded-full shadow-sm border border-slate-200 text-[11px] font-bold text-slate-500 flex items-center gap-2">
+                                                        <Grid3x3 className="w-3.5 h-3.5" />
                                                         Enter dimensions to update
                                                     </div>
                                                 </div>
@@ -777,18 +774,18 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                     style={{
                                                         transform: 'rotateX(60deg) rotateZ(-45deg)',
                                                         transformStyle: 'preserve-3d',
-                                                        width: '240px',
-                                                        height: '200px'
+                                                        width: '180px',
+                                                        height: '140px'
                                                     }}
                                                 >
                                                     {/* Wood Pallet Shadow */}
                                                     <div className="absolute inset-[-15%] bg-slate-900/10 blur-3xl rounded-full transform translate-z-[-30px]" />
 
                                                     {/* Pallet Base (Wooden Look) */}
-                                                    <div className="absolute inset-0 bg-[#d4a373] border-b-8 border-r-8 border-[#bc8a5f] shadow-2xl rounded-sm transform translate-z-[-10px]">
-                                                        <div className="absolute inset-0 flex flex-col gap-2 p-1 opacity-30">
+                                                    <div className="absolute inset-0 bg-[#d4a373] border-b-4 border-r-4 border-[#bc8a5f] shadow-xl rounded-sm transform translate-z-[-10px]">
+                                                        <div className="absolute inset-0 flex flex-col gap-1.5 p-1 opacity-25">
                                                             {Array.from({ length: 5 }).map((_, i) => (
-                                                                <div key={i} className="h-full border-b-2 border-[#8b5e34]" />
+                                                                <div key={i} className="h-full border-b-[1px] border-[#8b5e34]" />
                                                             ))}
                                                         </div>
                                                     </div>
@@ -844,17 +841,17 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                             </div>
 
                                             {/* Bottom Legend */}
-                                            <div className="absolute bottom-5 left-0 right-0 px-10 flex justify-between items-center text-slate-400">
-                                                <div className="flex flex-col gap-0.5">
-                                                    <span className="text-[10px] font-bold tracking-[0.1em] opacity-60">Arrangement</span>
-                                                    <span className={cn("text-[14px] font-black tracking-tight", isDummy ? "text-slate-400" : "text-slate-900")}>
+                                            <div className="absolute bottom-3 left-0 right-0 px-6 flex justify-between items-center text-slate-400">
+                                                <div className="flex flex-col gap-0">
+                                                    <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Arrangement</span>
+                                                    <span className={cn("text-xs font-bold", isDummy ? "text-slate-400" : "text-slate-900")}>
                                                         {displayResults.unitsAlongLength} × {displayResults.unitsAlongWidth} Grid
                                                     </span>
                                                 </div>
-                                                <div className="h-8 w-px bg-slate-200 mx-4" />
-                                                <div className="flex flex-col items-end gap-0.5 text-right">
-                                                    <span className="text-[10px] font-bold tracking-[0.1em] opacity-60">Total stack</span>
-                                                    <span className={cn("text-[14px] font-black tracking-tight", isDummy ? "text-slate-400" : "text-blue-600")}>
+                                                <div className="h-6 w-px bg-slate-200 mx-2" />
+                                                <div className="flex flex-col items-end gap-0 text-right">
+                                                    <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Total stack</span>
+                                                    <span className={cn("text-xs font-bold", isDummy ? "text-slate-400" : "text-blue-600")}>
                                                         {displayResults.layers} {displayResults.layers === 1 ? 'Layer' : 'Layers'}
                                                     </span>
                                                 </div>
@@ -865,10 +862,10 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                         {!isDummy && results.warnings.length > 0 && (
                                             <>
                                                 <div className="h-px bg-slate-100 w-full mt-2" />
-                                                <div className="space-y-2 mt-4">
+                                                <div className="space-y-1.5 mt-2.5">
                                                     {results.warnings.map((warning, i) => (
-                                                        <div key={i} className="flex gap-2 bg-amber-50 p-3 rounded-lg border border-amber-100 text-amber-800 text-xs font-semibold items-start">
-                                                            <AlertTriangle className="w-4 h-4 shrink-0 text-amber-500 mt-0.5" />
+                                                        <div key={i} className="flex gap-2 bg-amber-50/50 px-2 py-1.5 rounded-lg border border-amber-100 text-amber-800 text-[10px] font-bold items-center">
+                                                            <AlertTriangle className="w-3 h-3 shrink-0 text-amber-500" />
                                                             <span>{warning}</span>
                                                         </div>
                                                     ))}

@@ -143,10 +143,7 @@ export const toolsGroups = [
         title: "Mercari Fee Calculator",
         href: "/tools/mercari-fee-calculator",
       },
-      {
-        title: "Inventory Turnover Calculator",
-        href: "/tools/inventory-turnover-calculator",
-      },
+
       {
         title: "Packaging Cost Calculator",
         href: "/tools/packaging-cost-calculator",

@@ -192,7 +192,6 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                         Input weight
                                     </label>
                                     <button
@@ -260,7 +259,6 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                         Convert to
                                     </label>
                                     <button

@@ -2,18 +2,10 @@
 
 import React, { useState, useMemo } from "react"
 import {
-    Package,
-    TrendingUp,
-    ShieldCheck,
     Calendar,
-    ChevronUp,
-    ChevronDown,
     Info,
     AlertCircle,
-    CheckCircle2,
-    Clock,
-    Timer,
-    History
+    CheckCircle2
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -145,26 +137,25 @@ Results:
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-[2.5rem]">
                         <InputCardHeader
                             title="Inventory Configuration"
-                            subtitle="Input your stock levels and sales speed to calculate your remaining runway."
+                            subtitle="Analyze your remaining stock runway."
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
+                        <CardContent className="p-5 md:p-6 space-y-5 flex-1 flex flex-col">
                             {/* Velocity Unit Tabs */}
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between pl-1">
-                                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                                        <History className="w-4 h-4" />
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-1.5 mb-1 pl-1">
+                                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">
                                         Velocity Period
                                     </label>
                                     <TooltipProvider delayDuration={100}>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                                    <Info className="h-4 w-4" />
+                                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
+                                                    <Info className="h-3.5 w-3.5" />
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent side="right" className="max-w-[220px] text-xs bg-slate-900 text-white border-slate-800 p-3 rounded-lg">
+                                            <TooltipContent side="top" className="max-w-[220px] text-xs bg-slate-900 text-white border-slate-800 p-3 rounded-lg">
                                                 <p className="font-semibold mb-1.5">Select your sales tracking period:</p>
                                                 <div className="text-slate-300 text-[11px] leading-relaxed space-y-1">
                                                     <p><span className="text-blue-400 font-semibold">Daily</span> if you track sales every day</p>
@@ -180,7 +171,7 @@ Results:
                                     onValueChange={(v) => handleInputChange('velocityUnit', v)}
                                     className="w-full"
                                 >
-                                    <TabsList className="grid w-full grid-cols-3 h-12 bg-slate-100/50 p-1.5 rounded-2xl border border-slate-200/50">
+                                    <TabsList className="grid w-full grid-cols-3 h-10 bg-slate-100/50 p-1 rounded-xl border border-slate-200/50">
                                         <TabsTrigger
                                             value="daily"
                                             className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
@@ -208,7 +199,6 @@ Results:
                                     label="Current Stock on Hand"
                                     value={values.currentStock}
                                     onChange={(v) => handleInputChange('currentStock', v)}
-                                    icon={Package}
                                     placeholder="e.g. 5000"
                                     tooltip="The total number of units physically available in your warehouse today."
                                 />
@@ -216,7 +206,6 @@ Results:
                                     label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', 'y')})`}
                                     value={values.salesVelocity}
                                     onChange={(v) => handleInputChange('salesVelocity', v)}
-                                    icon={TrendingUp}
                                     placeholder="e.g. 150"
                                     tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
                                 />
@@ -224,13 +213,12 @@ Results:
                                     label="Safety Stock Buffer"
                                     value={values.safetyStock}
                                     onChange={(v) => handleInputChange('safetyStock', v)}
-                                    icon={ShieldCheck}
                                     placeholder="0 (optional)"
                                     tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
                                 />
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-slate-50">
+                            <div className="pt-1.5 border-t border-slate-50">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -307,24 +295,33 @@ function DOIInput({
     label,
     value,
     onChange,
-    icon: Icon,
     tooltip,
     placeholder
 }: {
     label: string,
     value: string,
     onChange: (v: string) => void,
-    icon: any,
     tooltip: string,
     placeholder: string
 }) {
     return (
         <div className="space-y-2 group/input">
-            <div className="flex items-center gap-2 mb-1 pl-1">
-                <Icon className="w-4 h-4 text-slate-400 group-focus-within/input:text-blue-600 transition-colors" />
-                <label className="text-base font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
+            <div className="flex items-center gap-1.5 mb-1 pl-1">
+                <label className="text-sm font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
                     {label}
                 </label>
+                <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
+                                <Info className="h-3.5 w-3.5" />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="text-[10px] bg-slate-900 text-white border-slate-800 p-2 max-w-[200px]">
+                            {tooltip}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
 
             <div className="relative group">
@@ -333,30 +330,11 @@ function DOIInput({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-2xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic px-5"
+                        "h-10 w-full text-base border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic px-5 shrink-0"
                     )}
                     placeholder={placeholder}
                 />
-
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-2xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
-                    <button
-                        onClick={() => onChange((parseFloat(value || "0") + 10).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"
-                    >
-                        <ChevronUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                        onClick={() => onChange(Math.max(0, (parseFloat(value || "0") - 10)).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-red-50 hover:text-red-600 text-slate-400 transition-all"
-                    >
-                        <ChevronDown className="h-3.5 w-3.5" />
-                    </button>
-                </div>
             </div>
-
-            <p className="text-[11px] text-slate-400 font-bold pl-1 leading-relaxed">
-                {tooltip}
-            </p>
         </div>
     )
 }

@@ -115,7 +115,7 @@ export function GrossMarginCalculator() {
                                 scrollId="how-to-use"
                             />
                             <div className="flex items-center gap-3">
-                                <div className="w-[120px]">
+                                <div className="w-[140px]">
                                     <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                                 </div>
                             </div>
@@ -124,7 +124,7 @@ export function GrossMarginCalculator() {
                         <CardContent className="p-6 md:p-8 space-y-8">
 
                             {/* Calculation Mode Selector - Enhanced Design */}
-                            <div className="grid grid-cols-3 gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200/60">
+                            <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200/60">
                                 <ModeButton
                                     active={mode === "margin"}
                                     onClick={() => { setMode("margin"); handleReset(); }}
@@ -308,7 +308,7 @@ export function GrossMarginCalculator() {
                                 {derivedRevenue > 0 && (derivedProfit / derivedRevenue) > 0.1 && "PROFIT"}
                             </div>
                         </div>
-                        <div className="flex justifying-between mt-2 text-xs text-slate-500 font-medium px-1">
+                        <div className="flex items-center justify-start gap-6 mt-2 text-xs text-slate-500 font-medium px-1">
                             <div className="flex items-center gap-1.5">
                                 <div className="w-2 h-2 rounded-full bg-slate-400"></div>
                                 Cost: {derivedRevenue > 0 ? ((derivedCogs / derivedRevenue) * 100).toFixed(1) : 0}%
@@ -332,14 +332,14 @@ function ModeButton({ active, onClick, icon: Icon, label }: { active: boolean, o
         <button
             onClick={onClick}
             className={cn(
-                "flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all duration-300 border",
+                "flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl transition-all duration-300 border",
                 active
                     ? "bg-white border-blue-200 shadow-sm text-blue-600 ring-2 ring-blue-100"
                     : "border-transparent text-slate-500 hover:bg-white hover:text-slate-700 hover:shadow-sm"
             )}
         >
-            <Icon className={cn("w-5 h-5", active ? "stroke-[2.5px]" : "stroke-2")} />
-            <span className="text-xs font-bold tracking-wide">{label}</span>
+            <Icon className={cn("w-4 h-4", active ? "stroke-[2.5px]" : "stroke-2")} />
+            <span className="text-[11px] font-bold tracking-tight">{label}</span>
         </button>
     )
 }

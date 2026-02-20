@@ -2,10 +2,7 @@
 
 import React, { useState, useMemo } from "react"
 import {
-    Target,
     TrendingUp,
-    ChevronUp,
-    ChevronDown,
     CheckCircle2,
     Info
 } from "lucide-react"
@@ -14,7 +11,7 @@ import {
     ActionButtons,
     MadhuSubHeader
 } from "../../ToolTemplate"
-import { FadeIn, Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -74,7 +71,7 @@ export function AffiliateCommissionCalculator() {
         const totalCOGS = cogs * netSales
         const netRevenue = totalRevenue - totalPayout - totalCOGS
 
-        const isAboveBreakEven = rate > breakEvenRate && cogs > 0
+        const isAboveBreakEven = rate > breakEvenRate
 
         return {
             commissionPerSale,
@@ -289,23 +286,7 @@ Results:
                         </div>
                     </ResultFeedbackCard>
 
-                    {/* Action Plan */}
-                    <FadeIn delay={0.1}>
-                        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Target className="w-4 h-4 text-blue-500" />
-                                <p className="text-slate-500 text-sm font-bold">Action plan</p>
-                            </div>
-                            <p className="text-[13px] font-medium text-slate-700 leading-relaxed">
-                                For <span className="text-blue-600 font-bold">{Math.round(results.netSales)} net units</span> across{" "}
-                                <span className="font-bold text-slate-900">{values.affiliateCount || 0} affiliate(s)</span>, you will pay out{" "}
-                                <span className="font-bold text-indigo-600">${results.totalPayout.toFixed(0)}</span> and keep{" "}
-                                <span className={cn("font-bold", results.netRevenue >= 0 ? "text-emerald-600" : "text-red-600")}>
-                                    ${results.netRevenue.toFixed(0)}
-                                </span> in net profit.
-                            </p>
-                        </div>
-                    </FadeIn>
+
                 </div>
             </div>
         </div>
@@ -370,28 +351,14 @@ function AffiliateInput({
                 </TooltipProvider>
             </div>
 
-            <div className="relative group">
+            <div className="relative">
                 <input
                     type="text"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className="h-12 w-full text-base border-2 border-slate-200 bg-white rounded-xl px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
+                    className="h-12 w-full text-base border-2 border-slate-200 bg-white rounded-xl px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic appearance-none"
                     placeholder={placeholder}
                 />
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl overflow-hidden group-hover:border-blue-600/50 transition-colors">
-                    <button
-                        onClick={() => onChange((parseFloat(value || "0") + 1).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"
-                    >
-                        <ChevronUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                        onClick={() => onChange(Math.max(0, (parseFloat(value || "0") - 1)).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-red-50 hover:text-red-600 text-slate-400 transition-all"
-                    >
-                        <ChevronDown className="h-3.5 w-3.5" />
-                    </button>
-                </div>
             </div>
         </div>
     )

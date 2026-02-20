@@ -28,7 +28,7 @@ export interface MadhuSubHeaderProps {
     withDot?: boolean
 }
 
-export function MadhuSubHeader({ title, icon: Icon, className, withDot = true }: MadhuSubHeaderProps) {
+export function MadhuSubHeader({ title, icon: Icon, className, withDot = false }: MadhuSubHeaderProps) {
     return (
         <div className={cn("flex items-center gap-2 mb-4", className)}>
             {withDot && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
@@ -70,11 +70,6 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
     return (
         <div className="px-6 py-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-                {Icon && (
-                    <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
-                        <Icon className="w-6 h-6" />
-                    </div>
-                )}
                 <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                         <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{title}</h2>
