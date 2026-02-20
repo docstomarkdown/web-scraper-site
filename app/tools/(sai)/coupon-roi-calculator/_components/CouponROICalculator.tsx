@@ -114,7 +114,7 @@ export function CouponROICalculator() {
                                 <DollarSign className="w-4 h-4 text-slate-400" />
                                 Costs & Volume
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Campaign Cost (${currencySymbol})`}
                                     value={campaignCost}
@@ -140,7 +140,7 @@ export function CouponROICalculator() {
                                 <ShoppingCart className="w-4 h-4 text-slate-400" />
                                 Sales Metrics
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <CalculatorInput
                                     label={`Avg Order Value (${currencySymbol})`}
                                     value={aov}
@@ -174,12 +174,12 @@ export function CouponROICalculator() {
                         title="Campaign ROI"
                         titleLabel="Return on Investment"
                         mainValue={<Counter value={roi} formatter={(v) => `${v.toFixed(0)}%`} />}
-                        valueColor={roi > 0 ? "text-blue-400" : (roi < 0 ? "text-red-400" : "text-slate-100")}
+                        valueColor={roi > 0 ? "text-slate-100" : (roi < 0 ? "text-rose-400" : "text-slate-100")}
                         secondaryMetrics={[
                             {
                                 label: "Net Profit",
                                 value: <Counter value={netProfit} prefix={currencySymbol} />,
-                                color: netProfit >= 0 ? "text-blue-600" : "text-red-600"
+                                color: netProfit >= 0 ? "text-emerald-500 font-bold" : "text-rose-400"
                             },
                             {
                                 label: "Total Revenue",
@@ -199,9 +199,9 @@ export function CouponROICalculator() {
                     {totalRevenue > 0 && (
                         <div className={cn(
                             "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            roi > 0 ? "bg-blue-50 border-blue-200 text-blue-700" :
+                            roi > 0 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
                                 roi === 0 ? "bg-slate-50 border-slate-200 text-slate-700" :
-                                    "bg-red-50 border-red-200 text-red-700"
+                                    "bg-rose-50 border-rose-200 text-rose-700"
                         )}>
                             {roi > 0 ? "🚀 Positive ROI Campaign" : roi === 0 ? "⚖️ Break-Even Campaign" : "🛑 Negative ROI Campaign"}
                         </div>
@@ -209,7 +209,7 @@ export function CouponROICalculator() {
 
                     {/* Breakdown */}
                     {totalRevenue > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
                             <div className="px-5 py-3.5 border-b border-slate-100">
                                 <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Financial Breakdown</p>
                             </div>
@@ -224,12 +224,12 @@ export function CouponROICalculator() {
                                 </div>
                                 <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
                                     <span className="text-sm text-slate-500">Discount Given</span>
-                                    <span className="text-sm font-medium text-red-600">-{currencySymbol}{(Number(redemptions) * Number(discountAmount)).toFixed(2)}</span>
+                                    <span className="text-sm font-medium text-rose-600">-{currencySymbol}{(Number(redemptions) * Number(discountAmount)).toFixed(2)}</span>
                                 </div>
                             </div>
                             <div className="flex justify-between items-center px-5 py-3.5 bg-slate-100/50 border-t border-slate-100">
                                 <span className="text-sm font-bold text-slate-900">Net Profit</span>
-                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-blue-600" : "text-red-600")}>
+                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-rose-600")}>
                                     {currencySymbol}{netProfit.toFixed(2)}
                                 </span>
                             </div>
