@@ -62,7 +62,11 @@ export function ReturnOnAdSpendCalculator() {
     }
 
     // Determine ROAS health (shared logic)
-    const getROASHealth = (roasValue: number) => {
+    const getROASHealth = (roasValue: number, hasInput: boolean) => {
+        if (!hasInput) {
+            return { color: "text-slate-400", bg: "bg-slate-800", label: "---" }
+        }
+
         let label = "High Performance"
         if (roasValue < 1) label = "Loss Making"
         else if (roasValue < 2) label = "Break Even / Low Profit"
@@ -75,7 +79,7 @@ export function ReturnOnAdSpendCalculator() {
         return { color, bg: "bg-slate-900", label }
     }
 
-    const currentHealth = mode === "calculate-roas" ? getROASHealth(roas) : getROASHealth(targetRoasVal)
+    const currentHealth = mode === "calculate-roas" ? getROASHealth(roas, spend > 0) : getROASHealth(targetRoasVal, targetRoasVal > 0)
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
@@ -177,7 +181,7 @@ export function ReturnOnAdSpendCalculator() {
                                 <Counter value={calculatedRevenue} formatter={formatCurrency} key={currency} />
                             )
                         }
-                        valueColor={mode === "calculate-roas" ? (roas > 1 ? "text-blue-400" : (roas < 1 ? "text-red-400" : "text-white")) : "text-white"}
+                        valueColor={mode === "calculate-roas" ? (spend > 0 ? (roas > 1 ? "text-blue-400" : (roas < 1 ? "text-red-400" : "text-white")) : "text-white") : "text-white"}
                         secondaryMetrics={[
                             {
                                 label: mode === "calculate-roas" ? "ROAS %" : "Target ROAS (x)",
@@ -221,18 +225,7 @@ export function ReturnOnAdSpendCalculator() {
                     )}
 
 
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
-                        <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                            <h4 className="text-sm font-semibold text-emerald-900 mb-1">Pro Tip</h4>
-                            <p className="text-sm text-blue-700 leading-relaxed">
-                                {mode === "calculate-roas" ?
-                                    "A Return on Ad Spend (ROAS) of 4.0x (400%) means for every $1 you spend on ads, you get $4 back in revenue. Aim for at least 2.5x - 3.0x to cover product costs and other expenses." :
-                                    "To define a target Return on Ad Spend (ROAS), consider your profit margins. If your break-even Return on Ad Spend (ROAS) is 2.0x, aim for a target of 3.0x or higher to ensure profitability."
-                                }
-                            </p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </FadeIn>

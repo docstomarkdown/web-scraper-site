@@ -256,18 +256,7 @@ export function PromoCodeCalculator() {
                         ]}
                     />
 
-                    {/* Tip Card */}
-                    <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex gap-4">
-                        <div className="w-10 h-10 rounded-full bgemerabde-100 flex items-center justify-center flex-shrink-0">
-                            <Ticket className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div>
-                            <h4 className="font-semibold text-emerald-900 mb-1">E-commerce Pro Tip</h4>
-                            <p className="text-sm text-blue-800/80 leading-relaxed">
-                                Use short, memorable prefixes like <span className="font-mono bg-blue-100 px-1 rounded">FLASH</span> or <span className="font-mono bg-blue-100 px-1 rounded">VIP</span> to increase conversion rates by up to 15%.
-                            </p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
