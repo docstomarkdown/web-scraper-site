@@ -91,7 +91,7 @@ function EmailInput({
                     }
                     placeholder={displayPlaceholder}
                     className={cn(
-                        "bg-transparent border-none outline-none p-0 h-full font-medium text-base text-slate-900 placeholder:text-slate-400 placeholder:italic",
+                        "bg-transparent border-none outline-none p-0 h-full font-medium text-base text-slate-900 placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
                         hasValue ? "text-right w-auto min-w-[1ch]" : "text-right w-full"
                     )}
                     style={hasValue ? { width: `${Math.max(1, value.toString().length)}ch` } : undefined}
@@ -186,11 +186,11 @@ export default function EmailROICalculator() {
     }
 
     const toolComponent = (
-        <FadeIn className="w-full max-w-7xl mx-auto py-4 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <FadeIn className="w-full max-w-7xl mx-auto py-2 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-8 flex flex-col h-full space-y-4">
+                <div className="lg:col-start-2 lg:col-span-6 flex flex-col h-full space-y-4">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full flex flex-col">
                         <InputCardHeader
                             title="Campaign Data"
@@ -198,11 +198,11 @@ export default function EmailROICalculator() {
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-4 md:p-6 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-4 space-y-4 flex-1 flex flex-col">
                             {/* List & Cost */}
-                            <div className="space-y-6">
-                                <MadhuSubHeader title="Campaign setup" withDot={false} />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Campaign setup" withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-2.5">
                                     <EmailInput
                                         label="List Size"
                                         value={listSize}
@@ -222,9 +222,9 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Engagement Rates */}
-                            <div className="space-y-6">
-                                <MadhuSubHeader title="Engagement metrics" withDot={false} />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Engagement metrics" withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-2.5">
                                     <EmailInput
                                         label="Open Rate"
                                         value={openRate}
@@ -245,9 +245,9 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Conversion */}
-                            <div className="space-y-6">
-                                <MadhuSubHeader title="Conversion metrics" withDot={false} />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Conversion metrics" withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-2.5">
                                     <EmailInput
                                         label="Conversion Rate"
                                         value={conversionRate}
@@ -278,7 +278,7 @@ export default function EmailROICalculator() {
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-32">
+                <div className="lg:col-span-4 space-y-3 lg:sticky lg:top-32">
 
                     {/* Primary Result Card */}
                     <ResultFeedbackCard
@@ -318,11 +318,11 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-emerald-400">
+                                    <p className="text-lg font-bold text-emerald-400">
                                         <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">Net Profit</p>
                                         <TooltipProvider delayDuration={100}>
@@ -338,11 +338,11 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className={cn("text-xl font-bold", netProfit >= 0 ? "text-blue-400" : "text-red-300")}>
+                                    <p className={cn("text-lg font-bold", netProfit >= 0 ? "text-blue-400" : "text-red-300")}>
                                         <Counter value={netProfit} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">CPA</p>
                                         <TooltipProvider delayDuration={100}>
@@ -358,11 +358,11 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-purple-400">
+                                    <p className="text-lg font-bold text-purple-400">
                                         <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <p className="text-xs font-bold text-slate-400">Rev / Sub</p>
                                         <TooltipProvider delayDuration={100}>
@@ -378,7 +378,7 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-amber-400">
+                                    <p className="text-lg font-bold text-amber-400">
                                         <Counter value={revenuePerSubscriber} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
@@ -388,9 +388,9 @@ export default function EmailROICalculator() {
 
                     {/* Funnel Breakdown */}
                     {/* Funnel Breakdown - Budget Allocation Style */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4">
-                        <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <PieChart className="w-4 h-4 text-blue-500" />
+                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-3">
+                        <h4 className="text-xs font-bold text-slate-700 mb-3 flex items-center gap-2">
+                            <PieChart className="w-3.5 h-3.5 text-blue-500" />
                             Subscriber Funnel
                         </h4>
 
@@ -448,9 +448,9 @@ export default function EmailROICalculator() {
                             </div>
                         </div>
 
-                        <div className="mt-3 flex items-center justify-between">
+                        <div className="mt-2 flex items-center justify-between">
                             <div className="flex items-center gap-1.5">
-                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Revenue</span>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Revenue</span>
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
                                         <TooltipTrigger asChild>

@@ -134,7 +134,7 @@ Results:
                                     label="Cost of Goods Sold (COGS)"
                                     value={values.cogs}
                                     onChange={(v) => handleInputChange('cogs', v)}
-                                    placeholder="e.g. 150000"
+                                    placeholder="Ex: 150000"
                                     tooltip="The total cost of products sold during the period (found on your Income Statement)."
                                 />
 
@@ -142,7 +142,7 @@ Results:
                                     label="Analysis Period (Days)"
                                     value={values.periodInDays}
                                     onChange={(v) => handleInputChange('periodInDays', v)}
-                                    placeholder="365"
+                                    placeholder="Ex: 365"
                                     tooltip="Length of time analyzed. Standard: 365 (Year), 90 (Quarter), 30 (Month)."
                                     headerRight={
                                         <div className="flex gap-1.5 ml-auto">
@@ -173,14 +173,14 @@ Results:
                                     label="Beginning Inventory"
                                     value={values.beginningInventory}
                                     onChange={(v) => handleInputChange('beginningInventory', v)}
-                                    placeholder="e.g. 25000"
+                                    placeholder="Ex: 25000"
                                     tooltip="Value of stock at the start of the period."
                                 />
                                 <TurnoverInput
                                     label="Ending Inventory"
                                     value={values.endingInventory}
                                     onChange={(v) => handleInputChange('endingInventory', v)}
-                                    placeholder="e.g. 35000"
+                                    placeholder="Ex: 35000"
                                     tooltip="Value of stock at the end of the period."
                                 />
                             </div>

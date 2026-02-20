@@ -199,21 +199,21 @@ Results:
                                     label="Current Stock on Hand"
                                     value={values.currentStock}
                                     onChange={(v) => handleInputChange('currentStock', v)}
-                                    placeholder="e.g. 5000"
+                                    placeholder="Ex: 5000"
                                     tooltip="The total number of units physically available in your warehouse today."
                                 />
                                 <DOIInput
                                     label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', 'y')})`}
                                     value={values.salesVelocity}
                                     onChange={(v) => handleInputChange('salesVelocity', v)}
-                                    placeholder="e.g. 150"
+                                    placeholder="Ex: 150"
                                     tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
                                 />
                                 <DOIInput
                                     label="Safety Stock Buffer"
                                     value={values.safetyStock}
                                     onChange={(v) => handleInputChange('safetyStock', v)}
-                                    placeholder="0 (optional)"
+                                    placeholder="Ex: 0 (optional)"
                                     tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
                                 />
                             </div>

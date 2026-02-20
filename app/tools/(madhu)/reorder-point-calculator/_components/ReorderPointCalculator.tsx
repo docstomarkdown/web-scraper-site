@@ -99,21 +99,21 @@ Result:
                                     label="Daily Sales Velocity"
                                     value={values.salesVelocity}
                                     onChange={(v) => handleInputChange('salesVelocity', v)}
-                                    placeholder="e.g. 25"
+                                    placeholder="Ex: 25"
                                     tooltip="How many units do you sell on average each day?"
                                 />
                                 <ROPInput
                                     label="Lead Time (Days)"
                                     value={values.leadTime}
                                     onChange={(v) => handleInputChange('leadTime', v)}
-                                    placeholder="e.g. 14"
+                                    placeholder="Ex: 14"
                                     tooltip="How many days does it take from order to delivery?"
                                 />
                                 <ROPInput
                                     label="Safety Stock (Units)"
                                     value={values.safetyStock}
                                     onChange={(v) => handleInputChange('safetyStock', v)}
-                                    placeholder="e.g. 50"
+                                    placeholder="Ex: 50"
                                     tooltip="How many units do you want to keep as an emergency buffer?"
                                 />
                             </div>

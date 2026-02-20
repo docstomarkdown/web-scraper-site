@@ -386,10 +386,10 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                                     {([
-                                        { id: 'length' as const, placeholder: "Length" },
-                                        { id: 'width' as const, placeholder: "Width" },
-                                        { id: 'height' as const, placeholder: "Height" },
-                                        { id: 'weight' as const, placeholder: "Weight" }
+                                        { id: 'length' as const, placeholder: "Ex: Length" },
+                                        { id: 'width' as const, placeholder: "Ex: Width" },
+                                        { id: 'height' as const, placeholder: "Ex: Height" },
+                                        { id: 'weight' as const, placeholder: "Ex: Weight" }
                                     ] as const).map((field) => (
                                         <div key={field.id}>
                                             <div className="relative">
@@ -397,7 +397,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                     type="number"
                                                     value={boxDimensions[field.id]}
                                                     onChange={(e) => handleBoxChange(field.id, e.target.value)}
-                                                    className="h-11 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 text-left pl-4 pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                                    className="h-11 w-full text-base border-slate-300 bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-300 text-left pl-4 pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                                     placeholder={field.placeholder}
                                                 />
                                                 <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-md w-[22px]">
@@ -576,8 +576,8 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                     handleStackLimitChange('maxHeight', e.target.value)
                                                     setSelectedPreset("custom")
                                                 }}
-                                                placeholder="Max height"
-                                                className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                placeholder="Ex: Max height"
+                                                className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-300 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
                                             />
                                             <Input
                                                 type="number"
@@ -586,8 +586,8 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                     handleStackLimitChange('weightLimit', e.target.value)
                                                     setSelectedPreset("custom")
                                                 }}
-                                                placeholder="Weight limit"
-                                                className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                                placeholder="Ex: Weight limit"
+                                                className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-300 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
                                             />
                                         </div>
                                     </div>
@@ -603,15 +603,15 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                             type="number"
                                             value={customPallet.length}
                                             onChange={(e) => handleCustomPalletChange('length', e.target.value)}
-                                            placeholder="Length"
-                                            className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                            placeholder="Ex: Length"
+                                            className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-300 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
                                         />
                                         <Input
                                             type="number"
                                             value={customPallet.width}
                                             onChange={(e) => handleCustomPalletChange('width', e.target.value)}
-                                            placeholder="Width"
-                                            className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                            placeholder="Ex: Width"
+                                            className="h-11 w-full text-base font-bold bg-white shadow-sm placeholder:italic placeholder:font-normal placeholder:text-slate-300 border-slate-300 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
                                         />
                                     </div>
                                 </div>

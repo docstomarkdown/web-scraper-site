@@ -207,7 +207,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                             type="number"
                                             value={inputValue}
                                             onChange={(e) => setInputValue(e.target.value)}
-                                            className="h-12 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-400 placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
+                                            className="h-12 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
                                             placeholder="Ex: 12.00"
                                         />
                                         <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl">

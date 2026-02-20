@@ -149,28 +149,28 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                         label="Product Cost"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Cost per unit from supplier"
                                     />
                                     <COGSInput
                                         label="Inbound Shipping"
                                         value={values.inboundShipping}
                                         onChange={(v) => handleInputChange('inboundShipping', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Freight cost to get goods to you (per unit)"
                                     />
                                     <COGSInput
                                         label="Duties & Taxes"
                                         value={values.duties}
                                         onChange={(v) => handleInputChange('duties', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Customs duties, tariffs, and taxes"
                                     />
                                     <COGSInput
                                         label="Pkg. & Prep"
                                         value={values.packaging}
                                         onChange={(v) => handleInputChange('packaging', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Cost of packaging, polybags, labels, etc."
                                     />
                                 </div>
@@ -186,21 +186,21 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                         label="Fulfillment Fee"
                                         value={values.fulfillmentFee}
                                         onChange={(v) => handleInputChange('fulfillmentFee', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Cost to pick and pack (e.g., FBA Fee)"
                                     />
                                     <COGSInput
                                         label="Outbound Ship"
                                         value={values.outboundShipping}
                                         onChange={(v) => handleInputChange('outboundShipping', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         tooltip="Shipping cost to customer (if not included in price)"
                                     />
                                     <COGSInput
                                         label="Est. Return Rate"
                                         value={values.returnRate}
                                         onChange={(v) => handleInputChange('returnRate', v)}
-                                        placeholder="0"
+                                        placeholder="Ex: 0"
                                         suffix="%"
                                         prefix=""
                                         tooltip="Percentage of sales expected to be returned"
@@ -209,7 +209,7 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                         label="Target Sell Price"
                                         value={values.sellPrice}
                                         onChange={(v) => handleInputChange('sellPrice', v)}
-                                        placeholder="0.00"
+                                        placeholder="Ex: 0.00"
                                         highlightColor="blue"
                                         tooltip="The price you intend to sell the product for"
                                     />
@@ -325,7 +325,7 @@ function COGSInput({
                     value={value ?? ""}
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "h-11 w-full text-base border border-slate-200 bg-slate-50/50 rounded-lg px-4 transition-all font-bold text-slate-900 focus:outline-none focus:ring-2 focus:bg-white placeholder:text-slate-300 placeholder:font-medium",
+                        "h-11 w-full text-base border border-slate-200 bg-slate-50/50 rounded-lg px-4 transition-all font-bold text-slate-900 focus:outline-none focus:ring-2 focus:bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
                         prefix ? "pl-7" : "pl-4",
                         suffix ? "pr-8" : "pr-4",
                         highlightColor === "indigo"

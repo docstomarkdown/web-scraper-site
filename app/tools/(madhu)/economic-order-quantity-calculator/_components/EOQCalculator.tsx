@@ -113,14 +113,14 @@ Results:
                                     label="Annual Demand (Units)"
                                     value={values.annualDemand}
                                     onChange={(v) => handleInputChange('annualDemand', v)}
-                                    placeholder="e.g. 10000"
+                                    placeholder="Ex: 10000"
                                     tooltip="The total number of units your business sells or uses in one year."
                                 />
                                 <EOQInput
                                     label="Ordering Cost ($)"
                                     value={values.orderCost}
                                     onChange={(v) => handleInputChange('orderCost', v)}
-                                    placeholder="e.g. 50"
+                                    placeholder="Ex: 50"
                                     isCurrency
                                     tooltip="Fixed cost per purchase order (shipping, labor, admin processing)."
                                 />
@@ -128,7 +128,7 @@ Results:
                                     label="Annual Holding Cost ($)"
                                     value={values.holdingCost}
                                     onChange={(v) => handleInputChange('holdingCost', v)}
-                                    placeholder="e.g. 2.50"
+                                    placeholder="Ex: 2.50"
                                     isCurrency
                                     tooltip="Cost to store one unit for one year (storage rent, insurance, capital cost)."
                                 />

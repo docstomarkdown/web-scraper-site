@@ -51,7 +51,7 @@ function InfluencerInput({
                 value={value}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value === "" ? "" : parseFloat(e.target.value))}
                 placeholder={placeholder}
-                className="h-10 w-[160px] text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-400 placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                className="h-10 w-[160px] text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
             />
         </div>
     )
