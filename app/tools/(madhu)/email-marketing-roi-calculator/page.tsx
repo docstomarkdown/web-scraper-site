@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { MadhuToolTemplate, InputCardHeader, MadhuSubHeader, ActionButtons } from "../ToolTemplate"
-import { ResultFeedbackCard, Counter, FadeIn } from "@/app/tools/_shared/components"
+import { ResultFeedbackCard, Counter, FadeIn, CalculatorInput } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -21,90 +21,6 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-function EmailInput({
-    label,
-    value,
-    onChange,
-    placeholder,
-    tooltip,
-    prefix,
-    suffix
-}: {
-    label: string
-    value: number | ""
-    onChange: (v: number | "") => void
-    placeholder: string
-    tooltip: string
-    prefix?: string
-    suffix?: string
-}) {
-    const inputRef = React.useRef<HTMLInputElement>(null)
-    const hasValue = value !== ""
-
-    // Inject prefix into placeholder if consistent with "Ex: " pattern
-    const displayPlaceholder = prefix && !hasValue
-        ? placeholder.replace("Ex: ", `Ex: ${prefix}`)
-        : placeholder
-
-    return (
-        <div className="flex items-center justify-between gap-4 w-full group/input">
-            <div className="flex items-center gap-2 w-[170px] shrink-0">
-                <Label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                    {label}
-                </Label>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" tabIndex={-1} className="text-slate-500 hover:text-blue-600 transition-colors">
-                                    <Info className="h-3.5 w-3.5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
-
-            <div
-                className={cn(
-                    "relative w-[160px] h-10 flex items-center justify-end border border-slate-200 bg-white rounded-md shadow-sm transition-all overflow-hidden px-3",
-                    "hover:border-blue-600 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-600/10"
-                )}
-                onClick={() => inputRef.current?.focus()}
-            >
-                {/* Prefix - Only shown when there is a value */}
-                {prefix && hasValue && (
-                    <span className="text-slate-400 text-sm font-medium pointer-events-none transition-all">
-                        {prefix}
-                    </span>
-                )}
-
-                <input
-                    ref={inputRef}
-                    type="number"
-                    value={value}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        onChange(e.target.value === "" ? "" : parseFloat(e.target.value))
-                    }
-                    placeholder={displayPlaceholder}
-                    className={cn(
-                        "bg-transparent border-none outline-none p-0 h-full font-medium text-base text-slate-900 placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
-                        hasValue ? "text-right w-auto min-w-[1ch]" : "text-right w-full"
-                    )}
-                    style={hasValue ? { width: `${Math.max(1, value.toString().length)}ch` } : undefined}
-                />
-
-                {/* Suffix */}
-                {suffix && (
-                    <span className="text-slate-400 text-sm font-medium pointer-events-none ml-1">{suffix}</span>
-                )}
-            </div>
-        </div>
-    )
-}
 
 export default function EmailROICalculator() {
     // Inputs
@@ -198,23 +114,23 @@ export default function EmailROICalculator() {
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-4 space-y-4 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* List & Cost */}
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Campaign setup" withDot={false} className="mb-2" />
+                                <MadhuSubHeader title="Campaign setup" icon={Mail} withDot={false} className="mb-2" />
                                 <div className="flex flex-col gap-2.5">
-                                    <EmailInput
+                                    <CalculatorInput
                                         label="List Size"
                                         value={listSize}
                                         onChange={setListSize}
-                                        placeholder="Ex: 10000"
+                                        placeholder="10000"
                                         tooltip="Total number of subscribers receiving this campaign."
                                     />
-                                    <EmailInput
+                                    <CalculatorInput
                                         label="Campaign Cost"
                                         value={campaignCost}
                                         onChange={setCampaignCost}
-                                        placeholder="Ex: 500.00"
+                                        placeholder="500.00"
                                         tooltip="All-in cost: ESP fees, design, copywriting, and your time."
                                         prefix="$"
                                     />
@@ -222,22 +138,23 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Engagement Rates */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Engagement metrics" withDot={false} className="mb-2" />
+                                <MadhuSubHeader title="Engagement metrics" icon={MousePointer} withDot={false} className="mb-2" />
                                 <div className="flex flex-col gap-2.5">
-                                    <EmailInput
+                                    <CalculatorInput
                                         label="Open Rate"
                                         value={openRate}
                                         onChange={setOpenRate}
-                                        placeholder="Ex: 20"
+                                        placeholder="20"
                                         tooltip="Percentage of subscribers who open the email. Industry avg: ~20–25%."
                                         suffix="%"
                                     />
-                                    <EmailInput
+                                    <CalculatorInput
                                         label="Click-Through Rate"
                                         value={clickThroughRate}
                                         onChange={setClickThroughRate}
-                                        placeholder="Ex: 3.0"
+                                        placeholder="3.0"
                                         tooltip="Percentage of total emails delivered that resulted in at least one click."
                                         suffix="%"
                                     />
@@ -245,22 +162,23 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Conversion */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Conversion metrics" withDot={false} className="mb-2" />
+                                <MadhuSubHeader title="Conversion metrics" icon={Target} withDot={false} className="mb-2" />
                                 <div className="flex flex-col gap-2.5">
-                                    <EmailInput
+                                    <CalculatorInput
                                         label="Conversion Rate"
                                         value={conversionRate}
                                         onChange={setConversionRate}
-                                        placeholder="Ex: 5.0"
+                                        placeholder="5.0"
                                         tooltip="Percentage of clickers who complete a purchase."
                                         suffix="%"
                                     />
-                                    <EmailInput
+                                    <CalculatorInput
                                         label="Avg. Order Value"
                                         value={averageOrderValue}
                                         onChange={setAverageOrderValue}
-                                        placeholder="Ex: 50.00"
+                                        placeholder="50.00"
                                         tooltip="The average value of each order generated from this campaign."
                                         prefix="$"
                                     />

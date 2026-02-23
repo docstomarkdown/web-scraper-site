@@ -1,14 +1,15 @@
 "use client"
 
 import React, { useState, useEffect, useMemo } from "react"
-import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle } from "lucide-react"
+import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle , Check} from "lucide-react";
 import { cn } from "@/lib/utils"
-import { useToast } from "@/hooks/use-toast"
+"@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { ResultFeedbackCard, Counter } from "../../../_shared/components"
+import { Separator } from "@/components/ui/separator"
+import { ResultFeedbackCard, Counter, CalculatorInput } from "../../../_shared/components"
 
 type WeightUnit = "oz" | "lbs" | "g" | "kg"
 
@@ -20,7 +21,7 @@ interface ConversionResult {
 }
 
 export function WeightConverter() {
-    const { toast } = useToast()
+    const [isCopied, setIsCopied] = useState(false);
     const [inputValue, setInputValue] = useState<string>("")
     const [inputUnit, setInputUnit] = useState<WeightUnit>("lbs")
     const [targetUnit, setTargetUnit] = useState<WeightUnit>("kg")
@@ -133,10 +134,8 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
 `.trim()
 
         navigator.clipboard.writeText(text)
-        toast({
-            title: "Result Copied",
-            description: "Weight calculations copied to your clipboard.",
-        })
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
     }
 
     const scrollToGuide = () => {
@@ -155,7 +154,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
 
     return (
         <div className="p-8 sm:p-12 max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
                 {/* Left Column: Input (Col Span 7) */}
                 <div className="lg:col-span-7 h-full">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col">
@@ -187,98 +186,70 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                             </div>
                         </CardHeader>
 
-                        <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
-                            {/* Input Configuration */}
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        Input weight
-                                    </label>
-                                    <button
-                                        onClick={scrollToGuide}
-                                        className="text-slate-300 hover:text-blue-600 transition-colors"
-                                    >
-                                        <HelpCircle className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
-                                <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-                                    <div className="relative group flex-1">
-                                        <Input
-                                            type="number"
-                                            value={inputValue}
-                                            onChange={(e) => setInputValue(e.target.value)}
-                                            className="h-12 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-full pr-10 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                            placeholder="Ex: 12.00"
-                                        />
-                                        <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    const val = parseFloat(inputValue) || 0;
-                                                    setInputValue((val + 1).toString());
-                                                }}
-                                                className="flex items-center justify-center px-2 flex-1 hover:text-blue-600 text-slate-400 transition-colors"
-                                            >
-                                                <ChevronUp className="h-3 w-3" />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    const val = parseFloat(inputValue) || 0;
-                                                    setInputValue(Math.max(0, val - 1).toString());
-                                                }}
-                                                className="flex items-center justify-center px-2 flex-1 hover:text-blue-600 text-slate-400 transition-colors border-t border-slate-200"
-                                            >
-                                                <ChevronDown className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    </div>
+                        <CardContent className="p-6 md:p-8 space-y-8">
+                            {/* Weight Configuration Section */}
+                            <div className="space-y-6">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Scale className="w-4 h-4 text-slate-400" />
+                                    Weight Configuration
+                                </label>
 
-                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-fit self-start sm:self-auto min-w-[200px]">
-                                        {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
-                                            <button
-                                                key={u}
-                                                onClick={() => setInputUnit(u)}
-                                                className={cn(
-                                                    "flex-1 px-3 py-2 rounded-md text-xs font-bold transition-all uppercase",
-                                                    inputUnit === u
-                                                        ? "bg-white text-blue-600 shadow-sm border border-blue-200"
-                                                        : "text-slate-500 hover:text-slate-900"
-                                                )}
-                                            >
-                                                {u}
-                                            </button>
-                                        ))}
+                                <div className="space-y-4">
+                                    {/* Input Weight Row */}
+                                    <CalculatorInput
+                                        label="Input Weight"
+                                        value={inputValue}
+                                        onChange={(val) => setInputValue(val.toString())}
+                                        tooltip="Enter the weight value you wish to convert"
+                                        placeholder="12.00"
+                                        type="number"
+                                    />
+
+                                    {/* Input Unit Row */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                        <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
+                                            Weight Unit
+                                        </label>
+                                        <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-[210px]">
+                                            {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
+                                                <button
+                                                    key={u}
+                                                    onClick={() => setInputUnit(u)}
+                                                    className={cn(
+                                                        "flex-1 py-1.5 rounded-md text-[10px] font-bold transition-all uppercase",
+                                                        inputUnit === u
+                                                            ? "bg-white text-blue-600 shadow-sm border border-blue-200"
+                                                            : "text-slate-500 hover:text-slate-900"
+                                                    )}
+                                                >
+                                                    {u}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="h-px bg-slate-100 w-full" />
+                            <Separator className="bg-slate-100" />
 
-                            {/* Target Configuration */}
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        Convert to
+                            {/* Target Configuration Section */}
+                            <div className="space-y-6">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <RefreshCw className="w-4 h-4 text-slate-400" />
+                                    Conversion Target
+                                </label>
+
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
+                                        Target Unit
                                     </label>
-                                    <button
-                                        onClick={scrollToGuide}
-                                        className="text-slate-300 hover:text-blue-600 transition-colors"
-                                    >
-                                        <HelpCircle className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
-                                <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-                                    <div className="font-medium text-slate-600 pl-2">
-                                        Converting your Input <span className="font-bold text-slate-900">{inputValue || 0} {inputUnit.toUpperCase()}</span> to:
-                                    </div>
-                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-fit min-w-[200px]">
+                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-[210px]">
                                         {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
                                             <button
                                                 key={u}
                                                 onClick={() => setTargetUnit(u)}
                                                 className={cn(
-                                                    "flex-1 px-4 py-2 rounded-md text-xs font-bold transition-all uppercase",
+                                                    "flex-1 py-1.5 rounded-md text-[10px] font-bold transition-all uppercase",
                                                     targetUnit === u
                                                         ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                         : "text-slate-500 hover:text-slate-900",
@@ -293,7 +264,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </div>
                             </div>
 
-                            <div className="flex gap-2 mt-auto pt-4">
+                            <div className="flex gap-2 pt-4 border-t border-slate-100">
                                 <Button
                                     variant="outline"
                                     onClick={() => setInputValue("")}
@@ -304,9 +275,18 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 <Button
                                     variant="outline"
                                     onClick={copyToClipboard}
-                                    className="flex-1 h-11 shadow-sm border-slate-300 hover:bg-slate-50 text-slate-900 transition-all font-bold"
+                                    className={cn(
+                                        "flex-1 h-11 shadow-sm transition-all font-bold",
+                                        isCopied
+                                            ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-50 hover:text-green-700"
+                                            : "border-slate-300 hover:bg-slate-50 text-slate-900"
+                                    )}
                                 >
-                                    <Copy className="w-4 h-4 mr-2" /> Copy Results
+                                    {isCopied ? (
+                                        <><Check className="w-4 h-4 mr-2" /> Copied!</>
+                                    ) : (
+                                        <><Copy className="w-4 h-4 mr-2" /> Copy Results</>
+                                    )}
                                 </Button>
                             </div>
                         </CardContent>
@@ -314,7 +294,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                 </div>
 
                 {/* Right Column: Results (Col Span 5) */}
-                <div className="lg:col-span-5 relative space-y-8">
+                <div className="lg:col-span-5 relative flex flex-col h-full space-y-8">
                     {/* Conversion Results */}
                     <ResultFeedbackCard
                         title="CONVERSION MATRIX"
@@ -330,7 +310,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                             </div>
                         }
                     >
-                        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 mt-2">
+                        <div className="grid grid-cols-2 gap-4 pt-2">
                             {secondaryUnits.map((unit, index) => (
                                 <div key={unit} className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">
@@ -348,8 +328,8 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                         </div>
                     </ResultFeedbackCard>
 
-                    {/* Shipping Impact Section - MOVED HERE */}
-                    <div className="space-y-2">
+                    {/* Shipping Impact Section */}
+                    <div className="space-y-2 flex-1 flex flex-col">
                         <div className="flex items-center gap-2 mb-2">
                             <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
                                 <Truck className="w-4 h-4" />
@@ -357,7 +337,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                             <h3 className="text-lg font-bold text-slate-900">Shipping impact analysis</h3>
                         </div>
 
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden group">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col justify-center">
                             {shippingImpact ? (
                                 <>
                                     {/* 1. Weight Tier Section */}
@@ -420,8 +400,8 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                     </div>
 
                                     {/* Floating Insight Card */}
-                                    <div className="absolute inset-0 flex items-center justify-center p-6 bg-white/20 backdrop-blur-[0.5px]">
-                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
+                                    <div className="absolute inset-0 flex items-center justify-center p-5 bg-white/20 backdrop-blur-[0.5px]">
+                                        <div className="bg-white p-5 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
                                             <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-500 mx-auto shadow-inner">
                                                 <Truck className="w-7 h-7 animate-pulse" />
                                             </div>

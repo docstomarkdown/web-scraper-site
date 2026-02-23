@@ -15,16 +15,16 @@ import {
     ActionButtons,
     MadhuSubHeader
 } from "../../ToolTemplate"
-import { FadeIn, Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 interface LeadTimeState {
-    supplier: string
-    shipping: string
-    buffer: string
+    supplier: number | ""
+    shipping: number | ""
+    buffer: number | ""
 }
 
 const DEFAULT_STATE: LeadTimeState = {
@@ -39,10 +39,8 @@ export function LeadTimeCalculator() {
     const [values, setValues] = useState<LeadTimeState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof LeadTimeState, value: string) => {
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+    const handleInputChange = (field: keyof LeadTimeState, value: string | number) => {
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : Number(value) }))
     }
 
     const hasInputs = useMemo(() => {
@@ -50,9 +48,9 @@ export function LeadTimeCalculator() {
     }, [values])
 
     const totals = useMemo(() => {
-        const sup = parseFloat(values.supplier) || 0
-        const shp = parseFloat(values.shipping) || 0
-        const buf = parseFloat(values.buffer) || 0
+        const sup = Number(values.supplier) || 0
+        const shp = Number(values.shipping) || 0
+        const buf = Number(values.buffer) || 0
 
         const total = sup + shp + buf
 
@@ -121,43 +119,39 @@ Estimated Delivery Date: ${deliveryDate}
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-6">
-                                <label className="text-base font-bold text-slate-400 flex items-center gap-2">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-slate-400" />
                                     Timeline Details (Days)
                                 </label>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <LeadTimeInput
-                                        id="supplier"
+                                <div className="space-y-4">
+                                    <CalculatorInput
                                         label="Supplier Time"
                                         value={values.supplier}
                                         onChange={(v) => handleInputChange('supplier', v)}
-                                        icon={Factory}
+                                        placeholder="14"
                                         tooltip="Total processing & production time"
                                     />
-                                    <LeadTimeInput
-                                        id="shipping"
+                                    <CalculatorInput
                                         label="Shipping Time"
                                         value={values.shipping}
                                         onChange={(v) => handleInputChange('shipping', v)}
-                                        icon={Ship}
+                                        placeholder="7"
                                         tooltip="Transit + Customs clearance duration"
                                     />
-                                    <div className="md:col-span-2">
-                                        <LeadTimeInput
-                                            id="buffer"
-                                            label="Safety Buffer"
-                                            value={values.buffer}
-                                            onChange={(v) => handleInputChange('buffer', v)}
-                                            icon={ShieldAlert}
-                                            tooltip="Extra days for unforeseen delays"
-                                        />
-                                    </div>
+                                    <CalculatorInput
+                                        label="Safety Buffer"
+                                        value={values.buffer}
+                                        onChange={(v) => handleInputChange('buffer', v)}
+                                        placeholder="3"
+                                        tooltip="Extra days for unforeseen delays"
+                                    />
                                 </div>
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-slate-50">
+                            <div className="mt-auto pt-6 border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -215,58 +209,6 @@ Estimated Delivery Date: ${deliveryDate}
     )
 }
 
-function LeadTimeInput({
-    id,
-    label,
-    value,
-    onChange,
-    icon: Icon,
-    tooltip
-}: {
-    id: string,
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    icon: any,
-    tooltip: string
-}) {
-    return (
-        <div className="space-y-2 group/input">
-            <div className="relative group">
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <input
-                                type="text"
-                                value={value}
-                                onChange={(e) => onChange(e.target.value)}
-                                className="h-14 w-full text-lg border-2 border-slate-200 bg-white rounded-xl pl-5 pr-12 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
-                                placeholder={`Ex: ${label}`}
-                            />
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800 p-2 rounded-lg">
-                            {tooltip}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
 
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl overflow-hidden">
-                    <button
-                        onClick={() => onChange((parseFloat(value || "0") + 1).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-blue-50 hover:text-blue-600 text-slate-400 transition-all border-b border-slate-100"
-                    >
-                        <ChevronUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                        onClick={() => onChange(Math.max(0, (parseFloat(value || "0") - 1)).toString())}
-                        className="flex items-center justify-center px-2 flex-1 hover:bg-red-50 hover:text-red-600 text-slate-400 transition-all"
-                    >
-                        <ChevronDown className="h-3.5 w-3.5" />
-                    </button>
-                </div>
-            </div >
-        </div >
-    )
-}
 
 

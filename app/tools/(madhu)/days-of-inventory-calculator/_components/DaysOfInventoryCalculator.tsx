@@ -5,23 +5,24 @@ import {
     Calendar,
     Info,
     AlertCircle,
-    CheckCircle2
+    CheckCircle2,
+    Package
 } from "lucide-react"
 import {
     InputCardHeader,
     ActionButtons
 } from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface DOIState {
-    currentStock: string
-    salesVelocity: string
+    currentStock: string | number
+    salesVelocity: string | number
     velocityUnit: "daily" | "weekly" | "monthly"
-    safetyStock: string
+    safetyStock: string | number
 }
 
 const DEFAULT_STATE: DOIState = {
@@ -35,26 +36,24 @@ export function DaysOfInventoryCalculator() {
     const [values, setValues] = useState<DOIState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof DOIState, value: string) => {
+    const handleInputChange = (field: keyof DOIState, value: string | number) => {
         if (field === "velocityUnit") {
             setValues(prev => ({ ...prev, [field]: value as any }))
             return
         }
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
 
     const hasInputs = useMemo(() => {
-        const stock = parseFloat(values.currentStock) || 0
-        const velocity = parseFloat(values.salesVelocity) || 0
+        const stock = Number(values.currentStock) || 0
+        const velocity = Number(values.salesVelocity) || 0
         return values.currentStock !== "" && values.salesVelocity !== "" && stock > 0 && velocity > 0
     }, [values])
 
     const results = useMemo(() => {
-        const stock = parseFloat(values.currentStock) || 0
-        const velocity = parseFloat(values.salesVelocity) || 0
-        const safety = parseFloat(values.safetyStock) || 0
+        const stock = Number(values.currentStock) || 0
+        const velocity = Number(values.salesVelocity) || 0
+        const safety = Number(values.safetyStock) || 0
 
         if (stock === 0 || velocity === 0) return {
             dailyVelocity: 0,
@@ -141,11 +140,12 @@ Results:
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-5 md:p-6 space-y-5 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Velocity Unit Tabs */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-1.5 mb-1 pl-1">
-                                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <Calendar className="w-4 h-4 text-slate-400" />
                                         Velocity Period
                                     </label>
                                     <TooltipProvider delayDuration={100}>
@@ -194,31 +194,37 @@ Results:
                                 </Tabs>
                             </div>
 
-                            <div className="space-y-6">
-                                <DOIInput
-                                    label="Current Stock on Hand"
-                                    value={values.currentStock}
-                                    onChange={(v) => handleInputChange('currentStock', v)}
-                                    placeholder="Ex: 5000"
-                                    tooltip="The total number of units physically available in your warehouse today."
-                                />
-                                <DOIInput
-                                    label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', 'y')})`}
-                                    value={values.salesVelocity}
-                                    onChange={(v) => handleInputChange('salesVelocity', v)}
-                                    placeholder="Ex: 150"
-                                    tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
-                                />
-                                <DOIInput
-                                    label="Safety Stock Buffer"
-                                    value={values.safetyStock}
-                                    onChange={(v) => handleInputChange('safetyStock', v)}
-                                    placeholder="Ex: 0 (optional)"
-                                    tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
-                                />
+                            <div className="space-y-3">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Package className="w-4 h-4 text-slate-400" />
+                                    Stock & Sales Details
+                                </label>
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label="Current Stock on Hand"
+                                        value={values.currentStock}
+                                        onChange={(v) => handleInputChange('currentStock', v)}
+                                        placeholder="5000"
+                                        tooltip="The total number of units physically available in your warehouse today."
+                                    />
+                                    <CalculatorInput
+                                        label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', '')})`}
+                                        value={values.salesVelocity}
+                                        onChange={(v) => handleInputChange('salesVelocity', v)}
+                                        placeholder="150"
+                                        tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
+                                    />
+                                    <CalculatorInput
+                                        label="Safety Stock Buffer"
+                                        value={values.safetyStock}
+                                        onChange={(v) => handleInputChange('safetyStock', v)}
+                                        placeholder="0"
+                                        tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
+                                    />
+                                </div>
                             </div>
 
-                            <div className="pt-1.5 border-t border-slate-50">
+                            <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -291,50 +297,4 @@ Results:
     )
 }
 
-function DOIInput({
-    label,
-    value,
-    onChange,
-    tooltip,
-    placeholder
-}: {
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    tooltip: string,
-    placeholder: string
-}) {
-    return (
-        <div className="space-y-2 group/input">
-            <div className="flex items-center gap-1.5 mb-1 pl-1">
-                <label className="text-sm font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
-                    {label}
-                </label>
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
-                                <Info className="h-3.5 w-3.5" />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="text-[10px] bg-slate-900 text-white border-slate-800 p-2 max-w-[200px]">
-                            {tooltip}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </div>
 
-            <div className="relative group">
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    className={cn(
-                        "h-10 w-full text-base border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic px-5 shrink-0"
-                    )}
-                    placeholder={placeholder}
-                />
-            </div>
-        </div>
-    )
-}

@@ -5,7 +5,9 @@ import {
     Info,
     RefreshCw,
     Copy,
-    Check
+    TrendingUp,
+    Package,
+    Truck
 } from "lucide-react"
 import {
     Tooltip,
@@ -17,19 +19,19 @@ import {
     InputCardHeader,
     ActionButtons
 } from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
 interface COGSState {
-    productCost: string
-    inboundShipping: string
-    duties: string
-    packaging: string
-    fulfillmentFee: string
-    outboundShipping: string
-    returnRate: string
-    sellPrice: string
+    productCost: string | number
+    inboundShipping: string | number
+    duties: string | number
+    packaging: string | number
+    fulfillmentFee: string | number
+    outboundShipping: string | number
+    returnRate: string | number
+    sellPrice: string | number
 }
 
 const DEFAULT_STATE: COGSState = {
@@ -47,10 +49,8 @@ export function COGSCalculator() {
     const [values, setValues] = useState<COGSState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof COGSState, value: string) => {
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+    const handleInputChange = (field: keyof COGSState, value: string | number) => {
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
 
     const hasInputs = useMemo(() => {
@@ -58,14 +58,14 @@ export function COGSCalculator() {
     }, [values])
 
     const results = useMemo(() => {
-        const product = parseFloat(values.productCost) || 0
-        const inbound = parseFloat(values.inboundShipping) || 0
-        const duties = parseFloat(values.duties) || 0
-        const pkg = parseFloat(values.packaging) || 0
-        const fulfillment = parseFloat(values.fulfillmentFee) || 0
-        const outbound = parseFloat(values.outboundShipping) || 0
-        const rate = parseFloat(values.returnRate) || 0
-        const price = parseFloat(values.sellPrice) || 0
+        const product = Number(values.productCost) || 0
+        const inbound = Number(values.inboundShipping) || 0
+        const duties = Number(values.duties) || 0
+        const pkg = Number(values.packaging) || 0
+        const fulfillment = Number(values.fulfillmentFee) || 0
+        const outbound = Number(values.outboundShipping) || 0
+        const rate = Number(values.returnRate) || 0
+        const price = Number(values.sellPrice) || 0
 
         // 1. Landed Cost
         const landedCost = product + inbound + duties + pkg
@@ -137,86 +137,94 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-5 md:p-6 space-y-4 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
 
                             {/* Section 1: Acquisition Costs */}
                             <div className="space-y-3">
-                                <h3 className="text-[15px] font-bold text-slate-400">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Package className="w-4 h-4 text-slate-400" />
                                     Acquisition (Landed) Cost
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                                    <COGSInput
+                                </label>
+                                <div className="space-y-4">
+                                    <CalculatorInput
                                         label="Product Cost"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="15.00"
+                                        prefix="$"
                                         tooltip="Cost per unit from supplier"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Inbound Shipping"
                                         value={values.inboundShipping}
                                         onChange={(v) => handleInputChange('inboundShipping', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="2.50"
+                                        prefix="$"
                                         tooltip="Freight cost to get goods to you (per unit)"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Duties & Taxes"
                                         value={values.duties}
                                         onChange={(v) => handleInputChange('duties', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="1.25"
+                                        prefix="$"
                                         tooltip="Customs duties, tariffs, and taxes"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Pkg. & Prep"
                                         value={values.packaging}
                                         onChange={(v) => handleInputChange('packaging', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.75"
+                                        prefix="$"
                                         tooltip="Cost of packaging, polybags, labels, etc."
                                     />
                                 </div>
                             </div>
 
                             {/* Section 2: Fulfillment & Sales */}
-                            <div className="space-y-3 pt-4 border-t border-slate-100">
-                                <h3 className="text-[15px] font-bold text-slate-400">
+                            <div className="h-px bg-slate-100 w-full" />
+                            <div className="space-y-3">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Truck className="w-4 h-4 text-slate-400" />
                                     Fulfillment & Sales
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                                    <COGSInput
+                                </label>
+                                <div className="space-y-4">
+                                    <CalculatorInput
                                         label="Fulfillment Fee"
                                         value={values.fulfillmentFee}
                                         onChange={(v) => handleInputChange('fulfillmentFee', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="3.50"
+                                        prefix="$"
                                         tooltip="Cost to pick and pack (e.g., FBA Fee)"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Outbound Ship"
                                         value={values.outboundShipping}
                                         onChange={(v) => handleInputChange('outboundShipping', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="4.00"
+                                        prefix="$"
                                         tooltip="Shipping cost to customer (if not included in price)"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Est. Return Rate"
                                         value={values.returnRate}
                                         onChange={(v) => handleInputChange('returnRate', v)}
-                                        placeholder="Ex: 0"
+                                        placeholder="5"
                                         suffix="%"
-                                        prefix=""
                                         tooltip="Percentage of sales expected to be returned"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Target Sell Price"
                                         value={values.sellPrice}
                                         onChange={(v) => handleInputChange('sellPrice', v)}
-                                        placeholder="Ex: 0.00"
-                                        highlightColor="blue"
+                                        placeholder="49.99"
+                                        prefix="$"
                                         tooltip="The price you intend to sell the product for"
                                     />
                                 </div>
                             </div>
 
-                            <div className="pt-1.5 border-t border-slate-50">
+                            <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -247,43 +255,96 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                             {/* Breakdown Items - Updated to Match Reorder Point Calculator Style */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                                    <p className="text-xs font-bold text-slate-300 mb-1">Landed Cost</p>
+                                    <div className="flex items-center gap-1.5 justify-between mb-1">
+                                        <div className="flex items-center gap-1.5">
+                                            <p className="text-xs font-bold text-slate-300">Landed Cost</p>
+                                            <TooltipProvider delayDuration={100}>
+                                                <Tooltip>
+                                                    <TooltipTrigger className="cursor-help">
+                                                        <Info className="h-3.5 w-3.5 text-slate-400 hover:text-white transition-colors" />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                        Cost of product plus shipping, duties, and packaging.
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
+                                    </div>
                                     <div className="flex items-baseline gap-1">
                                         <span className="text-lg font-medium text-indigo-400/60">$</span>
                                         <span className="text-xl font-bold text-indigo-400">{results.landedCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
-                                    <p className="text-xs font-bold text-slate-300 mb-1">Return Cost</p>
+                                    <div className="flex items-center gap-1.5 justify-between mb-1">
+                                        <div className="flex items-center gap-1.5">
+                                            <p className="text-xs font-bold text-slate-300">Return Cost</p>
+                                            <TooltipProvider delayDuration={100}>
+                                                <Tooltip>
+                                                    <TooltipTrigger className="cursor-help">
+                                                        <Info className="h-3.5 w-3.5 text-slate-400 hover:text-white transition-colors" />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                        Expected cost from returns based on estimated return rate.
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
+                                    </div>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-lg font-medium text-emerald-400/60">$</span>
-                                        <span className="text-xl font-bold text-emerald-400">{results.returnRiskCost.toFixed(2)}</span>
-                                        <span className="text-lg font-medium text-slate-400">$</span>
-                                        <span className="text-xl font-bold text-blue-400">{results.returnRiskCost.toFixed(2)}</span>
+                                        <span className="text-lg font-medium text-slate-400/60">$</span>
+                                        <span className="text-xl font-bold text-slate-300">{results.returnRiskCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
 
 
                             {/* Profit Card */}
-                            <div className="bg-blue-500/5 rounded-xl p-5 border border-blue-500/10 mt-4">
+                            <div className={cn(
+                                "rounded-xl p-5 border mt-4 transition-colors",
+                                !hasInputs ? "bg-white/5 border-white/5" :
+                                    results.grossProfit > 0 ? "bg-emerald-500/10 border-emerald-500/20" :
+                                        "bg-rose-500/10 border-rose-500/20"
+                            )}>
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2">
-                                        <div className="p-1.5 rounded-md bg-blue-500/10 text-blue-600">
+                                        <div className={cn(
+                                            "p-1.5 rounded-md",
+                                            !hasInputs ? "bg-white/10 text-slate-400" :
+                                                results.grossProfit > 0 ? "bg-emerald-500/20 text-emerald-400" :
+                                                    "bg-rose-500/20 text-rose-400"
+                                        )}>
                                             <TrendingUp className="w-4 h-4" />
                                         </div>
-                                        <p className="text-xs font-bold text-blue-700 uppercase tracking-wider">Gross Profit</p>
+                                        <p className={cn(
+                                            "text-xs font-bold uppercase tracking-wider",
+                                            !hasInputs ? "text-slate-400" :
+                                                results.grossProfit > 0 ? "text-emerald-400" :
+                                                    "text-rose-400"
+                                        )}>Gross Profit</p>
                                     </div>
                                     <span className={cn(
                                         "text-xs font-black px-2 py-1 rounded-full",
-                                        results.grossMargin >= 30 ? "bg-blue-100 text-blue-700" : "bg-yellow-100 text-yellow-700"
+                                        !hasInputs ? "bg-white/10 text-slate-300" :
+                                            results.grossProfit > 0 ? "bg-emerald-500/20 text-emerald-300" :
+                                                "bg-rose-500/20 text-rose-300"
                                     )}>
                                         {results.grossMargin.toFixed(1)}% Margin
                                     </span>
                                 </div>
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-lg font-medium text-blue-600/60">$</span>
-                                    <span className="text-3xl font-black text-blue-700">
+                                    <span className={cn(
+                                        "text-lg font-medium",
+                                        !hasInputs ? "text-slate-500" :
+                                            results.grossProfit > 0 ? "text-emerald-500/60" :
+                                                "text-rose-500/60"
+                                    )}>$</span>
+                                    <span className={cn(
+                                        "text-3xl font-black",
+                                        !hasInputs ? "text-white" :
+                                            results.grossProfit > 0 ? "text-emerald-400" :
+                                                "text-rose-400"
+                                    )}>
                                         {results.grossProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </span>
                                 </div>
@@ -298,73 +359,4 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
     )
 }
 
-function COGSInput({
-    label,
-    value,
-    onChange,
-    tooltip,
-    placeholder,
-    prefix = "$",
-    suffix = "",
-    highlightColor = "blue"
-}: {
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    tooltip: string,
-    placeholder: string,
-    prefix?: string,
-    suffix?: string,
-    highlightColor?: "blue" | "indigo"
-}) {
-    return (
-        <div className="space-y-1.5 group/input relative z-10">
-            <div className="flex items-center gap-1.5 mb-1 pl-1">
-                <label className="text-sm font-bold text-slate-600">
-                    {label}
-                </label>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                    <Info className="h-3.5 w-3.5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
 
-            <div className="relative group bg-white">
-                {prefix && (
-                    <div className="absolute left-3 top-0 bottom-0 flex items-center pointer-events-none">
-                        <span className="text-slate-400 font-medium text-sm">{prefix}</span>
-                    </div>
-                )}
-                <input
-                    type="text"
-                    value={value ?? ""}
-                    onChange={(e) => onChange(e.target.value)}
-                    className={cn(
-                        "h-11 w-full text-base border border-slate-200 bg-slate-50/50 rounded-lg px-4 transition-all font-bold text-slate-900 focus:outline-none focus:ring-2 focus:bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
-                        prefix ? "pl-7" : "pl-4",
-                        suffix ? "pr-8" : "pr-4",
-                        highlightColor === "indigo"
-                            ? "focus:border-indigo-500/50 focus:ring-indigo-500/10"
-                            : "focus:border-blue-500/50 focus:ring-blue-500/10"
-                    )}
-                    placeholder={placeholder}
-                />
-                {suffix && (
-                    <div className="absolute right-3 top-0 bottom-0 flex items-center pointer-events-none">
-                        <span className="text-slate-400 font-medium text-sm">{suffix}</span>
-                    </div>
-                )}
-            </div>
-        </div>
-    )
-}

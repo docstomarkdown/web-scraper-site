@@ -4,25 +4,28 @@ import React, { useState, useMemo } from "react"
 import {
     TrendingUp,
     CheckCircle2,
-    Info
+    Info,
+    Package,
+    Users,
+    BarChart3
 } from "lucide-react"
 import {
     InputCardHeader,
     ActionButtons,
     MadhuSubHeader
 } from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface AffiliateState {
-    productPrice: string
-    productCost: string
-    commissionRate: string
-    affiliateCount: string
-    salesPerAffiliate: string
-    refundRate: string
+    productPrice: number | ""
+    productCost: number | ""
+    commissionRate: number | ""
+    affiliateCount: number | ""
+    salesPerAffiliate: number | ""
+    refundRate: number | ""
 }
 
 const DEFAULT_STATE: AffiliateState = {
@@ -38,10 +41,8 @@ export function AffiliateCommissionCalculator() {
     const [values, setValues] = useState<AffiliateState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof AffiliateState, value: string) => {
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+    const handleInputChange = (field: keyof AffiliateState, value: string | number) => {
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : Number(value) }))
     }
 
     const hasInputs = useMemo(() => {
@@ -49,12 +50,12 @@ export function AffiliateCommissionCalculator() {
     }, [values])
 
     const results = useMemo(() => {
-        const price = parseFloat(values.productPrice) || 0
-        const cogs = parseFloat(values.productCost) || 0
-        const rate = parseFloat(values.commissionRate) || 0
-        const affiliates = parseFloat(values.affiliateCount) || 0
-        const salesPer = parseFloat(values.salesPerAffiliate) || 0
-        const refundRatePct = parseFloat(values.refundRate) || 0
+        const price = Number(values.productPrice) || 0
+        const cogs = Number(values.productCost) || 0
+        const rate = Number(values.commissionRate) || 0
+        const affiliates = Number(values.affiliateCount) || 0
+        const salesPer = Number(values.salesPerAffiliate) || 0
+        const refundRatePct = Number(values.refundRate) || 0
 
         const grossMargin = price - cogs
         const breakEvenRate = price > 0 ? (grossMargin / price) * 100 : 0
@@ -130,65 +131,71 @@ Results:
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-4 flex-1 flex flex-col gap-3">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Section: Product & Pricing */}
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Product & Pricing" className="mb-2" withDot={false} />
+                                <MadhuSubHeader title="Product & Pricing" icon={Package} className="mb-2" withDot={false} />
                                 <div className="flex flex-col gap-3">
-                                    <AffiliateInput
-                                        label="Product Price ($)"
+                                    <CalculatorInput
+                                        label="Product Price"
                                         value={values.productPrice}
                                         onChange={(v) => handleInputChange('productPrice', v)}
-                                        placeholder="Ex: 99.00"
+                                        placeholder="99.00"
                                         tooltip="The retail price your customer pays for the product or service."
+                                        prefix="$"
                                     />
-                                    <AffiliateInput
-                                        label="Product Cost / COGS ($)"
+                                    <CalculatorInput
+                                        label="Product Cost / COGS"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
-                                        placeholder="Ex: 35.00"
+                                        placeholder="35.00"
                                         tooltip="Your cost to produce or purchase the product. Used to calculate your break-even commission rate."
+                                        prefix="$"
                                     />
                                 </div>
                             </div>
 
                             {/* Section: Affiliate Program */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Affiliate Program" className="mb-2" withDot={false} />
+                                <MadhuSubHeader title="Affiliate Program" icon={Users} className="mb-2" withDot={false} />
                                 <div className="flex flex-col gap-3">
-                                    <AffiliateInput
-                                        label="Commission Rate (%)"
+                                    <CalculatorInput
+                                        label="Commission Rate"
                                         value={values.commissionRate}
                                         onChange={(v) => handleInputChange('commissionRate', v)}
-                                        placeholder="Ex: 20"
+                                        placeholder="20"
                                         tooltip="Percentage of the sale price paid to the affiliate for each conversion."
+                                        suffix="%"
                                     />
-                                    <AffiliateInput
-                                        label="Refund Rate (%)"
+                                    <CalculatorInput
+                                        label="Refund Rate"
                                         value={values.refundRate}
                                         onChange={(v) => handleInputChange('refundRate', v)}
-                                        placeholder="Ex: 5"
+                                        placeholder="5"
                                         tooltip="% of orders that are refunded. Commissions are only paid on net, non-refunded sales — industry best practice."
+                                        suffix="%"
                                     />
                                 </div>
                             </div>
 
                             {/* Section: Scale */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Scale Projection" className="mb-2" withDot={false} />
+                                <MadhuSubHeader title="Scale Projection" icon={BarChart3} className="mb-2" withDot={false} />
                                 <div className="flex flex-col gap-3">
-                                    <AffiliateInput
+                                    <CalculatorInput
                                         label="Active Affiliates"
                                         value={values.affiliateCount}
                                         onChange={(v) => handleInputChange('affiliateCount', v)}
-                                        placeholder="Ex: 10"
+                                        placeholder="10"
                                         tooltip="Total number of active affiliates currently promoting your offer."
                                     />
-                                    <AffiliateInput
+                                    <CalculatorInput
                                         label="Sales per Affiliate"
                                         value={values.salesPerAffiliate}
                                         onChange={(v) => handleInputChange('salesPerAffiliate', v)}
-                                        placeholder="Ex: 5"
+                                        placeholder="5"
                                         tooltip="Expected number of sales generated by each affiliate in this period."
                                     />
                                 </div>
@@ -255,7 +262,7 @@ Results:
                             </div>
 
                             {/* Break-Even inline alert — only shows when COGS is entered */}
-                            {(hasInputs && parseFloat(values.productCost) > 0) && (
+                            {(hasInputs && Number(values.productCost) > 0) && (
                                 <div className={cn(
                                     "rounded-xl p-3 border text-xs leading-relaxed transition-all",
                                     results.isAboveBreakEven
@@ -317,55 +324,4 @@ function MetricCard({ label, value, tooltip }: { label: string; value: React.Rea
     )
 }
 
-// ── Input field with tooltip icon, no leading icon ──
-function AffiliateInput({
-    label,
-    value,
-    onChange,
-    tooltip,
-    placeholder
-}: {
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    tooltip: string,
-    placeholder: string
-}) {
-    return (
-        <div className="flex items-center justify-between gap-4 w-full group/input">
-            <div className="flex items-center gap-2 w-[170px] shrink-0">
-                <label className="text-base font-semibold text-slate-700 whitespace-nowrap transition-colors">
-                    {label.replace(" ($)", "").replace(" (%)", "")}
-                </label>
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button type="button" className="text-slate-500 hover:text-blue-500 transition-colors flex-shrink-0 cursor-help">
-                                <Info className="h-3.5 w-3.5" />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="max-w-[200px] text-xs bg-slate-900 text-white border-slate-700 p-2 rounded-lg z-50">
-                            {tooltip}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </div>
 
-            <div className="relative w-[160px]">
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    className="h-10 w-full text-right text-base border-2 border-slate-200 bg-white rounded-xl px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic appearance-none"
-                    placeholder={placeholder}
-                />
-                {label.includes("($)") && value && (
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">$</span>
-                )}
-                {label.includes("(%)") && value && (
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">%</span>
-                )}
-            </div>
-        </div>
-    )
-}

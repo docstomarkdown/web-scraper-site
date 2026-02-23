@@ -102,14 +102,15 @@ export function NetProfitCalculator() {
                             </div>
                         </div>
 
-                        <CardContent className="p-4 flex-1 flex flex-col justify-between">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col justify-between">
                             <div className="space-y-6">
                                 {/* Income Section */}
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-sm font-bold text-slate-400 tracking-tight">
+                                        <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                            <DollarSign className="w-4 h-4 text-slate-400" />
                                             Expected income
-                                        </h3>
+                                        </label>
                                     </div>
                                     <div className="flex flex-col gap-4">
                                         <CalculatorInput
@@ -122,12 +123,15 @@ export function NetProfitCalculator() {
                                     </div>
                                 </div>
 
+                                <div className="h-px bg-slate-100 w-full" />
+
                                 {/* Expenses Section */}
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-sm font-bold text-slate-400 tracking-tight">
+                                        <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                            <Calculator className="w-4 h-4 text-slate-400" />
                                             Business expenses
-                                        </h3>
+                                        </label>
                                     </div>
 
                                     <div className="flex flex-col gap-4">
@@ -163,7 +167,7 @@ export function NetProfitCalculator() {
                                     </div>
                                 </div>
 
-                                <div className="pt-4 mt-auto border-t border-slate-50">
+                                <div className="pt-4 mt-auto border-t border-slate-100">
                                     <ActionButtons
                                         onReset={handleReset}
                                         onCopy={handleCopy}
@@ -388,7 +392,10 @@ function LegendItem({
     return (
         <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5 border border-slate-100/50">
             <div className="flex items-center gap-1.5 truncate">
-                <div className={cn("w-2 h-2 rounded-full shrink-0", color)} />
+                <div className={cn(
+                    "w-2 h-2 rounded-full shrink-0",
+                    isProfit && isNegative ? "bg-red-500" : color
+                )} />
                 <span className={cn(
                     "font-medium truncate",
                     isProfit ? (isNegative ? "text-red-600" : "text-emerald-700") : "text-slate-600"

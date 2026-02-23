@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { ActionButtons, MadhuToolTemplate, Step, Insight, FAQ, InputCardHeader, MadhuSubHeader, Counter } from "../ToolTemplate"
-import { ContainerLoadCalculatorInput as CalculatorInput } from "./_components/ContainerLoadCalculatorInput"
+import { CalculatorInput } from "@/app/tools/_shared/components"
 import { ContainerLoadResultCard as ResultFeedbackCard } from "./_components/ContainerLoadResultCard"
 import { useToast } from "@/hooks/use-toast"
 import {
@@ -445,11 +445,11 @@ Calculated via Container Load Calculator
                             onHelpClick={scrollToGuide}
                         />
 
-                        <CardContent className="p-6 space-y-6">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* 1. Configuration Selectors */}
                             <div className="space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <MadhuSubHeader title="Select container" className="mb-0" />
+                                    <MadhuSubHeader title="Select container" icon={Container} className="mb-0" />
                                     <Tabs value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as any)} className="w-full sm:w-[300px]">
                                         <TabsList className="grid w-full grid-cols-3 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl overflow-hidden">
                                             {(["20ft", "40ft", "40hc"] as const).map(k => {
@@ -466,8 +466,9 @@ Calculated via Container Load Calculator
                                     </Tabs>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-slate-50">
-                                    <MadhuSubHeader title="Loading type" className="mb-0" />
+                                <div className="h-px bg-slate-100 w-full" />
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <MadhuSubHeader title="Loading type" icon={Layout} className="mb-0" />
                                     <Tabs value={loadType} onValueChange={(v) => setLoadType(v as any)} className="w-full sm:w-[300px]">
                                         <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
                                             <TabsTrigger value="loose" className="flex items-center justify-center py-1.5 text-xs font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all">
@@ -484,14 +485,15 @@ Calculated via Container Load Calculator
                             </div>
 
                             {/* Dimensions & Pallet Row */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className={cn(
-                                "grid grid-cols-1 gap-y-8 pt-2 border-t border-slate-50",
+                                "grid grid-cols-1 gap-y-8",
                                 loadType === "pallet" ? "md:grid-cols-2 gap-x-12" : "max-w-2xl"
                             )}>
                                 {/* Left: Box Details */}
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <MadhuSubHeader title="Box details" className="mb-0" />
+                                        <MadhuSubHeader title="Box details" icon={Box} className="mb-0" />
                                         <Tabs value={unitSystem} onValueChange={(v) => setUnitSystem(v as any)} className="w-[160px]">
                                             <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
                                                 <TabsTrigger value="metric" className="py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all uppercase tracking-tighter">CM / KG</TabsTrigger>
@@ -500,17 +502,17 @@ Calculated via Container Load Calculator
                                         </Tabs>
                                     </div>
                                     <div className="flex flex-col gap-3">
-                                        <CalculatorInput label="Length" value={length} onChange={setLength} placeholder="40" suffix={unitSystem === "metric" ? "cm" : "in"} fullWidth={loadType === "loose"} />
-                                        <CalculatorInput label="Width" value={width} onChange={setWidth} placeholder="30" suffix={unitSystem === "metric" ? "cm" : "in"} fullWidth={loadType === "loose"} />
-                                        <CalculatorInput label="Height" value={height} onChange={setHeight} placeholder="25" suffix={unitSystem === "metric" ? "cm" : "in"} fullWidth={loadType === "loose"} />
-                                        <CalculatorInput label="Weight (Unit)" value={weight} onChange={setWeight} placeholder="5" suffix={unitSystem === "metric" ? "kg" : "lb"} fullWidth={loadType === "loose"} />
+                                        <CalculatorInput label="Length" value={length} onChange={setLength} placeholder="40" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Width" value={width} onChange={setWidth} placeholder="30" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Height" value={height} onChange={setHeight} placeholder="25" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Weight (Unit)" value={weight} onChange={setWeight} placeholder="5" suffix={unitSystem === "metric" ? "kg" : "lb"} />
                                     </div>
                                 </div>
 
                                 {/* Right: Pallet Details (conditional) */}
                                 {loadType === "pallet" && (
                                     <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
-                                        <MadhuSubHeader title="Pallet type" className="mb-0" />
+                                        <MadhuSubHeader title="Pallet type" icon={Layers} className="mb-0" />
                                         <div className="flex flex-col gap-3">
                                             <CalculatorInput label="Pallet length" value={palletLength} onChange={setPalletLength} placeholder="120" suffix={unitSystem === "metric" ? "cm" : "in"} />
                                             <CalculatorInput label="Pallet width" value={palletWidth} onChange={setPalletWidth} placeholder="80" suffix={unitSystem === "metric" ? "cm" : "in"} />
@@ -522,7 +524,7 @@ Calculated via Container Load Calculator
                             </div>
 
                             {/* 3. Action Buttons */}
-                            <div className="pt-6 border-t border-slate-50">
+                            <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={clearAll}
                                     onCopy={copyResult}
