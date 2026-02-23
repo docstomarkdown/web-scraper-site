@@ -105,7 +105,7 @@ Results:
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-5">
                                 <CalculatorInput
                                     label="Annual Demand (Units)"
@@ -132,7 +132,7 @@ Results:
                                 />
                             </div>
 
-                            <div className="pt-1.5 border-t border-slate-50">
+                            <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}

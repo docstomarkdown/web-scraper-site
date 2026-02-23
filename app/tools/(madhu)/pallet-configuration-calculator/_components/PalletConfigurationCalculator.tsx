@@ -334,7 +334,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                             }}
                         />
 
-                        <CardContent className="p-5 space-y-6 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Measurement system unit switcher */}
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -360,6 +360,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                             </div>
 
                             {/* Box Dimensions & Weight */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-6">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Box className="w-4 h-4 text-slate-400" />
@@ -396,8 +397,6 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                     />
                                 </div>
                             </div>
-
-                            <div className="h-px bg-slate-100 w-full" />
 
                             <div className="h-px bg-slate-100 w-full" />
 
@@ -454,7 +453,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                 )}
                             </div>
 
-                            <Separator className="bg-slate-100" />
+                            <div className="h-px bg-slate-100 w-full" />
 
                             {/* Stack Limits */}
                             <div className="space-y-6">
@@ -463,11 +462,11 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                     Stack limits
                                 </label>
                                 <div className="space-y-4">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div className="flex items-center justify-between gap-4">
                                         <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
                                             Configuration mode
                                         </label>
-                                        <div className="w-full sm:w-[210px]">
+                                        <div className="w-40 md:w-48">
                                             <Select
                                                 value={selectedPreset}
                                                 onValueChange={(value: StackPreset) => {
@@ -481,18 +480,18 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                 }}
                                             >
                                                 <SelectTrigger className={cn(
-                                                    "h-11 border-slate-200 bg-white transition-all font-bold text-slate-700 hover:border-blue-400",
+                                                    "h-11 border-slate-200 bg-white transition-all font-medium text-slate-700 hover:border-blue-400 justify-end w-full",
                                                     selectedPreset !== "custom" && "border-blue-200 ring-4 ring-blue-50"
                                                 )}>
-                                                    <div className="flex items-center gap-2.5">
-                                                        {selectedPreset === "standard" && <Truck className="w-4 h-4 text-blue-500" />}
-                                                        {selectedPreset === "amazon" && <Package className="w-4 h-4 text-blue-500" />}
-                                                        {selectedPreset === "full-truck" && <Target className="w-4 h-4 text-blue-500" />}
-                                                        {selectedPreset === "double-stack" && <Layers className="w-4 h-4 text-blue-500" />}
-                                                        {selectedPreset === "custom" && <RefreshCw className="w-4 h-4 text-slate-400" />}
+                                                    <div className="flex items-center justify-end gap-2 w-full">
+                                                        {selectedPreset === "standard" && <Truck className="w-4 h-4 text-blue-500 shrink-0" />}
+                                                        {selectedPreset === "amazon" && <Package className="w-4 h-4 text-blue-500 shrink-0" />}
+                                                        {selectedPreset === "full-truck" && <Target className="w-4 h-4 text-blue-500 shrink-0" />}
+                                                        {selectedPreset === "double-stack" && <Layers className="w-4 h-4 text-blue-500 shrink-0" />}
+                                                        {selectedPreset === "custom" && <RefreshCw className="w-4 h-4 text-slate-400 shrink-0" />}
                                                         <span className={cn(
-                                                            "truncate",
-                                                            selectedPreset !== "custom" ? "text-blue-600" : "text-slate-700"
+                                                            "truncate text-right",
+                                                            selectedPreset !== "custom" ? "text-blue-600 font-bold" : "text-slate-700"
                                                         )}>
                                                             {selectedPreset === "standard" && "Standard LTL"}
                                                             {selectedPreset === "amazon" && "Amazon FBA"}
@@ -578,7 +577,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
 
 
 
-                            <div className="flex gap-2 mt-auto pt-4">
+                            <div className="flex gap-2 mt-auto pt-6 border-t border-slate-100">
                                 <Button
                                     variant="outline"
                                     onClick={() => {

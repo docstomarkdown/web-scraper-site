@@ -280,8 +280,9 @@ export function Validator() {
                                 subtitle="Enter your barcode number or upload an image below."
                                 onHelpClick={scrollToGuide}
                             />
-                            <CardContent className="space-y-6 pt-6">
+                            <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                                 <div className="space-y-4">
+                                    <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                     <CalculatorInput
                                         label="Barcode Number"
                                         value={inputCode}
@@ -325,7 +326,7 @@ export function Validator() {
                                     </div>
                                 </div>
 
-                                <div className="pt-6 border-t border-slate-50">
+                                <div className="pt-6 border-t border-slate-100">
                                     <ActionButtons
                                         onReset={clearAll}
                                         onCopy={copyResult}
@@ -346,6 +347,7 @@ export function Validator() {
                                 variant="default"
                                 title="Validation Status"
                                 titleLabel={!inputCode ? "Ready" : result?.isValid ? "Valid" : "Invalid"}
+                                labelClassName={!inputCode ? "text-slate-400 bg-slate-600/50 border border-slate-500/50" : result?.isValid ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30" : "text-rose-400 bg-rose-500/20 border border-rose-500/30"}
                                 valueColor="text-white"
                                 mainValue={
                                     <div className="flex items-baseline gap-3">
@@ -429,9 +431,9 @@ export function Validator() {
                                         className="text-slate-300"
                                     />
                                     {result && !result.isValid && result.expectedCheckDigit !== "-" && (
-                                        <Row label="Expected Check Digit" value={result.expectedCheckDigit} className="text-orange-300 font-bold" />
+                                        <Row label="Expected Check Digit" value={result.expectedCheckDigit} className="text-rose-400 font-bold" />
                                     )}
-                                    <Row label="Analysis" value={result?.message || "Waiting for input..."} className="text-slate-300" />
+                                    <Row label="Analysis" value={result?.message || "Waiting for input..."} className={cn("transition-colors duration-300", !result ? "text-slate-300" : result.isValid ? "text-emerald-400 font-bold" : "text-rose-400 font-bold")} />
                                 </div>
                             </ResultFeedbackCard>
 

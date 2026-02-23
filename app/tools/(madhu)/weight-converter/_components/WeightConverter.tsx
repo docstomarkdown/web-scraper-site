@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState, useEffect, useMemo } from "react"
-import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle } from "lucide-react"
+import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle , Check} from "lucide-react";
 import { cn } from "@/lib/utils"
-import { useToast } from "@/hooks/use-toast"
+"@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,7 +21,7 @@ interface ConversionResult {
 }
 
 export function WeightConverter() {
-    const { toast } = useToast()
+    const [isCopied, setIsCopied] = useState(false);
     const [inputValue, setInputValue] = useState<string>("")
     const [inputUnit, setInputUnit] = useState<WeightUnit>("lbs")
     const [targetUnit, setTargetUnit] = useState<WeightUnit>("kg")
@@ -134,10 +134,8 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
 `.trim()
 
         navigator.clipboard.writeText(text)
-        toast({
-            title: "Result Copied",
-            description: "Weight calculations copied to your clipboard.",
-        })
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
     }
 
     const scrollToGuide = () => {
@@ -266,7 +264,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </div>
                             </div>
 
-                            <div className="flex gap-2 pt-4 border-t border-slate-50">
+                            <div className="flex gap-2 pt-4 border-t border-slate-100">
                                 <Button
                                     variant="outline"
                                     onClick={() => setInputValue("")}
@@ -277,9 +275,18 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 <Button
                                     variant="outline"
                                     onClick={copyToClipboard}
-                                    className="flex-1 h-11 shadow-sm border-slate-300 hover:bg-slate-50 text-slate-900 transition-all font-bold"
+                                    className={cn(
+                                        "flex-1 h-11 shadow-sm transition-all font-bold",
+                                        isCopied
+                                            ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-50 hover:text-green-700"
+                                            : "border-slate-300 hover:bg-slate-50 text-slate-900"
+                                    )}
                                 >
-                                    <Copy className="w-4 h-4 mr-2" /> Copy Results
+                                    {isCopied ? (
+                                        <><Check className="w-4 h-4 mr-2" /> Copied!</>
+                                    ) : (
+                                        <><Copy className="w-4 h-4 mr-2" /> Copy Results</>
+                                    )}
                                 </Button>
                             </div>
                         </CardContent>

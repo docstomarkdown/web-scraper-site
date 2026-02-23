@@ -119,40 +119,39 @@ Estimated Delivery Date: ${deliveryDate}
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-6">
-                                <label className="text-base font-bold text-slate-400 flex items-center gap-2">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-slate-400" />
                                     Timeline Details (Days)
                                 </label>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div className="space-y-4">
                                     <CalculatorInput
                                         label="Supplier Time"
                                         value={values.supplier}
                                         onChange={(v) => handleInputChange('supplier', v)}
-                                        placeholder="Supplier Time"
+                                        placeholder="14"
                                         tooltip="Total processing & production time"
                                     />
                                     <CalculatorInput
                                         label="Shipping Time"
                                         value={values.shipping}
                                         onChange={(v) => handleInputChange('shipping', v)}
-                                        placeholder="Shipping Time"
+                                        placeholder="7"
                                         tooltip="Transit + Customs clearance duration"
                                     />
-                                    <div className="md:col-span-2">
-                                        <CalculatorInput
-                                            label="Safety Buffer"
-                                            value={values.buffer}
-                                            onChange={(v) => handleInputChange('buffer', v)}
-                                            placeholder="Safety Buffer"
-                                            tooltip="Extra days for unforeseen delays"
-                                        />
-                                    </div>
+                                    <CalculatorInput
+                                        label="Safety Buffer"
+                                        value={values.buffer}
+                                        onChange={(v) => handleInputChange('buffer', v)}
+                                        placeholder="3"
+                                        tooltip="Extra days for unforeseen delays"
+                                    />
                                 </div>
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-slate-50">
+                            <div className="mt-auto pt-6 border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}

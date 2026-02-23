@@ -114,10 +114,10 @@ export default function EmailROICalculator() {
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-4 space-y-4 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* List & Cost */}
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Campaign setup" withDot={false} className="mb-2" />
+                                <MadhuSubHeader title="Campaign setup" icon={Mail} withDot={false} className="mb-2" />
                                 <div className="flex flex-col gap-2.5">
                                     <CalculatorInput
                                         label="List Size"
@@ -138,8 +138,9 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Engagement Rates */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Engagement metrics" withDot={false} className="mb-2" />
+                                <MadhuSubHeader title="Engagement metrics" icon={MousePointer} withDot={false} className="mb-2" />
                                 <div className="flex flex-col gap-2.5">
                                     <CalculatorInput
                                         label="Open Rate"
@@ -161,8 +162,9 @@ export default function EmailROICalculator() {
                             </div>
 
                             {/* Conversion */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Conversion metrics" withDot={false} className="mb-2" />
+                                <MadhuSubHeader title="Conversion metrics" icon={Target} withDot={false} className="mb-2" />
                                 <div className="flex flex-col gap-2.5">
                                     <CalculatorInput
                                         label="Conversion Rate"

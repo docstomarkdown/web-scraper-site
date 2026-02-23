@@ -4,7 +4,10 @@ import React, { useState, useMemo } from "react"
 import {
     TrendingUp,
     CheckCircle2,
-    Info
+    Info,
+    Package,
+    Users,
+    BarChart3
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -128,10 +131,10 @@ Results:
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-4 flex-1 flex flex-col gap-3">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Section: Product & Pricing */}
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Product & Pricing" className="mb-2" withDot={false} />
+                                <MadhuSubHeader title="Product & Pricing" icon={Package} className="mb-2" withDot={false} />
                                 <div className="flex flex-col gap-3">
                                     <CalculatorInput
                                         label="Product Price"
@@ -153,8 +156,9 @@ Results:
                             </div>
 
                             {/* Section: Affiliate Program */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Affiliate Program" className="mb-2" withDot={false} />
+                                <MadhuSubHeader title="Affiliate Program" icon={Users} className="mb-2" withDot={false} />
                                 <div className="flex flex-col gap-3">
                                     <CalculatorInput
                                         label="Commission Rate"
@@ -176,8 +180,9 @@ Results:
                             </div>
 
                             {/* Section: Scale */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Scale Projection" className="mb-2" withDot={false} />
+                                <MadhuSubHeader title="Scale Projection" icon={BarChart3} className="mb-2" withDot={false} />
                                 <div className="flex flex-col gap-3">
                                     <CalculatorInput
                                         label="Active Affiliates"

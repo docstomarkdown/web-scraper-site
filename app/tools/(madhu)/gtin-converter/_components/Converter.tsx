@@ -88,6 +88,7 @@ const BARCODE_CONFIGS: Record<string, BarcodeConfig> = {
 
 export function Converter() {
     const { toast } = useToast()
+    const [isCopied, setIsCopied] = useState(false);
     const [inputCode, setInputCode] = useState("")
     const [status, setStatus] = useState<ValidationStatus>({ isValid: false, message: "Awaiting input...", format: "Unknown" })
     const [results, setResults] = useState<ConversionResult | null>(null)
@@ -252,10 +253,8 @@ export function Converter() {
 
     const copyToClipboard = (text: string, label: string) => {
         navigator.clipboard.writeText(text)
-        toast({
-            title: "Copied",
-            description: `${label} copied to clipboard.`,
-        })
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
     }
 
     const copyAll = () => {
@@ -266,18 +265,12 @@ GTIN-13 (EAN-13): ${results.gtin13}
 GTIN-14: ${results.gtin14}
         `.trim()
         navigator.clipboard.writeText(text)
-        toast({
-            title: "Success",
-            description: "All formats copied to clipboard.",
-        })
+        
     }
 
     const clearAll = () => {
         setInputCode("")
-        toast({
-            title: "Reset",
-            description: "Input cleared.",
-        })
+        
     }
 
     const scrollToGuide = () => {
@@ -382,8 +375,9 @@ GTIN-14: ${results.gtin14}
                             subtitle="Enter your barcode number or upload an image below."
                             onHelpClick={scrollToGuide}
                         />
-                        <CardContent className="space-y-6 pt-6">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-4">
+                                <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                 <CalculatorInput
                                     label="Barcode Number"
                                     value={inputCode}
@@ -412,7 +406,7 @@ GTIN-14: ${results.gtin14}
                                 </div>
                             </div>
 
-                            <div className="pt-6 border-t border-slate-50">
+                            <div className="pt-6 border-t border-slate-100">
                                 <ActionButtons
                                     onReset={clearAll}
                                     onCopy={copyAll}
@@ -425,16 +419,16 @@ GTIN-14: ${results.gtin14}
                                 <div
                                     id="status-message"
                                     className={`p-4 rounded-xl border flex flex-col gap-3 transition-colors ${status.isValid
-                                        ? 'bg-blue-50/50 border-blue-100'
+                                        ? 'bg-emerald-50/50 border-emerald-100'
                                         : 'bg-rose-50/50 border-rose-100'
                                         }`}
                                 >
                                     <div className="flex items-start gap-3">
-                                        <div className={`mt-1 ${status.isValid ? 'text-blue-500' : 'text-rose-500'}`}>
+                                        <div className={`mt-1 ${status.isValid ? 'text-emerald-500' : 'text-rose-500'}`}>
                                             {status.isValid ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                                         </div>
                                         <div className="w-full">
-                                            <p className={`text-sm font-bold ${status.isValid ? 'text-blue-700' : 'text-rose-700'}`}>
+                                            <p className={`text-sm font-bold ${status.isValid ? 'text-emerald-700' : 'text-rose-700'}`}>
                                                 {status.isValid
                                                     ? "Valid GTIN"
                                                     : status.correctedCode
@@ -446,10 +440,10 @@ GTIN-14: ${results.gtin14}
                                             {/* Valid State Details */}
                                             {status.isValid && (
                                                 <div className="space-y-1 mt-1">
-                                                    <p className="text-blue-600 text-xs font-medium">
+                                                    <p className="text-emerald-600 text-xs font-medium">
                                                         Detected Type: {status.format === "UPC-A" ? "GTIN-12" : status.format === "EAN-13" ? "GTIN-13" : "GTIN-14"}
                                                     </p>
-                                                    <p className="text-blue-600/80 text-xs">
+                                                    <p className="text-emerald-600/80 text-xs">
                                                         Barcode Format: {status.format === "GTIN-14" ? "ITF-14" : status.format}
                                                     </p>
                                                 </div>
@@ -494,6 +488,7 @@ GTIN-14: ${results.gtin14}
                             variant="default"
                             title={inputCode && !status.isValid ? 'Validation Status' : 'Conversion Map'}
                             titleLabel={!inputCode ? "Ready" : status.isValid ? "Valid" : "Invalid"}
+                            labelClassName={!inputCode ? "text-slate-400 bg-slate-600/50 border border-slate-500/50" : status.isValid ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30" : "text-rose-400 bg-rose-500/20 border border-rose-500/30"}
                             // If invalid, show large text here. If valid, show nothing in mainValue and use children.
                             mainValue={inputCode && !status.isValid ? (
                                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -506,47 +501,29 @@ GTIN-14: ${results.gtin14}
                             ) : undefined}
                         >
                             {/* Validation Analysis or Results List */}
-                            {inputCode && !status.isValid ? (
-                                // INVALID STATE SUB-CONTENT
-                                <div className="space-y-3 mt-2">
-                                    <div className="flex justify-between items-center text-sm text-blue-100/80">
-                                        <span>Analysis</span>
-                                        <span className="font-medium text-white text-right font-mono">
-                                            {status.correctedCode
-                                                ? "Check Digit Invalid"
-                                                : typeof status.message === 'string' && status.message.includes("numeric")
-                                                    ? "Invalid Characters"
-                                                    : "Incorrect Length"
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
-                            ) : (
-                                // VALID OR EMPTY STATE - Custom Result Rows
-                                <div className="space-y-4">
-                                    <ResultRow
-                                        label="GTIN-14"
-                                        value={results?.gtin14 || "Awaiting Data"}
-                                        onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
-                                        disabled={!results}
-                                        tooltip="Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
-                                    />
-                                    <ResultRow
-                                        label="GTIN-13 (EAN)"
-                                        value={results?.gtin13 || "Awaiting Data"}
-                                        onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
-                                        disabled={!results}
-                                        tooltip="Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
-                                    />
-                                    <ResultRow
-                                        label="GTIN-12 (UPC)"
-                                        value={results?.gtin12 || "Awaiting Data"}
-                                        onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
-                                        disabled={!results}
-                                        tooltip="Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
-                                    />
-                                </div>
-                            )}
+                            <div className="space-y-4">
+                                <ResultRow
+                                    label="GTIN-14"
+                                    value={results?.gtin14 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
+                                    onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
+                                    disabled={!results}
+                                    tooltip="Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                />
+                                <ResultRow
+                                    label="GTIN-13 (EAN)"
+                                    value={results?.gtin13 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
+                                    onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
+                                    disabled={!results}
+                                    tooltip="Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
+                                />
+                                <ResultRow
+                                    label="GTIN-12 (UPC)"
+                                    value={results?.gtin12 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
+                                    onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
+                                    disabled={!results}
+                                    tooltip="Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
+                                />
+                            </div>
                         </ResultFeedbackCard>
 
                         {/* Barcode Preview */}
@@ -619,7 +596,7 @@ GTIN-14: ${results.gtin14}
 function ResultRow({ label, value, onCopy, disabled, tooltip }: { label: string, value: string, onCopy: () => void, disabled: boolean, tooltip?: string }) {
     return (
         <div className="flex items-center justify-between group py-1">
-            <div className="space-y-0.5">
+            <div className="space-y-0.5 w-full">
                 <TooltipProvider delayDuration={100}>
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -635,17 +612,8 @@ function ResultRow({ label, value, onCopy, disabled, tooltip }: { label: string,
                         )}
                     </Tooltip>
                 </TooltipProvider>
-                <p className={cn("tracking-tight transition-all duration-300", value === "Awaiting Data" ? "text-lg sm:text-xl italic font-medium text-white/20" : "text-xl sm:text-2xl font-bold text-white")}>{value}</p>
+                <p className={cn("tracking-tight transition-all duration-300", value === "Awaiting Data" || value === "Invalid Input" ? "text-lg sm:text-xl italic font-medium text-white/40" : "text-xl sm:text-2xl font-bold text-white")}>{value}</p>
             </div>
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={onCopy}
-                disabled={disabled}
-                className="text-slate-400 hover:text-white hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all h-8 w-8"
-            >
-                <ClipboardCheck className="w-4 h-4" />
-            </Button>
         </div>
     )
 }

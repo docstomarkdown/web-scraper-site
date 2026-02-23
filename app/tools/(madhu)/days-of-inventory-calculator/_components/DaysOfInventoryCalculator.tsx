@@ -5,7 +5,8 @@ import {
     Calendar,
     Info,
     AlertCircle,
-    CheckCircle2
+    CheckCircle2,
+    Package
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -139,11 +140,12 @@ Results:
                             scrollId="how-to-use"
                         />
 
-                        <CardContent className="p-5 md:p-6 space-y-5 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Velocity Unit Tabs */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-1.5 mb-1 pl-1">
-                                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <Calendar className="w-4 h-4 text-slate-400" />
                                         Velocity Period
                                     </label>
                                     <TooltipProvider delayDuration={100}>
@@ -192,31 +194,37 @@ Results:
                                 </Tabs>
                             </div>
 
-                            <div className="space-y-6">
-                                <CalculatorInput
-                                    label="Current Stock on Hand"
-                                    value={values.currentStock}
-                                    onChange={(v) => handleInputChange('currentStock', v)}
-                                    placeholder="5000"
-                                    tooltip="The total number of units physically available in your warehouse today."
-                                />
-                                <CalculatorInput
-                                    label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', 'y')})`}
-                                    value={values.salesVelocity}
-                                    onChange={(v) => handleInputChange('salesVelocity', v)}
-                                    placeholder="150"
-                                    tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
-                                />
-                                <CalculatorInput
-                                    label="Safety Stock Buffer"
-                                    value={values.safetyStock}
-                                    onChange={(v) => handleInputChange('safetyStock', v)}
-                                    placeholder="0"
-                                    tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
-                                />
+                            <div className="space-y-3">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Package className="w-4 h-4 text-slate-400" />
+                                    Stock & Sales Details
+                                </label>
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label="Current Stock on Hand"
+                                        value={values.currentStock}
+                                        onChange={(v) => handleInputChange('currentStock', v)}
+                                        placeholder="5000"
+                                        tooltip="The total number of units physically available in your warehouse today."
+                                    />
+                                    <CalculatorInput
+                                        label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', '')})`}
+                                        value={values.salesVelocity}
+                                        onChange={(v) => handleInputChange('salesVelocity', v)}
+                                        placeholder="150"
+                                        tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
+                                    />
+                                    <CalculatorInput
+                                        label="Safety Stock Buffer"
+                                        value={values.safetyStock}
+                                        onChange={(v) => handleInputChange('safetyStock', v)}
+                                        placeholder="0"
+                                        tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
+                                    />
+                                </div>
                             </div>
 
-                            <div className="pt-1.5 border-t border-slate-50">
+                            <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}

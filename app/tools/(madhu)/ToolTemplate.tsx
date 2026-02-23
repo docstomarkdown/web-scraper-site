@@ -30,11 +30,11 @@ export interface MadhuSubHeaderProps {
 
 export function MadhuSubHeader({ title, icon: Icon, className, withDot = false }: MadhuSubHeaderProps) {
     return (
-        <div className={cn("flex items-center gap-2 mb-4", className)}>
+        <label className={cn("text-sm font-medium text-slate-700 flex items-center gap-2 mb-4", className)}>
             {withDot && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
             {Icon && <Icon className="w-4 h-4 text-slate-400" />}
-            <h3 className="text-base font-bold text-slate-400 tracking-tight">{title}</h3>
-        </div>
+            {title}
+        </label>
     )
 }
 

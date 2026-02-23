@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box } from "lucide-react"
+import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box , Check} from "lucide-react";
 import { cn } from "@/lib/utils"
-import { useToast } from "@/hooks/use-toast"
+"@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -23,7 +23,7 @@ interface Dimensions {
 }
 
 export function DimensionConverterContent() {
-    const { toast } = useToast()
+    const [isCopied, setIsCopied] = useState(false);
     const [dimensions, setDimensions] = useState<Dimensions>({ length: "", width: "", height: "" })
     const [unit, setUnit] = useState<Unit>("in")
     const [volume, setVolume] = useState<{ in3: number; cm3: number } | null>(null)
@@ -106,19 +106,14 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
     `.trim()
 
         navigator.clipboard.writeText(text)
-        toast({
-            title: "Result Copied",
-            description: "Calculations copied to your clipboard.",
-        })
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
     }
 
     const clearAll = () => {
         setDimensions({ length: "", width: "", height: "" })
         setUnit("in")
-        toast({
-            title: "Reset",
-            description: "All inputs cleared.",
-        })
+        
     }
 
     const scrollToGuide = () => {
@@ -212,13 +207,14 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                             value={dimensions[dim]}
                                             onChange={(val) => setDimensions((prev) => ({ ...prev, [dim]: val.toString() }))}
                                             placeholder={unit === "in" ? (dim === "length" ? "12.00" : dim === "width" ? "8.00" : "6.00") : (dim === "length" ? "30.00" : dim === "width" ? "20.00" : "15.00")}
-                                            type="text"
+                                            type="number"
+                                            min={0}
                                         />
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="flex gap-2 pt-4 border-t border-slate-50">
+                            <div className="flex gap-2 pt-4 border-t border-slate-100">
                                 <Button
                                     variant="outline"
                                     className="flex-[2] h-11 border-dashed hover:bg-muted/50 text-slate-500 hover:text-slate-900 transition-all font-medium"
@@ -227,12 +223,20 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                     <RefreshCw className="w-4 h-4 mr-2" /> Reset Input
                                 </Button>
                                 <Button
-                                    onClick={copyToClipboard}
                                     variant="outline"
-                                    disabled={!converted}
-                                    className="flex-1 h-11 px-6 shadow-sm border-slate-300 hover:bg-slate-50 transition-all font-bold text-slate-950 disabled:opacity-30"
+                                    onClick={copyToClipboard}
+                                    className={cn(
+                                        "flex-1 h-11 shadow-sm transition-all font-bold",
+                                        isCopied
+                                            ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-50 hover:text-green-700"
+                                            : "border-slate-300 hover:bg-slate-50 text-slate-900"
+                                    )}
                                 >
-                                    <Copy className="w-4 h-4 mr-2" /> Copy Results
+                                    {isCopied ? (
+                                        <><Check className="w-4 h-4 mr-2" /> Copied!</>
+                                    ) : (
+                                        <><Copy className="w-4 h-4 mr-2" /> Copy Results</>
+                                    )}
                                 </Button>
                             </div>
                         </CardContent>

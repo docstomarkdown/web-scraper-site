@@ -158,7 +158,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                             onHelpClick={scrollToGuide}
                         />
 
-                        <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Unit Switcher */}
                             <div className="space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -181,6 +181,8 @@ ${results.inches.toLocaleString()} Cubic Inches
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="h-px bg-slate-100 w-full" />
 
                             <div className="space-y-4">
                                 <MadhuSubHeader
@@ -211,6 +213,8 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         suffix={unit}
                                     />
 
+                                    <div className="h-px bg-slate-100 w-full my-2" />
+
                                     <div className="pt-2">
                                         <MadhuSubHeader title="Total Quantity" icon={Layers} className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400" />
                                         <CalculatorInput
@@ -223,7 +227,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                 </div>
                             </div>
 
-                            <div className="pt-6 mt-auto border-t border-slate-50">
+                            <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={() => setInputs({ length: "", width: "", height: "", quantity: "" })}
                                     onCopy={copyResults}

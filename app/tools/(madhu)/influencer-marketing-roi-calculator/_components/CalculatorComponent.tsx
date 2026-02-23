@@ -4,7 +4,7 @@ import React, { useState } from "react"
 // Using relative paths to bypass potential alias resolution issues in this route group
 import { Card, CardContent } from "../../../../../components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../../../components/ui/tooltip"
-import { HelpCircle, Info, TrendingUp, TrendingDown, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2 } from "lucide-react"
+import { HelpCircle, Info, TrendingUp, TrendingDown, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2, DollarSign } from "lucide-react"
 import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
 import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn, CalculatorInput } from "../../../_shared/components"
 import { cn } from "../../../../../lib/utils"
@@ -127,12 +127,13 @@ export function InfluencerROICalculator() {
                             </div>
                         </div>
 
-                        <CardContent className="p-4 space-y-3">
+                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="text-base font-bold text-slate-400 tracking-tight">
+                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <DollarSign className="w-4 h-4 text-slate-400" />
                                         Direct costs
-                                    </h3>
+                                    </label>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <CalculatorInput
@@ -153,11 +154,13 @@ export function InfluencerROICalculator() {
                             </div>
 
                             {/* Logistics & Product */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="text-base font-bold text-slate-400 tracking-tight">
+                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <Truck className="w-4 h-4 text-slate-400" />
                                         Fulfillment & logistics
-                                    </h3>
+                                    </label>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <CalculatorInput
@@ -178,11 +181,13 @@ export function InfluencerROICalculator() {
                             </div>
 
                             {/* Overhead */}
+                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="text-base font-bold text-slate-400 tracking-tight">
+                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <Users className="w-4 h-4 text-slate-400" />
                                         Management & rights
-                                    </h3>
+                                    </label>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <CalculatorInput
@@ -203,11 +208,13 @@ export function InfluencerROICalculator() {
                             </div>
 
                             {/* Performance Data */}
-                            <div className="space-y-2 pt-4">
+                            <div className="h-px bg-slate-100 w-full" />
+                            <div className="space-y-2 pt-1">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="text-base font-bold text-blue-600 tracking-tight">
+                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <BarChart3 className="w-4 h-4 text-blue-500" />
                                         Performance metrics
-                                    </h3>
+                                    </label>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <CalculatorInput
@@ -245,7 +252,7 @@ export function InfluencerROICalculator() {
                                 onReset={handleReset}
                                 onCopy={handleCopy}
                                 isCopied={isCopied}
-                                className="pt-2"
+                                className="pt-6 mt-2 border-t border-slate-100"
                             />
                         </CardContent>
                     </Card>
