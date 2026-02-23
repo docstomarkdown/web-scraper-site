@@ -223,13 +223,13 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        'w-full justify-between h-10 text-sm font-bold border-slate-200/60 bg-white shadow-sm px-3 transition-all rounded-xl hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
+                        'w-full flex items-center gap-2 h-10 text-sm font-bold border-slate-200/60 bg-white shadow-sm px-3 transition-all rounded-xl hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
                         !value && 'text-muted-foreground',
                         className
                     )}
                 >
                     {selectedCurrency ? (
-                        <div className="flex items-center gap-2 flex-grow overflow-hidden pr-1 text-left">
+                        <div className="flex items-center gap-2 overflow-hidden pr-1 text-left">
                             <Image
                                 src={`https://flagcdn.com/w20/${selectedCurrency.flag.toLowerCase()}.png`}
                                 width={18}
@@ -237,19 +237,15 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                                 alt={selectedCurrency.name}
                                 className="object-contain flex-shrink-0"
                             />
-                            <span className="whitespace-nowrap flex-shrink-0">{selectedCurrency.code} ({selectedCurrency.symbol})</span>
-                                className="object-contain rounded-[1px]"
-                            />
-                            <span className="text-slate-700 tracking-tight">{selectedCurrency.code}</span>
+                            <span className="whitespace-nowrap text-slate-700 tracking-tight">{selectedCurrency.code} ({selectedCurrency.symbol})</span>
                         </div>
                     ) : (
-                        <span className="flex-grow text-left">Select currency</span>
+                        <span className="text-left">Select currency</span>
                     )}
                     <ChevronDown className={cn(
                         "h-3 w-3 shrink-0 opacity-40 transition-transform duration-200",
                         open && "rotate-180"
                     )} />
-                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-slate-400" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[280px] p-0" align="start">

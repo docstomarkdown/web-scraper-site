@@ -18,7 +18,9 @@ import {
     ChevronUp
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { FadeIn, ResultFeedbackCard, ToolSectionHeader } from "@/app/tools/_shared/components"
+import { cn } from "@/lib/utils"
+import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
+import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Barcode from 'react-barcode'
@@ -267,60 +269,37 @@ export function Validator() {
                 onChange={handleFileUpload}
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
                 {/* LEFT: Input (Col Span 6) */}
                 <div className="lg:col-span-6">
-                    <FadeIn delay={0.2} direction="right" className="h-full">
-                        <Card className="border border-slate-200 shadow-sm overflow-hidden h-full flex flex-col bg-white">
-                            <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100 flex flex-row items-center justify-between space-y-0">
-                                <div>
-                                    <div className="flex items-center gap-2">
-                                        <CardTitle className="text-2xl font-bold text-blue-600">
-                                            Validator Inputs
-                                        </CardTitle>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={scrollToGuide}
-                                                        className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
-                                                    >
-                                                        <HelpCircle className="w-4 h-4" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                    How to use this validator
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <CardDescription>Enter your barcode number or upload an image below.</CardDescription>
-                                </div>
-                            </CardHeader>
+                    <FadeIn delay={0.2} direction="right">
+                        <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white">
+                            <InputCardHeader
+                                title="Validator Inputs"
+                                subtitle="Enter your barcode number or upload an image below."
+                                onHelpClick={scrollToGuide}
+                            />
                             <CardContent className="space-y-6 pt-6">
-                                <div className="space-y-2">
-                                    <div className="flex justify-between items-center text-sm font-bold text-slate-600">
-                                        <Label htmlFor="barcode-input">Barcode Number</Label>
-                                        <span className="text-xs font-mono opacity-50 uppercase">UPC / EAN</span>
-                                    </div>
-                                    <Input
-                                        id="barcode-input"
-                                        placeholder="Ex: 036000291452"
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label="Barcode Number"
                                         value={inputCode}
-                                        onChange={handleInputChange}
-                                        className="h-14 text-xl font-mono focus-visible:ring-primary shadow-sm bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
-                                        autoComplete="off"
+                                        onChange={(v) => {
+                                            if (/^[\d\s-]*$/.test(v)) {
+                                                setInputCode(v)
+                                            }
+                                        }}
+                                        placeholder="Ex: 036000291452"
+                                        tooltip="Enter EAN / UPC (8, 12, or 13 digits) to validate."
+                                        type="text"
                                     />
-
 
                                     {/* Scan Controls */}
                                     <div className="pt-2">
                                         <Button
                                             variant="secondary"
-                                            className="w-full h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
+                                            className="w-full h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
                                             onClick={() => document.getElementById('barcode-upload')?.click()}
                                         >
                                             <div className="flex items-center">
@@ -346,22 +325,12 @@ export function Validator() {
                                     </div>
                                 </div>
 
-                                <div className="flex gap-2">
-                                    <Button
-                                        variant="outline"
-                                        className="flex-[2] h-11 border-dashed hover:bg-muted/50 text-slate-500 hover:text-slate-900 transition-all font-medium"
-                                        onClick={clearAll}
-                                    >
-                                        <RefreshCw className="w-4 h-4 mr-2" /> Reset Input
-                                    </Button>
-                                    <Button
-                                        onClick={copyResult}
-                                        variant="outline"
-                                        disabled={!inputCode}
-                                        className="flex-1 h-11 px-6 shadow-sm border-slate-300 hover:bg-slate-50 transition-all font-bold text-slate-950 disabled:opacity-30"
-                                    >
-                                        <Copy className="w-4 h-4 mr-2" /> Copy Results
-                                    </Button>
+                                <div className="pt-6 border-t border-slate-50">
+                                    <ActionButtons
+                                        onReset={clearAll}
+                                        onCopy={copyResult}
+                                        copyDisabled={!inputCode}
+                                    />
                                 </div>
                             </CardContent>
                         </Card>
@@ -374,14 +343,14 @@ export function Validator() {
                         <div className="space-y-6">
                             {/* Blue Result Card (Always Visible) */}
                             <ResultFeedbackCard
-                                variant={result && !result.isValid ? "warning" : "default"}
+                                variant="default"
                                 title="Validation Status"
                                 titleLabel={!inputCode ? "Ready" : result?.isValid ? "Valid" : "Invalid"}
-                                valueColor={result && !result.isValid ? 'text-red-300' : 'text-white'}
+                                valueColor="text-white"
                                 mainValue={
                                     <div className="flex items-baseline gap-3">
-                                        <span>
-                                            {inputCode || "000000000000"}
+                                        <span className={cn(inputCode ? "text-white" : "text-white/30 italic font-medium text-2xl sm:text-3xl")}>
+                                            {inputCode || "Awaiting Data"}
                                         </span>
                                     </div>
                                 }
@@ -541,7 +510,7 @@ export function Validator() {
                     </FadeIn>
                 </div>
             </div>
-        </FadeIn>
+        </FadeIn >
 
     )
 }

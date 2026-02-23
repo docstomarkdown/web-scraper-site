@@ -10,16 +10,16 @@ import {
     InputCardHeader,
     ActionButtons
 } from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface TurnoverState {
-    cogs: string
-    beginningInventory: string
-    endingInventory: string
-    periodInDays: string
+    cogs: string | number
+    beginningInventory: string | number
+    endingInventory: string | number
+    periodInDays: string | number
 }
 
 const DEFAULT_STATE: TurnoverState = {
@@ -33,24 +33,22 @@ export function InventoryTurnoverCalculator() {
     const [values, setValues] = useState<TurnoverState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof TurnoverState, value: string) => {
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+    const handleInputChange = (field: keyof TurnoverState, value: string | number) => {
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
 
     const hasInputs = useMemo(() => {
-        const cogs = parseFloat(values.cogs) || 0
-        const begInv = parseFloat(values.beginningInventory) || 0
-        const endInv = parseFloat(values.endingInventory) || 0
+        const cogs = Number(values.cogs) || 0
+        const begInv = Number(values.beginningInventory) || 0
+        const endInv = Number(values.endingInventory) || 0
         return values.cogs !== "" && (values.beginningInventory !== "" || values.endingInventory !== "") && cogs > 0
     }, [values])
 
     const results = useMemo(() => {
-        const cogs = parseFloat(values.cogs) || 0
-        const begInv = parseFloat(values.beginningInventory) || 0
-        const endInv = parseFloat(values.endingInventory) || 0
-        const period = parseFloat(values.periodInDays) || 365
+        const cogs = Number(values.cogs) || 0
+        const begInv = Number(values.beginningInventory) || 0
+        const endInv = Number(values.endingInventory) || 0
+        const period = Number(values.periodInDays) || 365
 
         if (!hasInputs) return {
             avgInventory: 0,
@@ -130,58 +128,60 @@ Results:
 
                         <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
                             <div className="space-y-6">
-                                <TurnoverInput
+                                <CalculatorInput
                                     label="Cost of Goods Sold (COGS)"
                                     value={values.cogs}
                                     onChange={(v) => handleInputChange('cogs', v)}
-                                    placeholder="Ex: 150000"
+                                    placeholder="150000"
                                     tooltip="The total cost of products sold during the period (found on your Income Statement)."
+                                    prefix="$"
                                 />
 
-                                <TurnoverInput
-                                    label="Analysis Period (Days)"
-                                    value={values.periodInDays}
-                                    onChange={(v) => handleInputChange('periodInDays', v)}
-                                    placeholder="Ex: 365"
-                                    tooltip="Length of time analyzed. Standard: 365 (Year), 90 (Quarter), 30 (Month)."
-                                    headerRight={
-                                        <div className="flex gap-1.5 ml-auto">
-                                            {[
-                                                { label: "30D", value: "30" },
-                                                { label: "90D", value: "90" },
-                                                { label: "365D", value: "365" }
-                                            ].map((preset) => (
-                                                <button
-                                                    key={preset.value}
-                                                    onClick={() => handleInputChange('periodInDays', preset.value)}
-                                                    className={cn(
-                                                        "px-2 py-0.5 rounded-md text-[10px] font-bold transition-all border",
-                                                        values.periodInDays === preset.value
-                                                            ? "bg-transparent text-blue-600 border-blue-600"
-                                                            : "bg-slate-50 text-slate-500 border-slate-200 hover:border-blue-400 hover:text-blue-600"
-                                                    )}
-                                                >
-                                                    {preset.label}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    }
-                                />
+                                <div className="space-y-2">
+                                    <div className="flex gap-1.5 justify-end w-full">
+                                        {[
+                                            { label: "30D", value: "30" },
+                                            { label: "90D", value: "90" },
+                                            { label: "365D", value: "365" }
+                                        ].map((preset) => (
+                                            <button
+                                                key={preset.value}
+                                                onClick={() => handleInputChange('periodInDays', preset.value)}
+                                                className={cn(
+                                                    "px-2 py-0.5 rounded-md text-[10px] font-bold transition-all border",
+                                                    values.periodInDays === preset.value
+                                                        ? "bg-transparent text-blue-600 border-blue-600"
+                                                        : "bg-slate-50 text-slate-500 border-slate-200 hover:border-blue-400 hover:text-blue-600"
+                                                )}
+                                            >
+                                                {preset.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <CalculatorInput
+                                        label="Analysis Period (Days)"
+                                        value={values.periodInDays}
+                                        onChange={(v) => handleInputChange('periodInDays', v)}
+                                        placeholder="365"
+                                        tooltip="Length of time analyzed. Standard: 365 (Year), 90 (Quarter), 30 (Month)."
+                                    />
+                                </div>
 
-
-                                <TurnoverInput
+                                <CalculatorInput
                                     label="Beginning Inventory"
                                     value={values.beginningInventory}
                                     onChange={(v) => handleInputChange('beginningInventory', v)}
-                                    placeholder="Ex: 25000"
+                                    placeholder="25000"
                                     tooltip="Value of stock at the start of the period."
+                                    prefix="$"
                                 />
-                                <TurnoverInput
+                                <CalculatorInput
                                     label="Ending Inventory"
                                     value={values.endingInventory}
                                     onChange={(v) => handleInputChange('endingInventory', v)}
-                                    placeholder="Ex: 35000"
+                                    placeholder="35000"
                                     tooltip="Value of stock at the end of the period."
+                                    prefix="$"
                                 />
                             </div>
 
@@ -276,53 +276,4 @@ Results:
     )
 }
 
-function TurnoverInput({
-    label,
-    value,
-    onChange,
-    tooltip,
-    placeholder,
-    headerRight
-}: {
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    tooltip: string,
-    placeholder: string,
-    headerRight?: React.ReactNode
-}) {
-    return (
-        <div className="space-y-2 group/input">
-            <div className="flex items-center gap-1.5 mb-1 pl-1">
-                <label className="text-sm font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
-                    {label}
-                </label>
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
-                                <Info className="h-3.5 w-3.5" />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="text-[10px] bg-slate-900 text-white border-slate-800 p-2 max-w-[200px]">
-                            {tooltip}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-                {headerRight}
-            </div>
 
-            <div className="relative group">
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    className={cn(
-                        "h-10 w-full text-base border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic px-5 shrink-0"
-                    )}
-                    placeholder={placeholder}
-                />
-            </div>
-        </div>
-    )
-}

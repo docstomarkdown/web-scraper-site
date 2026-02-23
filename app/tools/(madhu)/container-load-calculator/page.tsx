@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { ActionButtons, MadhuToolTemplate, Step, Insight, FAQ, InputCardHeader, MadhuSubHeader, Counter } from "../ToolTemplate"
-import { ContainerLoadCalculatorInput as CalculatorInput } from "./_components/ContainerLoadCalculatorInput"
+import { CalculatorInput } from "@/app/tools/_shared/components"
 import { ContainerLoadResultCard as ResultFeedbackCard } from "./_components/ContainerLoadResultCard"
 import { useToast } from "@/hooks/use-toast"
 import {
@@ -500,10 +500,10 @@ Calculated via Container Load Calculator
                                         </Tabs>
                                     </div>
                                     <div className="flex flex-col gap-3">
-                                        <CalculatorInput label="Length" value={length} onChange={setLength} placeholder="40" suffix={unitSystem === "metric" ? "cm" : "in"} fullWidth={loadType === "loose"} />
-                                        <CalculatorInput label="Width" value={width} onChange={setWidth} placeholder="30" suffix={unitSystem === "metric" ? "cm" : "in"} fullWidth={loadType === "loose"} />
-                                        <CalculatorInput label="Height" value={height} onChange={setHeight} placeholder="25" suffix={unitSystem === "metric" ? "cm" : "in"} fullWidth={loadType === "loose"} />
-                                        <CalculatorInput label="Weight (Unit)" value={weight} onChange={setWeight} placeholder="5" suffix={unitSystem === "metric" ? "kg" : "lb"} fullWidth={loadType === "loose"} />
+                                        <CalculatorInput label="Length" value={length} onChange={setLength} placeholder="40" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Width" value={width} onChange={setWidth} placeholder="30" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Height" value={height} onChange={setHeight} placeholder="25" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Weight (Unit)" value={weight} onChange={setWeight} placeholder="5" suffix={unitSystem === "metric" ? "kg" : "lb"} />
                                     </div>
                                 </div>
 

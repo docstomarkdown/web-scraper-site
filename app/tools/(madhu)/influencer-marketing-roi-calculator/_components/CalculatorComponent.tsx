@@ -6,56 +6,9 @@ import { Card, CardContent } from "../../../../../components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../../../components/ui/tooltip"
 import { HelpCircle, Info, TrendingUp, TrendingDown, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2 } from "lucide-react"
 import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
-import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "../../../_shared/components"
+import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn, CalculatorInput } from "../../../_shared/components"
 import { cn } from "../../../../../lib/utils"
-import { Input } from "../../../../../components/ui/input"
-import { Label } from "../../../../../components/ui/label"
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"
-
-function InfluencerInput({
-    label,
-    value,
-    onChange,
-    placeholder,
-    tooltip
-}: {
-    label: string,
-    value: number | "",
-    onChange: (v: number | "") => void,
-    placeholder: string,
-    tooltip: string
-}) {
-    return (
-        <div className="flex items-center justify-between gap-4 w-full group/input">
-            <div className="flex items-center gap-2 w-[170px] shrink-0">
-                <Label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                    {label}
-                </Label>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" tabIndex={-1} className="text-slate-500 hover:text-blue-600 transition-colors">
-                                    <Info className="h-3.5 w-3.5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
-            <Input
-                type="number"
-                value={value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value === "" ? "" : parseFloat(e.target.value))}
-                placeholder={placeholder}
-                className="h-10 w-[160px] text-right text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
-            />
-        </div>
-    )
-}
 
 export function InfluencerROICalculator() {
     const [currency, setCurrency] = useState("USD")
@@ -158,11 +111,11 @@ export function InfluencerROICalculator() {
     const boostPct = getPercent(boost)
 
     return (
-        <FadeIn className="w-full max-w-7xl mx-auto py-4 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                <div className="lg:col-span-8 space-y-4">
-                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full">
+                <div className="lg:col-span-7 space-y-4">
+                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
                         <div className="flex flex-row items-center justify-between border-b border-slate-100 pr-6">
                             <InputCardHeader
                                 title="Campaign Budget"
@@ -175,28 +128,25 @@ export function InfluencerROICalculator() {
                         </div>
 
                         <CardContent className="p-4 space-y-3">
-
-
-                            {/* Primary Investment */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2">
                                     <h3 className="text-base font-bold text-slate-400 tracking-tight">
                                         Direct costs
                                     </h3>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                                    <InfluencerInput
+                                <div className="flex flex-col gap-2">
+                                    <CalculatorInput
                                         label="Influencer Fee"
                                         value={influencerFee}
                                         onChange={setInfluencerFee}
-                                        placeholder="Ex: 1000.00"
+                                        placeholder="1000.00"
                                         tooltip="The flat fee paid directly to the creator."
                                     />
-                                    <InfluencerInput
+                                    <CalculatorInput
                                         label="Boosting / Ad Spend"
                                         value={boostingSpend}
                                         onChange={setBoostingSpend}
-                                        placeholder="Ex: 500.00"
+                                        placeholder="500.00"
                                         tooltip="Amount spent on Meta/TikTok ads to boost the creator's post."
                                     />
                                 </div>
@@ -209,19 +159,19 @@ export function InfluencerROICalculator() {
                                         Fulfillment & logistics
                                     </h3>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                                    <InfluencerInput
+                                <div className="flex flex-col gap-2">
+                                    <CalculatorInput
                                         label="Product COGS"
                                         value={productCogs}
                                         onChange={setProductCogs}
-                                        placeholder="Ex: 50.00"
+                                        placeholder="50.00"
                                         tooltip="The manufacturing cost or wholesale price of gifted products."
                                     />
-                                    <InfluencerInput
+                                    <CalculatorInput
                                         label="Shipping & Packaging"
                                         value={shippingCost}
                                         onChange={setShippingCost}
-                                        placeholder="Ex: 15.00"
+                                        placeholder="15.00"
                                         tooltip="Costs to ship the units to the influencer."
                                     />
                                 </div>
@@ -234,19 +184,19 @@ export function InfluencerROICalculator() {
                                         Management & rights
                                     </h3>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                                    <InfluencerInput
+                                <div className="flex flex-col gap-2">
+                                    <CalculatorInput
                                         label="Agency/Mgmt Fee"
                                         value={managementFee}
                                         onChange={setManagementFee}
-                                        placeholder="Ex: 250.00"
+                                        placeholder="250.00"
                                         tooltip="Any commission or fee paid to an agency or manager."
                                     />
-                                    <InfluencerInput
+                                    <CalculatorInput
                                         label="Content Rights Fee"
                                         value={contentRightsFee}
                                         onChange={setContentRightsFee}
-                                        placeholder="Ex: 100.00"
+                                        placeholder="100.00"
                                         tooltip="Additional cost for whitelisting or spark ad rights."
                                     />
                                 </div>
@@ -259,33 +209,33 @@ export function InfluencerROICalculator() {
                                         Performance metrics
                                     </h3>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                                    <InfluencerInput
+                                <div className="flex flex-col gap-2">
+                                    <CalculatorInput
                                         label="Total Sales Revenue"
                                         value={totalSales}
                                         onChange={setTotalSales}
-                                        placeholder="Ex: 8500.00"
+                                        placeholder="8500.00"
                                         tooltip="The total gross revenue generated from tracking links/codes."
                                     />
-                                    <InfluencerInput
+                                    <CalculatorInput
                                         label="Total Conversions"
                                         value={conversions}
                                         onChange={setConversions}
-                                        placeholder="Ex: 125"
+                                        placeholder="125"
                                         tooltip="Number of successful orders or leads generated."
                                     />
-                                    <InfluencerInput
+                                    <CalculatorInput
                                         label="Total Impressions"
                                         value={impressions}
                                         onChange={setImpressions}
-                                        placeholder="Ex: 50000"
+                                        placeholder="50000"
                                         tooltip="Number of times the content was viewed."
                                     />
-                                    <InfluencerInput
+                                    <CalculatorInput
                                         label="Total Engagements"
                                         value={engagements}
                                         onChange={setEngagements}
-                                        placeholder="Ex: 2500"
+                                        placeholder="2500"
                                         tooltip="Total likes, comments, and shares."
                                     />
                                 </div>
@@ -302,7 +252,7 @@ export function InfluencerROICalculator() {
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-4 lg:sticky lg:top-32 h-full flex flex-col gap-3">
+                <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-3">
 
                     {/* Primary Result: ROI */}
                     <ResultFeedbackCard
@@ -334,7 +284,7 @@ export function InfluencerROICalculator() {
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-emerald-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -344,7 +294,7 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-emerald-400">
+                                    <p className="text-xl font-bold text-emerald-400 break-all leading-tight">
                                         <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
                                     </p>
                                 </div>
@@ -354,7 +304,7 @@ export function InfluencerROICalculator() {
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-blue-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -364,7 +314,7 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-blue-400">
+                                    <p className="text-xl font-bold text-blue-400 break-all leading-tight">
                                         <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
@@ -374,7 +324,7 @@ export function InfluencerROICalculator() {
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-purple-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -384,7 +334,7 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-purple-400">
+                                    <p className="text-lg font-bold text-purple-400 break-all leading-tight">
                                         <Counter value={cpm} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
@@ -394,7 +344,7 @@ export function InfluencerROICalculator() {
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300 hover:text-amber-400 transition-colors">
+                                                    <button type="button" className="text-slate-300">
                                                         <Info className="h-3 w-3" />
                                                     </button>
                                                 </TooltipTrigger>
@@ -404,7 +354,7 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-amber-400">
+                                    <p className="text-xl font-bold text-amber-400 break-all leading-tight">
                                         <Counter value={cpe} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
@@ -413,13 +363,13 @@ export function InfluencerROICalculator() {
                     </ResultFeedbackCard>
 
                     {/* Investment Breakdown */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 flex-1 flex flex-col">
+                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 flex flex-col">
                         <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                             <PieChart className="w-4 h-4 text-blue-500" />
                             Budget Allocation
                         </h4>
 
-                        <div className="flex items-center gap-4 flex-1 min-h-0">
+                        <div className="flex items-center gap-4 min-h-0">
                             {/* Left: Chart */}
                             <div className="h-[140px] w-[140px] relative shrink-0">
                                 {totalInvestment > 0 ? (
@@ -452,8 +402,18 @@ export function InfluencerROICalculator() {
                                             </Pie>
                                             <RechartsTooltip
                                                 formatter={(value: number) => formatCurrency(value)}
-                                                contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
-                                                itemStyle={{ color: '#fff' }}
+                                                contentStyle={{
+                                                    backgroundColor: '#fff',
+                                                    border: 'none',
+                                                    borderRadius: '12px',
+                                                    boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+                                                    padding: '8px 12px',
+                                                    fontSize: '12px',
+                                                    fontWeight: '600',
+                                                    color: '#1e293b'
+                                                }}
+                                                itemStyle={{ color: '#1e293b' }}
+                                                labelStyle={{ display: 'none' }}
                                             />
                                         </RechartsPie>
                                     </ResponsiveContainer>
@@ -503,14 +463,9 @@ export function InfluencerROICalculator() {
                                 </div>
                             </div>
                         </div>
-
-
-
-
                     </Card>
-
                 </div>
-            </div >
-        </FadeIn >
+            </div>
+        </FadeIn>
     )
 }

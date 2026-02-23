@@ -5,7 +5,8 @@ import {
     Info,
     RefreshCw,
     Copy,
-    Check
+    Check,
+    TrendingUp
 } from "lucide-react"
 import {
     Tooltip,
@@ -17,19 +18,19 @@ import {
     InputCardHeader,
     ActionButtons
 } from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
 interface COGSState {
-    productCost: string
-    inboundShipping: string
-    duties: string
-    packaging: string
-    fulfillmentFee: string
-    outboundShipping: string
-    returnRate: string
-    sellPrice: string
+    productCost: string | number
+    inboundShipping: string | number
+    duties: string | number
+    packaging: string | number
+    fulfillmentFee: string | number
+    outboundShipping: string | number
+    returnRate: string | number
+    sellPrice: string | number
 }
 
 const DEFAULT_STATE: COGSState = {
@@ -47,10 +48,8 @@ export function COGSCalculator() {
     const [values, setValues] = useState<COGSState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof COGSState, value: string) => {
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+    const handleInputChange = (field: keyof COGSState, value: string | number) => {
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
 
     const hasInputs = useMemo(() => {
@@ -58,14 +57,14 @@ export function COGSCalculator() {
     }, [values])
 
     const results = useMemo(() => {
-        const product = parseFloat(values.productCost) || 0
-        const inbound = parseFloat(values.inboundShipping) || 0
-        const duties = parseFloat(values.duties) || 0
-        const pkg = parseFloat(values.packaging) || 0
-        const fulfillment = parseFloat(values.fulfillmentFee) || 0
-        const outbound = parseFloat(values.outboundShipping) || 0
-        const rate = parseFloat(values.returnRate) || 0
-        const price = parseFloat(values.sellPrice) || 0
+        const product = Number(values.productCost) || 0
+        const inbound = Number(values.inboundShipping) || 0
+        const duties = Number(values.duties) || 0
+        const pkg = Number(values.packaging) || 0
+        const fulfillment = Number(values.fulfillmentFee) || 0
+        const outbound = Number(values.outboundShipping) || 0
+        const rate = Number(values.returnRate) || 0
+        const price = Number(values.sellPrice) || 0
 
         // 1. Landed Cost
         const landedCost = product + inbound + duties + pkg
@@ -145,32 +144,36 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                     Acquisition (Landed) Cost
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Product Cost"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="Cost per unit from supplier"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Inbound Shipping"
                                         value={values.inboundShipping}
                                         onChange={(v) => handleInputChange('inboundShipping', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="Freight cost to get goods to you (per unit)"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Duties & Taxes"
                                         value={values.duties}
                                         onChange={(v) => handleInputChange('duties', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="Customs duties, tariffs, and taxes"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Pkg. & Prep"
                                         value={values.packaging}
                                         onChange={(v) => handleInputChange('packaging', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="Cost of packaging, polybags, labels, etc."
                                     />
                                 </div>
@@ -182,35 +185,36 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                     Fulfillment & Sales
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Fulfillment Fee"
                                         value={values.fulfillmentFee}
                                         onChange={(v) => handleInputChange('fulfillmentFee', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="Cost to pick and pack (e.g., FBA Fee)"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Outbound Ship"
                                         value={values.outboundShipping}
                                         onChange={(v) => handleInputChange('outboundShipping', v)}
-                                        placeholder="Ex: 0.00"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="Shipping cost to customer (if not included in price)"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Est. Return Rate"
                                         value={values.returnRate}
                                         onChange={(v) => handleInputChange('returnRate', v)}
-                                        placeholder="Ex: 0"
+                                        placeholder="0"
                                         suffix="%"
-                                        prefix=""
                                         tooltip="Percentage of sales expected to be returned"
                                     />
-                                    <COGSInput
+                                    <CalculatorInput
                                         label="Target Sell Price"
                                         value={values.sellPrice}
                                         onChange={(v) => handleInputChange('sellPrice', v)}
-                                        placeholder="Ex: 0.00"
-                                        highlightColor="blue"
+                                        placeholder="0.00"
+                                        prefix="$"
                                         tooltip="The price you intend to sell the product for"
                                     />
                                 </div>
@@ -298,73 +302,4 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
     )
 }
 
-function COGSInput({
-    label,
-    value,
-    onChange,
-    tooltip,
-    placeholder,
-    prefix = "$",
-    suffix = "",
-    highlightColor = "blue"
-}: {
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    tooltip: string,
-    placeholder: string,
-    prefix?: string,
-    suffix?: string,
-    highlightColor?: "blue" | "indigo"
-}) {
-    return (
-        <div className="space-y-1.5 group/input relative z-10">
-            <div className="flex items-center gap-1.5 mb-1 pl-1">
-                <label className="text-sm font-bold text-slate-600">
-                    {label}
-                </label>
-                {tooltip && (
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                    <Info className="h-3.5 w-3.5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                )}
-            </div>
 
-            <div className="relative group bg-white">
-                {prefix && (
-                    <div className="absolute left-3 top-0 bottom-0 flex items-center pointer-events-none">
-                        <span className="text-slate-400 font-medium text-sm">{prefix}</span>
-                    </div>
-                )}
-                <input
-                    type="text"
-                    value={value ?? ""}
-                    onChange={(e) => onChange(e.target.value)}
-                    className={cn(
-                        "h-11 w-full text-base border border-slate-200 bg-slate-50/50 rounded-lg px-4 transition-all font-bold text-slate-900 focus:outline-none focus:ring-2 focus:bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic",
-                        prefix ? "pl-7" : "pl-4",
-                        suffix ? "pr-8" : "pr-4",
-                        highlightColor === "indigo"
-                            ? "focus:border-indigo-500/50 focus:ring-indigo-500/10"
-                            : "focus:border-blue-500/50 focus:ring-blue-500/10"
-                    )}
-                    placeholder={placeholder}
-                />
-                {suffix && (
-                    <div className="absolute right-3 top-0 bottom-0 flex items-center pointer-events-none">
-                        <span className="text-slate-400 font-medium text-sm">{suffix}</span>
-                    </div>
-                )}
-            </div>
-        </div>
-    )
-}

@@ -1,14 +1,12 @@
 "use client"
 
 import React, { useState, useEffect, useMemo } from "react"
-import { Ruler, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle, Maximize, Warehouse, Layers } from "lucide-react"
+import { RefreshCw, AlertTriangle, Truck, Copy, HelpCircle, Package, Ruler, Layers } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { ResultFeedbackCard, Counter } from "@/app/tools/_shared/components"
+import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
+import { Card, CardContent } from "@/components/ui/card"
+import { ResultFeedbackCard, Counter, CalculatorInput } from "@/app/tools/_shared/components"
 
 type DimensionUnit = "in" | "ft" | "cm" | "m"
 
@@ -25,7 +23,7 @@ export function CubicFeetCalculator() {
         length: "",
         width: "",
         height: "",
-        quantity: "1"
+        quantity: ""
     })
     const [unit, setUnit] = useState<DimensionUnit>("in")
 
@@ -37,7 +35,7 @@ export function CubicFeetCalculator() {
         const l = parseFloat(inputs.length || "0")
         const w = parseFloat(inputs.width || "0")
         const h = parseFloat(inputs.height || "0")
-        const qty = parseFloat(inputs.quantity || "1")
+        const qty = parseFloat(inputs.quantity || "1") // default 1 for calc only
 
         let volumeInCubicInches = 0
 
@@ -153,139 +151,84 @@ ${results.inches.toLocaleString()} Cubic Inches
             <div className="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 h-full">
-                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-col items-start space-y-6">
-                            <div className="space-y-1 w-full">
-                                <div className="flex items-center gap-3">
-                                    <CardTitle className="text-2xl font-bold text-blue-600">
-                                        Calculator Inputs
-                                    </CardTitle>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={scrollToGuide}
-                                                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
-                                                >
-                                                    <HelpCircle className="w-4 h-4" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                How to use this calculator
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription className="text-slate-500 font-medium font-sans">Enter dimensions to calculate total volume.</CardDescription>
-                            </div>
-                        </CardHeader>
+                    <Card className="border-slate-200 shadow-sm relative overflow-hidden bg-white h-full flex flex-col">
+                        <InputCardHeader
+                            title="Calculator Inputs"
+                            subtitle="Enter dimensions to calculate total volume."
+                            onHelpClick={scrollToGuide}
+                        />
 
                         <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
-                            {/* Unit Switcher moved to top */}
-                            <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full">
-                                {(["in", "ft", "cm", "m"] as DimensionUnit[]).map((u) => (
-                                    <button
-                                        key={u}
-                                        onClick={() => setUnit(u)}
-                                        className={cn(
-                                            "flex-1 px-3 py-2 rounded-md text-xs font-bold transition-all uppercase",
-                                            unit === u
-                                                ? "bg-white text-blue-600 shadow-sm border border-blue-200"
-                                                : "text-slate-500 hover:text-slate-900"
-                                        )}
-                                    >
-                                        {u}
-                                    </button>
-                                ))}
-                            </div>
-                            {/* Inputs Grid */}
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        Dimensions ({unit})
-                                    </label>
-                                    <button
-                                        onClick={scrollToGuide}
-                                        className="text-slate-300 hover:text-blue-600 transition-colors"
-                                    >
-                                        <HelpCircle className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    {[
-                                        { id: 'length' as const, label: 'Length', icon: <Maximize className="w-3.5 h-3.5 rotate-90" /> },
-                                        { id: 'width' as const, label: 'Width', icon: <Maximize className="w-3.5 h-3.5" /> },
-                                        { id: 'height' as const, label: 'Height', icon: <Maximize className="w-3.5 h-3.5 -rotate-90" /> }
-                                    ].map((field) => (
-                                        <div key={field.id} className="relative group">
-                                            <Input
-                                                type="number"
-                                                value={inputs[field.id]}
-                                                onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                                className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic text-right pr-10 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                                placeholder={`Ex: ${field.label}`}
-                                            />
-                                            <div className="absolute right-0 top-0 bottom-0 flex flex-col border-l border-slate-200 bg-slate-50/50 rounded-r-xl">
-                                                <button
-                                                    onClick={() => handleInputChange(field.id, (parseFloat(inputs[field.id] || "0") + 1).toString())}
-                                                    className="flex items-center justify-center px-1.5 flex-1 hover:text-blue-600 text-slate-400 transition-colors"
-                                                >
-                                                    <ChevronUp className="h-3 w-3" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleInputChange(field.id, Math.max(0, (parseFloat(inputs[field.id] || "0") - 1)).toString())}
-                                                    className="flex items-center justify-center px-1.5 flex-1 hover:text-blue-600 text-slate-400 transition-colors border-t border-slate-200"
-                                                >
-                                                    <ChevronDown className="h-3 w-3" />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
+                            {/* Unit Switcher */}
+                            <div className="space-y-3">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <MadhuSubHeader title="Select unit" icon={Ruler} className="mb-0 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400" />
+                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-auto">
+                                        {(["in", "ft", "cm", "m"] as DimensionUnit[]).map((u) => (
+                                            <button
+                                                key={u}
+                                                onClick={() => setUnit(u)}
+                                                className={cn(
+                                                    "flex-1 px-4 py-1.5 rounded-md text-xs font-bold transition-all uppercase",
+                                                    unit === u
+                                                        ? "bg-white text-blue-600 shadow-sm border border-blue-200"
+                                                        : "text-slate-500 hover:text-slate-900"
+                                                )}
+                                            >
+                                                {u}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="h-px bg-slate-100 w-full" />
-
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-base font-bold text-slate-400 flex items-center gap-2">
-                                        Quantity
-                                    </label>
-                                    <button
-                                        onClick={scrollToGuide}
-                                        className="text-slate-300 hover:text-blue-600 transition-colors"
-                                    >
-                                        <HelpCircle className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
-                                <div className="relative group">
-                                    <Input
-                                        type="number"
-                                        value={inputs.quantity}
-                                        onChange={(e) => handleInputChange('quantity', e.target.value)}
-                                        className="h-12 w-full text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic px-4 hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                        placeholder="Ex: 1"
+                                <MadhuSubHeader
+                                    title={`Dimensions (${unit === 'in' ? 'Inches' : unit === 'ft' ? 'Feet' : unit === 'cm' ? 'Centimeters' : 'Meters'})`}
+                                    icon={Package}
+                                    className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400"
+                                />
+                                <div className="space-y-4">
+                                    <CalculatorInput
+                                        label="Length"
+                                        value={inputs.length}
+                                        onChange={(v) => handleInputChange('length', v.toString())}
+                                        placeholder="12"
+                                        suffix={unit}
                                     />
+                                    <CalculatorInput
+                                        label="Width"
+                                        value={inputs.width}
+                                        onChange={(v) => handleInputChange('width', v.toString())}
+                                        placeholder="10"
+                                        suffix={unit}
+                                    />
+                                    <CalculatorInput
+                                        label="Height"
+                                        value={inputs.height}
+                                        onChange={(v) => handleInputChange('height', v.toString())}
+                                        placeholder="8"
+                                        suffix={unit}
+                                    />
+
+                                    <div className="pt-2">
+                                        <MadhuSubHeader title="Total Quantity" icon={Layers} className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400" />
+                                        <CalculatorInput
+                                            label="Number of Units"
+                                            value={inputs.quantity}
+                                            onChange={(v) => handleInputChange('quantity', v.toString())}
+                                            placeholder="1"
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="flex gap-2 mt-auto pt-4">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setInputs({ length: "", width: "", height: "", quantity: "1" })}
-                                    className="flex-[2] h-11 border-dashed hover:bg-slate-50 text-slate-500 hover:text-slate-900 transition-all font-medium"
-                                >
-                                    <RefreshCw className="w-4 h-4 mr-2" /> Reset Inputs
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    onClick={copyResults}
-                                    className="flex-1 h-11 shadow-sm border-slate-300 hover:bg-slate-50 text-slate-900 transition-all font-bold"
-                                >
-                                    <Copy className="w-4 h-4 mr-2" /> Copy Results
-                                </Button>
+                            <div className="pt-6 mt-auto border-t border-slate-50">
+                                <ActionButtons
+                                    onReset={() => setInputs({ length: "", width: "", height: "", quantity: "" })}
+                                    onCopy={copyResults}
+                                    copyDisabled={!inputs.length || !inputs.width || !inputs.height}
+                                />
                             </div>
                         </CardContent>
                     </Card>
@@ -310,8 +253,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                             </div>
                         }
                     >
-                        <div className="h-px bg-white/10 w-full mt-4 mb-4" />
-
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                 <p className="text-xs font-bold text-slate-300 mb-1">Cubic meters</p>

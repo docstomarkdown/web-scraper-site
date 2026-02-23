@@ -32,6 +32,7 @@ export function MadhuSubHeader({ title, icon: Icon, className, withDot = false }
     return (
         <div className={cn("flex items-center gap-2 mb-4", className)}>
             {withDot && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
+            {Icon && <Icon className="w-4 h-4 text-slate-400" />}
             <h3 className="text-base font-bold text-slate-400 tracking-tight">{title}</h3>
         </div>
     )

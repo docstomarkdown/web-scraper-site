@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen } from "lucide-react"
+import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Counter, ResultFeedbackCard } from "../../../_shared/components"
+import { Counter, ResultFeedbackCard, CalculatorInput } from "../../../_shared/components"
 
 type Unit = "in" | "cm"
 
@@ -136,7 +137,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                 {/* LEFT COLUMN: Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-col items-start space-y-6">
+                        <CardHeader className="pb-4 border-b border-slate-50">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-3">
                                     <CardTitle className="text-2xl font-bold text-blue-600">
@@ -160,47 +161,64 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         </Tooltip>
                                     </TooltipProvider>
                                 </div>
-                                <CardDescription className="text-slate-500 font-medium">Configure dimensions in {unit === "in" ? "Inches" : "Centimeters"}</CardDescription>
-                            </div>
-                            <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-fit">
-                                {(["in", "cm"] as Unit[]).map((u) => (
-                                    <button
-                                        key={u}
-                                        onClick={() => setUnit(u)}
-                                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${unit === u
-                                            ? "bg-white text-blue-600 shadow-sm"
-                                            : "text-slate-500 hover:text-slate-900"}`}
-                                    >
-                                        {u.toUpperCase()}
-                                    </button>
-                                ))}
+                                <CardDescription className="text-slate-500 font-medium">Configure your dimensions and units below.</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-6 pt-6 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-8">
+                            {/* Measurement Unit Section */}
                             <div className="space-y-6">
-                                {(["length", "width", "height"] as const).map((dim) => (
-                                    <div key={dim} className="flex items-center justify-between gap-2">
-                                        <div className="flex items-center gap-2">
-                                            <Label htmlFor={dim} className="text-base font-semibold text-slate-700 capitalize">
-                                                {dim} ({unit.toUpperCase()})
-                                            </Label>
-                                        </div>
-                                        <div className="relative group">
-                                            <Input
-                                                id={dim}
-                                                name={dim}
-                                                type="text"
-                                                placeholder={unit === "in" ? (dim === "length" ? "Ex: 12.00" : dim === "width" ? "Ex: 8.00" : "Ex: 6.00") : (dim === "length" ? "Ex: 30.00" : dim === "width" ? "Ex: 20.00" : "Ex: 15.00")}
-                                                value={dimensions[dim]}
-                                                onChange={handleInputChange}
-                                                className="h-10 text-base border-slate-300 bg-white rounded-xl shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-36 md:w-44 text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all font-bold"
-                                            />
-                                        </div>
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <RefreshCw className="w-4 h-4 text-slate-400" />
+                                    Measurement Unit
+                                </label>
+
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
+                                        Base Unit
+                                    </label>
+                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-[210px]">
+                                        {(["in", "cm"] as Unit[]).map((u) => (
+                                            <button
+                                                key={u}
+                                                onClick={() => setUnit(u)}
+                                                className={cn(
+                                                    "flex-1 py-1.5 rounded-md text-[10px] font-bold transition-all uppercase",
+                                                    unit === u
+                                                        ? "bg-white text-blue-600 shadow-sm border border-blue-200"
+                                                        : "text-slate-500 hover:text-slate-900"
+                                                )}
+                                            >
+                                                {u.toUpperCase()}
+                                            </button>
+                                        ))}
                                     </div>
-                                ))}
+                                </div>
                             </div>
 
-                            <div className="flex gap-2 mt-auto">
+                            <Separator className="bg-slate-100" />
+
+                            {/* Dimension Details Section */}
+                            <div className="space-y-6">
+                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                    <Box className="w-4 h-4 text-slate-400" />
+                                    Dimension Details
+                                </label>
+
+                                <div className="space-y-4">
+                                    {(["length", "width", "height"] as const).map((dim) => (
+                                        <CalculatorInput
+                                            key={dim}
+                                            label={`${dim.charAt(0).toUpperCase() + dim.slice(1)} (${unit.toUpperCase()})`}
+                                            value={dimensions[dim]}
+                                            onChange={(val) => setDimensions((prev) => ({ ...prev, [dim]: val.toString() }))}
+                                            placeholder={unit === "in" ? (dim === "length" ? "12.00" : dim === "width" ? "8.00" : "6.00") : (dim === "length" ? "30.00" : dim === "width" ? "20.00" : "15.00")}
+                                            type="text"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-2 pt-4 border-t border-slate-50">
                                 <Button
                                     variant="outline"
                                     className="flex-[2] h-11 border-dashed hover:bg-muted/50 text-slate-500 hover:text-slate-900 transition-all font-medium"
@@ -235,7 +253,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 </>
                             }
                         >
-                            <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-white/10">
+                            <div className="grid grid-cols-2 gap-4 mt-2">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Cubic Inches</p>
                                     <p className="text-xl font-bold text-indigo-400">

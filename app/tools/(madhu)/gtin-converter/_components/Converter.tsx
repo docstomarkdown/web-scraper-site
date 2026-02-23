@@ -21,7 +21,9 @@ import {
     FileUp
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { FadeIn, ResultFeedbackCard } from "../../../_shared/components"
+import { cn } from "@/lib/utils"
+import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
+import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import bwipjs from 'bwip-js'
 import Barcode from 'react-barcode'
@@ -370,58 +372,36 @@ GTIN-14: ${results.gtin14}
                 }}
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
                 {/* LEFT: Inputs */}
                 <div className="lg:col-span-6">
-                    <Card className="border border-slate-200 shadow-sm bg-white h-full flex flex-col overflow-hidden">
-                        <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100 flex flex-row items-center justify-between space-y-0">
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <CardTitle className="text-2xl font-bold text-blue-600">
-                                        Converter Inputs
-                                    </CardTitle>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={scrollToGuide}
-                                                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
-                                                >
-                                                    <HelpCircle className="w-4 h-4" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                How to use this converter
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription>Enter your barcode number or upload an image below..</CardDescription>
-                            </div>
-                        </CardHeader>
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
+                        <InputCardHeader
+                            title="Converter Inputs"
+                            subtitle="Enter your barcode number or upload an image below."
+                            onHelpClick={scrollToGuide}
+                        />
                         <CardContent className="space-y-6 pt-6">
-                            <div className="space-y-2">
-                                <div className="flex justify-between items-center text-sm font-bold text-slate-600">
-                                    <Label htmlFor="gtin-input">Barcode Number</Label>
-                                    <span className="text-xs font-mono opacity-50 uppercase">GTIN / UPC / EAN</span>
-                                </div>
-                                <Input
-                                    id="gtin-input"
-                                    placeholder="Ex: 036000291452"
+                            <div className="space-y-4">
+                                <CalculatorInput
+                                    label="Barcode Number"
                                     value={inputCode}
-                                    onChange={handleInputChange}
-                                    className="h-14 text-xl font-bold focus-visible:ring-primary shadow-sm bg-white placeholder:text-slate-300 placeholder:font-normal placeholder:italic"
-                                    autoComplete="off"
+                                    onChange={(v) => {
+                                        if (/^[\d\s-]*$/.test(v)) {
+                                            setInputCode(v)
+                                        }
+                                    }}
+                                    placeholder="Ex:036000291452"
+                                    tooltip="Enter EAN / UPC (8, 12, or 13 digits) to convert to GTIN formats."
+                                    type="text"
                                 />
 
                                 {/* Scan Controls */}
                                 <div className="pt-2">
                                     <Button
                                         variant="secondary"
-                                        className="h-10 w-full text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
+                                        className="h-10 w-full text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
                                         onClick={() => document.getElementById('gtin-barcode-upload')?.click()}
                                     >
                                         <div className="flex items-center">
@@ -432,22 +412,12 @@ GTIN-14: ${results.gtin14}
                                 </div>
                             </div>
 
-                            <div className="flex gap-2">
-                                <Button
-                                    variant="outline"
-                                    className="flex-[2] h-11 border-dashed hover:bg-muted/50 text-slate-500 hover:text-slate-900 transition-all font-medium"
-                                    onClick={clearAll}
-                                >
-                                    <RefreshCw className="w-4 h-4 mr-2" /> Reset Input
-                                </Button>
-                                <Button
-                                    onClick={copyAll}
-                                    variant="outline"
-                                    disabled={!status.isValid}
-                                    className="flex-1 h-11 px-6 shadow-sm border-slate-300 hover:bg-slate-50 transition-all font-bold text-slate-950 disabled:opacity-30"
-                                >
-                                    <Copy className="w-4 h-4 mr-2" /> Copy Results
-                                </Button>
+                            <div className="pt-6 border-t border-slate-50">
+                                <ActionButtons
+                                    onReset={clearAll}
+                                    onCopy={copyAll}
+                                    copyDisabled={!status.isValid}
+                                />
                             </div>
 
                             {/* Status Card */}
@@ -521,14 +491,14 @@ GTIN-14: ${results.gtin14}
                     <div className="space-y-6 flex flex-col h-full">
                         {/* Summary Visualization Card */}
                         <ResultFeedbackCard
-                            variant={inputCode && !status.isValid ? "warning" : "default"}
+                            variant="default"
                             title={inputCode && !status.isValid ? 'Validation Status' : 'Conversion Map'}
                             titleLabel={!inputCode ? "Ready" : status.isValid ? "Valid" : "Invalid"}
                             // If invalid, show large text here. If valid, show nothing in mainValue and use children.
                             mainValue={inputCode && !status.isValid ? (
                                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <div className="flex items-baseline gap-3">
-                                        <span className="text-3xl sm:text-4xl font-bold tracking-tight text-red-100 break-all">
+                                        <span className="text-3xl sm:text-4xl font-bold tracking-tight text-white break-all">
                                             {inputCode}
                                         </span>
                                     </div>
@@ -539,7 +509,7 @@ GTIN-14: ${results.gtin14}
                             {inputCode && !status.isValid ? (
                                 // INVALID STATE SUB-CONTENT
                                 <div className="space-y-3 mt-2">
-                                    <div className="flex justify-between items-center text-sm text-red-200/80">
+                                    <div className="flex justify-between items-center text-sm text-blue-100/80">
                                         <span>Analysis</span>
                                         <span className="font-medium text-white text-right font-mono">
                                             {status.correctedCode
@@ -556,21 +526,21 @@ GTIN-14: ${results.gtin14}
                                 <div className="space-y-4">
                                     <ResultRow
                                         label="GTIN-14"
-                                        value={results?.gtin14 || "00000000000000"}
+                                        value={results?.gtin14 || "Awaiting Data"}
                                         onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
                                         disabled={!results}
                                         tooltip="Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
                                     />
                                     <ResultRow
                                         label="GTIN-13 (EAN)"
-                                        value={results?.gtin13 || "0000000000000"}
+                                        value={results?.gtin13 || "Awaiting Data"}
                                         onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
                                         disabled={!results}
                                         tooltip="Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
                                     />
                                     <ResultRow
                                         label="GTIN-12 (UPC)"
-                                        value={results?.gtin12 || "000000000000"}
+                                        value={results?.gtin12 || "Awaiting Data"}
                                         onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
                                         disabled={!results}
                                         tooltip="Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
@@ -665,7 +635,7 @@ function ResultRow({ label, value, onCopy, disabled, tooltip }: { label: string,
                         )}
                     </Tooltip>
                 </TooltipProvider>
-                <p className="text-xl sm:text-2xl font-bold tracking-tight text-white">{value}</p>
+                <p className={cn("tracking-tight transition-all duration-300", value === "Awaiting Data" ? "text-lg sm:text-xl italic font-medium text-white/20" : "text-xl sm:text-2xl font-bold text-white")}>{value}</p>
             </div>
             <Button
                 size="icon"

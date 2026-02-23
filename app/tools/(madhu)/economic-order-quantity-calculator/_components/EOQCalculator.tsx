@@ -9,15 +9,15 @@ import {
     InputCardHeader,
     ActionButtons
 } from "../../ToolTemplate"
-import { FadeIn, Counter, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { FadeIn, Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface EOQState {
-    annualDemand: string
-    orderCost: string
-    holdingCost: string
+    annualDemand: string | number
+    orderCost: string | number
+    holdingCost: string | number
 }
 
 const DEFAULT_STATE: EOQState = {
@@ -30,21 +30,19 @@ export function EOQCalculator() {
     const [values, setValues] = useState<EOQState>(DEFAULT_STATE)
     const [isCopying, setIsCopying] = useState(false)
 
-    const handleInputChange = (field: keyof EOQState, value: string) => {
-        if (value === "" || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
-            setValues(prev => ({ ...prev, [field]: value }))
-        }
+    const handleInputChange = (field: keyof EOQState, value: string | number) => {
+        setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
 
     const hasInputs = useMemo(() => {
         return values.annualDemand !== "" && values.orderCost !== "" && values.holdingCost !== ""
-            && parseFloat(values.annualDemand) > 0 && parseFloat(values.holdingCost) > 0
+            && Number(values.annualDemand) > 0 && Number(values.holdingCost) > 0
     }, [values])
 
     const results = useMemo(() => {
-        const D = parseFloat(values.annualDemand) || 0
-        const S = parseFloat(values.orderCost) || 0
-        const H = parseFloat(values.holdingCost) || 0
+        const D = Number(values.annualDemand) || 0
+        const S = Number(values.orderCost) || 0
+        const H = Number(values.holdingCost) || 0
 
         if (D === 0 || H === 0) return {
             eoq: 0,
@@ -109,27 +107,27 @@ Results:
 
                         <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
                             <div className="space-y-5">
-                                <EOQInput
+                                <CalculatorInput
                                     label="Annual Demand (Units)"
                                     value={values.annualDemand}
                                     onChange={(v) => handleInputChange('annualDemand', v)}
-                                    placeholder="Ex: 10000"
+                                    placeholder="10000"
                                     tooltip="The total number of units your business sells or uses in one year."
                                 />
-                                <EOQInput
-                                    label="Ordering Cost ($)"
+                                <CalculatorInput
+                                    label="Ordering Cost"
                                     value={values.orderCost}
                                     onChange={(v) => handleInputChange('orderCost', v)}
-                                    placeholder="Ex: 50"
-                                    isCurrency
+                                    placeholder="50"
+                                    prefix="$"
                                     tooltip="Fixed cost per purchase order (shipping, labor, admin processing)."
                                 />
-                                <EOQInput
-                                    label="Annual Holding Cost ($)"
+                                <CalculatorInput
+                                    label="Annual Holding Cost"
                                     value={values.holdingCost}
                                     onChange={(v) => handleInputChange('holdingCost', v)}
-                                    placeholder="Ex: 2.50"
-                                    isCurrency
+                                    placeholder="2.50"
+                                    prefix="$"
                                     tooltip="Cost to store one unit for one year (storage rent, insurance, capital cost)."
                                 />
                             </div>
@@ -252,58 +250,4 @@ Results:
     )
 }
 
-function EOQInput({
-    label,
-    value,
-    onChange,
-    tooltip,
-    placeholder,
-    isCurrency = false
-}: {
-    label: string,
-    value: string,
-    onChange: (v: string) => void,
-    tooltip: string,
-    placeholder: string,
-    isCurrency?: boolean
-}) {
-    return (
-        <div className="space-y-2 group/input">
-            <div className="flex items-center gap-1.5 mb-1 pl-1">
-                <label className="text-sm font-bold text-slate-600 group-focus-within/input:text-blue-600 transition-colors">
-                    {label}
-                </label>
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
-                                <Info className="h-3.5 w-3.5" />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="text-[10px] bg-slate-900 text-white border-slate-800 p-2 max-w-[200px]">
-                            {tooltip}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </div>
 
-            <div className="relative group">
-                {isCurrency && (
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base font-bold text-slate-400 transition-colors group-focus-within:text-blue-600">
-                        $
-                    </div>
-                )}
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    className={cn(
-                        "h-10 w-full text-base border-2 border-slate-200 bg-white rounded-xl hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900 focus:outline-none placeholder:text-slate-300 placeholder:font-normal placeholder:italic shrink-0",
-                        isCurrency ? "pl-8 pr-5" : "px-5"
-                    )}
-                    placeholder={placeholder}
-                />
-            </div>
-        </div>
-    )
-}
