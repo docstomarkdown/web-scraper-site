@@ -28,11 +28,11 @@ export default function UPCEANValidatorPage() {
 
                     <FadeIn delay={0.1}>
                         <section id="how-to-use" className="relative">
-                            <div className="flex items-center gap-4 mb-10 pb-4 border-b border-slate-200">
-                                <div className="p-2 bg-blue-50 rounded-full text-blue-600">
+                            <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-200">
+                                <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                                     <HelpCircle className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">How to Use This Validator</h2>
+                                <h2 className="text-2xl font-bold text-slate-900">How to Use This Validator</h2>
                             </div>
 
                             <div className="max-w-3xl mx-auto space-y-6">

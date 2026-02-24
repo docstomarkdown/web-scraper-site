@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box , Check} from "lucide-react";
+import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box, Check } from "lucide-react";
 import { cn } from "@/lib/utils"
 "@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
@@ -113,7 +113,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
     const clearAll = () => {
         setDimensions({ length: "", width: "", height: "" })
         setUnit("in")
-        
+
     }
 
     const scrollToGuide = () => {
@@ -135,7 +135,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         <CardHeader className="pb-4 border-b border-slate-50">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-3">
-                                    <CardTitle className="text-2xl font-bold text-blue-600">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Calculator Inputs
                                     </CardTitle>
                                     <TooltipProvider delayDuration={100}>
@@ -260,16 +260,16 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                             <div className="grid grid-cols-2 gap-4 mt-2">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Cubic Inches</p>
-                                    <p className="text-xl font-bold text-indigo-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         <Counter value={volume?.in3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} />
-                                        <span className="text-xs font-normal opacity-50 ml-1">IN³</span>
+                                        <span className="text-xs font-normal ml-1 text-blue-400">IN³</span>
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Cubic Centimeters</p>
                                     <p className="text-xl font-bold text-blue-400">
                                         <Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />
-                                        <span className="text-xs font-normal opacity-50 ml-1">CM³</span>
+                                        <span className="text-xs font-normal ml-1 text-blue-400">CM³</span>
                                     </p>
                                 </div>
                             </div>
@@ -459,7 +459,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
 
                                             <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                                 <div className={`text-2xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
-                                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100/50 px-2 py-0.5 rounded-full">
+                                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-300 bg-slate-100/50 px-2 py-0.5 rounded-full">
                                                     Takeaway
                                                 </div>
                                                 <div className="text-[11px] font-medium text-slate-500 text-center leading-tight mt-1 max-w-[120px]">

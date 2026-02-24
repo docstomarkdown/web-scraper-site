@@ -76,6 +76,7 @@ export function ResultFeedbackCard({
     return (
         <Card className={cn(
             "shadow-xl overflow-hidden relative transition-all duration-300",
+            "[&_.text-lg]:break-all [&_.text-xl]:break-all [&_.text-2xl]:break-all [&_.text-3xl]:break-all [&_.text-4xl]:break-all [&_.text-5xl]:break-all",
             getBaseStyles(),
             className
         )}>

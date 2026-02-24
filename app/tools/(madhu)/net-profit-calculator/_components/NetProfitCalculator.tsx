@@ -208,7 +208,7 @@ export function NetProfitCalculator() {
                             <div className="grid grid-cols-2 gap-2">
                                 <div className="bg-white/5 rounded-xl p-2 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">Net Margin</p>
+                                        <p className="text-xs font-bold text-slate-300">Net Margin</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -220,13 +220,13 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className={cn("text-xl font-bold", netMargin >= 0 ? "text-emerald-400" : "text-red-400")}>
+                                    <p className={cn("text-xl font-bold", netMargin >= 0 ? "text-blue-400" : "text-red-400")}>
                                         <Counter value={netMargin} formatter={(v) => `${v.toFixed(2)}%`} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">ROI</p>
+                                        <p className="text-xs font-bold text-slate-300">ROI</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -244,7 +244,7 @@ export function NetProfitCalculator() {
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-[10px] font-bold text-slate-400 whitespace-nowrap">Tax Amount</p>
+                                        <p className="text-[10px] font-bold text-slate-300 whitespace-nowrap">Tax Amount</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -256,13 +256,13 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-amber-400">
+                                    <p className="text-lg font-bold text-blue-400">
                                         <Counter value={taxAmount} formatter={formatCurrency} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-[10px] font-bold text-slate-400 whitespace-nowrap">Total Expenses</p>
+                                        <p className="text-[10px] font-bold text-slate-300 whitespace-nowrap">Total Expenses</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -274,7 +274,7 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-slate-200">
+                                    <p className="text-lg font-bold text-blue-400">
                                         <Counter value={totalExpenses + taxAmount} formatter={formatCurrency} />
                                     </p>
                                 </div>
@@ -285,7 +285,7 @@ export function NetProfitCalculator() {
                     {/* Budget Allocation style Revenue Breakdown */}
                     <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-3">
                         <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                            <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                                 <PieChart className="w-3.5 h-3.5 text-blue-500" />
                                 Revenue Breakdown
                             </h4>

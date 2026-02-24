@@ -271,8 +271,8 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                         </div>
                                     </div>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-lg font-medium text-indigo-400/60">$</span>
-                                        <span className="text-xl font-bold text-indigo-400">{results.landedCost.toFixed(2)}</span>
+                                        <span className="text-lg font-medium text-blue-400">$</span>
+                                        <span className="text-xl font-bold text-blue-400">{results.landedCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
@@ -292,8 +292,8 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                         </div>
                                     </div>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-lg font-medium text-slate-400/60">$</span>
-                                        <span className="text-xl font-bold text-slate-300">{results.returnRiskCost.toFixed(2)}</span>
+                                        <span className="text-lg font-medium text-blue-400">$</span>
+                                        <span className="text-xl font-bold text-blue-400">{results.returnRiskCost.toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -318,7 +318,7 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                         </div>
                                         <p className={cn(
                                             "text-xs font-bold uppercase tracking-wider",
-                                            !hasInputs ? "text-slate-400" :
+                                            !hasInputs ? "text-blue-400" :
                                                 results.grossProfit > 0 ? "text-emerald-400" :
                                                     "text-rose-400"
                                         )}>Gross Profit</p>
@@ -335,13 +335,13 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                 <div className="flex items-baseline gap-1">
                                     <span className={cn(
                                         "text-lg font-medium",
-                                        !hasInputs ? "text-slate-500" :
+                                        !hasInputs ? "text-blue-400" :
                                             results.grossProfit > 0 ? "text-emerald-500/60" :
                                                 "text-rose-500/60"
                                     )}>$</span>
                                     <span className={cn(
                                         "text-3xl font-black",
-                                        !hasInputs ? "text-white" :
+                                        !hasInputs ? "text-blue-400" :
                                             results.grossProfit > 0 ? "text-emerald-400" :
                                                 "text-rose-400"
                                     )}>

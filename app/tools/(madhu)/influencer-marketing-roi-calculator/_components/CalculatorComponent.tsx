@@ -287,12 +287,12 @@ export function InfluencerROICalculator() {
                             <div className="grid grid-cols-2 gap-2">
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">ROAS</p>
+                                        <p className="text-xs font-bold text-slate-300">ROAS</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -301,18 +301,18 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-emerald-400 break-all leading-tight">
+                                    <p className="text-xl font-bold text-blue-400 break-all leading-tight">
                                         <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">CPA (Cost/Sale)</p>
+                                        <p className="text-xs font-bold text-slate-300">CPA (Cost/Sale)</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -327,12 +327,12 @@ export function InfluencerROICalculator() {
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">CPM (1k Views)</p>
+                                        <p className="text-xs font-bold text-slate-300">CPM (1k Views)</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -341,18 +341,18 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-purple-400 break-all leading-tight">
+                                    <p className="text-lg font-bold text-blue-400 break-all leading-tight">
                                         <Counter value={cpm} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">CPE (Engage)</p>
+                                        <p className="text-xs font-bold text-slate-300">CPE (Engage)</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -361,7 +361,7 @@ export function InfluencerROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-amber-400 break-all leading-tight">
+                                    <p className="text-xl font-bold text-blue-400 break-all leading-tight">
                                         <Counter value={cpe} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>

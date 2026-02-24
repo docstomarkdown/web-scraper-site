@@ -222,12 +222,12 @@ export default function EmailROICalculator() {
                             <div className="grid grid-cols-2 gap-2">
                                 <div className="bg-white/5 rounded-xl p-3 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">ROAS</p>
+                                        <p className="text-xs font-bold text-slate-300">ROAS</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -236,18 +236,18 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-emerald-400">
+                                    <p className="text-lg font-bold text-blue-400">
                                         <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">Net Profit</p>
+                                        <p className="text-xs font-bold text-slate-300">Net Profit</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -262,12 +262,12 @@ export default function EmailROICalculator() {
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">CPA</p>
+                                        <p className="text-xs font-bold text-slate-300">CPA</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -276,18 +276,18 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-purple-400">
+                                    <p className="text-lg font-bold text-blue-400">
                                         <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-400">Rev / Sub</p>
+                                        <p className="text-xs font-bold text-slate-300">Rev / Sub</p>
                                         <TooltipProvider delayDuration={100}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <button type="button" className="text-slate-300">
-                                                        <Info className="h-3 w-3" />
+                                                        <Info className="h-3.5 w-3.5" />
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
@@ -296,7 +296,7 @@ export default function EmailROICalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-amber-400">
+                                    <p className="text-lg font-bold text-blue-400">
                                         <Counter value={revenuePerSubscriber} formatter={(v: number) => formatCurrency(v)} />
                                     </p>
                                 </div>
@@ -325,7 +325,7 @@ export default function EmailROICalculator() {
                                 </div>
                                 <div>
                                     <p className="text-xs font-medium text-slate-500 mb-0.5">Opens</p>
-                                    <p className="text-lg font-bold text-slate-900">{formatNumber(opens)}</p>
+                                    <p className="text-lg font-bold text-blue-400">{formatNumber(opens)}</p>
                                 </div>
                                 {/* Connector Line (Desktop) */}
                                 <div className="hidden sm:block absolute top-1/2 -right-4 w-4 h-[2px] bg-slate-200 z-10" />
@@ -343,7 +343,7 @@ export default function EmailROICalculator() {
                                 </div>
                                 <div>
                                     <p className="text-xs font-medium text-slate-500 mb-0.5">Clicks</p>
-                                    <p className="text-lg font-bold text-slate-900">{formatNumber(clicks)}</p>
+                                    <p className="text-lg font-bold text-blue-400">{formatNumber(clicks)}</p>
                                 </div>
                                 {/* Connector Line (Desktop) */}
                                 <div className="hidden sm:block absolute top-1/2 -right-4 w-4 h-[2px] bg-slate-200 z-10" />
@@ -361,14 +361,14 @@ export default function EmailROICalculator() {
                                 </div>
                                 <div>
                                     <p className="text-xs font-medium text-slate-500 mb-0.5">Sales</p>
-                                    <p className="text-lg font-bold text-slate-900">{formatNumber(conversions)}</p>
+                                    <p className="text-lg font-bold text-blue-400">{formatNumber(conversions)}</p>
                                 </div>
                             </div>
                         </div>
 
                         <div className="mt-2 flex items-center justify-between">
                             <div className="flex items-center gap-1.5">
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Revenue</span>
+                                <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Total Revenue</span>
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
                                         <TooltipTrigger asChild>

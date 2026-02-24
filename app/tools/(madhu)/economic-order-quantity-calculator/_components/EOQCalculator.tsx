@@ -165,7 +165,7 @@ Results:
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Ordering Cost</p>
-                                    <p className="text-xl font-bold text-indigo-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         {hasInputs ? `$${results.annualOrderCost.toFixed(0)}` : "$0"}
                                     </p>
                                 </div>
@@ -190,7 +190,7 @@ Results:
                                     <div className="p-1.5 bg-blue-50 rounded-lg text-blue-600 border border-blue-100/50">
                                         <Scale className="w-4 h-4" />
                                     </div>
-                                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Cost Balance Analysis</h3>
+                                    <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider">Cost Balance Analysis</h3>
                                 </div>
                                 {!hasInputs && (
                                     <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest bg-blue-50/80 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-blue-100/50 animate-pulse">

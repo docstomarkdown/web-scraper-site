@@ -351,7 +351,7 @@ export function Validator() {
                                 valueColor="text-white"
                                 mainValue={
                                     <div className="flex items-baseline gap-3">
-                                        <span className={cn(inputCode ? "text-white" : "text-white/30 italic font-medium text-2xl sm:text-3xl")}>
+                                        <span className={cn(inputCode ? "text-white font-bold" : "text-white/30 italic font-medium text-2xl sm:text-3xl")}>
                                             {inputCode || "Awaiting Data"}
                                         </span>
                                     </div>
@@ -393,15 +393,25 @@ export function Validator() {
                                                         <div className="space-y-4 py-4">
                                                             {result && result.calculationSteps.length > 0 ? (
                                                                 <div className="space-y-4 relative">
-                                                                    <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-slate-100" />
+                                                                    <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")} />
                                                                     {result.calculationSteps.map((step, idx) => (
                                                                         <div key={idx} className="flex gap-4 relative">
-                                                                            <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold z-10">
+                                                                            <div className={cn(
+                                                                                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10 transition-colors",
+                                                                                result.isValid
+                                                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                                                                                    : "bg-rose-50 border-rose-200 text-rose-600"
+                                                                            )}>
                                                                                 {step.step}
                                                                             </div>
                                                                             <div className="space-y-1">
-                                                                                <p className="text-sm font-medium text-slate-700 leading-none">{step.description}</p>
-                                                                                <div className="font-mono text-xs text-slate-500 bg-slate-50 px-2 py-1 rounded w-fit border border-slate-100">
+                                                                                <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                                <div className={cn(
+                                                                                    "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
+                                                                                    result.isValid
+                                                                                        ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
+                                                                                        : "text-rose-700 bg-rose-50/50 border-rose-100"
+                                                                                )}>
                                                                                     {step.value}
                                                                                 </div>
                                                                             </div>
@@ -433,7 +443,7 @@ export function Validator() {
                                     {result && !result.isValid && result.expectedCheckDigit !== "-" && (
                                         <Row label="Expected Check Digit" value={result.expectedCheckDigit} className="text-rose-400 font-bold" />
                                     )}
-                                    <Row label="Analysis" value={result?.message || "Waiting for input..."} className={cn("transition-colors duration-300", !result ? "text-slate-300" : result.isValid ? "text-emerald-400 font-bold" : "text-rose-400 font-bold")} />
+                                    <Row label="Analysis" value={result?.message || "Waiting for input..."} className={cn("transition-colors duration-300", !result ? "text-blue-400" : result.isValid ? "text-emerald-400 font-bold" : "text-rose-400 font-bold")} />
                                 </div>
                             </ResultFeedbackCard>
 

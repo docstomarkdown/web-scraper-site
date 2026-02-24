@@ -161,15 +161,17 @@ ${results.inches.toLocaleString()} Cubic Inches
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Unit Switcher */}
                             <div className="space-y-3">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <MadhuSubHeader title="Select unit" icon={Ruler} className="mb-0 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400" />
-                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-auto">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <label className="text-base font-semibold text-slate-700 whitespace-nowrap">Select unit</label>
+                                    </div>
+                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-[200px] h-11">
                                         {(["in", "ft", "cm", "m"] as DimensionUnit[]).map((u) => (
                                             <button
                                                 key={u}
                                                 onClick={() => setUnit(u)}
                                                 className={cn(
-                                                    "flex-1 px-4 py-1.5 rounded-md text-xs font-bold transition-all uppercase",
+                                                    "flex-1 rounded-md text-xs font-bold transition-all uppercase flex items-center justify-center",
                                                     unit === u
                                                         ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                         : "text-slate-500 hover:text-slate-900"
@@ -251,7 +253,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         value={results.cft}
                                         formatter={(val) => val.toFixed(3)}
                                     />
-                                    <span className="text-lg font-medium opacity-50">CFT</span>
+                                    <span className="text-lg font-medium text-blue-400">CFT</span>
                                 </div>
                                 <p className="text-xs font-medium tracking-wider text-slate-500 mt-1">Cubic feet</p>
                             </div>
@@ -260,12 +262,12 @@ ${results.inches.toLocaleString()} Cubic Inches
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                 <p className="text-xs font-bold text-slate-300 mb-1">Cubic meters</p>
-                                <p className="text-xl font-bold text-indigo-400">
+                                <p className="text-xl font-bold text-blue-400">
                                     <Counter
                                         value={results.cbm}
                                         formatter={(val) => val.toFixed(4)}
                                     />
-                                    <span className="text-xs font-normal opacity-50 ml-1">CBM</span>
+                                    <span className="text-xs font-normal ml-1 text-blue-400">CBM</span>
                                 </p>
                             </div>
                             <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
@@ -275,7 +277,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         value={results.inches}
                                         formatter={(val) => Math.round(val).toLocaleString()}
                                     />
-                                    <span className="text-xs font-normal opacity-50 ml-1">IN³</span>
+                                    <span className="text-xs font-normal ml-1 text-blue-400">IN³</span>
                                 </p>
                             </div>
                         </div>
@@ -287,7 +289,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                             <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
                                 <Truck className="w-4 h-4" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-900 font-sans">Freight & Logistics Analysis</h3>
+                            <h3 className="text-lg font-bold text-blue-400 font-sans">Freight & Logistics Analysis</h3>
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col">
@@ -302,7 +304,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                     {logisticsImpact.status}
                                                 </div>
                                             </div>
-                                            <h4 className="text-xl sm:text-[22px] font-bold text-slate-900 tracking-tight leading-none pt-1">
+                                            <h4 className="text-xl sm:text-[22px] font-bold text-blue-400 tracking-tight leading-none pt-1">
                                                 {logisticsImpact.tierName}
                                             </h4>
                                         </div>
@@ -315,13 +317,13 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         <div className="grid grid-cols-2 gap-x-6 pb-1">
                                             <div className="space-y-1">
                                                 <span className="text-xs font-medium text-slate-400 block">Estimated freight</span>
-                                                <div className="text-lg sm:text-[21px] font-bold text-slate-900 tracking-tight leading-tight">
+                                                <div className="text-lg sm:text-[21px] font-bold text-blue-400 tracking-tight leading-tight">
                                                     {logisticsImpact.costRange}
                                                 </div>
                                             </div>
                                             <div className="space-y-1">
                                                 <span className="text-xs font-medium text-slate-400 block">Estimated storage</span>
-                                                <div className="text-lg sm:text-[21px] font-bold text-slate-900 tracking-tight leading-tight">
+                                                <div className="text-lg sm:text-[21px] font-bold text-blue-400 tracking-tight leading-tight">
                                                     {logisticsImpact.storageCost}
                                                 </div>
                                             </div>
