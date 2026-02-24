@@ -52,6 +52,7 @@ interface ValidationStatus {
     expectedCheckDigit?: number
     foundCheckDigit?: number
     correctedCode?: string
+    calculationSteps?: { step: number; description: string; value: string }[]
 }
 
 interface BarcodeConfig {
@@ -100,18 +101,30 @@ export function Converter() {
         setIsMounted(true)
     }, [])
 
-    const calculateCheckDigit = (code: string) => {
+    const calculateCheckDigitDetailed = (code: string) => {
         const digits = code.split('').map(Number)
         let sum = 0
         const reversed = [...digits].reverse()
+        const steps: { step: number; description: string; value: string }[] = []
 
+        let weightingStr = ""
         reversed.forEach((digit, i) => {
             const weight = (i % 2 === 0) ? 3 : 1
-            sum += digit * weight
+            const product = digit * weight
+            sum += product
+            weightingStr += `${digit}×${weight}${i < reversed.length - 1 ? " + " : ""}`
         })
 
+        steps.push({ step: 1, description: "Reverse & Apply Weights (3, 1, 3...)", value: weightingStr })
+        steps.push({ step: 2, description: "Calculate Sum of Weighted Products", value: `Total Sum = ${sum}` })
+
         const nextTen = Math.ceil(sum / 10) * 10
-        return (nextTen - sum) % 10
+        const checkDigitValue = (nextTen - sum) % 10
+
+        steps.push({ step: 3, description: "Find Next Multiple of 10", value: `${nextTen} - ${sum} = ${checkDigitValue}` })
+        steps.push({ step: 4, description: "Resulting Check Digit", value: `Final Digit: ${checkDigitValue}` })
+
+        return { checkDigit: checkDigitValue, steps }
     }
 
     const validateAndConvert = useCallback((code: string) => {
@@ -149,7 +162,7 @@ export function Converter() {
 
         const data = clean.slice(0, -1)
         const providedCD = parseInt(clean.slice(-1))
-        const expectedCD = calculateCheckDigit(data)
+        const { checkDigit: expectedCD, steps } = calculateCheckDigitDetailed(data)
 
         // Determine detected format
         let format: BarcodeFormat = "Unknown"
@@ -162,16 +175,22 @@ export function Converter() {
             setStatus({
                 isValid: false,
                 message: `Invalid check digit.`,
-                format: format, // Detected format by length, even if invalid check digit
+                format: format,
                 expectedCheckDigit: expectedCD,
                 foundCheckDigit: providedCD,
-                correctedCode: corrected
+                correctedCode: corrected,
+                calculationSteps: steps
             })
             setResults(null)
             return
         }
 
-        setStatus({ isValid: true, message: "Valid Format", format })
+        setStatus({
+            isValid: true,
+            message: "Valid Format",
+            format,
+            calculationSteps: steps
+        })
 
         // Generate conversions (all padded to 14, then sliced)
         const base14 = clean.padStart(14, "0")
@@ -265,12 +284,12 @@ GTIN-13 (EAN-13): ${results.gtin13}
 GTIN-14: ${results.gtin14}
         `.trim()
         navigator.clipboard.writeText(text)
-        
+
     }
 
     const clearAll = () => {
         setInputCode("")
-        
+
     }
 
     const scrollToGuide = () => {
@@ -428,14 +447,85 @@ GTIN-14: ${results.gtin14}
                                             {status.isValid ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                                         </div>
                                         <div className="w-full">
-                                            <p className={`text-sm font-bold ${status.isValid ? 'text-emerald-700' : 'text-rose-700'}`}>
-                                                {status.isValid
-                                                    ? "Valid GTIN"
-                                                    : status.correctedCode
-                                                        ? "Check Digit Invalid"
-                                                        : "Invalid GTIN"
-                                                }
-                                            </p>
+                                            <div className="flex items-center justify-between w-full">
+                                                <p className={`text-sm font-black uppercase tracking-tight ${status.isValid ? 'text-emerald-700' : 'text-rose-700'}`}>
+                                                    {status.isValid
+                                                        ? "Valid GTIN"
+                                                        : status.correctedCode
+                                                            ? "Check Digit Invalid"
+                                                            : "Invalid GTIN"
+                                                    }
+                                                </p>
+                                                {status.calculationSteps && status.calculationSteps.length > 0 && (
+                                                    <Dialog>
+                                                        <TooltipProvider delayDuration={0}>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <DialogTrigger asChild>
+                                                                        <button className={cn(
+                                                                            "flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all border shadow-sm",
+                                                                            status.isValid
+                                                                                ? "bg-emerald-100/50 border-emerald-200 text-emerald-700 hover:bg-emerald-200/50"
+                                                                                : "bg-rose-100/50 border-rose-200 text-rose-700 hover:bg-rose-200/50"
+                                                                        )}>
+                                                                            <Calculator className="w-3 h-3" />
+                                                                            View Logic
+                                                                        </button>
+                                                                    </DialogTrigger>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent side="top" className="bg-slate-900 border-slate-800 text-white text-[10px]">
+                                                                    Step-by-step breakdown
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                        <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
+                                                            <DialogHeader>
+                                                                <DialogTitle className="flex items-center gap-2 text-slate-900">
+                                                                    <Calculator className="w-5 h-5 text-blue-500" />
+                                                                    Check Digit Calculation
+                                                                </DialogTitle>
+                                                                <DialogDescription className="text-slate-500">
+                                                                    Breakdown for code: <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{inputCode}</span>
+                                                                </DialogDescription>
+                                                            </DialogHeader>
+                                                            <div className="space-y-4 py-4">
+                                                                <div className="space-y-4 relative">
+                                                                    <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", status.isValid ? "bg-emerald-100" : "bg-rose-100")} />
+                                                                    {status.calculationSteps.map((step, idx) => (
+                                                                        <div key={idx} className="flex gap-4 relative">
+                                                                            <div className={cn(
+                                                                                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10",
+                                                                                status.isValid
+                                                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                                                                                    : "bg-rose-50 border-rose-200 text-rose-600"
+                                                                            )}>
+                                                                                {step.step}
+                                                                            </div>
+                                                                            <div className="space-y-1">
+                                                                                <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                                <div className={cn(
+                                                                                    "font-mono text-[10px] px-2.5 py-1 rounded w-fit border",
+                                                                                    status.isValid
+                                                                                        ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
+                                                                                        : "text-rose-700 bg-rose-50/50 border-rose-100"
+                                                                                )}>
+                                                                                    {step.value}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                                <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                                                    <p className="text-xs text-blue-700 font-bold">Standard Modulo 10</p>
+                                                                    <p className="text-[10px] text-blue-600 mt-1">
+                                                                        Used for GTIN barcodes (UPC, EAN) to detect common errors.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                )}
+                                            </div>
 
                                             {/* Valid State Details */}
                                             {status.isValid && (

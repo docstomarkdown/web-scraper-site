@@ -135,7 +135,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         <CardHeader className="pb-4 border-b border-slate-50">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-3">
-                                    <CardTitle className="text-2xl font-bold text-blue-600">
+                                    <CardTitle className="text-2xl font-bold text-blue-400">
                                         Calculator Inputs
                                     </CardTitle>
                                     <TooltipProvider delayDuration={100}>
@@ -260,16 +260,16 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                             <div className="grid grid-cols-2 gap-4 mt-2">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Cubic Inches</p>
-                                    <p className="text-xl font-bold text-indigo-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         <Counter value={volume?.in3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 2 })} />
-                                        <span className="text-xs font-normal opacity-50 ml-1">IN³</span>
+                                        <span className="text-xs font-normal ml-1 text-blue-400">IN³</span>
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Cubic Centimeters</p>
                                     <p className="text-xl font-bold text-blue-400">
                                         <Counter value={volume?.cm3 || 0} formatter={(v) => v.toLocaleString(undefined, { maximumFractionDigits: 0 })} />
-                                        <span className="text-xs font-normal opacity-50 ml-1">CM³</span>
+                                        <span className="text-xs font-normal ml-1 text-blue-400">CM³</span>
                                     </p>
                                 </div>
                             </div>
@@ -278,7 +278,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         {/* Conversion Results Table Card */}
                         <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                             <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100">
-                                <CardTitle className="text-lg font-bold text-slate-900 tracking-tight">Converted Dimensions</CardTitle>
+                                <CardTitle className="text-lg font-bold text-blue-400 tracking-tight">Converted Dimensions</CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="overflow-x-auto">
@@ -333,7 +333,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 01</span>
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Choose Your Base Units</h3>
+                                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Choose Your Base Units</h3>
                                         <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                                             Select between Inches or Centimeters using the unit toggle. Your calculations will automatically update across all units.
                                         </p>
@@ -348,7 +348,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 02</span>
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Input Dimensions & Fine-Tune</h3>
+                                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Input Dimensions & Fine-Tune</h3>
                                         <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                                             Enter length, width, and height. Use the <b>integrated arrow controls</b> to increment or decrement values for precise product matching.
                                         </p>
@@ -363,7 +363,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         <div className="flex items-center gap-2 mb-3">
                                             <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                         </div>
-                                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">Analyze Volume & Conversion</h3>
+                                        <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 leading-tight">Analyze Volume & Conversion</h3>
                                         <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90">
                                             Review the <b>Total Volume</b> and the <b>Given vs Result</b> table. These live calculations provide precise cubic data and conversions for your products.
                                         </p>
@@ -383,7 +383,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                             <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                                 <BookOpen className="h-6 w-6" />
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Converted Dimensions Profitability</h2>
+                            <h2 className="text-2xl font-bold text-blue-400">The Hidden Truth About Converted Dimensions Profitability</h2>
                         </div>
 
                         <div className="space-y-6">
@@ -459,7 +459,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
 
                                             <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                                 <div className={`text-2xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
-                                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100/50 px-2 py-0.5 rounded-full">
+                                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-300 bg-slate-100/50 px-2 py-0.5 rounded-full">
                                                     Takeaway
                                                 </div>
                                                 <div className="text-[11px] font-medium text-slate-500 text-center leading-tight mt-1 max-w-[120px]">

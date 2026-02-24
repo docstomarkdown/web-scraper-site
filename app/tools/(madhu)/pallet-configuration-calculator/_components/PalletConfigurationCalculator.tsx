@@ -480,17 +480,17 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                                 }}
                                             >
                                                 <SelectTrigger className={cn(
-                                                    "h-11 border-slate-200 bg-white transition-all font-medium text-slate-700 hover:border-blue-400 justify-end w-full",
+                                                    "h-11 border-slate-200 bg-white transition-all font-medium text-slate-700 hover:border-blue-400 justify-center px-3 w-full",
                                                     selectedPreset !== "custom" && "border-blue-200 ring-4 ring-blue-50"
                                                 )}>
-                                                    <div className="flex items-center justify-end gap-2 w-full">
+                                                    <div className="flex items-center justify-center gap-2 w-full pr-1">
                                                         {selectedPreset === "standard" && <Truck className="w-4 h-4 text-blue-500 shrink-0" />}
                                                         {selectedPreset === "amazon" && <Package className="w-4 h-4 text-blue-500 shrink-0" />}
                                                         {selectedPreset === "full-truck" && <Target className="w-4 h-4 text-blue-500 shrink-0" />}
                                                         {selectedPreset === "double-stack" && <Layers className="w-4 h-4 text-blue-500 shrink-0" />}
                                                         {selectedPreset === "custom" && <RefreshCw className="w-4 h-4 text-slate-400 shrink-0" />}
                                                         <span className={cn(
-                                                            "truncate text-right",
+                                                            "truncate text-center",
                                                             selectedPreset !== "custom" ? "text-blue-600 font-bold" : "text-slate-700"
                                                         )}>
                                                             {selectedPreset === "standard" && "Standard LTL"}
@@ -654,7 +654,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                     {
                                         label: "Space efficiency",
                                         value: results ? `${results.areaEfficiency.toFixed(1)}%` : "0.0%",
-                                        color: results ? (results.areaEfficiency >= 90 ? "text-blue-400" : results.areaEfficiency >= 80 ? "text-amber-400" : "text-red-400") : "text-white/20"
+                                        color: results ? (results.areaEfficiency >= 90 ? "text-blue-400" : results.areaEfficiency >= 80 ? "text-blue-400" : "text-red-400") : "text-white/20"
                                     }
                                 ].map((metric, i) => (
                                     <div key={i}>
@@ -671,7 +671,7 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] opacity-40 font-bold text-slate-300">Total weight</p>
                                     <p className={cn("text-base font-bold leading-none", results ? "text-white" : "text-white/20")}>
-                                        {results ? results.totalWeight.toFixed(1) : "0.0"} <span className="text-xs opacity-50">lb</span>
+                                        {results ? results.totalWeight.toFixed(1) : "0.0"} <span className="text-xs text-blue-400">lb</span>
                                     </p>
                                 </div>
                                 <div className="space-y-0.5">
@@ -804,14 +804,14 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                                             <div className="absolute bottom-3 left-0 right-0 px-6 flex justify-between items-center text-slate-400">
                                                 <div className="flex flex-col gap-0">
                                                     <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Arrangement</span>
-                                                    <span className={cn("text-xs font-bold", isDummy ? "text-slate-400" : "text-slate-900")}>
+                                                    <span className={cn("text-xs font-bold", isDummy ? "text-blue-400" : "text-slate-900")}>
                                                         {displayResults.unitsAlongLength} × {displayResults.unitsAlongWidth} Grid
                                                     </span>
                                                 </div>
                                                 <div className="h-6 w-px bg-slate-200 mx-2" />
                                                 <div className="flex flex-col items-end gap-0 text-right">
                                                     <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Total stack</span>
-                                                    <span className={cn("text-xs font-bold", isDummy ? "text-slate-400" : "text-blue-600")}>
+                                                    <span className={cn("text-xs font-bold", isDummy ? "text-blue-400" : "text-blue-600")}>
                                                         {displayResults.layers} {displayResults.layers === 1 ? 'Layer' : 'Layers'}
                                                     </span>
                                                 </div>

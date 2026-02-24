@@ -84,7 +84,7 @@ Result:
 
                 {/* Left Column: Smart Inputs */}
                 <div className="lg:col-span-7">
-                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden flex flex-col rounded-3xl h-fit">
                         <InputCardHeader
                             title="Calculator Inputs"
                             subtitle="Configure your inventory restock triggers."
@@ -148,7 +148,7 @@ Result:
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Stock coverage</p>
-                                    <p className="text-xl font-bold text-indigo-400">{results.totalCoverage} <span className="text-xs font-normal opacity-50">Days</span></p>
+                                    <p className="text-xl font-bold text-blue-400">{results.totalCoverage} <span className="text-xs font-normal opacity-50">Days</span></p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Lead time demand</p>
@@ -201,7 +201,7 @@ Result:
                                             !hasInputs ? "border-slate-300 shadow-sm" : "border-slate-200"
                                         )}>
                                             <div className="absolute top-7 left-0 -translate-x-1/2 flex flex-col items-center">
-                                                <span className="text-[10px] font-bold text-slate-500 tracking-tighter whitespace-nowrap">Order sent</span>
+                                                <span className="text-[10px] font-bold text-slate-300 tracking-tighter whitespace-nowrap">Order sent</span>
                                                 <span className="text-[8px] font-medium text-slate-500 whitespace-nowrap">Day 0</span>
                                             </div>
                                         </div>
@@ -227,7 +227,7 @@ Result:
                                             <div className="absolute top-7 left-1/2 -translate-x-1/2 flex flex-col items-center">
                                                 <span className={cn(
                                                     "text-[10px] font-bold tracking-tighter whitespace-nowrap transition-colors",
-                                                    !hasInputs ? "text-slate-400" : "text-blue-600"
+                                                    !hasInputs ? "text-blue-400" : "text-blue-600"
                                                 )}>Order point</span>
                                             </div>
                                         </div>
@@ -238,7 +238,7 @@ Result:
                                             !hasInputs ? "border-slate-300 shadow-sm" : "border-slate-200"
                                         )}>
                                             <div className="absolute top-7 right-0 translate-x-1/2 flex flex-col items-center">
-                                                <span className="text-[10px] font-bold text-slate-500 tracking-tighter whitespace-nowrap">Delivery</span>
+                                                <span className="text-[10px] font-bold text-slate-300 tracking-tighter whitespace-nowrap">Delivery</span>
                                                 <span className="text-[8px] font-medium text-slate-500 whitespace-nowrap">Day {hasInputs ? values.leadTime : "—"}</span>
                                             </div>
                                         </div>

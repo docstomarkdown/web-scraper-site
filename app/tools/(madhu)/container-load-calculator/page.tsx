@@ -19,11 +19,14 @@ import {
     Settings,
     Layout,
     Maximize,
-    XCircle
+    XCircle,
+    RefreshCw,
+    Target
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
@@ -32,6 +35,14 @@ import { cn } from "@/lib/utils"
 // Length, Width, Height in mm
 // Max Weight in kg
 const CONTAINERS = {
+    "custom": {
+        name: "Custom Container",
+        length: 0,
+        width: 0,
+        height: 0,
+        maxWeight: 0,
+        volume: 0 // m3
+    },
     "20ft": {
         name: "20ft Standard",
         length: 5898,
@@ -55,6 +66,38 @@ const CONTAINERS = {
         height: 2698,
         maxWeight: 28600,
         volume: 76.4 // m3
+    },
+    "45hc": {
+        name: "45ft High Cube",
+        length: 13556,
+        width: 2352,
+        height: 2698,
+        maxWeight: 27700,
+        volume: 86.0 // m3
+    },
+    "20rf": {
+        name: "20ft Reefer",
+        length: 5444,
+        width: 2284,
+        height: 2267,
+        maxWeight: 27400,
+        volume: 28.3 // m3
+    },
+    "40rf": {
+        name: "40ft Reefer",
+        length: 11583,
+        width: 2284,
+        height: 2250,
+        maxWeight: 27700,
+        volume: 59.3 // m3
+    },
+    "40hr": {
+        name: "40ft HC Reefer",
+        length: 11583,
+        width: 2284,
+        height: 2532,
+        maxWeight: 29500,
+        volume: 67.3 // m3
     }
 }
 
@@ -79,7 +122,11 @@ export default function ContainerLoadCalculator() {
     }
 
     // 1. Container Selection
-    const [selectedContainer, setSelectedContainer] = useState<"20ft" | "40ft" | "40hc">("20ft")
+    const [selectedContainer, setSelectedContainer] = useState<keyof typeof CONTAINERS>("20ft")
+    const [customCLength, setCustomCLength] = useState<number | "">("")
+    const [customCWidth, setCustomCWidth] = useState<number | "">("")
+    const [customCHeight, setCustomCHeight] = useState<number | "">("")
+    const [customCWeight, setCustomCWeight] = useState<number | "">("")
 
     // 2. Unit Details (Carton)
     const [length, setLength] = useState<number | "">("")
@@ -107,6 +154,11 @@ export default function ContainerLoadCalculator() {
     useEffect(() => {
         // Reset result if inputs are invalid
         if (!length || !width || !height || !weight || (loadType === "pallet" && (!palletLength || !palletWidth || !palletHeight))) {
+            setResult(null)
+            return
+        }
+
+        if (selectedContainer === "custom" && (!customCLength || !customCWidth || !customCHeight || !customCWeight)) {
             setResult(null)
             return
         }
@@ -146,7 +198,20 @@ export default function ContainerLoadCalculator() {
             pWt_kg = (Number(palletWeight) || 0) * 0.453592
         }
 
-        const container = CONTAINERS[selectedContainer]
+        let container = { ...CONTAINERS[selectedContainer] }
+        if (selectedContainer === "custom") {
+            if (unitSystem === "metric") {
+                container.length = Number(customCLength) * 10
+                container.width = Number(customCWidth) * 10
+                container.height = Number(customCHeight) * 10
+                container.maxWeight = Number(customCWeight)
+            } else {
+                container.length = Math.round(Number(customCLength) * 25.4)
+                container.width = Math.round(Number(customCWidth) * 25.4)
+                container.height = Math.round(Number(customCHeight) * 25.4)
+                container.maxWeight = Math.round(Number(customCWeight) * 0.453592)
+            }
+        }
 
         // Calculation Logic
 
@@ -316,7 +381,7 @@ export default function ContainerLoadCalculator() {
             })
         }
 
-    }, [length, width, height, weight, unitSystem, selectedContainer, loadType, palletLength, palletWidth, palletHeight, palletWeight, canRotate])
+    }, [length, width, height, weight, unitSystem, selectedContainer, loadType, palletLength, palletWidth, palletHeight, palletWeight, canRotate, customCLength, customCWidth, customCHeight, customCWeight])
 
     const clearAll = () => {
         setLength("")
@@ -327,6 +392,10 @@ export default function ContainerLoadCalculator() {
         setPalletWidth("")
         setPalletHeight("")
         setPalletWeight("")
+        setCustomCLength("")
+        setCustomCWidth("")
+        setCustomCHeight("")
+        setCustomCWeight("")
         setResult(null)
         toast({
             title: "Reset Success",
@@ -450,21 +519,44 @@ Calculated via Container Load Calculator
                             <div className="space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <MadhuSubHeader title="Select container" icon={Container} className="mb-0" />
-                                    <Tabs value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as any)} className="w-full sm:w-[300px]">
-                                        <TabsList className="grid w-full grid-cols-3 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl overflow-hidden">
-                                            {(["20ft", "40ft", "40hc"] as const).map(k => {
-                                                const displayNum = k.replace(/[^\d]/g, '') + "ft"
-                                                const label = k.includes("hc") ? "HC" : "Std"
-                                                return (
-                                                    <TabsTrigger key={k} value={k} className="flex flex-row items-center justify-center gap-1.5 py-1.5 px-1 data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all rounded-lg group">
-                                                        <span className="font-bold text-xs whitespace-nowrap">{displayNum}</span>
-                                                        <span className="text-[10px] opacity-70 font-semibold whitespace-nowrap uppercase">{label}</span>
-                                                    </TabsTrigger>
-                                                )
-                                            })}
-                                        </TabsList>
-                                    </Tabs>
+                                    <div className="w-full sm:w-[300px]">
+                                        <Select value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as keyof typeof CONTAINERS)}>
+                                            <SelectTrigger className="h-11 border-slate-200 bg-white transition-all hover:border-blue-400 px-3 w-full">
+                                                <div className="flex items-center justify-center gap-2.5 w-full min-w-0 pr-1">
+                                                    <Container className="w-4 h-4 text-blue-500 shrink-0" />
+                                                    <span className="font-bold text-sm text-blue-600 truncate leading-tight">
+                                                        {CONTAINERS[selectedContainer]?.name}
+                                                    </span>
+                                                </div>
+                                            </SelectTrigger>
+                                            <SelectContent className="max-h-[400px]">
+                                                {Object.entries(CONTAINERS).map(([key, data]) => (
+                                                    <SelectItem key={key} value={key} className="py-2.5 focus:bg-blue-50">
+                                                        <div className="flex flex-col text-left">
+                                                            <span className="font-bold text-sm text-slate-700">{data.name}</span>
+                                                            {key === "custom" ? (
+                                                                <span className="text-[10px] text-slate-400 font-medium">User defined dimensions</span>
+                                                            ) : (
+                                                                <span className="text-[10px] text-slate-500 font-medium">
+                                                                    Weight: {data.maxWeight.toLocaleString()} kg | L: {(data.length / 1000).toFixed(1)}m × W: {(data.width / 1000).toFixed(2)}m
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
+
+                                {selectedContainer === "custom" && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                                        <CalculatorInput label="Int. Length" value={customCLength} onChange={setCustomCLength} placeholder={unitSystem === "metric" ? "580" : "232"} suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Int. Width" value={customCWidth} onChange={setCustomCWidth} placeholder={unitSystem === "metric" ? "230" : "92"} suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Int. Height" value={customCHeight} onChange={setCustomCHeight} placeholder={unitSystem === "metric" ? "230" : "92"} suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                        <CalculatorInput label="Max Weight" value={customCWeight} onChange={setCustomCWeight} placeholder={unitSystem === "metric" ? "28000" : "61000"} suffix={unitSystem === "metric" ? "kg" : "lb"} />
+                                    </div>
+                                )}
 
                                 <div className="h-px bg-slate-100 w-full" />
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -491,8 +583,8 @@ Calculated via Container Load Calculator
                                 loadType === "pallet" ? "md:grid-cols-2 gap-x-12" : "max-w-2xl"
                             )}>
                                 {/* Left: Box Details */}
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between min-h-[36px]">
                                         <MadhuSubHeader title="Box details" icon={Box} className="mb-0" />
                                         <Tabs value={unitSystem} onValueChange={(v) => setUnitSystem(v as any)} className="w-[160px]">
                                             <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
@@ -501,7 +593,7 @@ Calculated via Container Load Calculator
                                             </TabsList>
                                         </Tabs>
                                     </div>
-                                    <div className="flex flex-col gap-3">
+                                    <div className="flex flex-col gap-4">
                                         <CalculatorInput label="Length" value={length} onChange={setLength} placeholder="40" suffix={unitSystem === "metric" ? "cm" : "in"} />
                                         <CalculatorInput label="Width" value={width} onChange={setWidth} placeholder="30" suffix={unitSystem === "metric" ? "cm" : "in"} />
                                         <CalculatorInput label="Height" value={height} onChange={setHeight} placeholder="25" suffix={unitSystem === "metric" ? "cm" : "in"} />
@@ -511,9 +603,11 @@ Calculated via Container Load Calculator
 
                                 {/* Right: Pallet Details (conditional) */}
                                 {loadType === "pallet" && (
-                                    <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
-                                        <MadhuSubHeader title="Pallet type" icon={Layers} className="mb-0" />
-                                        <div className="flex flex-col gap-3">
+                                    <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
+                                        <div className="flex items-center min-h-[36px]">
+                                            <MadhuSubHeader title="Pallet type" icon={Layers} className="mb-0" />
+                                        </div>
+                                        <div className="flex flex-col gap-4">
                                             <CalculatorInput label="Pallet length" value={palletLength} onChange={setPalletLength} placeholder="120" suffix={unitSystem === "metric" ? "cm" : "in"} />
                                             <CalculatorInput label="Pallet width" value={palletWidth} onChange={setPalletWidth} placeholder="80" suffix={unitSystem === "metric" ? "cm" : "in"} />
                                             <CalculatorInput label="Base height" value={palletHeight} onChange={setPalletHeight} placeholder="15" tooltip="Height of empty pallet only" suffix={unitSystem === "metric" ? "cm" : "in"} />

@@ -120,10 +120,10 @@ Results:
 
     return (
         <div className="max-w-6xl mx-auto py-2">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch pt-2">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-2">
 
                 {/* Left Column: Inputs */}
-                <div className="lg:col-start-2 lg:col-span-6 flex flex-col h-full space-y-4">
+                <div className="lg:col-span-7 flex flex-col h-full space-y-4">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
                         <InputCardHeader
                             title="Program Configuration"
@@ -214,14 +214,14 @@ Results:
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-4 space-y-4">
+                <div className="lg:col-span-5 space-y-4">
                     <ResultFeedbackCard
                         title="NET REVENUE"
                         titleLabel="After commissions & COGS"
                         mainValue={
                             <div className="flex flex-col">
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-3xl font-bold opacity-60">$</span>
+                                    <span className="text-3xl font-bold text-blue-400">$</span>
                                     <Counter
                                         value={results.netRevenue}
                                         formatter={(v) => Math.round(v).toLocaleString()}
@@ -237,23 +237,23 @@ Results:
                                 <MetricCard
                                     label="Commission / Sale"
                                     tooltip="Dollar amount paid to the affiliate per successful sale."
-                                    value={<div className="flex items-baseline gap-1 text-lg font-bold text-indigo-400"><span>$</span><Counter value={results.commissionPerSale} formatter={(v) => v.toFixed(2)} /></div>}
+                                    value={<div className="flex items-baseline gap-1 text-lg font-bold text-blue-400"><span>$</span><Counter value={results.commissionPerSale} formatter={(v) => v.toFixed(2)} /></div>}
                                 />
                                 <MetricCard
                                     label="Total Payout"
                                     tooltip="Total commissions owed across all affiliates on net (non-refunded) sales."
-                                    value={<div className="flex items-baseline gap-1 text-lg font-bold text-indigo-400"><span>$</span><Counter value={results.totalPayout} formatter={(v) => Math.round(v).toLocaleString()} /></div>}
+                                    value={<div className="flex items-baseline gap-1 text-lg font-bold text-blue-400"><span>$</span><Counter value={results.totalPayout} formatter={(v) => Math.round(v).toLocaleString()} /></div>}
                                 />
                                 <MetricCard
                                     label="Net Sales (units)"
                                     tooltip="Gross sales minus refunded orders. Commissions are calculated on this number only."
-                                    value={<p className="text-lg font-bold text-emerald-400">{Math.round(results.netSales)}<span className="text-xs font-normal opacity-50 ml-1">units</span></p>}
+                                    value={<p className="text-lg font-bold text-blue-400">{Math.round(results.netSales)}<span className="text-xs font-normal opacity-50 ml-1">units</span></p>}
                                 />
                                 <MetricCard
                                     label="Net / Sale"
                                     tooltip="Your profit per unit after product cost and affiliate commission are deducted."
                                     value={
-                                        <div className={cn("flex items-baseline gap-1 text-lg font-bold", results.netPerSale >= 0 ? "text-emerald-400" : "text-red-400")}>
+                                        <div className={cn("flex items-baseline gap-1 text-lg font-bold", results.netPerSale >= 0 ? "text-blue-400" : "text-red-400")}>
                                             <span>$</span>
                                             <Counter value={results.netPerSale} formatter={(v) => v.toFixed(2)} />
                                         </div>
@@ -310,7 +310,7 @@ function MetricCard({ label, value, tooltip }: { label: string; value: React.Rea
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button type="button" className="text-slate-400 hover:text-white transition-colors cursor-help flex-shrink-0">
-                                <Info className="h-3 w-3" />
+                                <Info className="h-3.5 w-3.5" />
                             </button>
                         </TooltipTrigger>
                         <TooltipContent side="top" className="max-w-[180px] text-xs bg-slate-900 text-white border-slate-700 p-2 rounded-lg z-50">

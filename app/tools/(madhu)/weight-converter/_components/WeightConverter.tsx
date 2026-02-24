@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useMemo } from "react"
-import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle , Check} from "lucide-react";
+import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle, Check } from "lucide-react";
 import { cn } from "@/lib/utils"
 "@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Separator } from "@/components/ui/separator"
-import { ResultFeedbackCard, Counter, CalculatorInput } from "../../../_shared/components"
+import { ResultFeedbackCard, Counter } from "../../../_shared/components"
 
 type WeightUnit = "oz" | "lbs" | "g" | "kg"
 
@@ -161,7 +161,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-col items-start space-y-6">
                             <div className="space-y-1 w-full">
                                 <div className="flex items-center gap-3">
-                                    <CardTitle className="text-2xl font-bold text-blue-600">
+                                    <CardTitle className="text-2xl font-bold text-blue-400">
                                         Calculator Inputs
                                     </CardTitle>
                                     <TooltipProvider delayDuration={100}>
@@ -195,15 +195,36 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </label>
 
                                 <div className="space-y-4">
-                                    {/* Input Weight Row */}
-                                    <CalculatorInput
-                                        label="Input Weight"
-                                        value={inputValue}
-                                        onChange={(val) => setInputValue(val.toString())}
-                                        tooltip="Enter the weight value you wish to convert"
-                                        placeholder="12.00"
-                                        type="number"
-                                    />
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                        <div className="flex items-center gap-2">
+                                            <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
+                                                Input Weight
+                                            </label>
+                                            <TooltipProvider delayDuration={100}>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <button
+                                                            type="button"
+                                                            tabIndex={-1}
+                                                            className="text-slate-500 hover:text-blue-600 transition-colors cursor-default"
+                                                        >
+                                                            <Info className="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                                                        Enter the weight value you wish to convert
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
+                                        <Input
+                                            type="number"
+                                            value={inputValue}
+                                            onChange={(e) => setInputValue(e.target.value)}
+                                            className="h-11 text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-full sm:w-[210px] text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
+                                            placeholder="Ex: 12.00"
+                                        />
+                                    </div>
 
                                     {/* Input Unit Row */}
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -290,24 +311,24 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </Button>
                             </div>
                         </CardContent>
-                    </Card>
-                </div>
+                    </Card >
+                </div >
 
                 {/* Right Column: Results (Col Span 5) */}
-                <div className="lg:col-span-5 relative flex flex-col h-full space-y-8">
+                < div className="lg:col-span-5 relative flex flex-col h-full space-y-8" >
                     {/* Conversion Results */}
-                    <ResultFeedbackCard
+                    < ResultFeedbackCard
                         title="CONVERSION MATRIX"
                         titleLabel="Live Calculation"
                         mainValue={
-                            <div className="flex items-baseline gap-2">
+                            < div className="flex items-baseline gap-2" >
                                 <Counter
                                     value={conversions[targetUnit]}
                                 />
                                 <span className="text-lg font-medium opacity-50">
                                     {targetUnit}
                                 </span>
-                            </div>
+                            </div >
                         }
                     >
                         <div className="grid grid-cols-2 gap-4 pt-2">
@@ -318,7 +339,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                     </p>
                                     <p className={cn(
                                         "text-xl font-bold break-all",
-                                        index === 0 ? "text-indigo-400" : "text-blue-400"
+                                        index === 0 ? "text-blue-400" : "text-blue-400"
                                     )}>
                                         <Counter value={conversions[unit]} />
                                         <span className="text-xs font-normal opacity-50 ml-1 uppercase">{unit}</span>
@@ -326,15 +347,15 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </div>
                             ))}
                         </div>
-                    </ResultFeedbackCard>
+                    </ResultFeedbackCard >
 
                     {/* Shipping Impact Section */}
-                    <div className="space-y-2 flex-1 flex flex-col">
+                    < div className="space-y-2 flex-1 flex flex-col" >
                         <div className="flex items-center gap-2 mb-2">
                             <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
                                 <Truck className="w-4 h-4" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-900">Shipping impact analysis</h3>
+                            <h3 className="text-lg font-bold text-blue-400">Shipping impact analysis</h3>
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col justify-center">
@@ -349,7 +370,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                                     {shippingImpact.status}
                                                 </span>
                                             </div>
-                                            <h4 className="text-xl sm:text-[22px] font-bold text-slate-900 tracking-tight leading-none pt-1">
+                                            <h4 className="text-xl sm:text-[22px] font-bold text-blue-400 tracking-tight leading-none pt-1">
                                                 {shippingImpact.tierName}
                                             </h4>
                                         </div>
@@ -361,7 +382,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                     <div className="space-y-1.5 pb-2">
                                         <span className="text-xs sm:text-[13px] font-medium text-slate-400 block">Estimated shipping cost</span>
                                         <div>
-                                            <div className="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight">
+                                            <div className="text-2xl sm:text-[26px] font-bold text-blue-400 tracking-tight">
                                                 {shippingImpact.costRange}
                                             </div>
                                             <p className="text-xs sm:text-[13px] text-slate-400 mt-1 font-normal">
@@ -416,9 +437,9 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 </>
                             )}
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </div >
+                </div >
+            </div >
+        </div >
     )
 }

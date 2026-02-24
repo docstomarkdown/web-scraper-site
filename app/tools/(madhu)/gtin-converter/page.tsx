@@ -32,7 +32,7 @@ export default function GTINConverterPage() {
                                 <div className="p-2 bg-blue-50 rounded-full text-blue-600">
                                     <HelpCircle className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">How to Use This Converter</h2>
+                                <h2 className="text-2xl font-bold text-blue-400 tracking-tight">How to Use This Converter</h2>
                             </div>
 
                             <div className="max-w-3xl mx-auto space-y-6">
@@ -46,7 +46,7 @@ export default function GTINConverterPage() {
                                             <div className="mb-1">
                                                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Step 01</span>
                                             </div>
-                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Enter or Upload</h3>
+                                            <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Enter or Upload</h3>
                                             <p className="text-sm text-slate-600 leading-relaxed">
                                                 Type your barcode manually or <b>upload a product image</b> for automatic extraction. Supports UPC-A, EAN-13, and GTIN-14 formats.
                                             </p>
@@ -64,7 +64,7 @@ export default function GTINConverterPage() {
                                             <div className="mb-1">
                                                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Step 02</span>
                                             </div>
-                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Format Detection</h3>
+                                            <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Format Detection</h3>
                                             <p className="text-sm text-slate-600 leading-relaxed">
                                                 Our engine instantly detects the format and verifies the <b>Modulo 10 check digit</b> using official GS1 algorithms.
                                             </p>
@@ -82,7 +82,7 @@ export default function GTINConverterPage() {
                                             <div className="mb-1">
                                                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Step 03</span>
                                             </div>
-                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Instant Mapping</h3>
+                                            <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Instant Mapping</h3>
                                             <p className="text-sm text-slate-600 leading-relaxed">
                                                 The tool immediately calculates the equivalent <b>GTIN-12, GTIN-13, and GTIN-14</b> codes for global EDI and inventory synchronization.
                                             </p>
@@ -99,7 +99,7 @@ export default function GTINConverterPage() {
                                         <div className="flex items-center gap-2 mb-3">
                                             <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                         </div>
-                                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">Get All Formats</h3>
+                                        <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 leading-tight">Get All Formats</h3>
                                         <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90">
                                             Instantly see your barcode converted to <b>GTIN-12, GTIN-13, and GTIN-14</b> formats. Copy individual codes or the complete table for global inventory systems.
                                         </p>

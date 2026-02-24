@@ -29,7 +29,7 @@ export function ContainerLoadResultCard({
     titleLabel,
     labelClassName = "text-blue-400",
     mainValue,
-    valueColor = variant === "compact" ? "text-slate-900" : "text-white",
+    valueColor = variant === "compact" ? "text-blue-400" : "text-white",
     secondaryMetrics = [],
     className,
     tooltip,
@@ -90,7 +90,7 @@ export function ContainerLoadResultCard({
                                     <p className="text-xs font-bold text-slate-300 mb-1">{metric.label}</p>
                                     <div className={cn(
                                         "text-xl font-bold break-all",
-                                        index === 0 ? "text-indigo-400" : "text-blue-400"
+                                        index === 0 ? "text-blue-400" : "text-blue-400"
                                     )}>
                                         {metric.value}
                                     </div>

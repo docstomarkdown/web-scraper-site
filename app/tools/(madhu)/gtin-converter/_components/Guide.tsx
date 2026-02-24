@@ -67,7 +67,7 @@ export default function Guide() {
                         <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                             <BookOpen className="h-6 w-6" />
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Barcode Validation</h2>
+                        <h2 className="text-2xl font-bold text-blue-400">The Hidden Truth About Barcode Validation</h2>
                     </div>
 
                     <div className="space-y-6">
@@ -95,7 +95,7 @@ export default function Guide() {
                                         {/* Right: Takeaway Stat Panel */}
                                         <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                             <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
-                                            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100/50 px-2 py-0.5 rounded-full">
+                                            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-300 bg-slate-100/50 px-2 py-0.5 rounded-full">
                                                 Takeaway
                                             </div>
                                             <div className="text-[11px] font-medium text-slate-500 text-center leading-tight mt-1 max-w-[120px]">

@@ -257,7 +257,7 @@ export function GrossMarginCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-indigo-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         <Counter value={derivedProfit} formatter={formatCurrency} key={currency} />
                                     </p>
                                 </div>
@@ -275,7 +275,7 @@ export function GrossMarginCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-xl font-bold text-emerald-400">
+                                    <p className="text-xl font-bold text-blue-400">
                                         <Counter value={derivedMarkup} formatter={(v) => `${v.toFixed(2)}%`} />
                                     </p>
                                 </div>

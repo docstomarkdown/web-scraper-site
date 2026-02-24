@@ -26,7 +26,7 @@ const DEFAULT_STATE: TurnoverState = {
     cogs: "",
     beginningInventory: "",
     endingInventory: "",
-    periodInDays: "365"
+    periodInDays: ""
 }
 
 export function InventoryTurnoverCalculator() {
@@ -213,7 +213,7 @@ Results:
                                             maximumFractionDigits: 2
                                         })}
                                     />
-                                    <span className="text-2xl font-medium opacity-50">x</span>
+                                    <span className="text-2xl font-medium text-blue-400">x</span>
                                 </div>
                                 {hasInputs && (
                                     <div className={`flex items-center gap-2 mt-4 px-3 py-1.5 rounded-xl border w-fit font-bold text-xs uppercase tracking-wider ${getStatusStyles(results.status)}`}>
@@ -238,7 +238,7 @@ Results:
                                                     DSI (Runway)
                                                     <Info className="w-3 h-3 text-slate" />
                                                 </p>
-                                                <p className="text-xl font-bold text-indigo-400">
+                                                <p className="text-xl font-bold text-blue-400">
                                                     {hasInputs ? results.dsi.toFixed(1) : "0"} <span className="text-xs font-normal opacity-50">Days</span>
                                                 </p>
                                             </div>

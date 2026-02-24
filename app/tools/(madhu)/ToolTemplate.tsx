@@ -73,7 +73,7 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
             <div className="flex items-center gap-4">
                 <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                        <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{title}</h2>
+                        <h2 className="text-2xl font-bold text-blue-400 tracking-tight">{title}</h2>
                         {showHelp && (
                             <TooltipProvider delayDuration={100}>
                                 <Tooltip>
@@ -217,7 +217,7 @@ export function MadhuToolTemplate({
                                 <div className="p-2 bg-blue-50 rounded-full text-blue-600">
                                     <HelpCircle className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{howToUseTitle}</h2>
+                                <h2 className="text-2xl font-bold text-blue-400 tracking-tight">{howToUseTitle}</h2>
                             </div>
 
                             <div className="max-w-3xl mx-auto space-y-6">
@@ -237,7 +237,7 @@ export function MadhuToolTemplate({
                                                             Step {stepNumber}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">{step.title}</h3>
+                                                    <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">{step.title}</h3>
                                                     <p className="text-sm text-slate-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: step.description }} />
                                                 </div>
                                             </div>
@@ -258,7 +258,7 @@ export function MadhuToolTemplate({
                                             <div className="flex items-center gap-2 mb-3">
                                                 <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                             </div>
-                                            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">{howToUseGoal.title}</h3>
+                                            <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 leading-tight">{howToUseGoal.title}</h3>
                                             <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: howToUseGoal.description }} />
                                         </div>
                                     </div>
@@ -274,7 +274,7 @@ export function MadhuToolTemplate({
                                 <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
                                     <BookOpen className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-blue-600 tracking-tight">{hiddenTruthTitle}</h2>
+                                <h2 className="text-2xl font-bold text-blue-400 tracking-tight">{hiddenTruthTitle}</h2>
                             </div>
 
                             <div className="space-y-6">
@@ -318,7 +318,7 @@ export function MadhuToolTemplate({
                                                 {/* Right: Takeaway Stat Panel */}
                                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
-                                                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100/50 px-2 py-0.5 rounded-full">
+                                                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-300 bg-slate-100/50 px-2 py-0.5 rounded-full">
                                                         Takeaway
                                                     </div>
                                                     <div className="text-[11px] font-medium text-slate-500 text-center leading-tight mt-1 max-w-[120px]">
