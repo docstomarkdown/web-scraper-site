@@ -67,7 +67,7 @@ export default function Guide() {
                         <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                             <BookOpen className="h-6 w-6" />
                         </div>
-                        <h2 className="text-2xl font-bold text-blue-400">The Hidden Truth About Barcode Validation</h2>
+                        <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Barcode Validation</h2>
                     </div>
 
                     <div className="space-y-6">

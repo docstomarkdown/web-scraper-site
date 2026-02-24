@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box , Check} from "lucide-react";
+import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box, Check } from "lucide-react";
 import { cn } from "@/lib/utils"
 "@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
@@ -113,7 +113,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
     const clearAll = () => {
         setDimensions({ length: "", width: "", height: "" })
         setUnit("in")
-        
+
     }
 
     const scrollToGuide = () => {
@@ -135,7 +135,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         <CardHeader className="pb-4 border-b border-slate-50">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-3">
-                                    <CardTitle className="text-2xl font-bold text-blue-400">
+                                    <CardTitle className="text-xl font-bold text-blue-600">
                                         Calculator Inputs
                                     </CardTitle>
                                     <TooltipProvider delayDuration={100}>
@@ -278,7 +278,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         {/* Conversion Results Table Card */}
                         <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                             <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100">
-                                <CardTitle className="text-lg font-bold text-blue-400 tracking-tight">Converted Dimensions</CardTitle>
+                                <CardTitle className="text-lg font-bold text-slate-900 tracking-tight">Converted Dimensions</CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="overflow-x-auto">
@@ -333,7 +333,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 01</span>
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Choose Your Base Units</h3>
+                                        <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Choose Your Base Units</h3>
                                         <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                                             Select between Inches or Centimeters using the unit toggle. Your calculations will automatically update across all units.
                                         </p>
@@ -348,7 +348,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Step 02</span>
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Input Dimensions & Fine-Tune</h3>
+                                        <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Input Dimensions & Fine-Tune</h3>
                                         <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                                             Enter length, width, and height. Use the <b>integrated arrow controls</b> to increment or decrement values for precise product matching.
                                         </p>
@@ -363,7 +363,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                         <div className="flex items-center gap-2 mb-3">
                                             <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                         </div>
-                                        <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 leading-tight">Analyze Volume & Conversion</h3>
+                                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">Analyze Volume & Conversion</h3>
                                         <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90">
                                             Review the <b>Total Volume</b> and the <b>Given vs Result</b> table. These live calculations provide precise cubic data and conversions for your products.
                                         </p>
@@ -383,7 +383,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                             <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                                 <BookOpen className="h-6 w-6" />
                             </div>
-                            <h2 className="text-2xl font-bold text-blue-400">The Hidden Truth About Converted Dimensions Profitability</h2>
+                            <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Converted Dimensions Profitability</h2>
                         </div>
 
                         <div className="space-y-6">

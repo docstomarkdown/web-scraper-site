@@ -28,11 +28,11 @@ export default function UPCEANValidatorPage() {
 
                     <FadeIn delay={0.1}>
                         <section id="how-to-use" className="relative">
-                            <div className="flex items-center gap-4 mb-10 pb-4 border-b border-slate-200">
-                                <div className="p-2 bg-blue-50 rounded-full text-blue-600">
+                            <div className="flex items-center gap-3 mb-10 pb-4 border-b border-slate-200">
+                                <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
                                     <HelpCircle className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-blue-400 tracking-tight">How to Use This Validator</h2>
+                                <h2 className="text-2xl font-bold text-slate-900">How to Use This Validator</h2>
                             </div>
 
                             <div className="max-w-3xl mx-auto space-y-6">
@@ -46,7 +46,7 @@ export default function UPCEANValidatorPage() {
                                             <div className="mb-1">
                                                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Step 01</span>
                                             </div>
-                                            <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Input or Upload</h3>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Input or Upload</h3>
                                             <p className="text-sm text-slate-600 leading-relaxed">
                                                 Type your barcode manually or <b>upload a product image</b> for automatic extraction. The tool supports UPC-A, EAN-13, and EAN-8 formats.
                                             </p>
@@ -64,7 +64,7 @@ export default function UPCEANValidatorPage() {
                                             <div className="mb-1">
                                                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Step 02</span>
                                             </div>
-                                            <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Automatic Detection</h3>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Automatic Detection</h3>
                                             <p className="text-sm text-slate-600 leading-relaxed">
                                                 Our engine instantly cleans up spaces or dashes and identifies the barcode format, ensuring the correct validation logic is applied.
                                             </p>
@@ -82,7 +82,7 @@ export default function UPCEANValidatorPage() {
                                             <div className="mb-1">
                                                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Step 03</span>
                                             </div>
-                                            <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-1">Verify Calculation</h3>
+                                            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">Verify Calculation</h3>
                                             <p className="text-sm text-slate-600 leading-relaxed">
                                                 Click the <b>? icon</b> near the Check Digit to see the mathematical breakdown (Modulo 10) used to verify your code&apos;s integrity.
                                             </p>
@@ -99,7 +99,7 @@ export default function UPCEANValidatorPage() {
                                         <div className="flex items-center gap-2 mb-3">
                                             <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">The Goal</span>
                                         </div>
-                                        <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 leading-tight">Instant Verification</h3>
+                                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">Instant Verification</h3>
                                         <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90">
                                             Get a clear &quot;Valid&quot; or &quot;Invalid&quot; status, view your barcode visualization, and copy the clean results to use in your inventory system.
                                         </p>
