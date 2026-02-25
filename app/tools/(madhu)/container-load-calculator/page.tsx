@@ -107,8 +107,8 @@ const fitInDim = (containerDim: number, boxDim: number) => Math.floor(containerD
 export default function ContainerLoadCalculator() {
     const { toast } = useToast()
     // ---- State ----
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
         if (element) {
             const offset = 100;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
@@ -120,6 +120,9 @@ export default function ContainerLoadCalculator() {
             });
         }
     }
+
+    const scrollToGuide = () => scrollToSection('how-to-use')
+    const scrollToPallet = () => scrollToSection('pallet-details')
 
     // 1. Container Selection
     const [selectedContainer, setSelectedContainer] = useState<keyof typeof CONTAINERS>("20ft")
@@ -149,6 +152,19 @@ export default function ContainerLoadCalculator() {
 
     // Results
     const [result, setResult] = useState<any>(null)
+    const [hasScrolledToPallet, setHasScrolledToPallet] = useState(false)
+
+    // Auto-scroll logic: only when all box details are filled and in pallet mode
+    useEffect(() => {
+        if (loadType === 'pallet' && length && width && height && weight && !hasScrolledToPallet) {
+            setTimeout(scrollToPallet, 300)
+            setHasScrolledToPallet(true)
+        }
+        // Reset flag if inputs are cleared or mode switched to allow re-triggering if they start over
+        if (!length || !width || !height || !weight || loadType === 'loose') {
+            setHasScrolledToPallet(false)
+        }
+    }, [length, width, height, weight, loadType, hasScrolledToPallet])
 
     // Calculate
     useEffect(() => {
@@ -514,11 +530,13 @@ Calculated via Container Load Calculator
                             onHelpClick={scrollToGuide}
                         />
 
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 space-y-6 flex-1 flex flex-col">
                             {/* 1. Configuration Selectors */}
                             <div className="space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <MadhuSubHeader title="Select container" icon={Container} className="mb-0" />
+                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
+                                        Select container
+                                    </label>
                                     <div className="w-full sm:w-[300px]">
                                         <Select value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as keyof typeof CONTAINERS)}>
                                             <SelectTrigger className="h-11 border-slate-200 bg-white transition-all hover:border-blue-400 px-3 w-full">
@@ -558,10 +576,16 @@ Calculated via Container Load Calculator
                                     </div>
                                 )}
 
-                                <div className="h-px bg-slate-100 w-full" />
+                                <div className="h-px bg-slate-100/60 w-full" />
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <MadhuSubHeader title="Loading type" icon={Layout} className="mb-0" />
-                                    <Tabs value={loadType} onValueChange={(v) => setLoadType(v as any)} className="w-full sm:w-[300px]">
+                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
+                                        Loading type
+                                    </label>
+                                    <Tabs
+                                        value={loadType}
+                                        onValueChange={(v) => setLoadType(v as any)}
+                                        className="w-full sm:w-[300px]"
+                                    >
                                         <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
                                             <TabsTrigger value="loose" className="flex items-center justify-center py-1.5 text-xs font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all">
                                                 <Box className="w-3.5 h-3.5 mr-2" />
@@ -577,13 +601,10 @@ Calculated via Container Load Calculator
                             </div>
 
                             {/* Dimensions & Pallet Row */}
-                            <div className="h-px bg-slate-100 w-full" />
-                            <div className={cn(
-                                "grid grid-cols-1 gap-y-8",
-                                loadType === "pallet" ? "md:grid-cols-2 gap-x-12" : "max-w-2xl"
-                            )}>
-                                {/* Left: Box Details */}
-                                <div className="space-y-4">
+                            <div className="h-px bg-slate-100/60 w-full" />
+                            <div className="space-y-6">
+                                {/* Box Details */}
+                                <div className="space-y-4 max-w-2xl">
                                     <div className="flex items-center justify-between min-h-[36px]">
                                         <MadhuSubHeader title="Box details" icon={Box} className="mb-0" />
                                         <Tabs value={unitSystem} onValueChange={(v) => setUnitSystem(v as any)} className="w-[160px]">
@@ -601,19 +622,20 @@ Calculated via Container Load Calculator
                                     </div>
                                 </div>
 
-                                {/* Right: Pallet Details (conditional) */}
+                                {/* Pallet Details (conditional) */}
                                 {loadType === "pallet" && (
-                                    <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
-                                        <div className="flex items-center min-h-[36px]">
-                                            <MadhuSubHeader title="Pallet type" icon={Layers} className="mb-0" />
+                                    <>
+                                        <div className="h-px bg-slate-100/60 w-full" />
+                                        <div id="pallet-details" className="space-y-4 max-w-2xl animate-in fade-in slide-in-from-top-4 duration-500">
+                                            <MadhuSubHeader title="Pallet details" icon={Layers} className="mb-0" />
+                                            <div className="flex flex-col gap-4">
+                                                <CalculatorInput label="Pallet length" value={palletLength} onChange={setPalletLength} placeholder="120" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                                <CalculatorInput label="Pallet width" value={palletWidth} onChange={setPalletWidth} placeholder="80" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                                <CalculatorInput label="Base height" value={palletHeight} onChange={setPalletHeight} placeholder="15" tooltip="Height of empty pallet only" suffix={unitSystem === "metric" ? "cm" : "in"} />
+                                                <CalculatorInput label="Pallet weight" value={palletWeight} onChange={setPalletWeight} placeholder="20" tooltip="Weight of empty pallet" suffix={unitSystem === "metric" ? "kg" : "lb"} />
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col gap-4">
-                                            <CalculatorInput label="Pallet length" value={palletLength} onChange={setPalletLength} placeholder="120" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                            <CalculatorInput label="Pallet width" value={palletWidth} onChange={setPalletWidth} placeholder="80" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                            <CalculatorInput label="Base height" value={palletHeight} onChange={setPalletHeight} placeholder="15" tooltip="Height of empty pallet only" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                            <CalculatorInput label="Pallet weight" value={palletWeight} onChange={setPalletWeight} placeholder="20" tooltip="Weight of empty pallet" suffix={unitSystem === "metric" ? "kg" : "lb"} />
-                                        </div>
-                                    </div>
+                                    </>
                                 )}
                             </div>
 

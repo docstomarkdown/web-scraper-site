@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle, Check } from "lucide-react";
 import { cn } from "@/lib/utils"
-"@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -110,6 +109,14 @@ export function WeightConverter() {
         // Removed DIM warning logic entirely for now as requested
         return { tierName, tierRule, costRange, status, statusColor, thresholdAlert, dimWarning: false }
     }, [conversions.lbs, conversions.oz, inputValue])
+
+    const formatCompact = (val: number) => {
+        if (Math.abs(val) < 100000) return val.toLocaleString(undefined, { maximumFractionDigits: 2 })
+        return new Intl.NumberFormat('en-US', {
+            notation: "compact",
+            maximumFractionDigits: 2
+        }).format(val)
+    }
 
     // Helper to get secondary units
     const secondaryUnits = useMemo(() => {
@@ -321,29 +328,38 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                         title="CONVERSION MATRIX"
                         titleLabel="Live Calculation"
                         mainValue={
-                            < div className="flex items-baseline gap-2" >
+                            <div className="flex items-baseline flex-wrap gap-x-2">
                                 <Counter
                                     value={conversions[targetUnit]}
+                                    formatter={formatCompact}
+                                    className={cn(
+                                        conversions[targetUnit] > 1000000 ? "text-3xl" : "text-4xl"
+                                    )}
                                 />
                                 <span className="text-lg font-medium opacity-50">
                                     {targetUnit}
                                 </span>
-                            </div >
+                            </div>
                         }
                     >
-                        <div className="grid grid-cols-2 gap-4 pt-2">
-                            {secondaryUnits.map((unit, index) => (
-                                <div key={unit} className="bg-white/5 rounded-xl p-4 border border-white/5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2">
+                            {secondaryUnits.map((unit) => (
+                                <div key={unit} className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5 flex flex-col justify-center min-h-[85px]">
                                     <p className="text-xs font-bold text-slate-300 mb-1">
                                         {unit === 'lbs' ? 'Pounds' : unit === 'oz' ? 'Ounces' : unit === 'kg' ? 'Kilograms' : 'Grams'}
                                     </p>
-                                    <p className={cn(
-                                        "text-xl font-bold break-all",
-                                        index === 0 ? "text-blue-400" : "text-blue-400"
-                                    )}>
-                                        <Counter value={conversions[unit]} />
-                                        <span className="text-xs font-normal opacity-50 ml-1 uppercase">{unit}</span>
-                                    </p>
+                                    <div className="flex items-baseline flex-wrap gap-x-1">
+                                        <p className={cn(
+                                            "text-lg sm:text-xl font-bold text-blue-400 break-all leading-tight",
+                                            conversions[unit] > 1000000 && "text-base sm:text-lg"
+                                        )}>
+                                            <Counter
+                                                value={conversions[unit]}
+                                                formatter={formatCompact}
+                                            />
+                                        </p>
+                                        <span className="text-[10px] font-normal opacity-50 uppercase">{unit}</span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -355,7 +371,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                             <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
                                 <Truck className="w-4 h-4" />
                             </div>
-                            <h3 className="text-lg font-bold text-blue-400">Shipping impact analysis</h3>
+                            <h3 className="text-lg font-bold text-slate-900">Shipping impact analysis</h3>
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col justify-center">
@@ -370,7 +386,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                                     {shippingImpact.status}
                                                 </span>
                                             </div>
-                                            <h4 className="text-xl sm:text-[22px] font-bold text-blue-400 tracking-tight leading-none pt-1">
+                                            <h4 className="text-base font-bold text-slate-900 tracking-tight leading-none pt-1">
                                                 {shippingImpact.tierName}
                                             </h4>
                                         </div>
@@ -382,12 +398,9 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                     <div className="space-y-1.5 pb-2">
                                         <span className="text-xs sm:text-[13px] font-medium text-slate-400 block">Estimated shipping cost</span>
                                         <div>
-                                            <div className="text-2xl sm:text-[26px] font-bold text-blue-400 tracking-tight">
+                                            <div className="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">
                                                 {shippingImpact.costRange}
                                             </div>
-                                            <p className="text-xs sm:text-[13px] text-slate-400 mt-1 font-normal">
-                                                Cost depends on distance and carrier.
-                                            </p>
                                         </div>
                                     </div>
 

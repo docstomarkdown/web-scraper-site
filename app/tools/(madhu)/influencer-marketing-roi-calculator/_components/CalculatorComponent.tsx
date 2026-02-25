@@ -212,7 +212,7 @@ export function InfluencerROICalculator() {
                             <div className="space-y-2 pt-1">
                                 <div className="flex items-center gap-2">
                                     <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                        <BarChart3 className="w-4 h-4 text-blue-500" />
+                                        <BarChart3 className="w-4 h-4 text-slate-400" />
                                         Performance metrics
                                     </label>
                                 </div>

@@ -337,17 +337,16 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Measurement system unit switcher */}
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Ruler className="w-4 h-4 text-slate-400" />
+                                <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
                                     Measurement system
                                 </label>
-                                <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-[180px] font-sans">
+                                <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-40 md:w-48 h-11 font-sans">
                                     {(["in", "cm"] as DimensionUnit[]).map((u) => (
                                         <button
                                             key={u}
                                             onClick={() => setUnit(u)}
                                             className={cn(
-                                                "flex-1 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all uppercase",
+                                                "flex-1 h-full px-3 rounded-md text-[10px] font-bold transition-all uppercase",
                                                 unit === u
                                                     ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                     : "text-slate-500 hover:text-slate-900"
@@ -670,13 +669,13 @@ Volume Utilization: ${results.efficiency.toFixed(1)}%
                             <div className="grid grid-cols-2 gap-4 mt-1 tracking-tight">
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] opacity-40 font-bold text-slate-300">Total weight</p>
-                                    <p className={cn("text-base font-bold leading-none", results ? "text-white" : "text-white/20")}>
-                                        {results ? results.totalWeight.toFixed(1) : "0.0"} <span className="text-xs text-blue-400">lb</span>
+                                    <p className={cn("text-base font-bold leading-none", results ? "text-blue-400" : "text-white/20")}>
+                                        {results ? results.totalWeight.toFixed(1) : "0.0"} <span className="text-xs opacity-50">lb</span>
                                     </p>
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] opacity-40 font-bold text-slate-300">Load height</p>
-                                    <p className={cn("text-base font-bold leading-none", results ? "text-white" : "text-white/20")}>
+                                    <p className={cn("text-base font-bold leading-none", results ? "text-blue-400" : "text-white/20")}>
                                         {results ? results.loadHeight.toFixed(1) : "0.0"} <span className="text-xs opacity-50">in</span>
                                     </p>
                                 </div>

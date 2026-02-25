@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Copy, RefreshCw, Calculator, HelpCircle, ClipboardList, TrendingUp, AlertTriangle, CircleDollarSign, Info, BookOpen, Box, Check } from "lucide-react";
 import { cn } from "@/lib/utils"
-"@/hooks/use-toast"
 import { FadeIn, ToolFAQ, ToolSectionHeader } from "../../../_shared/components"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -132,7 +131,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                 {/* LEFT COLUMN: Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col">
-                        <CardHeader className="pb-4 border-b border-slate-50">
+                        <CardHeader className="pb-6 border-b border-slate-50">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-3">
                                     <CardTitle className="text-xl font-bold text-blue-600">
@@ -159,10 +158,10 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 <CardDescription className="text-slate-500 font-medium">Configure your dimensions and units below.</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-6 md:p-8 space-y-8">
+                        <CardContent className="p-6 md:p-10 space-y-10">
                             {/* Measurement Unit Section */}
                             <div className="space-y-6">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                <label className="text-sm font-semibold text-slate-600 flex items-center gap-2 mb-2">
                                     <RefreshCw className="w-4 h-4 text-slate-400" />
                                     Measurement Unit
                                 </label>
@@ -194,7 +193,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
 
                             {/* Dimension Details Section */}
                             <div className="space-y-6">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                <label className="text-sm font-semibold text-slate-600 flex items-center gap-2 mb-2">
                                     <Box className="w-4 h-4 text-slate-400" />
                                     Dimension Details
                                 </label>
@@ -203,7 +202,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                     {(["length", "width", "height"] as const).map((dim) => (
                                         <CalculatorInput
                                             key={dim}
-                                            label={`${dim.charAt(0).toUpperCase() + dim.slice(1)} (${unit.toUpperCase()})`}
+                                            label={`${dim.charAt(0).toUpperCase() + dim.slice(1)} (${unit.toLowerCase()})`}
                                             value={dimensions[dim]}
                                             onChange={(val) => setDimensions((prev) => ({ ...prev, [dim]: val.toString() }))}
                                             placeholder={unit === "in" ? (dim === "length" ? "12.00" : dim === "width" ? "8.00" : "6.00") : (dim === "length" ? "30.00" : dim === "width" ? "20.00" : "15.00")}
@@ -214,7 +213,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 </div>
                             </div>
 
-                            <div className="flex gap-2 pt-4 border-t border-slate-100">
+                            <div className="flex gap-4 pt-8 border-t border-slate-100">
                                 <Button
                                     variant="outline"
                                     className="flex-[2] h-11 border-dashed hover:bg-muted/50 text-slate-500 hover:text-slate-900 transition-all font-medium"
@@ -283,11 +282,11 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                             <CardContent className="p-0">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left border-collapse">
-                                        <thead className="bg-slate-50 border-b border-slate-100 text-xs font-medium text-slate-500 uppercase tracking-widest">
+                                        <thead className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 tracking-wide">
                                             <tr>
                                                 <th className="px-4 py-3">Axis</th>
-                                                <th className="px-4 py-3 text-right">Given ({unit.toUpperCase()})</th>
-                                                <th className="px-4 py-3 text-right">Result ({unit === "in" ? "CM" : "IN"})</th>
+                                                <th className="px-4 py-3 text-right">Given ({unit.toLowerCase()})</th>
+                                                <th className="px-4 py-3 text-right">Result ({unit === "in" ? "cm" : "in"})</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-100">
