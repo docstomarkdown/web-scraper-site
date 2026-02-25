@@ -70,6 +70,30 @@ export function NetProfitCalculator() {
         }).format(val)
     }
 
+    const formatCompact = (val: number) => {
+        const absVal = Math.abs(val)
+        if (absVal < 1000000) return formatCurrency(val)
+
+        // For extremely massive numbers, reduce precision to keep string short
+        const digits = absVal > 1000000000000 ? 0 : 1
+
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currency,
+            notation: "compact",
+            compactDisplay: "short",
+            maximumFractionDigits: digits
+        }).format(val)
+    }
+
+    const formatPercent = (val: number) => {
+        if (Math.abs(val) < 10000) return `${val.toFixed(2)}%`
+        return new Intl.NumberFormat('en-US', {
+            notation: "compact",
+            maximumFractionDigits: 1
+        }).format(val) + "%"
+    }
+
     // Progress bar checks
     // We want to visualize where the money goes. 
     // Revenue bar broken down into: COGS, Ads, Overhead, Tax, Profit.
@@ -188,16 +212,20 @@ export function NetProfitCalculator() {
                         titleLabel="Live calculation"
                         mainValue={
                             <div className="flex flex-col">
-                                <div className="flex items-baseline gap-2">
+                                <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
                                     <Counter
                                         value={netProfit}
-                                        formatter={formatCurrency}
+                                        formatter={formatCompact}
                                         key={currency}
-                                        className="text-white"
+                                        className={cn(
+                                            "text-white font-black leading-tight",
+                                            // Scale down font for extremely large numbers
+                                            Math.abs(netProfit) > 1000000000000 ? "text-3xl" : "text-4xl md:text-5xl"
+                                        )}
                                     />
-                                    <span className="text-white/60 text-lg font-medium">Profit</span>
+                                    <span className="text-white/60 text-sm md:text-lg font-medium">Profit</span>
                                 </div>
-                                <p className="text-white/50 text-sm font-bold mt-2">
+                                <p className="text-white/50 text-xs md:text-sm font-bold mt-2 truncate">
                                     True take-home earnings
                                 </p>
                             </div>
@@ -220,8 +248,8 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className={cn("text-xl font-bold", netMargin >= 0 ? "text-blue-400" : "text-red-400")}>
-                                        <Counter value={netMargin} formatter={(v) => `${v.toFixed(2)}%`} />
+                                    <p className={cn("text-xl font-bold break-all", netMargin >= 0 ? "text-blue-400" : "text-red-400")}>
+                                        <Counter value={netMargin} formatter={formatPercent} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2 border border-white/5">
@@ -238,8 +266,8 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className={cn("text-xl font-bold", roi >= 0 ? "text-blue-400" : "text-red-400")}>
-                                        <Counter value={roi} formatter={(v) => `${v.toFixed(2)}%`} />
+                                    <p className={cn("text-xl font-bold break-all", roi >= 0 ? "text-blue-400" : "text-red-400")}>
+                                        <Counter value={roi} formatter={formatPercent} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
@@ -256,8 +284,8 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-blue-400">
-                                        <Counter value={taxAmount} formatter={formatCurrency} />
+                                    <p className="text-lg font-bold text-blue-400 break-all leading-tight">
+                                        <Counter value={taxAmount} formatter={formatCompact} />
                                     </p>
                                 </div>
                                 <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
@@ -274,8 +302,8 @@ export function NetProfitCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-                                    <p className="text-lg font-bold text-blue-400">
-                                        <Counter value={totalExpenses + taxAmount} formatter={formatCurrency} />
+                                    <p className="text-lg font-bold text-blue-400 break-all leading-tight">
+                                        <Counter value={totalExpenses + taxAmount} formatter={formatCompact} />
                                     </p>
                                 </div>
                             </div>
@@ -342,10 +370,10 @@ export function NetProfitCalculator() {
                                 )}
                                 {/* Center Label */}
                                 {r > 0 && (
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-2">
                                         <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Total</span>
-                                        <span className={`text-[11px] font-black ${netProfit >= 0 ? 'text-slate-900' : 'text-red-600'}`}>
-                                            {formatCurrency(r)}
+                                        <span className={`text-center font-black leading-tight ${netProfit >= 0 ? 'text-slate-900' : 'text-red-600'} ${Math.abs(r) > 1000000000 ? 'text-[8px]' : 'text-[11px]'}`}>
+                                            {formatCompact(r)}
                                         </span>
                                     </div>
                                 )}

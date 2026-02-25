@@ -113,6 +113,15 @@ export function CubicFeetCalculator() {
         return { tierName, tierRule, costRange, status, statusColor, alert, storageCost: formattedStorage }
     }, [results.cft, results.cbm, inputs])
 
+    const formatCompact = (val: number, decimals = 3) => {
+        const absVal = Math.abs(val)
+        if (absVal < 100000) return val.toLocaleString(undefined, { maximumFractionDigits: decimals })
+        return new Intl.NumberFormat('en-US', {
+            notation: "compact",
+            maximumFractionDigits: 2
+        }).format(val)
+    }
+
     const copyResults = () => {
         const text = `
 Cubic Feet Calculator Result:
@@ -248,10 +257,13 @@ ${results.inches.toLocaleString()} Cubic Inches
                         titleLabel="Live Calculation"
                         mainValue={
                             <div className="flex flex-col">
-                                <div className="flex items-baseline gap-2">
+                                <div className="flex items-baseline flex-wrap gap-x-2">
                                     <Counter
                                         value={results.cft}
-                                        formatter={(val) => val.toFixed(3)}
+                                        formatter={(val) => formatCompact(val, 3)}
+                                        className={cn(
+                                            results.cft > 1000000 ? "text-3xl" : "text-4xl"
+                                        )}
                                     />
                                     <span className="text-lg font-medium text-blue-400">CFT</span>
                                 </div>
@@ -259,26 +271,36 @@ ${results.inches.toLocaleString()} Cubic Inches
                             </div>
                         }
                     >
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                            <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5 flex flex-col justify-center min-h-[85px]">
                                 <p className="text-xs font-bold text-slate-300 mb-1">Cubic meters</p>
-                                <p className="text-xl font-bold text-blue-400">
-                                    <Counter
-                                        value={results.cbm}
-                                        formatter={(val) => val.toFixed(4)}
-                                    />
-                                    <span className="text-xs font-normal ml-1 text-blue-400">CBM</span>
-                                </p>
+                                <div className="flex items-baseline flex-wrap gap-x-1">
+                                    <p className={cn(
+                                        "text-lg sm:text-xl font-bold text-blue-400 leading-tight",
+                                        results.cbm > 1000000 && "text-base sm:text-lg"
+                                    )}>
+                                        <Counter
+                                            value={results.cbm}
+                                            formatter={(val) => formatCompact(val, 4)}
+                                        />
+                                    </p>
+                                    <span className="text-[10px] font-normal text-blue-400 uppercase">CBM</span>
+                                </div>
                             </div>
-                            <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
+                            <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5 text-left flex flex-col justify-center min-h-[85px]">
                                 <p className="text-xs font-bold text-slate-300 mb-1">Cubic inches</p>
-                                <p className="text-xl font-bold text-blue-400">
-                                    <Counter
-                                        value={results.inches}
-                                        formatter={(val) => Math.round(val).toLocaleString()}
-                                    />
-                                    <span className="text-xs font-normal ml-1 text-blue-400">IN³</span>
-                                </p>
+                                <div className="flex items-baseline flex-wrap gap-x-1">
+                                    <p className={cn(
+                                        "text-lg sm:text-xl font-bold text-blue-400 leading-tight",
+                                        results.inches > 1000000 && "text-base sm:text-lg"
+                                    )}>
+                                        <Counter
+                                            value={results.inches}
+                                            formatter={(val) => formatCompact(val, 0)}
+                                        />
+                                    </p>
+                                    <span className="text-[10px] font-normal text-blue-400 uppercase">IN³</span>
+                                </div>
                             </div>
                         </div>
                     </ResultFeedbackCard>
@@ -289,7 +311,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                             <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
                                 <Truck className="w-4 h-4" />
                             </div>
-                            <h3 className="text-lg font-bold text-blue-400 font-sans">Freight & Logistics Analysis</h3>
+                            <h3 className="text-lg font-bold text-slate-900 font-sans">Freight & Logistics Analysis</h3>
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col">
@@ -304,7 +326,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                     {logisticsImpact.status}
                                                 </div>
                                             </div>
-                                            <h4 className="text-xl sm:text-[22px] font-bold text-blue-400 tracking-tight leading-none pt-1">
+                                            <h4 className="text-base font-bold text-slate-900 tracking-tight leading-none pt-1">
                                                 {logisticsImpact.tierName}
                                             </h4>
                                         </div>
@@ -317,13 +339,13 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         <div className="grid grid-cols-2 gap-x-6 pb-1">
                                             <div className="space-y-1">
                                                 <span className="text-xs font-medium text-slate-400 block">Estimated freight</span>
-                                                <div className="text-lg sm:text-[21px] font-bold text-blue-400 tracking-tight leading-tight">
+                                                <div className="text-sm sm:text-base font-bold text-slate-800 tracking-tight leading-tight">
                                                     {logisticsImpact.costRange}
                                                 </div>
                                             </div>
                                             <div className="space-y-1">
                                                 <span className="text-xs font-medium text-slate-400 block">Estimated storage</span>
-                                                <div className="text-lg sm:text-[21px] font-bold text-blue-400 tracking-tight leading-tight">
+                                                <div className="text-sm sm:text-base font-bold text-slate-800 tracking-tight leading-tight">
                                                     {logisticsImpact.storageCost}
                                                 </div>
                                             </div>

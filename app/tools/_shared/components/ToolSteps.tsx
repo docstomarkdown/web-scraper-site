@@ -13,9 +13,10 @@ interface ToolStepsProps {
     steps: StepItem[]
     title?: string
     icon?: LucideIcon
+    goal?: StepItem
 }
 
-export function ToolSteps({ steps, title = "How to Use This Calculator", icon = MousePointerClick }: ToolStepsProps) {
+export function ToolSteps({ steps, title = "How to Use This Calculator", icon = MousePointerClick, goal }: ToolStepsProps) {
     return (
         <section id="how-to-use" className="relative">
             <ToolSectionHeader icon={icon} title={title} />
@@ -47,6 +48,27 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                         )
                     })}
                 </div>
+
+                {/* Goal Item */}
+                {goal && (
+                    <div className="relative mt-8 flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
+                        <div className="relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white z-10 shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:scale-110">
+                            {(() => {
+                                const GoalIcon = goal.icon
+                                return <GoalIcon className="w-6 h-6 sm:w-7 sm:h-7" />
+                            })()}
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+                                    The Goal
+                                </span>
+                            </div>
+                            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">{goal.title}</h3>
+                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: goal.description }} />
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     )
