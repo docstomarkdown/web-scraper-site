@@ -1,18 +1,14 @@
 "use client"
 
 import React, { useState } from "react"
-// Using relative paths to bypass potential alias resolution issues in this route group
 import { Card, CardContent } from "../../../../../components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../../../components/ui/tooltip"
-import { HelpCircle, Info, TrendingUp, TrendingDown, Users, Target, BarChart3, PieChart, Calculator, Gift, Truck, Camera, Share2, Heart, CheckCircle2, DollarSign } from "lucide-react"
-import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
-import { ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn, CalculatorInput } from "../../../_shared/components"
-import { cn } from "../../../../../lib/utils"
-import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"
+import { DollarSign, Truck, Users, BarChart3 } from "lucide-react"
+import { ActionButtons } from "../../ToolTemplate"
+import { FadeIn, CalculatorInput, CalculatorCardHeader, ResultSummaryCard } from "../../../_shared/components"
+import { BudgetAllocation } from "./BudgetAllocation"
 
 export function InfluencerROICalculator() {
     const [currency, setCurrency] = useState("USD")
-
 
     // Investment States
     const [influencerFee, setInfluencerFee] = useState<number | "">("")
@@ -31,7 +27,6 @@ export function InfluencerROICalculator() {
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     const handleReset = () => {
-
         setInfluencerFee("")
         setProductCogs("")
         setShippingCost("")
@@ -113,139 +108,118 @@ export function InfluencerROICalculator() {
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
                 <div className="lg:col-span-7 space-y-4">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
-                        <div className="flex flex-row items-center justify-between border-b border-slate-100 pr-6">
-                            <InputCardHeader
-                                title="Campaign Budget"
-                                subtitle="Log every dollar invested into the campaign."
-                                scrollId="how-to-use"
-                            />
-                            <div className="w-[145px]">
-                                <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                            </div>
-                        </div>
+                        <CalculatorCardHeader
+                            title="Campaign Budget"
+                            description="Log every dollar invested into the campaign."
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
 
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                        <DollarSign className="w-4 h-4 text-slate-400" />
-                                        Direct costs
-                                    </label>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <CalculatorInput
-                                        label="Influencer Fee"
-                                        value={influencerFee}
-                                        onChange={setInfluencerFee}
-                                        placeholder="1000.00"
-                                        tooltip="The flat fee paid directly to the creator."
-                                    />
-                                    <CalculatorInput
-                                        label="Boosting / Ad Spend"
-                                        value={boostingSpend}
-                                        onChange={setBoostingSpend}
-                                        placeholder="500.00"
-                                        tooltip="Amount spent on Meta/TikTok ads to boost the creator's post."
-                                    />
-                                </div>
+                            {/* Direct Costs */}
+                            <div className="space-y-4">
+                                <CalculatorInput
+                                    label="Influencer Fee"
+                                    value={influencerFee}
+                                    onChange={setInfluencerFee}
+                                    placeholder="1000.00"
+                                    tooltip="The flat fee paid directly to the creator."
+                                    prefix={currency}
+                                    groupingTitle="Direct costs"
+                                    groupingIcon={DollarSign}
+                                />
+                                <CalculatorInput
+                                    label="Boosting / Ad Spend"
+                                    value={boostingSpend}
+                                    onChange={setBoostingSpend}
+                                    placeholder="500.00"
+                                    tooltip="Amount spent on Meta/TikTok ads to boost the creator's post."
+                                    prefix={currency}
+                                />
                             </div>
 
                             {/* Logistics & Product */}
                             <div className="h-px bg-slate-100 w-full" />
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                        <Truck className="w-4 h-4 text-slate-400" />
-                                        Fulfillment & logistics
-                                    </label>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <CalculatorInput
-                                        label="Product COGS"
-                                        value={productCogs}
-                                        onChange={setProductCogs}
-                                        placeholder="50.00"
-                                        tooltip="The manufacturing cost or wholesale price of gifted products."
-                                    />
-                                    <CalculatorInput
-                                        label="Shipping & Packaging"
-                                        value={shippingCost}
-                                        onChange={setShippingCost}
-                                        placeholder="15.00"
-                                        tooltip="Costs to ship the units to the influencer."
-                                    />
-                                </div>
+                            <div className="space-y-4">
+                                <CalculatorInput
+                                    label="Product COGS"
+                                    value={productCogs}
+                                    onChange={setProductCogs}
+                                    placeholder="50.00"
+                                    tooltip="The manufacturing cost or wholesale price of gifted products."
+                                    prefix={currency}
+                                    groupingTitle="Fulfillment & logistics"
+                                    groupingIcon={Truck}
+                                />
+                                <CalculatorInput
+                                    label="Shipping & Packaging"
+                                    value={shippingCost}
+                                    onChange={setShippingCost}
+                                    placeholder="15.00"
+                                    tooltip="Costs to ship the units to the influencer."
+                                    prefix={currency}
+                                />
                             </div>
 
                             {/* Overhead */}
                             <div className="h-px bg-slate-100 w-full" />
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                        <Users className="w-4 h-4 text-slate-400" />
-                                        Management & rights
-                                    </label>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <CalculatorInput
-                                        label="Agency/Mgmt Fee"
-                                        value={managementFee}
-                                        onChange={setManagementFee}
-                                        placeholder="250.00"
-                                        tooltip="Any commission or fee paid to an agency or manager."
-                                    />
-                                    <CalculatorInput
-                                        label="Content Rights Fee"
-                                        value={contentRightsFee}
-                                        onChange={setContentRightsFee}
-                                        placeholder="100.00"
-                                        tooltip="Additional cost for whitelisting or spark ad rights."
-                                    />
-                                </div>
+                            <div className="space-y-4">
+                                <CalculatorInput
+                                    label="Agency/Mgmt Fee"
+                                    value={managementFee}
+                                    onChange={setManagementFee}
+                                    placeholder="250.00"
+                                    tooltip="Any commission or fee paid to an agency or manager."
+                                    prefix={currency}
+                                    groupingTitle="Management & rights"
+                                    groupingIcon={Users}
+                                />
+                                <CalculatorInput
+                                    label="Content Rights Fee"
+                                    value={contentRightsFee}
+                                    onChange={setContentRightsFee}
+                                    placeholder="100.00"
+                                    tooltip="Additional cost for whitelisting or spark ad rights."
+                                    prefix={currency}
+                                />
                             </div>
 
                             {/* Performance Data */}
                             <div className="h-px bg-slate-100 w-full" />
-                            <div className="space-y-2 pt-1">
-                                <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                        <BarChart3 className="w-4 h-4 text-slate-400" />
-                                        Performance metrics
-                                    </label>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <CalculatorInput
-                                        label="Total Sales Revenue"
-                                        value={totalSales}
-                                        onChange={setTotalSales}
-                                        placeholder="8500.00"
-                                        tooltip="The total gross revenue generated from tracking links/codes."
-                                    />
-                                    <CalculatorInput
-                                        label="Total Conversions"
-                                        value={conversions}
-                                        onChange={setConversions}
-                                        placeholder="125"
-                                        tooltip="Number of successful orders or leads generated."
-                                    />
-                                    <CalculatorInput
-                                        label="Total Impressions"
-                                        value={impressions}
-                                        onChange={setImpressions}
-                                        placeholder="50000"
-                                        tooltip="Number of times the content was viewed."
-                                    />
-                                    <CalculatorInput
-                                        label="Total Engagements"
-                                        value={engagements}
-                                        onChange={setEngagements}
-                                        placeholder="2500"
-                                        tooltip="Total likes, comments, and shares."
-                                    />
-                                </div>
+                            <div className="space-y-4 pt-1">
+                                <CalculatorInput
+                                    label="Total Sales Revenue"
+                                    value={totalSales}
+                                    onChange={setTotalSales}
+                                    placeholder="8500.00"
+                                    tooltip="The total gross revenue generated from tracking links/codes."
+                                    prefix={currency}
+                                    groupingTitle="Performance metrics"
+                                    groupingIcon={BarChart3}
+                                />
+                                <CalculatorInput
+                                    label="Total Conversions"
+                                    value={conversions}
+                                    onChange={setConversions}
+                                    placeholder="125"
+                                    tooltip="Number of successful orders or leads generated."
+                                />
+                                <CalculatorInput
+                                    label="Total Impressions"
+                                    value={impressions}
+                                    onChange={setImpressions}
+                                    placeholder="50000"
+                                    tooltip="Number of times the content was viewed."
+                                />
+                                <CalculatorInput
+                                    label="Total Engagements"
+                                    value={engagements}
+                                    onChange={setEngagements}
+                                    placeholder="2500"
+                                    tooltip="Total likes, comments, and shares."
+                                />
                             </div>
 
                             <ActionButtons
@@ -258,219 +232,67 @@ export function InfluencerROICalculator() {
                     </Card>
                 </div>
 
-                {/* Right Column: Results */}
                 <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-3">
+                    <ResultSummaryCard
+                        title="Return on Investment"
+                        primaryResult={{
+                            value: roi.toFixed(2),
+                            unit: "%",
+                            label: "Return"
+                        }}
+                        secondaryResults={[
+                            {
+                                key: "roas",
+                                label: "ROAS",
+                                value: roas.toFixed(2),
+                                unit: "x",
+                                tooltip: "Revenue generated for every $1 spent. (Sales / Investment)"
+                            },
+                            {
+                                key: "cpa",
+                                label: "CPA (Cost/Sale)",
+                                value: cpa.toFixed(2),
+                                unit: currency,
+                                tooltip: "How much it costs to acquire one customer. (Investment / Sales)"
+                            },
+                            {
+                                key: "cpm",
+                                label: "CPM (1k Views)",
+                                value: cpm.toFixed(2),
+                                unit: currency,
+                                tooltip: "Cost per 1,000 impressions. ((Investment / Impressions) * 1000)"
+                            },
+                            {
+                                key: "cpe",
+                                label: "CPE (Engage)",
+                                value: cpe.toFixed(2),
+                                unit: currency,
+                                tooltip: "Cost for every like, comment, or share. (Investment / Engagements)"
+                            },
+                            {
+                                key: "netProfit",
+                                label: "Net Profit",
+                                value: netProfit.toFixed(2),
+                                unit: currency,
+                                tooltip: "Total Sales minus Total Investment"
+                            }
+                        ]}
+                        isCalculated={hasAnyData}
+                        profitLossKey="netProfit"
+                    />
 
-                    {/* Primary Result: ROI */}
-                    <ResultFeedbackCard
-                        title="ROI (Return on Investment)"
-                        titleLabel={!hasAnyData ? "AWAITING DATA" : netProfit >= 0 ? "PROFIT" : "LOSS"}
-                        labelClassName={cn(
-                            "text-[10px] font-black px-2 py-0.5 rounded-md transition-colors",
-                            !hasAnyData ? "bg-slate-500/20 text-slate-300" :
-                                netProfit >= 0 ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-200"
-                        )}
-                        mainValue={
-                            <div className="flex flex-col">
-                                <div className="flex items-baseline gap-2">
-                                    <Counter
-                                        value={roi}
-                                        formatter={(v: number) => `${v.toFixed(2)}%`}
-                                        className={cn("text-white", hasAnyData && netProfit < 0 && "text-red-200 font-black")}
-                                    />
-                                    <span className="text-white/60 text-lg font-medium">Return</span>
-                                </div>
-                            </div>
-                        }
-                    >
-                        <div className="space-y-2">
-                            <div className="grid grid-cols-2 gap-2">
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">ROAS</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Revenue generated for every $1 spent. (Sales / Investment)
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-xl font-bold text-blue-400 break-all leading-tight">
-                                        <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">CPA (Cost/Sale)</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    How much it costs to acquire one customer. (Investment / Sales)
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-xl font-bold text-blue-400 break-all leading-tight">
-                                        <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">CPM (1k Views)</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Cost per 1,000 impressions. ((Investment / Impressions) * 1000)
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-lg font-bold text-blue-400 break-all leading-tight">
-                                        <Counter value={cpm} formatter={(v: number) => formatCurrency(v)} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5 group/metric">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">CPE (Engage)</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Cost for every like, comment, or share. (Investment / Engagements)
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-xl font-bold text-blue-400 break-all leading-tight">
-                                        <Counter value={cpe} formatter={(v: number) => formatCurrency(v)} />
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </ResultFeedbackCard>
-
-                    {/* Investment Breakdown */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 flex flex-col">
-                        <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <PieChart className="w-4 h-4 text-blue-500" />
-                            Budget Allocation
-                        </h4>
-
-                        <div className="flex items-center gap-4 min-h-0">
-                            {/* Left: Chart */}
-                            <div className="h-[140px] w-[140px] relative shrink-0">
-                                {totalInvestment > 0 ? (
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <RechartsPie>
-                                            <Pie
-                                                data={[
-                                                    { name: "Influencer Fee", value: fee, color: "#3b82f6" },
-                                                    { name: "Ad Boosting", value: boost, color: "#10b981" },
-                                                    { name: "Product & Logistics", value: pCogs + ship, color: "#f59e0b" },
-                                                    { name: "Management & Rights", value: mgmt + rights, color: "#a855f7" },
-                                                ].filter(i => i.value > 0)}
-                                                cx="50%"
-                                                cy="50%"
-                                                innerRadius={45}
-                                                outerRadius={60}
-                                                paddingAngle={5}
-                                                dataKey="value"
-                                                stroke="none"
-                                            >
-                                                {/* @ts-ignore */}
-                                                {[
-                                                    { name: "Influencer Fee", value: fee, color: "#3b82f6" },
-                                                    { name: "Ad Boosting", value: boost, color: "#10b981" },
-                                                    { name: "Product & Logistics", value: pCogs + ship, color: "#f59e0b" },
-                                                    { name: "Management & Rights", value: mgmt + rights, color: "#a855f7" },
-                                                ].filter(i => i.value > 0).map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={entry.color} />
-                                                ))}
-                                            </Pie>
-                                            <RechartsTooltip
-                                                formatter={(value: number) => formatCurrency(value)}
-                                                contentStyle={{
-                                                    backgroundColor: '#fff',
-                                                    border: 'none',
-                                                    borderRadius: '12px',
-                                                    boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-                                                    padding: '8px 12px',
-                                                    fontSize: '12px',
-                                                    fontWeight: '600',
-                                                    color: '#1e293b'
-                                                }}
-                                                itemStyle={{ color: '#1e293b' }}
-                                                labelStyle={{ display: 'none' }}
-                                            />
-                                        </RechartsPie>
-                                    </ResponsiveContainer>
-                                ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center text-slate-300 text-sm border-2 border-dashed border-slate-100 rounded-full">
-                                        No data
-                                    </div>
-                                )}
-                                {/* Center Label */}
-                                {totalInvestment > 0 && (
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                        <span className="text-[10px] font-medium text-slate-400">Total</span>
-                                        <span className="text-xs font-bold text-slate-900">{formatCurrency(totalInvestment)}</span>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Right: Legend */}
-                            <div className="flex-1 grid grid-cols-1 gap-2">
-                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
-                                    <div className="flex items-center gap-1.5 truncate">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
-                                        <span className="text-slate-600 font-medium truncate">Influencer Fees</span>
-                                    </div>
-                                    <span className="font-bold text-slate-900 ml-1">{feePct.toFixed(0)}%</span>
-                                </div>
-                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
-                                    <div className="flex items-center gap-1.5 truncate">
-                                        <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                                        <span className="text-slate-600 font-medium truncate">Ad Boosting</span>
-                                    </div>
-                                    <span className="font-bold text-slate-900 ml-1">{boostPct.toFixed(0)}%</span>
-                                </div>
-                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
-                                    <div className="flex items-center gap-1.5 truncate">
-                                        <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-                                        <span className="text-slate-600 font-medium truncate">Product & Logistics</span>
-                                    </div>
-                                    <span className="font-bold text-slate-900 ml-1">{productPct.toFixed(0)}%</span>
-                                </div>
-                                <div className="flex items-center justify-between text-[10px] px-2 bg-slate-50 rounded-lg py-1.5">
-                                    <div className="flex items-center gap-1.5 truncate">
-                                        <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
-                                        <span className="text-slate-600 font-medium truncate">Management & Rights</span>
-                                    </div>
-                                    <span className="font-bold text-slate-900 ml-1">{managementPct.toFixed(0)}%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </Card>
+                    <BudgetAllocation
+                        fee={fee}
+                        boost={boost}
+                        productAndShipping={pCogs + ship}
+                        mgmtAndRights={mgmt + rights}
+                        totalInvestment={totalInvestment}
+                        feePct={feePct}
+                        boostPct={boostPct}
+                        productPct={productPct}
+                        managementPct={managementPct}
+                        formatCurrency={formatCurrency}
+                    />
                 </div>
             </div>
         </FadeIn>

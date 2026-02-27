@@ -1,7 +1,7 @@
 "use client"
 
 import { ToolSectionHeader } from "./ToolSectionHeader"
-import { LucideIcon, MousePointerClick } from "lucide-react"
+import { LucideIcon, HelpCircle } from "lucide-react"
 
 export interface StepItem {
     title: string
@@ -16,7 +16,7 @@ interface ToolStepsProps {
     goal?: StepItem
 }
 
-export function ToolSteps({ steps, title = "How to Use This Calculator", icon = MousePointerClick, goal }: ToolStepsProps) {
+export function ToolSteps({ steps, title = "How to Use This Calculator", icon = HelpCircle, goal }: ToolStepsProps) {
     return (
         <section id="how-to-use" className="relative">
             <ToolSectionHeader icon={icon} title={title} />
@@ -47,28 +47,28 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                             </div>
                         )
                     })}
-                </div>
 
-                {/* Goal Item */}
-                {goal && (
-                    <div className="relative mt-8 flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
-                        <div className="relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white z-10 shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:scale-110">
-                            {(() => {
-                                const GoalIcon = goal.icon
-                                return <GoalIcon className="w-6 h-6 sm:w-7 sm:h-7" />
-                            })()}
-                        </div>
-                        <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-3">
-                                <span className="text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
-                                    The Goal
-                                </span>
+                    {/* Goal Item styled as a regular step */}
+                    {goal && (
+                        <div className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
+                            <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
+                                {(() => {
+                                    const GoalIcon = goal.icon
+                                    return <GoalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                })()}
                             </div>
-                            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 leading-tight">{goal.title}</h3>
-                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: goal.description }} />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                        Step {(steps.length + 1).toString().padStart(2, '0')}
+                                    </span>
+                                </div>
+                                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1.5">{goal.title}</h3>
+                                <p className="text-sm sm:text-[15px] text-slate-500 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: goal.description }} />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </section>
     )

@@ -1,6 +1,6 @@
 "use client"
 
-import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
+import { ToolGuide } from "@/app/tools/_shared/components"
 import { Target, Search, AlertCircle, BookOpen } from "lucide-react"
 
 export function AffiliateGuide() {

@@ -4,20 +4,22 @@ import React, { useState, useMemo } from "react"
 import {
     TrendingUp,
     CheckCircle2,
-    Info,
     Package,
     Users,
     BarChart3
 } from "lucide-react"
 import {
-    InputCardHeader,
     ActionButtons,
-    MadhuSubHeader
 } from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import {
+    Counter,
+    CalculatorInput,
+    CalculatorCardHeader,
+    ResultSummaryCard,
+    currencies
+} from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface AffiliateState {
     productPrice: number | ""
@@ -39,7 +41,13 @@ const DEFAULT_STATE: AffiliateState = {
 
 export function AffiliateCommissionCalculator() {
     const [values, setValues] = useState<AffiliateState>(DEFAULT_STATE)
+    const [currencyCode, setCurrencyCode] = useState("USD")
     const [isCopying, setIsCopying] = useState(false)
+
+    // Get current currency symbol
+    const currencySymbol = useMemo(() => {
+        return currencies.find(c => c.code === currencyCode)?.symbol || "$"
+    }, [currencyCode])
 
     const handleInputChange = (field: keyof AffiliateState, value: string | number) => {
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : Number(value) }))
@@ -90,7 +98,10 @@ export function AffiliateCommissionCalculator() {
         }
     }, [values])
 
-    const handleReset = () => setValues(DEFAULT_STATE)
+    const handleReset = () => {
+        setValues(DEFAULT_STATE)
+        setCurrencyCode("USD")
+    }
 
     const handleCopy = async () => {
         setIsCopying(true)
@@ -98,19 +109,19 @@ export function AffiliateCommissionCalculator() {
 Affiliate Commission Analysis:
 -------------------------------
 Inputs:
-- Product Price:       $${values.productPrice}
-- Product Cost (COGS): $${values.productCost || "0"}
+- Product Price:       ${currencySymbol}${values.productPrice}
+- Product Cost (COGS): ${currencySymbol}${values.productCost || "0"}
 - Commission Rate:     ${values.commissionRate}%
 - Refund Rate:         ${values.refundRate || "0"}%
 - Active Affiliates:   ${values.affiliateCount || "0"}
 - Sales per Affiliate: ${values.salesPerAffiliate || "0"}
 
 Results:
-- Commission per Sale:     $${results.commissionPerSale.toFixed(2)}
-- Net Profit per Sale:     $${results.netPerSale.toFixed(2)}
+- Commission per Sale:     ${currencySymbol}${results.commissionPerSale.toFixed(2)}
+- Net Profit per Sale:     ${currencySymbol}${results.netPerSale.toFixed(2)}
 - Net Sales (post-refund): ${Math.round(results.netSales)} units
-- Total Payout:            $${results.totalPayout.toFixed(2)}
-- Total Net Revenue:       $${results.netRevenue.toFixed(2)}
+- Total Payout:            ${currencySymbol}${results.totalPayout.toFixed(2)}
+- Total Net Revenue:       ${currencySymbol}${results.netRevenue.toFixed(2)}
 - Break-Even Rate:         ${results.breakEvenRate.toFixed(1)}%
         `.trim()
 
@@ -125,41 +136,43 @@ Results:
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 flex flex-col h-full space-y-4">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
-                        <InputCardHeader
+                        <CalculatorCardHeader
                             title="Program Configuration"
-                            subtitle="Set your pricing, costs, and affiliate terms to calculate payouts."
-                            scrollId="how-to-use"
+                            description="Set your pricing, costs, and affiliate terms to calculate payouts."
+                            currency={currencyCode}
+                            onCurrencyChange={setCurrencyCode}
                         />
 
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
                             {/* Section: Product & Pricing */}
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Product & Pricing" icon={Package} className="mb-2" withDot={false} />
-                                <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-4">
                                     <CalculatorInput
                                         label="Product Price"
                                         value={values.productPrice}
                                         onChange={(v) => handleInputChange('productPrice', v)}
                                         placeholder="99.00"
                                         tooltip="The retail price your customer pays for the product or service."
-                                        prefix="$"
+                                        prefix={currencySymbol}
+                                        groupingTitle="Product & Pricing"
+                                        groupingIcon={Package}
                                     />
                                     <CalculatorInput
                                         label="Product Cost / COGS"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
                                         placeholder="35.00"
-                                        tooltip="Your cost to produce or purchase the product. Used to calculate your break-even commission rate."
-                                        prefix="$"
+                                        tooltip="Your cost to produce or purchase the product."
+                                        prefix={currencySymbol}
                                     />
                                 </div>
                             </div>
 
+                            <Separator />
+
                             {/* Section: Affiliate Program */}
-                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Affiliate Program" icon={Users} className="mb-2" withDot={false} />
-                                <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-4">
                                     <CalculatorInput
                                         label="Commission Rate"
                                         value={values.commissionRate}
@@ -167,41 +180,45 @@ Results:
                                         placeholder="20"
                                         tooltip="Percentage of the sale price paid to the affiliate for each conversion."
                                         suffix="%"
+                                        groupingTitle="Affiliate Program"
+                                        groupingIcon={Users}
                                     />
                                     <CalculatorInput
                                         label="Refund Rate"
                                         value={values.refundRate}
                                         onChange={(v) => handleInputChange('refundRate', v)}
                                         placeholder="5"
-                                        tooltip="% of orders that are refunded. Commissions are only paid on net, non-refunded sales — industry best practice."
+                                        tooltip="Expected percentage of orders that will be refunded or returned."
                                         suffix="%"
                                     />
                                 </div>
                             </div>
 
+                            <Separator />
+
                             {/* Section: Scale */}
-                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Scale Projection" icon={BarChart3} className="mb-2" withDot={false} />
-                                <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-4">
                                     <CalculatorInput
                                         label="Active Affiliates"
                                         value={values.affiliateCount}
                                         onChange={(v) => handleInputChange('affiliateCount', v)}
                                         placeholder="10"
-                                        tooltip="Total number of active affiliates currently promoting your offer."
+                                        tooltip="Total number of affiliates promoting your product."
+                                        groupingTitle="Scale Projection"
+                                        groupingIcon={BarChart3}
                                     />
                                     <CalculatorInput
                                         label="Sales per Affiliate"
                                         value={values.salesPerAffiliate}
                                         onChange={(v) => handleInputChange('salesPerAffiliate', v)}
                                         placeholder="5"
-                                        tooltip="Expected number of sales generated by each affiliate in this period."
+                                        tooltip="Average sales each affiliate is expected to generate."
                                     />
                                 </div>
                             </div>
 
-                            <div className="mt-auto pt-4 border-t border-slate-100">
+                            <div className="mt-auto pt-6 border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
                                     onCopy={handleCopy}
@@ -215,113 +232,84 @@ Results:
 
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 space-y-4">
-                    <ResultFeedbackCard
-                        title="NET REVENUE"
-                        titleLabel="After commissions & COGS"
-                        mainValue={
-                            <div className="flex flex-col">
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-3xl font-bold text-blue-400">$</span>
-                                    <Counter
-                                        value={results.netRevenue}
-                                        formatter={(v) => Math.round(v).toLocaleString()}
-                                    />
-                                </div>
-                                <p className="text-slate-400 text-sm font-bold mt-2">Your take-home after all costs</p>
-                            </div>
-                        }
-                    >
-                        <div className="space-y-4">
-                            {/* Metric Grid */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <MetricCard
-                                    label="Commission / Sale"
-                                    tooltip="Dollar amount paid to the affiliate per successful sale."
-                                    value={<div className="flex items-baseline gap-1 text-lg font-bold text-blue-400"><span>$</span><Counter value={results.commissionPerSale} formatter={(v) => v.toFixed(2)} /></div>}
-                                />
-                                <MetricCard
-                                    label="Total Payout"
-                                    tooltip="Total commissions owed across all affiliates on net (non-refunded) sales."
-                                    value={<div className="flex items-baseline gap-1 text-lg font-bold text-blue-400"><span>$</span><Counter value={results.totalPayout} formatter={(v) => Math.round(v).toLocaleString()} /></div>}
-                                />
-                                <MetricCard
-                                    label="Net Sales (units)"
-                                    tooltip="Gross sales minus refunded orders. Commissions are calculated on this number only."
-                                    value={<p className="text-lg font-bold text-blue-400">{Math.round(results.netSales)}<span className="text-xs font-normal opacity-50 ml-1">units</span></p>}
-                                />
-                                <MetricCard
-                                    label="Net / Sale"
-                                    tooltip="Your profit per unit after product cost and affiliate commission are deducted."
-                                    value={
-                                        <div className={cn("flex items-baseline gap-1 text-lg font-bold", results.netPerSale >= 0 ? "text-blue-400" : "text-red-400")}>
-                                            <span>$</span>
-                                            <Counter value={results.netPerSale} formatter={(v) => v.toFixed(2)} />
-                                        </div>
-                                    }
-                                />
-                            </div>
+                    <ResultSummaryCard
+                        title="NET REVENUE (After commissions & COGS)"
+                        primaryResult={{
+                            value: Math.round(results.netRevenue).toLocaleString(),
+                            unit: currencySymbol,
+                            label: "Estimated Profit"
+                        }}
+                        secondaryResults={[
+                            {
+                                key: "commissionPerSale",
+                                label: "Commission / Sale",
+                                value: results.commissionPerSale.toFixed(2),
+                                unit: currencySymbol,
+                                tooltip: "Amount earned by an affiliate for one sale."
+                            },
+                            {
+                                key: "totalPayout",
+                                label: "Total Payout",
+                                value: Math.round(results.totalPayout).toLocaleString(),
+                                unit: currencySymbol,
+                                tooltip: "Total commission paid to all affiliates."
+                            },
+                            {
+                                key: "netSales",
+                                label: "Net Sales (units)",
+                                value: Math.round(results.netSales).toString(),
+                                unit: " units",
+                                tooltip: "Successful sales after refunds are deducted."
+                            },
+                            {
+                                key: "netPerSale",
+                                label: "Net / Sale",
+                                value: results.netPerSale.toFixed(2),
+                                unit: currencySymbol,
+                                tooltip: "Your earnings per sale after costs and commissions."
+                            }
+                        ]}
+                        isCalculated={hasInputs}
+                        profitLossKey="netPerSale"
+                    // description="Estimated profit after paying affiliates and product costs."
+                    />
 
-                            {/* Break-Even inline alert — only shows when COGS is entered */}
-                            {(hasInputs && Number(values.productCost) > 0) && (
-                                <div className={cn(
-                                    "rounded-xl p-3 border text-xs leading-relaxed transition-all",
-                                    results.isAboveBreakEven
-                                        ? "bg-red-500/10 border-red-500/20 text-red-200"
-                                        : "bg-emerald-500/10 border-emerald-500/20 text-emerald-200"
-                                )}>
-                                    <div className="flex items-center gap-2 mb-1">
-                                        {results.isAboveBreakEven ? (
-                                            <TrendingUp className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
-                                        ) : (
-                                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                                        )}
-                                        <span className="font-bold uppercase tracking-wider opacity-80">
-                                            {results.isAboveBreakEven ? "Loss Warning" : "Profit Safe"}
-                                        </span>
-                                    </div>
-                                    {results.isAboveBreakEven ? (
-                                        <span>
-                                            Your <strong>{results.rate}%</strong> rate exceeds break-even (<strong>{results.breakEvenRate.toFixed(1)}%</strong>). You lose money on every sale.
-                                        </span>
-                                    ) : (
-                                        <span>
-                                            Your <strong>{results.rate}%</strong> rate is safe. Break-even ceiling is <strong>{results.breakEvenRate.toFixed(1)}%</strong>.
-                                        </span>
-                                    )}
-                                </div>
+                    {/* Break-Even inline alert — only shows when COGS is entered */}
+                    {(hasInputs && Number(values.productCost) > 0) && (
+                        <div className={cn(
+                            "rounded-2xl p-4 border text-sm leading-relaxed transition-all shadow-sm",
+                            results.isAboveBreakEven
+                                ? "bg-red-50 border-red-100 text-red-900"
+                                : "bg-emerald-50 border-emerald-100 text-emerald-900"
+                        )}>
+                            <div className="flex items-center gap-2 mb-2">
+                                {results.isAboveBreakEven ? (
+                                    <TrendingUp className="w-4 h-4 text-red-600 flex-shrink-0" />
+                                ) : (
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                                )}
+                                <span className="font-bold uppercase tracking-wider text-xs">
+                                    {results.isAboveBreakEven ? "Loss Warning" : "Profit Safe"}
+                                </span>
+                            </div>
+                            {results.isAboveBreakEven ? (
+                                <p>
+                                    Your <strong>{results.rate}%</strong> rate exceeds break-even (<strong>{results.breakEvenRate.toFixed(1)}%</strong>). You lose money on every sale.
+                                </p>
+                            ) : (
+                                <p>
+                                    Your <strong>{results.rate}%</strong> rate is safe. Break-even ceiling is <strong>{results.breakEvenRate.toFixed(1)}%</strong>.
+                                </p>
                             )}
                         </div>
-                    </ResultFeedbackCard>
-
-
+                    )}
                 </div>
             </div>
         </div>
     )
 }
 
-// ── Metric card inside the dark ResultFeedbackCard ──
-function MetricCard({ label, value, tooltip }: { label: string; value: React.ReactNode; tooltip: string }) {
-    return (
-        <div className="bg-white/5 rounded-xl p-3 border border-white/5">
-            <div className="flex items-center gap-1.5 mb-1">
-                <p className="text-xs font-bold text-slate-300">{label}</p>
-                <TooltipProvider delayDuration={0}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button type="button" className="text-slate-400 hover:text-white transition-colors cursor-help flex-shrink-0">
-                                <Info className="h-3.5 w-3.5" />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="max-w-[180px] text-xs bg-slate-900 text-white border-slate-700 p-2 rounded-lg z-50">
-                            {tooltip}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </div>
-            {value}
-        </div>
-    )
-}
+const Separator = () => <div className="h-px w-full bg-slate-100" />
+
 
 

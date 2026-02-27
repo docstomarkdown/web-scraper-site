@@ -1,25 +1,31 @@
 "use client"
 
 import React, { useState } from "react"
-import { InputCardHeader, MadhuSubHeader, ActionButtons } from "../../ToolTemplate"
-import { ResultFeedbackCard, Counter, FadeIn, CalculatorInput } from "@/app/tools/_shared/components"
+import { MadhuSubHeader, ActionButtons } from "../../ToolTemplate"
+import {
+    Counter,
+    FadeIn,
+    CalculatorInput,
+    CurrencyCombobox,
+    ResultSummaryCard,
+    CalculatorCardHeader,
+} from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { currencies } from "@/app/tools/_shared/components/CurrencyCombobox"
 import {
     Mail,
     MousePointer,
-    DollarSign,
     Target,
-    PieChart,
-    Info
 } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { CampaignResults } from "./CampaignResults"
 
 export function EmailROICalculator() {
+    // Currency
+    const [currency, setCurrency] = useState("USD")
+
     // Inputs
     const [listSize, setListSize] = useState<number | "">("")
     const [campaignCost, setCampaignCost] = useState<number | "">("")
-    const [openRate, setOpenRate] = useState<number | "">("")
     const [clickThroughRate, setClickThroughRate] = useState<number | "">("")
     const [conversionRate, setConversionRate] = useState<number | "">("")
     const [averageOrderValue, setAverageOrderValue] = useState<number | "">("")
@@ -29,34 +35,37 @@ export function EmailROICalculator() {
     const handleReset = () => {
         setListSize("")
         setCampaignCost("")
-        setOpenRate("")
         setClickThroughRate("")
         setConversionRate("")
         setAverageOrderValue("")
     }
 
-    // Calculations
+    // Core Calculations
     const size = val(listSize)
     const cost = val(campaignCost)
-    const openPct = val(openRate)
     const ctrPct = val(clickThroughRate)
     const convPct = val(conversionRate)
     const aov = val(averageOrderValue)
 
-    const opens = Math.round(size * (openPct / 100))
     const clicks = Math.round(size * (ctrPct / 100))
     const conversions = Math.round(clicks * (convPct / 100))
     const revenue = conversions * aov
     const netProfit = revenue - cost
     const roi = cost > 0 ? (netProfit / cost) * 100 : 0
-    const roas = cost > 0 ? revenue / cost : 0
     const cpa = conversions > 0 ? cost / conversions : 0
-    const revenuePerSubscriber = size > 0 ? revenue / size : 0
 
-    const hasAnyData = size > 0 || cost > 0
+    const isCalculated = size > 0 || cost > 0
+
+    // Currency formatting
+    const selectedCurrency = currencies.find((c) => c.code === currency)
+    const currencySymbol = selectedCurrency?.symbol ?? "$"
 
     const formatCurrency = (v: number) =>
-        new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(v)
+        new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: currency,
+            maximumFractionDigits: 2,
+        }).format(v)
 
     const formatNumber = (v: number) => new Intl.NumberFormat("en-US").format(Math.round(v))
 
@@ -65,22 +74,16 @@ export function EmailROICalculator() {
     const handleCopy = () => {
         const text =
             `Email Marketing ROI Results:\n\n` +
-            `Campaign Data:\n` +
+            `Inputs:\n` +
             `- List Size: ${formatNumber(size)}\n` +
             `- Campaign Cost: ${formatCurrency(cost)}\n` +
-            `- Open Rate: ${openPct}%\n` +
-            `- Click-Through Rate: ${ctrPct}%\n` +
+            `- Click Rate: ${ctrPct}%\n` +
             `- Conversion Rate: ${convPct}%\n` +
-            `- Average Order Value: ${formatCurrency(aov)}\n\n` +
+            `- Avg Order Value: ${formatCurrency(aov)}\n\n` +
             `Results:\n` +
-            `- Total Revenue: ${formatCurrency(revenue)}\n` +
-            `- Net Profit: ${formatCurrency(netProfit)}\n` +
             `- ROI: ${roi.toFixed(2)}%\n` +
-            `- ROAS: ${roas.toFixed(2)}x\n` +
-            `- CPA: ${formatCurrency(cpa)}\n` +
-            `- Est. Opens: ${formatNumber(opens)}\n` +
-            `- Est. Clicks: ${formatNumber(clicks)}\n` +
-            `- Est. Conversions: ${formatNumber(conversions)}`
+            `- Net Profit: ${formatCurrency(netProfit)}\n` +
+            `- CPA: ${formatCurrency(cpa)}`
 
         navigator.clipboard.writeText(text).then(() => {
             setIsCopied(true)
@@ -89,85 +92,72 @@ export function EmailROICalculator() {
     }
 
     return (
-        <FadeIn className="w-full max-w-7xl mx-auto py-2 px-4" duration={0.6}>
+        <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-                {/* Left Column: Inputs */}
-                <div className="lg:col-start-2 lg:col-span-6 flex flex-col h-full space-y-4">
-                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full flex flex-col">
-                        <InputCardHeader
+                {/* ── Left Column: Inputs ── */}
+                <div className="lg:col-span-7 flex flex-col h-full space-y-4">
+                    <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-2xl overflow-hidden h-full flex flex-col">
+
+                        <CalculatorCardHeader
                             title="Campaign Data"
-                            subtitle="Enter your list size, costs, and performance rates."
-                            scrollId="how-to-use"
+                            description="Essential metrics for quick ROI calculation."
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
                         />
 
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                            {/* List & Cost */}
+                        <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
+                            {/* Campaign Setup */}
                             <div className="space-y-3">
                                 <MadhuSubHeader title="Campaign setup" icon={Mail} withDot={false} className="mb-2" />
-                                <div className="flex flex-col gap-2.5">
+                                <div className="flex flex-col gap-4">
                                     <CalculatorInput
                                         label="List Size"
                                         value={listSize}
                                         onChange={setListSize}
                                         placeholder="10000"
-                                        tooltip="Total number of subscribers receiving this campaign."
+                                        tooltip="Total number of subscribers who will receive your email campaign."
                                     />
                                     <CalculatorInput
                                         label="Campaign Cost"
                                         value={campaignCost}
                                         onChange={setCampaignCost}
                                         placeholder="500.00"
-                                        tooltip="All-in cost: ESP fees, design, copywriting, and your time."
-                                        prefix="$"
+                                        tooltip="Total cost of running the campaign, including email software, design, copywriting, and marketing expenses."
+                                        prefix={currencySymbol}
                                     />
                                 </div>
                             </div>
 
-                            {/* Engagement Rates */}
                             <div className="h-px bg-slate-100 w-full" />
+
+                            {/* Performance Metrics */}
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Engagement metrics" icon={MousePointer} withDot={false} className="mb-2" />
-                                <div className="flex flex-col gap-2.5">
+                                <MadhuSubHeader title="Performance metrics" icon={Target} withDot={false} className="mb-2" />
+                                <div className="flex flex-col gap-4">
                                     <CalculatorInput
-                                        label="Open Rate"
-                                        value={openRate}
-                                        onChange={setOpenRate}
-                                        placeholder="20"
-                                        tooltip="Percentage of subscribers who open the email. Industry avg: ~20–25%."
-                                        suffix="%"
-                                    />
-                                    <CalculatorInput
-                                        label="Click-Through Rate"
+                                        label="Click-Through Rate (CTR)"
                                         value={clickThroughRate}
                                         onChange={setClickThroughRate}
                                         placeholder="3.0"
-                                        tooltip="Percentage of total emails delivered that resulted in at least one click."
+                                        tooltip="Percentage of recipients who clicked a link in your email after opening it."
                                         suffix="%"
                                     />
-                                </div>
-                            </div>
-
-                            {/* Conversion */}
-                            <div className="h-px bg-slate-100 w-full" />
-                            <div className="space-y-3">
-                                <MadhuSubHeader title="Conversion metrics" icon={Target} withDot={false} className="mb-2" />
-                                <div className="flex flex-col gap-2.5">
                                     <CalculatorInput
                                         label="Conversion Rate"
                                         value={conversionRate}
                                         onChange={setConversionRate}
                                         placeholder="5.0"
-                                        tooltip="Percentage of clickers who complete a purchase."
+                                        tooltip="Percentage of visitors who completed the desired action (such as a purchase or signup) after clicking your email."
                                         suffix="%"
                                     />
                                     <CalculatorInput
-                                        label="Avg. Order Value"
+                                        label="Avg. Order Value (AOV)"
                                         value={averageOrderValue}
                                         onChange={setAverageOrderValue}
                                         placeholder="50.00"
-                                        tooltip="The average value of each order generated from this campaign."
-                                        prefix="$"
+                                        tooltip="Average revenue generated from each successful conversion or purchase."
+                                        prefix={currencySymbol}
                                     />
                                 </div>
                             </div>
@@ -176,202 +166,54 @@ export function EmailROICalculator() {
                                 onReset={handleReset}
                                 onCopy={handleCopy}
                                 isCopied={isCopied}
-                                className="pt-2 mt-auto"
+                                copyDisabled={!isCalculated}
+                                className="pt-4"
                             />
                         </CardContent>
                     </Card>
                 </div>
 
-                {/* Right Column: Results */}
-                <div className="lg:col-span-4 space-y-3 lg:sticky lg:top-32">
+                {/* ── Right Column: Results ── */}
+                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-32">
 
-                    {/* Primary Result Card */}
-                    <ResultFeedbackCard
+                    {/* ResultSummaryCard */}
+                    <ResultSummaryCard
                         title="ROI (Return on Investment)"
-                        titleLabel={!hasAnyData ? "AWAITING DATA" : netProfit >= 0 ? "PROFIT" : "LOSS"}
-                        labelClassName={cn(
-                            "text-[10px] font-black px-2 py-0.5 rounded-md transition-colors",
-                            !hasAnyData ? "bg-slate-500/20 text-slate-300" :
-                                netProfit >= 0 ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-200"
-                        )}
-                        mainValue={
-                            <div className="flex items-baseline gap-2">
-                                <Counter
-                                    value={roi}
-                                    formatter={(v: number) => `${v.toFixed(2)}%`}
-                                    className={cn("text-white", hasAnyData && netProfit < 0 && "text-red-200 font-black")}
-                                />
-                                <span className="text-white/60 text-lg font-medium">Return</span>
-                            </div>
-                        }
-                    >
-                        <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-2">
-                                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">ROAS</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Revenue generated for every $1 spent. (Revenue / Cost)
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-lg font-bold text-blue-400">
-                                        <Counter value={roas} formatter={(v: number) => `${v.toFixed(2)}x`} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">Net Profit</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Total Revenue minus Campaign Cost.
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className={cn("text-lg font-bold", netProfit >= 0 ? "text-blue-400" : "text-red-300")}>
-                                        <Counter value={netProfit} formatter={(v: number) => formatCurrency(v)} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">CPA</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Cost Per Acquisition — how much each conversion costs you.
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-lg font-bold text-blue-400">
-                                        <Counter value={cpa} formatter={(v: number) => formatCurrency(v)} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">Rev / Sub</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button type="button" className="text-slate-300">
-                                                        <Info className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    Revenue generated per subscriber on your list.
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-lg font-bold text-blue-400">
-                                        <Counter value={revenuePerSubscriber} formatter={(v: number) => formatCurrency(v)} />
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </ResultFeedbackCard>
+                        primaryResult={{
+                            value: roi.toFixed(2),
+                            unit: "%",
+                            label: "Return",
+                        }}
+                        secondaryResults={[
+                            {
+                                key: "netProfit",
+                                label: "Net Profit",
+                                value: formatCurrency(netProfit),
+                                tooltip: "Total revenue generated minus the campaign cost.",
+                            },
+                            {
+                                key: "cpa",
+                                label: "CPA",
+                                value: formatCurrency(cpa),
+                                tooltip: "Average cost required to acquire one customer or conversion.",
+                            },
+                        ]}
+                        showLiveBadge={true}
+                        liveBadgeText={isCalculated ? (netProfit >= 0 ? "Profit" : "Loss") : "Awaiting Data"}
+                        isCalculated={isCalculated}
+                        profitLossKey="netProfit"
+                    />
 
                     {/* Funnel Breakdown */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-3">
-                        <h4 className="text-xs font-bold text-slate-700 mb-3 flex items-center gap-2">
-                            <PieChart className="w-3.5 h-3.5 text-blue-500" />
-                            Subscriber Funnel
-                        </h4>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            {/* Step 1: Opens */}
-                            <div className="bg-blue-50/50 rounded-xl p-3 border border-blue-100 flex flex-col justify-between h-full relative group">
-                                <div className="flex items-center justify-between mb-2">
-                                    <div className="p-1.5 bg-blue-100 text-blue-600 rounded-lg">
-                                        <Mail className="w-4 h-4" />
-                                    </div>
-                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-100/50 px-2 py-0.5 rounded-full">
-                                        {openPct}%
-                                    </span>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Opens</p>
-                                    <p className="text-lg font-bold text-blue-400">{formatNumber(opens)}</p>
-                                </div>
-                                {/* Connector Line (Desktop) */}
-                                <div className="hidden sm:block absolute top-1/2 -right-4 w-4 h-[2px] bg-slate-200 z-10" />
-                            </div>
-
-                            {/* Step 2: Clicks */}
-                            <div className="bg-purple-50/50 rounded-xl p-3 border border-purple-100 flex flex-col justify-between h-full relative group">
-                                <div className="flex items-center justify-between mb-2">
-                                    <div className="p-1.5 bg-purple-100 text-purple-600 rounded-lg">
-                                        <MousePointer className="w-4 h-4" />
-                                    </div>
-                                    <span className="text-[10px] font-bold text-purple-600 bg-purple-100/50 px-2 py-0.5 rounded-full">
-                                        {ctrPct}%
-                                    </span>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Clicks</p>
-                                    <p className="text-lg font-bold text-blue-400">{formatNumber(clicks)}</p>
-                                </div>
-                                {/* Connector Line (Desktop) */}
-                                <div className="hidden sm:block absolute top-1/2 -right-4 w-4 h-[2px] bg-slate-200 z-10" />
-                            </div>
-
-                            {/* Step 3: Conversions */}
-                            <div className="bg-emerald-50/50 rounded-xl p-3 border border-emerald-100 flex flex-col justify-between h-full relative group">
-                                <div className="flex items-center justify-between mb-2">
-                                    <div className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg">
-                                        <Target className="w-4 h-4" />
-                                    </div>
-                                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-100/50 px-2 py-0.5 rounded-full">
-                                        {convPct}%
-                                    </span>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500 mb-0.5">Sales</p>
-                                    <p className="text-lg font-bold text-blue-400">{formatNumber(conversions)}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-2 flex items-center justify-between">
-                            <div className="flex items-center gap-1.5">
-                                <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Total Revenue</span>
-                                <TooltipProvider delayDuration={100}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                                <Info className="h-3.5 w-3.5" />
-                                            </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                            Calculated as: Conversions × Average Order Value (AOV)
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                            <span className="text-lg font-black text-slate-900">{formatCurrency(revenue)}</span>
-                        </div>
-                    </Card>
-
+                    <CampaignResults
+                        clicks={clicks}
+                        conversions={conversions}
+                        revenue={revenue}
+                        ctrPct={ctrPct}
+                        convPct={convPct}
+                        formatNumber={formatNumber}
+                        formatCurrency={formatCurrency}
+                    />
                 </div>
             </div>
         </FadeIn>
