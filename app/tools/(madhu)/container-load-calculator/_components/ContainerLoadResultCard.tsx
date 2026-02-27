@@ -3,11 +3,19 @@
 import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { Info } from "lucide-react"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface SecondaryMetric {
     label: string
     value: React.ReactNode
     color?: string
+    tooltip?: string
 }
 
 interface ContainerLoadResultCardProps {
@@ -53,7 +61,23 @@ export function ContainerLoadResultCard({
                     "font-medium uppercase tracking-wider flex justify-between items-center",
                     variant === "compact" ? "text-[10px] text-slate-500" : "text-sm text-slate-300/80"
                 )}>
-                    <span>{title}</span>
+                    <div className="flex items-center gap-1.5">
+                        <span>{title}</span>
+                        {tooltip && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Info className="w-3 h-3 text-slate-400 cursor-help" />
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top">
+                                        <p className="text-xs max-w-[200px] leading-relaxed font-normal normal-case tracking-normal">
+                                            {tooltip}
+                                        </p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
+                    </div>
                     {titleLabel && (
                         <span className={cn(
                             "text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors",
@@ -84,21 +108,38 @@ export function ContainerLoadResultCard({
                         "pt-4 space-y-4",
                         variant === "default" ? "border-t border-white/10" : ""
                     )}>
-                        <div className="grid grid-cols-2 gap-4">
-                            {secondaryMetrics.map((metric, index) => (
-                                <div key={index} className="bg-white/5 rounded-xl p-4 border border-white/5">
-                                    <p className="text-xs font-bold text-slate-300 mb-1">{metric.label}</p>
-                                    <div className={cn(
-                                        "text-xl font-bold break-all",
-                                        index === 0 ? "text-blue-400" : "text-blue-400"
-                                    )}>
-                                        {metric.value}
+                        <TooltipProvider>
+                            <div className="grid grid-cols-2 gap-4">
+                                {secondaryMetrics.map((metric, index) => (
+                                    <div key={index} className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                        <div className="flex items-center gap-1.5 mb-1">
+                                            <p className="text-xs font-bold text-slate-300">{metric.label}</p>
+                                            {metric.tooltip && (
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Info className="w-3 h-3 text-slate-400 cursor-help" />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top">
+                                                        <p className="text-xs max-w-[200px] leading-relaxed">
+                                                            {metric.tooltip}
+                                                        </p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            )}
+                                        </div>
+                                        <div className={cn(
+                                            "text-xl font-bold break-all",
+                                            metric.color || "text-blue-400"
+                                        )}>
+                                            {metric.value}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        </TooltipProvider>
                     </div>
                 )}
+
 
                 {children && (
                     <div className={cn(

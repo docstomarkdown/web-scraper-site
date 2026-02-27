@@ -83,6 +83,7 @@ const CONTAINERS = {
     }
 }
 
+
 export function ContainerLoadCalculator() {
     const { toast } = useToast()
     const scrollToSection = (id: string) => {
@@ -481,12 +482,14 @@ Calculated via Container Load Calculator
                                 {
                                     label: "Total Weight",
                                     value: result ? `${Math.round(result.totalWeight).toLocaleString()} kg` : "0 kg",
-                                    color: result?.limitReason === "Weight Limit" ? "text-amber-500" : "text-blue-400"
+                                    color: result?.limitReason === "Weight Limit" ? "text-amber-500" : "text-blue-400",
+                                    tooltip: "Combined gross weight of all boxes and pallets. Must not exceed the container's max payload capacity."
                                 },
                                 {
                                     label: "Volume Usage",
                                     value: result ? `${result.totalVolume.toFixed(2)} m³` : "0.00 m³",
-                                    color: "text-blue-400"
+                                    color: "text-blue-400",
+                                    tooltip: "The physical space occupied by your cargo in cubic meters. Based on carton exterior dimensions."
                                 }
                             ]}
                         />
