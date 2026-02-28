@@ -9,28 +9,28 @@ export function EmailROIHowToUse() {
             title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Set Your Baseline",
+                    title: "Define Your Audience & Costs",
                     description:
-                        "Enter your total <strong>List Size</strong> and total <strong>Campaign Cost</strong>. This establishes your potential reach and the break-even point you need to surpass. Use the currency selector to match your local currency.",
+                        "Start by entering your total <strong>Number of Subscribers</strong> and the <strong>Total Campaign Cost</strong>. This includes email software, design, and production labor.",
                     icon: Users,
                 },
                 {
-                    title: "Model the Funnel",
+                    title: "Model Your Funnel Performance",
                     description:
-                        "Input your estimated <strong>Open Rate</strong>, <strong>Click-Through Rate (CTR)</strong>, and <strong>Conversion Rate</strong>. The tool will instantly visualize your 'Subscriber Funnel' to show exactly where you lose potential customers.",
+                        "Enter your <strong>Estimated Open Rate</strong>, <strong>Email CTR (on Opens)</strong>, and <strong>Post-Click Conversion Rate</strong>. We've pre-filled industry benchmarks (20% opens, 2.5% CTR) to help you get started.",
                     icon: BarChart3,
                 },
                 {
-                    title: "Calculate Financials",
+                    title: "Analyze Revenue & Profitability",
                     description:
-                        "Add your <strong>Average Order Value (AOV)</strong> to unlock key profitability metrics like <strong>ROI</strong>, <strong>ROAS</strong>, and <strong>Net Profit</strong>, all updated in real time.",
+                        "Add your <strong>Average Order Value (AOV)</strong>. The tool instantly calculates <strong>Net Profit</strong> and <strong>Cost Per Acquisition (CPA)</strong> to show you exactly how much each new sale costs.",
                     icon: DollarSign,
                 },
             ]}
             goal={{
-                title: "Turn Every Send Into a Profitable Decision",
+                title: "Scale Your Success with Data",
                 description:
-                    "Use these numbers to <strong>benchmark your campaign against industry averages</strong>, identify your weakest funnel stage, and confidently decide whether to invest more budget — or redirect it elsewhere.",
+                    "Stop guessing and start optimizing. This breakdown reveals exactly where you're losing customers—whether it's the subject line, the email content, or the bridge to your landing page. Fix the 'leak' to maximize your profit.",
                 icon: TrendingUp,
             }}
         />

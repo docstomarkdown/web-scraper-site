@@ -21,9 +21,9 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
         <section id="how-to-use" className="relative">
             <ToolSectionHeader icon={icon} title={title} />
 
-            <div className="relative max-w-2xl mx-auto pl-4 sm:pl-8">
+            <div className="relative">
                 {/* Vertical Connector Line */}
-                <div className="absolute left-[34px] sm:left-[54px] top-8 bottom-8 w-0.5 bg-blue-100 -z-10" />
+                <div className="absolute left-[20px] sm:left-[24px] top-8 bottom-8 w-0.5 bg-blue-100 -z-10" />
 
                 <div className="space-y-6">
                     {steps.map((step, index) => {
@@ -41,8 +41,8 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                             Step {stepNumber}
                                         </span>
                                     </div>
-                                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1.5">{step.title}</h3>
-                                    <p className="text-sm sm:text-[15px] text-slate-500 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: step.description }} />
+                                    <h3 className="text-xl font-bold text-slate-900 mb-1.5">{step.title}</h3>
+                                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: step.description }} />
                                 </div>
                             </div>
                         )
@@ -63,8 +63,8 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                         Step {(steps.length + 1).toString().padStart(2, '0')}
                                     </span>
                                 </div>
-                                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1.5">{goal.title}</h3>
-                                <p className="text-sm sm:text-[15px] text-slate-500 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: goal.description }} />
+                                <h3 className="text-xl font-bold text-slate-900 mb-1.5">{goal.title}</h3>
+                                <p className="text-[15px] text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: goal.description }} />
                             </div>
                         </div>
                     )}

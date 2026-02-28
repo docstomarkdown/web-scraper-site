@@ -38,38 +38,32 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                         >
                             <div className="flex flex-col md:flex-row">
                                 {/* Left: Content */}
-                                <div className="flex-1 p-6 order-2 md:order-1">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className={`w-11 h-11 rounded-xl ${item.iconBg} ${item.iconColor} flex items-center justify-center border border-slate-100/50 shadow-sm transition-transform duration-300 group-hover:scale-110`}>
+                                <div className="flex-1 p-5 sm:p-7 order-2 md:order-1">
+                                    <div className="flex items-start gap-4 sm:gap-6">
+                                        <div className={cn(
+                                            "flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center border border-slate-100 shadow-sm transition-transform duration-300 group-hover:scale-110",
+                                            item.iconBg,
+                                            item.iconColor
+                                        )}>
                                             <Icon className="w-5 h-5" />
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <h3 className="text-lg font-bold text-slate-900 leading-tight">{item.title}</h3>
-                                            {item.tooltip && (
-                                                <TooltipProvider delayDuration={100}>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                                                <Info className="h-4 w-4" />
-                                                            </button>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent side="top" className="max-w-xs text-sm bg-slate-900 text-white border-slate-800 p-3 rounded-xl shadow-xl">
-                                                            {item.tooltip}
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            )}
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <h3 className="text-xl font-bold text-slate-900 leading-tight">
+                                                    {item.title}
+                                                </h3>
+                                            </div>
+                                            <div className="text-[15px] text-slate-600 leading-relaxed font-medium opacity-90">
+                                                {item.description}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="text-base text-slate-600 leading-relaxed font-medium opacity-90">
-                                        {item.description}
                                     </div>
                                 </div>
 
                                 {/* Right: Takeaway Stat Panel (Optional) */}
                                 {item.stat && (
                                     <div className="flex md:flex-col items-center justify-center gap-2 p-5 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2 text-center">
-                                        <div className={`text-2xl md:text-3xl font-extrabold ${item.statColor || "text-slate-900"} tracking-tight leading-tight text-center px-1`}>
+                                        <div className={`text-2xl font-extrabold ${item.statColor || "text-slate-900"} tracking-tight leading-tight text-center px-1`}>
                                             {item.stat}
                                         </div>
                                         <div className={cn(

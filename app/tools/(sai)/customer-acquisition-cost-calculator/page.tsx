@@ -27,7 +27,7 @@ export default function CACCalculatorPage() {
                     <CACCalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16" id="cac-guide">
+                <div className="max-w-5xl mx-auto space-y-16" id="cac-guide">
                     <FadeIn delay={0.2}>
                         <CACHowToUse />
                     </FadeIn>

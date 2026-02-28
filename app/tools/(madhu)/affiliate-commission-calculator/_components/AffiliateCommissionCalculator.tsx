@@ -33,10 +33,10 @@ interface AffiliateState {
 const DEFAULT_STATE: AffiliateState = {
     productPrice: "",
     productCost: "",
-    commissionRate: "",
+    commissionRate: 15,
     affiliateCount: "",
     salesPerAffiliate: "",
-    refundRate: ""
+    refundRate: 5
 }
 
 export function AffiliateCommissionCalculator() {
@@ -152,44 +152,18 @@ Results:
                                         value={values.productPrice}
                                         onChange={(v) => handleInputChange('productPrice', v)}
                                         placeholder="99.00"
-                                        tooltip="The retail price your customer pays for the product or service."
+                                        tooltip="Amount customers pay for one product."
                                         prefix={currencySymbol}
                                         groupingTitle="Product & Pricing"
                                         groupingIcon={Package}
                                     />
                                     <CalculatorInput
-                                        label="Product Cost / COGS"
+                                        label="Product Cost (Your Cost)"
                                         value={values.productCost}
                                         onChange={(v) => handleInputChange('productCost', v)}
                                         placeholder="35.00"
-                                        tooltip="Your cost to produce or purchase the product."
+                                        tooltip="Your cost to make or buy one product."
                                         prefix={currencySymbol}
-                                    />
-                                </div>
-                            </div>
-
-                            <Separator />
-
-                            {/* Section: Affiliate Program */}
-                            <div className="space-y-3">
-                                <div className="flex flex-col gap-4">
-                                    <CalculatorInput
-                                        label="Commission Rate"
-                                        value={values.commissionRate}
-                                        onChange={(v) => handleInputChange('commissionRate', v)}
-                                        placeholder="20"
-                                        tooltip="Percentage of the sale price paid to the affiliate for each conversion."
-                                        suffix="%"
-                                        groupingTitle="Affiliate Program"
-                                        groupingIcon={Users}
-                                    />
-                                    <CalculatorInput
-                                        label="Refund Rate"
-                                        value={values.refundRate}
-                                        onChange={(v) => handleInputChange('refundRate', v)}
-                                        placeholder="5"
-                                        tooltip="Expected percentage of orders that will be refunded or returned."
-                                        suffix="%"
                                     />
                                 </div>
                             </div>
@@ -200,20 +174,53 @@ Results:
                             <div className="space-y-3">
                                 <div className="flex flex-col gap-4">
                                     <CalculatorInput
-                                        label="Active Affiliates"
+                                        label="Number of Active Affiliates"
                                         value={values.affiliateCount}
                                         onChange={(v) => handleInputChange('affiliateCount', v)}
                                         placeholder="10"
-                                        tooltip="Total number of affiliates promoting your product."
-                                        groupingTitle="Scale Projection"
+                                        tooltip="How many affiliates are currently promoting your product."
+                                        groupingTitle="Sales Projection"
                                         groupingIcon={BarChart3}
                                     />
                                     <CalculatorInput
-                                        label="Sales per Affiliate"
+                                        label="Average Sales per Affiliate"
                                         value={values.salesPerAffiliate}
                                         onChange={(v) => handleInputChange('salesPerAffiliate', v)}
                                         placeholder="5"
-                                        tooltip="Average sales each affiliate is expected to generate."
+                                        tooltip="Estimated sales generated by each affiliate."
+                                    />
+                                </div>
+                            </div>
+
+                            <Separator />
+
+                            {/* Section: Affiliate Program */}
+                            <div className="space-y-3 relative">
+                                <div className="absolute top-1 right-0 z-10 hidden sm:block">
+                                    <span className="text-[10px] text-slate-400 bg-slate-50 border border-slate-200 rounded-full px-2 py-0.5 font-medium shrink-0">
+                                        Industry benchmarks pre-filled
+                                    </span>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <CalculatorInput
+                                        label="Commission Rate"
+                                        value={values.commissionRate}
+                                        onChange={(v) => handleInputChange('commissionRate', v)}
+                                        placeholder="15"
+                                        tooltip="Percentage of each sale paid to affiliates. Industry average: 10–20%"
+                                        suffix="%"
+                                        hint="Industry standard range: 10% – 20%"
+                                        groupingTitle="Affiliate Settings"
+                                        groupingIcon={Users}
+                                    />
+                                    <CalculatorInput
+                                        label="Refund Rate"
+                                        value={values.refundRate}
+                                        onChange={(v) => handleInputChange('refundRate', v)}
+                                        placeholder="5"
+                                        tooltip="Estimated percentage of sales refunded. Industry average: 2–8%"
+                                        suffix="%"
+                                        hint="Industry standard range: 2% – 8%"
                                     />
                                 </div>
                             </div>
@@ -233,45 +240,37 @@ Results:
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 space-y-4">
                     <ResultSummaryCard
-                        title="NET REVENUE (After commissions & COGS)"
+                        title={results.netRevenue < 0 ? "Estimated Loss (After Costs & Commissions)" : "Estimated Profit (After Costs & Commissions)"}
                         primaryResult={{
                             value: Math.round(results.netRevenue).toLocaleString(),
                             unit: currencySymbol,
-                            label: "Estimated Profit"
+                            label: results.netRevenue < 0 ? "Estimated Loss" : "Estimated Profit",
+                            key: "netRevenue"
                         }}
                         secondaryResults={[
-                            {
-                                key: "commissionPerSale",
-                                label: "Commission / Sale",
-                                value: results.commissionPerSale.toFixed(2),
-                                unit: currencySymbol,
-                                tooltip: "Amount earned by an affiliate for one sale."
-                            },
                             {
                                 key: "totalPayout",
                                 label: "Total Payout",
                                 value: Math.round(results.totalPayout).toLocaleString(),
                                 unit: currencySymbol,
-                                tooltip: "Total commission paid to all affiliates."
+                                tooltip: "Total commission paid across all affiliates."
                             },
                             {
                                 key: "netSales",
                                 label: "Net Sales (units)",
                                 value: Math.round(results.netSales).toString(),
                                 unit: " units",
-                                tooltip: "Successful sales after refunds are deducted."
-                            },
-                            {
-                                key: "netPerSale",
-                                label: "Net / Sale",
-                                value: results.netPerSale.toFixed(2),
-                                unit: currencySymbol,
-                                tooltip: "Your earnings per sale after costs and commissions."
+                                tooltip: "Total number of successful sales you actually keep after accounting for returns and refunds."
                             }
                         ]}
                         isCalculated={hasInputs}
-                        profitLossKey="netPerSale"
-                    // description="Estimated profit after paying affiliates and product costs."
+                        profitLossKey="netRevenue"
+                        emptyMessage="Enter your product price and commission rate to see your estimated profit."
+                        dynamicMessages={{
+                            positive: "Great job! Your affiliate program is structured for a healthy profit margin.",
+                            negative: "Your program is operating at a loss. Try lowering the commission or reducing product costs.",
+                            neutral: "Your program is breaking even. You're covering costs but not making a profit."
+                        }}
                     />
 
                     {/* Break-Even inline alert — only shows when COGS is entered */}

@@ -6,32 +6,32 @@ import { DollarSign, Percent, TrendingUp, AlertCircle, ShieldCheck } from "lucid
 export function AffiliateHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Calculator"
+            title="Mastering Your Affiliate Payouts"
             steps={[
                 {
-                    title: "Enter Product Details",
-                    description: "Input your retail **Price** and **Product Cost (COGS)**. This is the foundation for calculating your true net profit margin.",
+                    title: "Configure Product & Pricing",
+                    description: "Select your <strong>preferred currency</strong> and input your <strong>Product Price</strong> and <strong>Product Cost (COGS)</strong>. This sets the foundation for calculating your accurate gross margin per sale.",
                     icon: DollarSign
                 },
                 {
-                    title: "Set Commission & Refunds",
-                    description: "Add your **Commission Rate** and estimated **Refund Rate**. The tool automatically deducts refunds so you see the real payout liability.",
+                    title: "Set Affiliate Performance Settings",
+                    description: "Input your target <strong>Commission Rate</strong> and the number of <strong>Active Affiliates</strong> with their <strong>Average Sales</strong>. This helps project your total payout liability.",
                     icon: Percent
                 },
                 {
-                    title: "Scale the Numbers",
-                    description: "Use the **Active Affiliates** inputs to simulate bulk payouts. See exactly how much cash you need to pay 10, 50, or 100 partners.",
+                    title: "Factor in Refund Realities",
+                    description: "Add your estimated <strong>Refund Rate</strong>. This tool automatically deducts refunded units so you see the <strong>Net Revenue</strong> you actually keep—not just gross numbers.",
                     icon: TrendingUp
                 },
                 {
-                    title: "Monitor the 'Loss Warning'",
-                    description: "Watch the **Profit Safe / Loss Warning** alert in the results card. It will turn red instantly if your commission rate exceeds your break-even point.",
+                    title: "Analyze Payout Sustainability",
+                    description: "Instantly view your <strong>Total Payout</strong> and <strong>Net Profit</strong>. Check the <strong>Profit Safe / Loss Warning</strong> badge to ensures your commissions remain sustainable.",
                     icon: AlertCircle
                 }
             ]}
             goal={{
-                title: "Eliminate Payout Leaks",
-                description: "The goal is to design a commission structure that is competitive for affiliates but rigorously protects your bottom line against refunds and low margins.",
+                title: "Build a Profitable Program",
+                description: "The goal is to design a commission structure that attracts top-tier talent while remaining mathematically sustainable even after costs and refunds.",
                 icon: ShieldCheck
             }}
         />

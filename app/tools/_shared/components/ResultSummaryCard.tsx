@@ -13,6 +13,7 @@ interface SecondaryResult {
     value: string | number
     unit?: string
     tooltip?: string
+    isCurrency?: boolean // New flag to handle currency formatting
 }
 
 interface ResultSummaryCardProps {
@@ -21,13 +22,22 @@ interface ResultSummaryCardProps {
         value: string | number
         unit?: string
         label?: string
+        isCurrency?: boolean
+        key?: string
     }
     secondaryResults: SecondaryResult[]
+    currency?: string // Global currency code for the card
     showLiveBadge?: boolean
     liveBadgeText?: string
     isCalculated?: boolean
     profitLossKey?: string
     description?: string
+    emptyMessage?: string
+    dynamicMessages?: {
+        positive: string
+        negative: string
+        neutral: string
+    }
     className?: string
 }
 
@@ -35,15 +45,40 @@ export function ResultSummaryCard({
     title,
     primaryResult,
     secondaryResults,
+    currency,
     showLiveBadge = true,
     liveBadgeText = "LIVE",
     isCalculated = false,
     profitLossKey,
     description,
+    emptyMessage,
+    dynamicMessages,
     className
 }: ResultSummaryCardProps) {
 
-    const formatValueWithUnit = (value: string | number, unit?: string) => {
+    const formatValueWithUnit = (value: string | number, unit?: string, isCurrency?: boolean) => {
+        const numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]+/g, "")) : value
+
+        if (isCurrency && currency) {
+            try {
+                const formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: currency,
+                    maximumFractionDigits: 2
+                })
+                const formatted = formatter.format(numValue)
+
+                // If it's a currency, we use the formatter's output directly
+                return (
+                    <span className="flex items-baseline">
+                        {formatted}
+                    </span>
+                )
+            } catch (e) {
+                // Fallback to old logic if formatting fails
+            }
+        }
+
         if (!unit) return value
 
         // Symbols that usually go at the front
@@ -70,12 +105,26 @@ export function ResultSummaryCard({
 
     const getNumericResult = () => {
         if (!profitLossKey) return 0
+
+        // Check primary result first
+        if (primaryResult.key === profitLossKey) {
+            return typeof primaryResult.value === 'string' ? parseFloat(primaryResult.value.replace(/[^0-9.-]+/g, "")) : primaryResult.value
+        }
+
+        // Then check secondary results
         const result = secondaryResults.find(r => r.key === profitLossKey)
         if (!result) return 0
         return typeof result.value === 'string' ? parseFloat(result.value.replace(/[^0-9.-]+/g, "")) : result.value
     }
 
     const numericProfitLoss = getNumericResult()
+    const isLoss = numericProfitLoss < 0
+
+    // Helper to flip Profit/Loss text automatically
+    const autoAdjustText = (text: string) => {
+        if (!isLoss) return text
+        return text.replace(/Profit/g, "Loss").replace(/PROFIT/g, "LOSS").replace(/profit/g, "loss")
+    }
 
     const getSecondaryValueColor = (result: SecondaryResult) => {
         if (!isCalculated) return "text-blue-400"
@@ -125,6 +174,53 @@ export function ResultSummaryCard({
         }
     })()
 
+    // Dynamic description generator
+    const displayDescription = (() => {
+        if (description) return description // User override always wins
+
+        if (!isCalculated) {
+            return emptyMessage || "Enter your campaign details to see if you will make or lose money."
+        }
+
+        if (profitLossKey) {
+            if (numericProfitLoss > 0) {
+                return dynamicMessages?.positive || "Great job! Your campaign is generating a positive return on investment."
+            }
+            if (numericProfitLoss < 0) {
+                return dynamicMessages?.negative || "Your campaign is operating at a loss. Consider optimizing your costs or improving conversion rates."
+            }
+            return dynamicMessages?.neutral || "Your campaign broke even. You made back exactly what you spent."
+        }
+
+        return "A quick measure of your success."
+    })()
+
+    // Handle title and label adjustments
+    const displayTitle = autoAdjustText(title)
+    const displayLabel = primaryResult.label ? autoAdjustText(primaryResult.label) : undefined
+
+    // For display purposes, we might want to show the absolute value if we are already labeling it as "Loss"
+    // and if it's the primary profit/loss result.
+    const getDisplayValue = (val: string | number, key?: string) => {
+        if (key !== profitLossKey || !isLoss) return val
+
+        // If it's a string, we need to handle formatting carefully
+        if (typeof val === 'string') {
+            // Check if it looks like a negative number (contains - or starts with ( )
+            const numeric = parseFloat(val.replace(/[^0-9.-]+/g, ""))
+            if (numeric < 0) {
+                // Return version without minus sign
+                return val.replace("-", "").replace("(", "").replace(")", "")
+            }
+        } else if (typeof val === 'number') {
+            return Math.abs(val)
+        }
+
+        return val
+    }
+
+    const displayValue = getDisplayValue(primaryResult.value, primaryResult.key)
+
     return (
         <Card className={cn(
             "relative overflow-hidden border-0 bg-slate-700 shadow-xl p-6 rounded-2xl",
@@ -138,7 +234,7 @@ export function ResultSummaryCard({
             <div className="relative z-10 flex justify-between items-start gap-4 mb-6">
                 <div className="flex-1 min-w-0 space-y-3">
                     <h3 className="text-slate-300 font-bold text-xs sm:text-sm tracking-wider break-words">
-                        {title.split(/(\(.*?\))/g).map((part, i) => (
+                        {displayTitle.split(/(\(.*?\))/g).map((part, i) => (
                             part.startsWith('(') && part.endsWith(')') ? (
                                 <span key={i} className="normal-case font-medium ml-1">
                                     {part}
@@ -150,19 +246,14 @@ export function ResultSummaryCard({
                     </h3>
                     <div className="flex items-baseline gap-2 mt-1 flex-wrap">
                         <div className="text-2xl sm:text-5xl font-extrabold text-white tracking-tight leading-none truncate">
-                            {formatValueWithUnit(primaryResult.value, primaryResult.unit)}
+                            {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
                         </div>
-                        {primaryResult.label && (
+                        {displayLabel && (
                             <span className="text-xs sm:text-base text-slate-300 font-semibold whitespace-nowrap opacity-40">
-                                {primaryResult.label}
+                                {displayLabel}
                             </span>
                         )}
                     </div>
-                    {description && (
-                        <p className="text-white/40 text-[10px] sm:text-[13px] font-medium mt-5 leading-relaxed max-w-[320px]">
-                            {description}
-                        </p>
-                    )}
                 </div>
 
                 {showLiveBadge && (
@@ -200,7 +291,7 @@ export function ResultSummaryCard({
                     >
                         <div className="flex items-center gap-1.5 mb-2">
                             <span className="text-xs sm:text-sm font-bold text-slate-300 whitespace-nowrap">
-                                {result.label}
+                                {autoAdjustText(result.label)}
                             </span>
                             {result.tooltip && (
                                 <TooltipProvider delayDuration={0}>
@@ -221,7 +312,11 @@ export function ResultSummaryCard({
                             "text-base sm:text-lg font-extrabold tracking-tight transition-colors duration-300",
                             getSecondaryValueColor(result)
                         )}>
-                            {formatValueWithUnit(result.value, result.unit)}
+                            {formatValueWithUnit(
+                                getDisplayValue(result.value, result.key),
+                                result.unit,
+                                result.isCurrency
+                            )}
                         </div>
                     </motion.div>
                 ))}

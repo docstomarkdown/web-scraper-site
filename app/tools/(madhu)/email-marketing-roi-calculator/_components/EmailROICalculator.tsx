@@ -1,53 +1,51 @@
 "use client"
 
 import React, { useState } from "react"
-import { MadhuSubHeader, ActionButtons } from "../../ToolTemplate"
+import { ActionButtons } from "../../ToolTemplate"
 import {
-    Counter,
     FadeIn,
     CalculatorInput,
-    CurrencyCombobox,
     ResultSummaryCard,
     CalculatorCardHeader,
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
-import { currencies } from "@/app/tools/_shared/components/CurrencyCombobox"
-import {
-    Mail,
-    MousePointer,
-    Target,
-} from "lucide-react"
+import { Mail, Target } from "lucide-react"
 import { CampaignResults } from "./CampaignResults"
 
 export function EmailROICalculator() {
     // Currency
     const [currency, setCurrency] = useState("USD")
 
-    // Inputs
+    // Inputs — pre-filled with realistic industry benchmark defaults
     const [listSize, setListSize] = useState<number | "">("")
     const [campaignCost, setCampaignCost] = useState<number | "">("")
-    const [clickThroughRate, setClickThroughRate] = useState<number | "">("")
-    const [conversionRate, setConversionRate] = useState<number | "">("")
-    const [averageOrderValue, setAverageOrderValue] = useState<number | "">("")
+    const [openRate, setOpenRate] = useState<number | "">(20)             // industry avg open rate
+    const [clickThroughRate, setClickThroughRate] = useState<number | "">(2.5)   // CTR on opens
+    const [conversionRate, setConversionRate] = useState<number | "">(3)          // post-click conversion
+    const [averageOrderValue, setAverageOrderValue] = useState<number | "">(50)    // avg order value
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     const handleReset = () => {
         setListSize("")
         setCampaignCost("")
-        setClickThroughRate("")
-        setConversionRate("")
-        setAverageOrderValue("")
+        // Reset to benchmark defaults
+        setOpenRate(20)
+        setClickThroughRate(2.5)
+        setConversionRate(3)
+        setAverageOrderValue(50)
     }
 
-    // Core Calculations
+    // Core Calculations — full funnel: subscribers → opens → clicks → conversions
     const size = val(listSize)
     const cost = val(campaignCost)
+    const openPct = val(openRate)
     const ctrPct = val(clickThroughRate)
     const convPct = val(conversionRate)
     const aov = val(averageOrderValue)
 
-    const clicks = Math.round(size * (ctrPct / 100))
+    const opens = Math.round(size * (openPct / 100))
+    const clicks = Math.round(opens * (ctrPct / 100))
     const conversions = Math.round(clicks * (convPct / 100))
     const revenue = conversions * aov
     const netProfit = revenue - cost
@@ -57,9 +55,6 @@ export function EmailROICalculator() {
     const isCalculated = size > 0 || cost > 0
 
     // Currency formatting
-    const selectedCurrency = currencies.find((c) => c.code === currency)
-    const currencySymbol = selectedCurrency?.symbol ?? "$"
-
     const formatCurrency = (v: number) =>
         new Intl.NumberFormat("en-US", {
             style: "currency",
@@ -75,12 +70,17 @@ export function EmailROICalculator() {
         const text =
             `Email Marketing ROI Results:\n\n` +
             `Inputs:\n` +
-            `- List Size: ${formatNumber(size)}\n` +
-            `- Campaign Cost: ${formatCurrency(cost)}\n` +
-            `- Click Rate: ${ctrPct}%\n` +
-            `- Conversion Rate: ${convPct}%\n` +
+            `- Number of Subscribers: ${formatNumber(size)}\n` +
+            `- Total Campaign Cost: ${formatCurrency(cost)}\n` +
+            `- Estimated Open Rate: ${openPct}%\n` +
+            `- Email CTR (on Opens): ${ctrPct}%\n` +
+            `- Post-Click Conversion Rate: ${convPct}%\n` +
             `- Avg Order Value: ${formatCurrency(aov)}\n\n` +
             `Results:\n` +
+            `- Opens: ${formatNumber(opens)}\n` +
+            `- Clicks: ${formatNumber(clicks)}\n` +
+            `- Conversions: ${formatNumber(conversions)}\n` +
+            `- Revenue: ${formatCurrency(revenue)}\n` +
             `- ROI: ${roi.toFixed(2)}%\n` +
             `- Net Profit: ${formatCurrency(netProfit)}\n` +
             `- CPA: ${formatCurrency(cpa)}`
@@ -108,58 +108,73 @@ export function EmailROICalculator() {
 
                         <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
                             {/* Campaign Setup */}
-                            <div className="space-y-3">
-                                <MadhuSubHeader title="Campaign setup" icon={Mail} withDot={false} className="mb-2" />
-                                <div className="flex flex-col gap-4">
-                                    <CalculatorInput
-                                        label="List Size"
-                                        value={listSize}
-                                        onChange={setListSize}
-                                        placeholder="10000"
-                                        tooltip="Total number of subscribers who will receive your email campaign."
-                                    />
-                                    <CalculatorInput
-                                        label="Campaign Cost"
-                                        value={campaignCost}
-                                        onChange={setCampaignCost}
-                                        placeholder="500.00"
-                                        tooltip="Total cost of running the campaign, including email software, design, copywriting, and marketing expenses."
-                                        prefix={currencySymbol}
-                                    />
-                                </div>
+                            <div className="space-y-4">
+                                <CalculatorInput
+                                    label="Number of Email Subscribers"
+                                    value={listSize}
+                                    onChange={setListSize}
+                                    placeholder="10000"
+                                    tooltip="Total number of subscribers who will receive your email campaign."
+                                    groupingTitle="Campaign setup"
+                                    groupingIcon={Mail}
+                                />
+                                <CalculatorInput
+                                    label="Total Campaign Cost"
+                                    value={campaignCost}
+                                    onChange={setCampaignCost}
+                                    placeholder="500.00"
+                                    tooltip="Total cost including email software, design, copywriting, and marketing expenses."
+                                    currency={currency}
+                                />
                             </div>
 
                             <div className="h-px bg-slate-100 w-full" />
 
                             {/* Performance Metrics */}
-                            <div className="space-y-3">
-                                <MadhuSubHeader title="Performance metrics" icon={Target} withDot={false} className="mb-2" />
-                                <div className="flex flex-col gap-4">
-                                    <CalculatorInput
-                                        label="Click-Through Rate (CTR)"
-                                        value={clickThroughRate}
-                                        onChange={setClickThroughRate}
-                                        placeholder="3.0"
-                                        tooltip="Percentage of recipients who clicked a link in your email after opening it."
-                                        suffix="%"
-                                    />
-                                    <CalculatorInput
-                                        label="Conversion Rate"
-                                        value={conversionRate}
-                                        onChange={setConversionRate}
-                                        placeholder="5.0"
-                                        tooltip="Percentage of visitors who completed the desired action (such as a purchase or signup) after clicking your email."
-                                        suffix="%"
-                                    />
-                                    <CalculatorInput
-                                        label="Avg. Order Value (AOV)"
-                                        value={averageOrderValue}
-                                        onChange={setAverageOrderValue}
-                                        placeholder="50.00"
-                                        tooltip="Average revenue generated from each successful conversion or purchase."
-                                        prefix={currencySymbol}
-                                    />
+                            <div className="space-y-4 relative">
+                                <div className="absolute top-1 right-0 z-10 hidden sm:block">
+                                    <span className="text-[10px] text-slate-400 bg-slate-50 border border-slate-200 rounded-full px-2 py-0.5 font-medium shrink-0">
+                                        Industry benchmarks pre-filled
+                                    </span>
                                 </div>
+                                <CalculatorInput
+                                    label="Estimated Open Rate"
+                                    value={openRate}
+                                    onChange={setOpenRate}
+                                    placeholder="20"
+                                    tooltip="Percentage of subscribers who open your email. Industry average: 20–25%."
+                                    suffix="%"
+                                    hint="Industry standard range: 20% – 25%"
+                                    groupingTitle="Performance metrics"
+                                    groupingIcon={Target}
+                                />
+                                <CalculatorInput
+                                    label="Email CTR (on Opens)"
+                                    value={clickThroughRate}
+                                    onChange={setClickThroughRate}
+                                    placeholder="2.5"
+                                    tooltip="Percentage of email openers who clicked a link. Industry average: 2–3%."
+                                    suffix="%"
+                                    hint="Industry standard range: 2% – 3%"
+                                />
+                                <CalculatorInput
+                                    label="Post-Click Conversion Rate"
+                                    value={conversionRate}
+                                    onChange={setConversionRate}
+                                    placeholder="3"
+                                    tooltip="Percentage of link clickers who completed a purchase. Industry average: 2–5%."
+                                    suffix="%"
+                                    hint="Industry standard range: 2% – 5%"
+                                />
+                                <CalculatorInput
+                                    label="Avg. Order Value (AOV)"
+                                    value={averageOrderValue}
+                                    onChange={setAverageOrderValue}
+                                    placeholder="50.00"
+                                    tooltip="Average revenue from each purchase. Pre-filled at 50 as a starting point."
+                                    currency={currency}
+                                    hint="Industry standard range: $50 – $150"
+                                />
                             </div>
 
                             <ActionButtons
@@ -176,9 +191,9 @@ export function EmailROICalculator() {
                 {/* ── Right Column: Results ── */}
                 <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-32">
 
-                    {/* ResultSummaryCard */}
                     <ResultSummaryCard
                         title="ROI (Return on Investment)"
+                        currency={currency}
                         primaryResult={{
                             value: roi.toFixed(2),
                             unit: "%",
@@ -188,27 +203,37 @@ export function EmailROICalculator() {
                             {
                                 key: "netProfit",
                                 label: "Net Profit",
-                                value: formatCurrency(netProfit),
+                                value: netProfit.toFixed(2),
+                                isCurrency: true,
                                 tooltip: "Total revenue generated minus the campaign cost.",
                             },
                             {
                                 key: "cpa",
-                                label: "CPA",
-                                value: formatCurrency(cpa),
-                                tooltip: "Average cost required to acquire one customer or conversion.",
+                                label: "Cost Per Acquisition",
+                                value: cpa.toFixed(2),
+                                isCurrency: true,
+                                tooltip: "Average cost required to acquire one customer.",
                             },
                         ]}
                         showLiveBadge={true}
                         liveBadgeText={isCalculated ? (netProfit >= 0 ? "Profit" : "Loss") : "Awaiting Data"}
                         isCalculated={isCalculated}
                         profitLossKey="netProfit"
+                        emptyMessage="Enter your list size and campaign cost to estimate your email ROI."
+                        dynamicMessages={{
+                            positive: "Great job! Your email campaign is profitable and generating a positive return.",
+                            negative: "Your campaign is currently at a loss. Try improving your Open Rate or CTR to boost results.",
+                            neutral: "Your campaign is breaking even. Consider optimizing your conversion path for profit."
+                        }}
                     />
 
                     {/* Funnel Breakdown */}
                     <CampaignResults
+                        opens={opens}
                         clicks={clicks}
                         conversions={conversions}
                         revenue={revenue}
+                        openPct={openPct}
                         ctrPct={ctrPct}
                         convPct={convPct}
                         formatNumber={formatNumber}

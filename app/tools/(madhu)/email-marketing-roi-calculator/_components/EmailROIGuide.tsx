@@ -6,44 +6,44 @@ import { Target, DollarSign, TrendingUp, BookOpen } from "lucide-react"
 export function EmailROIGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About Email Marketing ROI"
+            title="Everything You Need to Know About Email ROI"
             icon={BookOpen}
             items={[
                 {
-                    title: "The 'Vanity Metric' Trap",
+                    title: "The 'Open Rate' Strategy",
                     description:
-                        "High open rates feel good, but they don't pay the bills. A campaign with 15% opens and 5% clicks is often far more profitable than 30% opens and 1% clicks. Always optimize for the action closest to the sale — clicks and conversions, not opens.",
+                        "A high <strong>Estimated Open Rate</strong> is great, but it’s just step one. Modern email apps (like iOS Mail) can sometimes inflate this. Focus on keeping your subject lines relevant to ensure that those who open are actually interested in clicking through.",
                     icon: Target,
-                    stat: "Profit",
-                    statLabel: "Over Popularity",
+                    stat: "21.5%",
+                    statLabel: "Avg Open Rate",
                     iconBg: "bg-blue-100",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "Don't optimize for opens at the expense of clearer, sales-focused subject lines.",
+                    tooltip: "Industry average varies by niche, but 20–25% is a healthy baseline.",
                 },
                 {
-                    title: "The $1 Subscriber Rule",
+                    title: "Email CTR (on Opens)",
                     description:
-                        "A healthy, engaged email list should generate roughly $1 per subscriber per month. If your <strong>Revenue per Subscriber</strong> is significantly lower (e.g., $0.10), your list may be 'cold' or your offers aren't resonating. Use segmentation and re-engagement campaigns to fix this.",
+                        "This is the 'Click-to-Open' (CTOR) equivalent. It measures the engagement of those who actually saw the email. If your <strong>Email CTR (on Opens)</strong> is below 2%, your body copy or CTA button might not be persuasive enough.",
                     icon: DollarSign,
-                    stat: "$1.00",
-                    statLabel: "Target Rev/Sub",
+                    stat: "2.3%",
+                    statLabel: "Target CTR",
                     iconBg: "bg-emerald-100",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600",
-                    tooltip: "Revenue per Subscriber is a key health metric for your email program.",
+                    tooltip: "Higher CTRs mean your content truly resonates with your audience.",
                 },
                 {
-                    title: "CPA vs. LTV Context",
+                    title: "The Conversion Gap",
                     description:
-                        "Don't panic if your Cost Per Acquisition (CPA) seems high on a single email. If your Customer Lifetime Value (LTV) is high, you can afford more to acquire a customer because they'll buy again later without additional ad spend — making the first campaign ROI misleading.",
+                        "Your <strong>Post-Click Conversion Rate</strong> happens on your website. If clicks are high but conversions are low, the problem isn't your email — it’s your landing page. Ensure your email's promise matches the landing page's offer exactly.",
                     icon: TrendingUp,
-                    stat: "LTV",
-                    statLabel: "Wins Long Term",
+                    stat: "3-5%",
+                    statLabel: "Healthy Conv.",
                     iconBg: "bg-purple-100",
                     iconColor: "text-purple-600",
                     statColor: "text-purple-600",
-                    tooltip: "Consider the long-term value of a customer, not just the revenue from the first sale.",
+                    tooltip: "Don't confuse campaign clicks with actual sales.",
                 },
             ]}
         />

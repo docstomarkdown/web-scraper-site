@@ -26,7 +26,7 @@ export default function AmazonStorageFeeCalculatorPage() {
                     <StorageFeeCalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16" id="storage-guide">
+                <div className="max-w-5xl mx-auto space-y-16" id="storage-guide">
                     <FadeIn delay={0.2}>
                         <StorageFeeHowToUse />
                     </FadeIn>

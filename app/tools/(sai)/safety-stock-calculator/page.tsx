@@ -26,7 +26,7 @@ export default function SafetyStockCalculatorPage() {
                     <SafetyStockCalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16" id="how-to-use">
+                <div className="max-w-5xl mx-auto space-y-16" id="how-to-use">
                     <FadeIn delay={0.2}>
                         <SafetyStockHowToUse />
                     </FadeIn>

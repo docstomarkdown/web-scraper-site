@@ -2,14 +2,16 @@
 
 import React from "react"
 import { Card } from "@/components/ui/card"
-import { MousePointer, Target, BarChart3, Info } from "lucide-react"
+import { Mail, MousePointer, Target, BarChart3, Info } from "lucide-react"
 import { Counter } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface CampaignResultsProps {
+    opens: number
     clicks: number
     conversions: number
     revenue: number
+    openPct: number
     ctrPct: number
     convPct: number
     formatNumber: (v: number) => string
@@ -17,9 +19,11 @@ interface CampaignResultsProps {
 }
 
 export function CampaignResults({
+    opens,
     clicks,
     conversions,
     revenue,
+    openPct,
     ctrPct,
     convPct,
     formatNumber,
@@ -32,7 +36,32 @@ export function CampaignResults({
                 Campaign Results
             </h4>
 
-            <div className="grid grid-cols-2 gap-3 mb-4">
+            {/* Funnel: Opens → Clicks → Conversions */}
+            <div className="grid grid-cols-3 gap-2 mb-3">
+
+                {/* Opens */}
+                <div className="bg-blue-50/60 rounded-xl p-3 border border-blue-100 flex flex-col justify-between relative">
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="p-1.5 bg-blue-100 text-blue-600 rounded-lg">
+                            <Mail className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="text-[10px] font-bold text-blue-600 bg-blue-100/60 px-1.5 py-0.5 rounded-full">
+                            {openPct}%
+                        </span>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Opens</p>
+                        <p className="text-sm font-bold text-blue-500">
+                            <Counter value={opens} formatter={formatNumber} />
+                        </p>
+                    </div>
+                    {/* Connector arrow */}
+                    <div className="hidden sm:flex absolute top-1/2 -right-2 -translate-y-1/2 z-10 items-center">
+                        <div className="w-2 h-[2px] bg-slate-300" />
+                        <div className="w-0 h-0 border-t-[3px] border-t-transparent border-b-[3px] border-b-transparent border-l-[4px] border-l-slate-300" />
+                    </div>
+                </div>
+
                 {/* Clicks */}
                 <div className="bg-purple-50/60 rounded-xl p-3 border border-purple-100 flex flex-col justify-between relative">
                     <div className="flex items-center justify-between mb-2">
@@ -45,12 +74,15 @@ export function CampaignResults({
                     </div>
                     <div>
                         <p className="text-[10px] font-medium text-slate-500 mb-0.5">Clicks</p>
-                        <p className="text-base font-bold text-purple-500">
+                        <p className="text-sm font-bold text-purple-500">
                             <Counter value={clicks} formatter={formatNumber} />
                         </p>
                     </div>
-                    {/* Connector */}
-                    <div className="hidden sm:block absolute top-1/2 -right-3.5 w-3.5 h-[2px] bg-slate-200 z-10" />
+                    {/* Connector arrow */}
+                    <div className="hidden sm:flex absolute top-1/2 -right-2 -translate-y-1/2 z-10 items-center">
+                        <div className="w-2 h-[2px] bg-slate-300" />
+                        <div className="w-0 h-0 border-t-[3px] border-t-transparent border-b-[3px] border-b-transparent border-l-[4px] border-l-slate-300" />
+                    </div>
                 </div>
 
                 {/* Conversions */}
@@ -64,8 +96,8 @@ export function CampaignResults({
                         </span>
                     </div>
                     <div>
-                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Conversion Rate</p>
-                        <p className="text-base font-bold text-emerald-500">
+                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Conversions</p>
+                        <p className="text-sm font-bold text-emerald-500">
                             <Counter value={conversions} formatter={formatNumber} />
                         </p>
                     </div>
@@ -84,7 +116,7 @@ export function CampaignResults({
                                 </button>
                             </TooltipTrigger>
                             <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                               Total estimated revenue generated from campaign conversions.
+                                Total estimated revenue generated from campaign conversions. (Purchases × Avg. Order Value)
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
