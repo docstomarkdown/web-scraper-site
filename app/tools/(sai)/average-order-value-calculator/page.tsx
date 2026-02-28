@@ -29,7 +29,7 @@ export default function AOVCalculatorPage() {
                     <AOVCalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16" id="aov-guide">
+                <div className="max-w-5xl mx-auto space-y-16" id="aov-guide">
                     <FadeIn delay={0.2}>
                         <AOVHowToUse />
                     </FadeIn>

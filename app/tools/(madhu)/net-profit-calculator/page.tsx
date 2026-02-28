@@ -40,7 +40,7 @@ export default function NetProfitCalculatorPage() {
                             faqs={[
                                 {
                                     question: "What is the difference between Gross Profit and Net Profit?",
-                                    answer: "Gross Profit is only your Revenue minus COGS. **Net Profit** is what remains after subtracting EVERYTHING else—ads, rent, software, payroll, and taxes. It is your true take-home pay."
+                                    answer: "Gross Profit is only your Revenue minus COGS. <strong>Net Profit</strong> is what remains after subtracting EVERYTHING else—ads, rent, software, payroll, and taxes. It is your true take-home pay."
                                 },
                                 {
                                     question: "Should I include owner's salary in overhead?",

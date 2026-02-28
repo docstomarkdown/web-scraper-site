@@ -26,7 +26,7 @@ export default function CPACalculatorPage() {
                     <CPACalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16" id="cpa-guide">
+                <div className="max-w-5xl mx-auto space-y-16" id="cpa-guide">
                     <FadeIn delay={0.2}>
                         <CPAHowToUse />
                     </FadeIn>

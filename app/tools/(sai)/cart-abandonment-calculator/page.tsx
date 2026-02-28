@@ -29,7 +29,7 @@ export default function CartAbandonmentCalculatorPage() {
                     <AbandonmentCalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16" id="abandonment-guide">
+                <div className="max-w-5xl mx-auto space-y-16" id="abandonment-guide">
                     <FadeIn delay={0.2}>
                         <AbandonmentHowToUse />
                     </FadeIn>

@@ -7,12 +7,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { CurrencyCombobox } from "./CurrencyCombobox"
 
 interface CalculatorCardHeaderProps {
-    title: string
+    title?: string
     description: string
     guideId?: string
     currency?: string
     onCurrencyChange?: (value: string) => void
     tooltip?: string
+    onReset?: () => void
 }
 
 export function CalculatorCardHeader({

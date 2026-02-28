@@ -48,7 +48,7 @@ export default function BundleCalculatorPage() {
                     <BundleProfitCalculator />
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-16">
+                <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}><BundleHowToUse /></FadeIn>
                     <FadeIn delay={0.2}><BundleGuide /></FadeIn>
                     <FadeIn delay={0.2}><ToolFAQ faqs={faqs} /></FadeIn>

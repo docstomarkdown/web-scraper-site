@@ -40,19 +40,27 @@ export default function AffiliateCommissionCalculatorPage() {
                             faqs={[
                                 {
                                     question: "How is 'Net Revenue' calculated in this tool?",
-                                    answer: "Net Revenue = (Net Sales × Product Price) - (Net Sales × Product Cost) - Total Payout. It represents your absolute 'take-home' profit after manufacturing costs and affiliate commissions are paid."
+                                    answer: "Net Revenue = (Net Sales × Product Price) - (Net Sales × Product Cost) - Total Payout. It represents your absolute 'take-home' profit after manufacturing costs and affiliate commissions are paid. It accounts for refunded units, which many other calculators ignore."
                                 },
                                 {
-                                    question: "What does the 'Profit Safe' badge mean?",
-                                    answer: "It means your Commission Rate is lower than your Break-Even Rate. You are making a profit on every unit sold. If it changes to 'Loss Warning', you are paying affiliates more than your margin allows."
+                                    question: "What is the 'Break-Even Rate' and why is it important?",
+                                    answer: "The Break-Even Rate is the maximum commission percentage you can pay before you start losing money on a sale. For example, if your margin is 40% and you pay 40% commission, you break even. If you pay 45%, you lose money. This tool highlights this with the 'Profit Safe / Loss Warning' badge."
                                 },
                                 {
-                                    question: "Why can't I see the Commission Rate inputs description?",
-                                    answer: "To keep the interface clean, detailed descriptions are hidden behind the small 'i' (Info) icon next to each label. Hover over or tap the icon to see the full definition of any field."
+                                    question: "What are industry standard commission rates?",
+                                    answer: "Standard rates vary: Physical goods typically range from 5–15%, while digital products (with lower COGS) can range from 30–50%. Use this tool to see what *your* specific brand can afford based on your actual margins."
                                 },
                                 {
-                                    question: "Should I include shipping in the Product Price?",
-                                    answer: "No. Affiliates are typically paid on the *product value* only. Shipping and taxes are pass-through costs and should be excluded from the price input to ensure accuracy."
+                                    question: "Should I calculate commissions based on Gross or Net Sales?",
+                                    answer: "Always aim for Net Sales (post-refunds). If you pay commission on gross sales, you will lose significantly more money on every returned item. We recommend a 'holding period' (e.g., Net-30) to ensure the refund window has passed before payouts are finalized."
+                                },
+                                {
+                                    question: "How does the 'Refund Rate' affect my total payout?",
+                                    answer: "The tool multiplies your gross sales by the refund percentage to find 'Refunded Units'. These units are subtracted from your total sales *before* the commission is calculated. This gives you a more realistic estimate of your actual liability."
+                                },
+                                {
+                                    question: "Can I use this for SaaS or digital products?",
+                                    answer: "Absolutely. For digital products, your 'Product Cost (COGS)' might be very low (e.g., $1-5 for server/support costs). This allows you to see how high you can push your commission rates to attract top-tier affiliates while staying profitable."
                                 }
                             ]}
                         />

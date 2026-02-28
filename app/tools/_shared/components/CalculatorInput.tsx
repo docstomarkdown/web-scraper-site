@@ -16,11 +16,14 @@ interface CalculatorInputProps {
     step?: number
     prefix?: string
     suffix?: string
+    currency?: string
     placeholder?: string
     tooltip?: string
+    hint?: string | React.ReactNode
     type?: "number" | "text"
     groupingTitle?: string
     groupingIcon?: LucideIcon | React.ElementType
+    autoFocus?: boolean
 }
 
 export function CalculatorInput({
@@ -28,16 +31,34 @@ export function CalculatorInput({
     value,
     onChange,
     min = 0,
-    max = 10000,
+    max = 1000000,
     step = 1,
     prefix,
     suffix,
+    currency,
     placeholder,
     tooltip,
+    hint,
     type = "number",
     groupingTitle,
-    groupingIcon: GroupIcon
+    groupingIcon: GroupIcon,
+    autoFocus = false
 }: CalculatorInputProps) {
+    const inputRef = React.useRef<HTMLInputElement>(null)
+
+    React.useEffect(() => {
+        // Automatically focus the first calculator input on the page if not manually specified
+        const timer = setTimeout(() => {
+            if (inputRef.current) {
+                const allInputs = document.querySelectorAll('.calculator-input-field');
+                if (allInputs[0] === inputRef.current || autoFocus) {
+                    inputRef.current.focus();
+                }
+            }
+        }, 100);
+        return () => clearTimeout(timer);
+    }, [autoFocus])
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value
         if (type === "number") {
@@ -54,18 +75,43 @@ export function CalculatorInput({
         }
     }
 
+    // Intelligent currency symbol lookup & position
+    const getCurrencyInfo = React.useCallback((code: string) => {
+        try {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: code,
+            })
+            const parts = formatter.formatToParts(1)
+            const symbol = parts.find(p => p.type === 'currency')?.value || code
+            const isSuffix = parts[parts.length - 1].type === 'currency'
+
+            return { symbol, isSuffix }
+        } catch (e) {
+            return { symbol: code, isSuffix: false }
+        }
+    }, [])
+
+    const currencyInfo = React.useMemo(() => currency ? getCurrencyInfo(currency) : null, [currency, getCurrencyInfo])
+    const finalPrefix = prefix || (currencyInfo && !currencyInfo.isSuffix ? currencyInfo.symbol : undefined)
+    const finalSuffix = suffix || (currencyInfo && currencyInfo.isSuffix ? currencyInfo.symbol : undefined)
+
     return (
         <div className="space-y-3">
             {groupingTitle && (
-                <div className="flex items-center gap-2 mb-4">
-                    {GroupIcon && <GroupIcon className="w-4 h-4 text-slate-400" />}
-                    <span className="text-sm font-medium text-slate-700">
+                <div className="flex items-center gap-3 mb-3">
+                    {GroupIcon && (
+                        <div className="w-8 h-8 rounded-xl bg-slate-100/80 flex items-center justify-center flex-shrink-0">
+                            <GroupIcon className="w-4 h-4 text-slate-500" />
+                        </div>
+                    )}
+                    <span className="text-sm font-semibold text-slate-500 tracking-wide">
                         {groupingTitle}
                     </span>
                 </div>
             )}
 
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4 w-full">
                 <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
                     <Label className="text-base font-semibold text-slate-700 truncate">
                         {label}
@@ -91,33 +137,54 @@ export function CalculatorInput({
                 </div>
 
                 <div className="relative group flex-shrink-0">
-                    {prefix && (
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold group-focus-within:text-blue-600 transition-colors pointer-events-none z-10">
-                            {prefix}
-                        </div>
-                    )}
-                    <Input
-                        type={type}
-                        value={value}
-                        onChange={handleInputChange}
-                        className={cn(
-                            "h-12 sm:h-14 text-base sm:text-lg font-medium border-slate-200 bg-white shadow-sm transition-all",
-                            "placeholder:text-slate-300 placeholder:font-normal placeholder:italic rounded-xl text-right",
-                            "hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10",
-                            "w-48 sm:w-56 md:w-64",
-                            prefix && "pl-12",
-                            suffix && "pr-12"
-                        )}
-                        min={type === "number" ? min : undefined}
-                        max={type === "number" ? max : undefined}
-                        step={type === "number" ? step : undefined}
-                        placeholder={placeholder ? (type === "number" && !placeholder.startsWith("Eg:") ? `Eg: ${placeholder}` : placeholder) : undefined}
-                    />
-                    {suffix && (
-                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold group-focus-within:text-blue-600 transition-colors pointer-events-none z-10">
-                            {suffix}
-                        </div>
-                    )}
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="relative">
+                                    {finalPrefix && (
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
+                                            {finalPrefix}
+                                        </div>
+                                    )}
+                                    <Input
+                                        ref={inputRef}
+                                        type={type}
+                                        value={value}
+                                        onChange={handleInputChange}
+                                        className={cn(
+                                            "calculator-input-field",
+                                            "h-11 text-sm font-medium border border-slate-200 bg-slate-50/70 shadow-none transition-all duration-150",
+                                            "placeholder:text-slate-300 placeholder:font-normal placeholder:text-sm rounded-xl text-right",
+                                            "hover:bg-white hover:border-slate-300",
+                                            "focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-500/10 focus:outline-none",
+                                            "w-44 sm:w-52",
+                                            finalPrefix && "pl-10",
+                                            finalSuffix && "pr-10"
+                                        )}
+                                        min={type === "number" ? min : undefined}
+                                        max={type === "number" ? max : undefined}
+                                        step={type === "number" ? step : undefined}
+                                        placeholder={placeholder ? (type === "number" && !placeholder.startsWith("Eg:") ? `Eg: ${placeholder}` : placeholder) : undefined}
+                                    />
+                                    {finalSuffix && (
+                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
+                                            {finalSuffix}
+                                        </div>
+                                    )}
+                                </div>
+                            </TooltipTrigger>
+                            {hint && (
+                                <TooltipContent
+                                    side="bottom"
+                                    sideOffset={1}
+                                    align="start"
+                                    className="bg-white text-black border border-black rounded-none px-2 py-0.5 text-[12.5px] shadow-none animate-none font-sans z-[100]"
+                                >
+                                    {hint}
+                                </TooltipContent>
+                            )}
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
             </div>
         </div>

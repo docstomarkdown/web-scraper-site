@@ -40,15 +40,15 @@ export default function InfluencerROICalculatorPage() {
                             faqs={[
                                 {
                                     question: "What is a 'Good' ROI for Influencer Marketing?",
-                                    answer: "A healthy e-commerce campaign typically targets a **300% ROI (3:1)**. However, for brand awareness strategies, a 1:1 break-even is often acceptable if the 'Cost Per Impression' (CPM) is significantly lower than Facebook/Instagram Ads."
+                                    answer: "A healthy e-commerce campaign typically targets a <strong>300% ROI (3:1)</strong>. However, for brand awareness strategies, a 1:1 break-even is often acceptable if the 'Cost Per Impression' (CPM) is significantly lower than Facebook/Instagram Ads."
                                 },
                                 {
                                     question: "Why should I include 'Product COGS'?",
-                                    answer: "Many brands make the mistake of calculating ROI based on retail value. You must deduct the **Cost of Goods Sold (COGS)** and shipping to see real cash efficiency. If you gift a $100 item that cost you $20 to make, your investment is $20, not $100."
+                                    answer: "Many brands make the mistake of calculating ROI based on retail value. You must deduct the <strong>Cost of Goods Sold (COGS)</strong> and shipping to see real cash efficiency. If you gift a $100 item that cost you $20 to make, your investment is $20, not $100."
                                 },
                                 {
                                     question: "What is the difference between CPM and CPE?",
-                                    answer: "**CPM (Cost Per Mille)** measures the cost for every 1,000 views (Awareness), while **CPE (Cost Per Engagement)** measures the cost for every Like, Comment, or Share (Interest). Use CPM for top-of-funnel goals and CPE for community building."
+                                    answer: "<strong>CPM (Cost Per Mille)</strong> measures the cost for every 1,000 views (Awareness), while <strong>CPE (Cost Per Engagement)</strong> measures the cost for every Like, Comment, or Share (Interest). Use CPM for top-of-funnel goals and CPE for community building."
                                 },
                                 {
                                     question: "How do I track 'Total Sales' from a post?",

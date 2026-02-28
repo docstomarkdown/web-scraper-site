@@ -126,7 +126,7 @@ export function InfluencerROICalculator() {
                                     onChange={setInfluencerFee}
                                     placeholder="1000.00"
                                     tooltip="The flat fee paid directly to the creator."
-                                    prefix={currency}
+                                    currency={currency}
                                     groupingTitle="Direct costs"
                                     groupingIcon={DollarSign}
                                 />
@@ -136,7 +136,7 @@ export function InfluencerROICalculator() {
                                     onChange={setBoostingSpend}
                                     placeholder="500.00"
                                     tooltip="Amount spent on Meta/TikTok ads to boost the creator's post."
-                                    prefix={currency}
+                                    currency={currency}
                                 />
                             </div>
 
@@ -149,7 +149,7 @@ export function InfluencerROICalculator() {
                                     onChange={setProductCogs}
                                     placeholder="50.00"
                                     tooltip="The manufacturing cost or wholesale price of gifted products."
-                                    prefix={currency}
+                                    currency={currency}
                                     groupingTitle="Fulfillment & logistics"
                                     groupingIcon={Truck}
                                 />
@@ -159,7 +159,7 @@ export function InfluencerROICalculator() {
                                     onChange={setShippingCost}
                                     placeholder="15.00"
                                     tooltip="Costs to ship the units to the influencer."
-                                    prefix={currency}
+                                    currency={currency}
                                 />
                             </div>
 
@@ -172,7 +172,7 @@ export function InfluencerROICalculator() {
                                     onChange={setManagementFee}
                                     placeholder="250.00"
                                     tooltip="Any commission or fee paid to an agency or manager."
-                                    prefix={currency}
+                                    currency={currency}
                                     groupingTitle="Management & rights"
                                     groupingIcon={Users}
                                 />
@@ -182,7 +182,7 @@ export function InfluencerROICalculator() {
                                     onChange={setContentRightsFee}
                                     placeholder="100.00"
                                     tooltip="Additional cost for whitelisting or spark ad rights."
-                                    prefix={currency}
+                                    currency={currency}
                                 />
                             </div>
 
@@ -195,7 +195,7 @@ export function InfluencerROICalculator() {
                                     onChange={setTotalSales}
                                     placeholder="8500.00"
                                     tooltip="The total gross revenue generated from tracking links/codes."
-                                    prefix={currency}
+                                    currency={currency}
                                     groupingTitle="Performance metrics"
                                     groupingIcon={BarChart3}
                                 />
@@ -235,6 +235,7 @@ export function InfluencerROICalculator() {
                 <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-3">
                     <ResultSummaryCard
                         title="Return on Investment"
+                        currency={currency}
                         primaryResult={{
                             value: roi.toFixed(2),
                             unit: "%",
@@ -252,28 +253,28 @@ export function InfluencerROICalculator() {
                                 key: "cpa",
                                 label: "CPA (Cost/Sale)",
                                 value: cpa.toFixed(2),
-                                unit: currency,
+                                isCurrency: true,
                                 tooltip: "How much it costs to acquire one customer. (Investment / Sales)"
                             },
                             {
                                 key: "cpm",
                                 label: "CPM (1k Views)",
                                 value: cpm.toFixed(2),
-                                unit: currency,
+                                isCurrency: true,
                                 tooltip: "Cost per 1,000 impressions. ((Investment / Impressions) * 1000)"
                             },
                             {
                                 key: "cpe",
                                 label: "CPE (Engage)",
                                 value: cpe.toFixed(2),
-                                unit: currency,
+                                isCurrency: true,
                                 tooltip: "Cost for every like, comment, or share. (Investment / Engagements)"
                             },
                             {
                                 key: "netProfit",
                                 label: "Net Profit",
                                 value: netProfit.toFixed(2),
-                                unit: currency,
+                                isCurrency: true,
                                 tooltip: "Total Sales minus Total Investment"
                             }
                         ]}
