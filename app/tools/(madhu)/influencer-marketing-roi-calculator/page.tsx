@@ -39,20 +39,20 @@ export default function InfluencerROICalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is a 'Good' ROI for Influencer Marketing?",
-                                    answer: "A healthy e-commerce campaign typically targets a <strong>300% ROI (3:1)</strong>. However, for brand awareness strategies, a 1:1 break-even is often acceptable if the 'Cost Per Impression' (CPM) is significantly lower than Facebook/Instagram Ads."
+                                    question: "What is a good ROI % for an influencer campaign?",
+                                    answer: "A healthy direct-response campaign typically targets a <strong>ROI of 100% or higher</strong>, meaning you earn back at least double what you spent. For pure brand awareness campaigns, breaking even (0% ROI) is often acceptable if the campaign builds long-term audience trust and search volume. Anything above 200% is considered strong performance."
                                 },
                                 {
-                                    question: "Why should I include 'Product COGS'?",
-                                    answer: "Many brands make the mistake of calculating ROI based on retail value. You must deduct the <strong>Cost of Goods Sold (COGS)</strong> and shipping to see real cash efficiency. If you gift a $100 item that cost you $20 to make, your investment is $20, not $100."
+                                    question: "Why does 'Product Cost per Item' and 'Shipping Cost' get multiplied by Total Orders?",
+                                    answer: "Because these are <strong>variable costs</strong> — they are incurred once for every single order fulfilled. Unlike the Influencer Fee and Ad Spend which are fixed one-time payments, your product and shipping costs scale directly with sales volume. The tool multiplies them by Total Orders to give you an accurate Total Cost figure."
                                 },
                                 {
-                                    question: "What is the difference between CPM and CPE?",
-                                    answer: "<strong>CPM (Cost Per Mille)</strong> measures the cost for every 1,000 views (Awareness), while <strong>CPE (Cost Per Engagement)</strong> measures the cost for every Like, Comment, or Share (Interest). Use CPM for top-of-funnel goals and CPE for community building."
+                                    question: "What does 'Profit per Order' tell me?",
+                                    answer: "<strong>Profit per Order</strong> shows how much net profit you make on every individual sale after accounting for all costs (campaign fees + product + shipping). If this number is negative, you are losing money on each order sold and no volume of orders will make the campaign profitable without changes to your pricing or cost structure."
                                 },
                                 {
-                                    question: "How do I track 'Total Sales' from a post?",
-                                    answer: "Always provide a unique discount code (e.g., 'SARAH20') or a tracked UTM link. Without these direct attribution methods, you will largely underestimate the campaign's impact."
+                                    question: "How do I track which orders came from the influencer campaign?",
+                                    answer: "The most reliable methods are: (1) a unique <strong>discount code</strong> tied exclusively to the influencer (e.g. 'SARAH20'), (2) a <strong>UTM-tagged link</strong> tracked in Google Analytics, or (3) a dedicated <strong>landing page URL</strong>. Without one of these attribution methods, you will significantly undercount the campaign's actual sales."
                                 }
                             ]}
                         />

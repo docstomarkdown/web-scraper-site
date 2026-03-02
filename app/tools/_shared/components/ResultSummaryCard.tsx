@@ -14,6 +14,7 @@ interface SecondaryResult {
     unit?: string
     tooltip?: string
     isCurrency?: boolean // New flag to handle currency formatting
+    className?: string // Added to support custom grid layouts
 }
 
 interface ResultSummaryCardProps {
@@ -59,11 +60,12 @@ export function ResultSummaryCard({
     const formatValueWithUnit = (value: string | number, unit?: string, isCurrency?: boolean) => {
         const numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]+/g, "")) : value
 
-        if (isCurrency && currency) {
+        if (isCurrency && currency && !isNaN(numValue)) {
             try {
                 const formatter = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: currency,
+                    currencyDisplay: 'narrowSymbol',
                     maximumFractionDigits: 2
                 })
                 const formatted = formatter.format(numValue)
@@ -74,12 +76,27 @@ export function ResultSummaryCard({
                         {formatted}
                     </span>
                 )
-            } catch (e) {
-                // Fallback to old logic if formatting fails
+            } catch {
+                // Fallback without narrowSymbol
+                try {
+                    const formatter = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: currency,
+                        maximumFractionDigits: 2
+                    })
+                    return (
+                        <span className="flex items-baseline">
+                            {formatter.format(numValue)}
+                        </span>
+                    )
+                } catch {
+                    // silent fallback
+                }
             }
         }
 
-        if (!unit) return value
+        const displayNum = isNaN(numValue) ? 0 : numValue
+        if (!unit) return displayNum
 
         // Symbols that usually go at the front
         const frontSymbols = ['$', '€', '£', '¥', '₹', 'A$', 'C$', 'S$']
@@ -106,15 +123,19 @@ export function ResultSummaryCard({
     const getNumericResult = () => {
         if (!profitLossKey) return 0
 
+        let rawValue: string | number = 0
+
         // Check primary result first
         if (primaryResult.key === profitLossKey) {
-            return typeof primaryResult.value === 'string' ? parseFloat(primaryResult.value.replace(/[^0-9.-]+/g, "")) : primaryResult.value
+            rawValue = primaryResult.value
+        } else {
+            // Then check secondary results
+            const result = secondaryResults.find(r => r.key === profitLossKey)
+            if (result) rawValue = result.value
         }
 
-        // Then check secondary results
-        const result = secondaryResults.find(r => r.key === profitLossKey)
-        if (!result) return 0
-        return typeof result.value === 'string' ? parseFloat(result.value.replace(/[^0-9.-]+/g, "")) : result.value
+        const numeric = typeof rawValue === 'string' ? parseFloat(rawValue.replace(/[^0-9.-]+/g, "")) : rawValue
+        return isNaN(numeric) ? 0 : numeric
     }
 
     const numericProfitLoss = getNumericResult()
@@ -281,23 +302,32 @@ export function ResultSummaryCard({
 
             {/* Grid Layout for secondary metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10 auto-rows-fr">
-                {secondaryResults.map((result, idx) => (
-                    <motion.div
-                        key={result.key}
-                        initial={{ opacity: 0, scale: 0.98 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="bg-white/[0.06] border border-white/[0.05] p-3 sm:p-4 rounded-xl transition-all duration-200 flex flex-col justify-between"
-                    >
-                        <div className="flex items-center gap-1.5 mb-2">
-                            <span className="text-xs sm:text-sm font-bold text-slate-300 whitespace-nowrap">
-                                {autoAdjustText(result.label)}
-                            </span>
-                            {result.tooltip && (
-                                <TooltipProvider delayDuration={0}>
+                {secondaryResults.map((result, idx) => {
+                    const is3rdOf3 = secondaryResults.length === 3 && idx === 2;
+                    return (
+                        <motion.div
+                            key={result.key}
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.05 }}
+                            className={cn(
+                                "bg-white/[0.06] border border-white/[0.05] p-3 sm:p-4 rounded-xl transition-all duration-200 flex flex-col justify-between",
+                                is3rdOf3 ? "sm:col-span-2" : "",
+                                result.className
+                            )}
+                        >
+                            <div className="flex items-center gap-1.5 mb-2">
+                                <span className="text-xs sm:text-sm font-bold text-slate-300 whitespace-nowrap">
+                                    {autoAdjustText(result.label)}
+                                </span>
+                                {result.tooltip && (
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <button className="text-slate-400 hover:text-white transition-colors cursor-help shrink-0">
+                                            <button
+                                                type="button"
+                                                tabIndex={-1}
+                                                className="text-slate-400 hover:text-white transition-colors cursor-help shrink-0"
+                                            >
                                                 <Info className="w-3.5 h-3.5" />
                                             </button>
                                         </TooltipTrigger>
@@ -305,21 +335,21 @@ export function ResultSummaryCard({
                                             {result.tooltip}
                                         </TooltipContent>
                                     </Tooltip>
-                                </TooltipProvider>
-                            )}
-                        </div>
-                        <div className={cn(
-                            "text-base sm:text-lg font-extrabold tracking-tight transition-colors duration-300",
-                            getSecondaryValueColor(result)
-                        )}>
-                            {formatValueWithUnit(
-                                getDisplayValue(result.value, result.key),
-                                result.unit,
-                                result.isCurrency
-                            )}
-                        </div>
-                    </motion.div>
-                ))}
+                                )}
+                            </div>
+                            <div className={cn(
+                                "text-base sm:text-lg font-extrabold tracking-tight transition-colors duration-300",
+                                getSecondaryValueColor(result)
+                            )}>
+                                {formatValueWithUnit(
+                                    getDisplayValue(result.value, result.key),
+                                    result.unit,
+                                    result.isCurrency
+                                )}
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </div>
         </Card>
     )

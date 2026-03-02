@@ -1,37 +1,37 @@
 "use client"
 
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Target, DollarSign, TrendingUp, Users } from "lucide-react"
+import { DollarSign, Package, ShoppingCart, TrendingUp } from "lucide-react"
 
 export function InfluencerHowToUse() {
     return (
         <ToolSteps
-            title="How to Measure Campaign Success"
+            title="How to Calculate Your Campaign ROI"
             steps={[
                 {
-                    title: "Set Your Campaign Baseline",
-                    description: "Start by selecting your currency and defining the total budget cap. This instantly calibrates the tool to track your burn rate against your financial ceiling.",
-                    icon: Target
-                },
-                {
-                    title: "Itemize All Direct & Invisible Costs",
-                    description: "Go beyond just the influencer fee. Log shipping, packaging, agency commissions, and rights usage fees to uncover the *true* cost of the partnership.",
+                    title: "Enter Your Campaign Costs",
+                    description: "Start with your fixed marketing spend. Enter the <strong>Influencer Fee</strong> — the flat fee paid directly to the creator — and any <strong>Ad Spend</strong> used to boost or promote the campaign across paid channels.",
                     icon: DollarSign
                 },
                 {
-                    title: "Sync Performance Data",
-                    description: "Input the final campaign metrics—sales, reach, and engagement. The calculator will cross-reference this against your 'Fully Loaded' cost to generate net efficiency metrics.",
-                    icon: TrendingUp
+                    title: "Add Your Product Costs",
+                    description: "Enter the <strong>Product Cost per Item</strong> (your cost to manufacture or purchase each unit) and the <strong>Shipping Cost</strong> per order. These are your per-unit variable costs and are automatically scaled by Total Orders in the calculation.",
+                    icon: Package
                 },
                 {
-                    title: "Optimize Future Spend",
-                    description: "Use the <strong>CPA</strong> and <strong>ROAS</strong> outputs to negotiate better rates for the next campaign. If the ROAS is below 2.0x, renegotiate fees or shift to a commission-only model.",
-                    icon: Users
+                    title: "Fill In Your Sales Data",
+                    description: "Enter the <strong>Selling Price</strong> per unit (what the customer pays) and the <strong>Total Orders</strong> generated from the campaign. The tool uses these to calculate your Total Revenue automatically.",
+                    icon: ShoppingCart
+                },
+                {
+                    title: "Read Your Results",
+                    description: "Instantly see your <strong>ROI %</strong>, <strong>Net Profit</strong>, <strong>Total Revenue</strong>, <strong>Total Cost</strong>, and <strong>Profit per Order</strong>. The Cost Breakdown chart shows exactly where your budget was spent across all four cost categories.",
+                    icon: TrendingUp
                 }
             ]}
             goal={{
-                title: "Quantitative Influencer Strategy",
-                description: "Move beyond 'vanity metrics' and gut feelings. This tool provides a financial framework to prove the value of your creator partnerships and optimize your marketing budget for maximum growth.",
+                title: "Know Your Numbers, Negotiate Better",
+                description: "Stop guessing whether your influencer campaigns are profitable. This tool gives you a clear, data-driven breakdown of every dollar spent and earned — so you can cut underperforming partnerships and double down on what works.",
                 icon: TrendingUp
             }}
         />

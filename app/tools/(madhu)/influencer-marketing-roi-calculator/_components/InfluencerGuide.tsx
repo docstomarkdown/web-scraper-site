@@ -1,46 +1,46 @@
 "use client"
 
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { TrendingUp, Target, Gift, BookOpen } from "lucide-react"
+import { TrendingUp, ShoppingCart, DollarSign, BookOpen } from "lucide-react"
 
 export function InfluencerGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About Influencer Marketing ROI"
+            title="What Your ROI Numbers Actually Mean"
             icon={BookOpen}
             items={[
                 {
-                    title: "The 'Halo Effect' Lag",
-                    description: "Influencer campaigns rarely pay off on Day 1. Data shows that 40% of sales occur 7-30 days *after* the post goes live. Judging a campaign's ROI in the first 48 hours will almost always result in a false negative.",
+                    title: "Product Cost Dominates at Scale",
+                    description: "The Influencer Fee is a one-time fixed cost, but Product Cost and Shipping are multiplied by every order. On a campaign with 500 orders, a $10 shipping cost adds $5,000 to your total spend. Always check the Cost Breakdown chart to see which category is eating your margin.",
                     icon: TrendingUp,
-                    stat: "30 Days",
-                    statLabel: "Attribution Win.",
+                    stat: "Per Order",
+                    statLabel: "Variable Cost",
                     iconBg: "bg-blue-100",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "The standard window needed to capture the full tail of influencer-driven conversions."
+                    tooltip: "Product Cost and Shipping scale with every order, making them the biggest margin risk on high-volume campaigns."
                 },
                 {
-                    title: "The Whitelisting Standard",
-                    description: "Organic reach is dying. The most profitable brands now budget an additional 30-50% of the influencer fee specifically for 'Whitelisting' (boosting the creator's post as an ad), which typically doubles the ROAS.",
-                    icon: Target,
-                    stat: "+120%",
-                    statLabel: "ROAS Lift",
+                    title: "Selling Price vs. Cost per Order",
+                    description: "Your <strong>Profit per Order</strong> is your most actionable metric. It tells you how much you earn after covering product cost and shipping on each sale. If Profit per Order is negative, no amount of extra orders will save the campaign — you must either raise the selling price or cut unit costs.",
+                    icon: ShoppingCart,
+                    stat: "Key Metric",
+                    statLabel: "Profit/Order",
                     iconBg: "bg-emerald-100",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600",
-                    tooltip: "Average increase in return on ad spend when organic posts are boosted with paid media."
+                    tooltip: "Profit per Order = (Selling Price − Product Cost − Shipping) minus a share of campaign fixed costs."
                 },
                 {
-                    title: "Content Decoupling",
-                    description: "Smart brands view the 'Influencer Fee' as a 'Content Production Fee'. Even if the post drives zero sales, acquiring high-quality UGC for $500 is often cheaper than hiring a professional studio (avg $2,500/day).",
-                    icon: Gift,
-                    stat: "$2k",
-                    statLabel: "Studio Savings",
+                    title: "When a Negative ROI is Still Worth It",
+                    description: "A negative ROI does not always mean failure. If the influencer campaign generated significant UGC content, grew your email list, or drove brand search volume, the long-term customer lifetime value (LTV) can easily justify a short-term loss. Use this tool to quantify the direct return, then consider LTV separately.",
+                    icon: DollarSign,
+                    stat: "LTV",
+                    statLabel: "Long-Term Value",
                     iconBg: "bg-purple-100",
                     iconColor: "text-purple-600",
                     statColor: "text-purple-600",
-                    tooltip: "Money saved by using influencer-generated content instead of booking a professional photo shoot."
+                    tooltip: "Direct ROI measures only immediate sales. Factor in customer retention and repeat purchases for the full picture."
                 }
             ]}
         />

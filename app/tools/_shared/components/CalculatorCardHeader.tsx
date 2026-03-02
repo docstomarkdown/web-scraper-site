@@ -45,21 +45,21 @@ export function CalculatorCardHeader({
                     <CardTitle className="text-2xl font-bold text-blue-600 tracking-tight">
                         {title}
                     </CardTitle>
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    onClick={scrollToGuide}
-                                    className="text-slate-400 hover:text-blue-600 transition-colors"
-                                >
-                                    <HelpCircle className="h-5 w-5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                {tooltip || "How to use this tool"}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button
+                                type="button"
+                                tabIndex={-1}
+                                onClick={scrollToGuide}
+                                className="text-slate-400 hover:text-blue-600 transition-colors"
+                            >
+                                <HelpCircle className="h-5 w-5" />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
+                            {tooltip || "How to use this tool"}
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
                 <CardDescription className="text-sm text-slate-500 font-medium">
                     {description}
