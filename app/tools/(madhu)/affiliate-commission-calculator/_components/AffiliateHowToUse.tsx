@@ -6,7 +6,7 @@ import { DollarSign, Percent, TrendingUp, AlertCircle, ShieldCheck } from "lucid
 export function AffiliateHowToUse() {
     return (
         <ToolSteps
-            title="Mastering Your Affiliate Payouts"
+            title="How to Use This Calculator"
             steps={[
                 {
                     title: "Configure Product & Pricing",

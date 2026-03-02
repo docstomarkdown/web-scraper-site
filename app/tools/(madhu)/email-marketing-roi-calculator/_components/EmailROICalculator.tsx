@@ -117,6 +117,7 @@ export function EmailROICalculator() {
                                     tooltip="Total number of subscribers who will receive your email campaign."
                                     groupingTitle="Campaign setup"
                                     groupingIcon={Mail}
+                                    highlight={true}
                                 />
                                 <CalculatorInput
                                     label="Total Campaign Cost"
@@ -145,7 +146,7 @@ export function EmailROICalculator() {
                                     tooltip="Percentage of subscribers who open your email. Industry average: 20–25%."
                                     suffix="%"
                                     hint="Industry standard range: 20% – 25%"
-                                    groupingTitle="Performance metrics"
+                                    groupingTitle="Email Performance"
                                     groupingIcon={Target}
                                 />
                                 <CalculatorInput

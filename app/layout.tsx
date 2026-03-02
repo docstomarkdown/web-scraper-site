@@ -6,6 +6,7 @@ import localFont from 'next/font/local'
 import { ThemeProvider } from '@/components/theme-provider'
 import { siteConfig } from '@/config/site'
 import { Toaster } from '@/components/ui/toaster'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import Header from '@/components/layout/header'
 import Footer from '@/components/layout/footer'
 import { ReCaptchaProvider } from '@/components/recaptcha-provider'
@@ -133,16 +134,18 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <ReCaptchaProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <div className="print:hidden">
-                <Header />
+            <TooltipProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <div className="print:hidden">
+                  <Header />
+                </div>
+                {children}
+                <div className="print:hidden">
+                  <Footer />
+                </div>
               </div>
-              {children}
-              <div className="print:hidden">
-                <Footer />
-              </div>
-            </div>
-            <Toaster />
+              <Toaster />
+            </TooltipProvider>
           </ReCaptchaProvider>
         </ThemeProvider>
       </body>

@@ -108,18 +108,16 @@ export function CampaignResults({
             <div className="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-1.5">
                     <span className="text-xs font-bold text-slate-400 tracking-wide">Total Revenue</span>
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button type="button" className="text-slate-400 hover:text-slate-500 transition-colors">
-                                    <Info className="h-3 w-3" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                Total estimated revenue generated from campaign conversions. (Purchases × Avg. Order Value)
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button type="button" tabIndex={-1} className="text-slate-400 hover:text-slate-500 transition-colors">
+                                <Info className="h-3 w-3" />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
+                            Total estimated revenue generated from campaign conversions. (Purchases × Avg. Order Value)
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
                 <span className="text-base font-black text-slate-900">
                     <Counter value={revenue} formatter={formatCurrency} />

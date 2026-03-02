@@ -15,7 +15,7 @@ export function EmailROIHowToUse() {
                     icon: Users,
                 },
                 {
-                    title: "Model Your Funnel Performance",
+                    title: "Map Your Email Engagement",
                     description:
                         "Enter your <strong>Estimated Open Rate</strong>, <strong>Email CTR (on Opens)</strong>, and <strong>Post-Click Conversion Rate</strong>. We've pre-filled industry benchmarks (20% opens, 2.5% CTR) to help you get started.",
                     icon: BarChart3,

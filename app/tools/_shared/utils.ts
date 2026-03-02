@@ -1,9 +1,18 @@
 export const formatCurrency = (val: number, currency: string = 'USD') => {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency,
-        maximumFractionDigits: 2
-    }).format(val)
+    try {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currency,
+            currencyDisplay: 'narrowSymbol',
+            maximumFractionDigits: 2
+        }).format(val)
+    } catch {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currency,
+            maximumFractionDigits: 2
+        }).format(val)
+    }
 }
 
 export const formatPercentage = (val: number) => {

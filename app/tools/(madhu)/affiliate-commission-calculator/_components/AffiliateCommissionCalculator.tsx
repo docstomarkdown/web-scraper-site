@@ -156,6 +156,7 @@ Results:
                                         prefix={currencySymbol}
                                         groupingTitle="Product & Pricing"
                                         groupingIcon={Package}
+                                        highlight={true}
                                     />
                                     <CalculatorInput
                                         label="Product Cost (Your Cost)"

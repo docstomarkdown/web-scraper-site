@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import { Card, CardContent } from "../../../../../components/ui/card"
-import { DollarSign, Truck, Users, BarChart3 } from "lucide-react"
+import { DollarSign, Package, ShoppingCart } from "lucide-react"
 import { ActionButtons } from "../../ToolTemplate"
 import { FadeIn, CalculatorInput, CalculatorCardHeader, ResultSummaryCard } from "../../../_shared/components"
 import { BudgetAllocation } from "./BudgetAllocation"
@@ -10,76 +10,66 @@ import { BudgetAllocation } from "./BudgetAllocation"
 export function InfluencerROICalculator() {
     const [currency, setCurrency] = useState("USD")
 
-    // Investment States
+    // Campaign Costs
     const [influencerFee, setInfluencerFee] = useState<number | "">("")
-    const [productCogs, setProductCogs] = useState<number | "">("")
-    const [shippingCost, setShippingCost] = useState<number | "">("")
-    const [managementFee, setManagementFee] = useState<number | "">("")
-    const [contentRightsFee, setContentRightsFee] = useState<number | "">("")
-    const [boostingSpend, setBoostingSpend] = useState<number | "">("")
+    const [adSpend, setAdSpend] = useState<number | "">("")
 
-    // Performance States
-    const [totalSales, setTotalSales] = useState<number | "">("")
-    const [conversions, setConversions] = useState<number | "">("")
-    const [impressions, setImpressions] = useState<number | "">("")
-    const [engagements, setEngagements] = useState<number | "">("")
+    // Product Costs
+    const [productCostPerItem, setProductCostPerItem] = useState<number | "">("")
+    const [shippingCost, setShippingCost] = useState<number | "">("")
+
+    // Sales
+    const [sellingPrice, setSellingPrice] = useState<number | "">("")
+    const [totalOrders, setTotalOrders] = useState<number | "">("")
 
     const val = (v: number | "") => (v === "" ? 0 : v)
 
     const handleReset = () => {
         setInfluencerFee("")
-        setProductCogs("")
+        setAdSpend("")
+        setProductCostPerItem("")
         setShippingCost("")
-        setManagementFee("")
-        setContentRightsFee("")
-        setBoostingSpend("")
-        setTotalSales("")
-        setConversions("")
-        setImpressions("")
-        setEngagements("")
+        setSellingPrice("")
+        setTotalOrders("")
     }
 
     // Calculations
     const fee = val(influencerFee)
-    const pCogs = val(productCogs)
+    const ad = val(adSpend)
+    const costPerItem = val(productCostPerItem)
     const ship = val(shippingCost)
-    const mgmt = val(managementFee)
-    const rights = val(contentRightsFee)
-    const boost = val(boostingSpend)
+    const price = val(sellingPrice)
+    const orders = val(totalOrders)
 
-    const sales = val(totalSales)
-    const convs = val(conversions)
-    const imps = val(impressions)
-    const engs = val(engagements)
+    const campaignCosts = fee + ad
+    const totalProductCost = (costPerItem + ship) * orders
+    const totalCost = campaignCosts + totalProductCost
+    const totalRevenue = price * orders
+    const profitLoss = totalRevenue - totalCost
+    const roi = totalCost > 0 ? (profitLoss / totalCost) * 100 : 0
+    const profitPerOrder = orders > 0 ? profitLoss / orders : 0
 
-    const totalInvestment = fee + pCogs + ship + mgmt + rights + boost
-    const hasAnyData = totalInvestment > 0 || sales > 0 || convs > 0 || imps > 0 || engs > 0
-    const netProfit = sales - totalInvestment
-    const roi = totalInvestment > 0 ? (netProfit / totalInvestment) * 100 : 0
-    const roas = totalInvestment > 0 ? sales / totalInvestment : 0
-
-    const cpa = convs > 0 ? totalInvestment / convs : 0
-    const cpm = imps > 0 ? (totalInvestment / imps) * 1000 : 0
-    const cpe = engs > 0 ? totalInvestment / engs : 0
+    const hasAnyData = totalCost > 0 || totalRevenue > 0
 
     const [isCopied, setIsCopied] = useState(false)
 
     const handleCopy = () => {
         const text = `Influencer Marketing ROI Results:\n\n` +
-            `Investment Details:\n` +
+            `Campaign Costs:\n` +
             `- Influencer Fee: ${formatCurrency(fee)}\n` +
-            `- Product & Shipping: ${formatCurrency(pCogs + ship)}\n` +
-            `- Management & Rights: ${formatCurrency(mgmt + rights)}\n` +
-            `- Boosting Spend: ${formatCurrency(boost)}\n` +
-            `Total Investment: ${formatCurrency(totalInvestment)}\n\n` +
-            `Performance Results:\n` +
-            `- Total Sales: ${formatCurrency(sales)}\n` +
-            `- Net Profit: ${formatCurrency(netProfit)}\n` +
+            `- Ad Spend: ${formatCurrency(ad)}\n\n` +
+            `Product Costs:\n` +
+            `- Product Cost per Item: ${formatCurrency(costPerItem)}\n` +
+            `- Shipping Cost: ${formatCurrency(ship)}\n\n` +
+            `Sales:\n` +
+            `- Selling Price: ${formatCurrency(price)}\n` +
+            `- Total Orders: ${orders}\n\n` +
+            `Results:\n` +
+            `- Total Revenue: ${formatCurrency(totalRevenue)}\n` +
+            `- Total Cost: ${formatCurrency(totalCost)}\n` +
+            `- Net Profit: ${formatCurrency(profitLoss)}\n` +
             `- ROI: ${roi.toFixed(2)}%\n` +
-            `- ROAS: ${roas.toFixed(2)}x\n` +
-            `- CPA: ${formatCurrency(cpa)}\n` +
-            `- CPM: ${formatCurrency(cpm)}\n` +
-            `- CPE: ${formatCurrency(cpe)}`
+            `- Profit per Order: ${formatCurrency(profitPerOrder)}`
 
         navigator.clipboard.writeText(text).then(() => {
             setIsCopied(true)
@@ -88,22 +78,31 @@ export function InfluencerROICalculator() {
     }
 
     const formatCurrency = (val: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: currency,
-            maximumFractionDigits: 2
-        }).format(val)
+        try {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency,
+                currencyDisplay: 'narrowSymbol',
+                maximumFractionDigits: 2
+            }).format(val)
+        } catch {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency,
+                maximumFractionDigits: 2
+            }).format(val)
+        }
     }
 
-    // Breakdown Percentages
+    // Breakdown Percentages for Budget Allocation
     const getPercent = (amount: number) => {
-        return totalInvestment > 0 ? Math.min(Math.max((amount / totalInvestment) * 100, 0), 100) : 0
+        return totalCost > 0 ? Math.min(Math.max((amount / totalCost) * 100, 0), 100) : 0
     }
 
     const feePct = getPercent(fee)
-    const productPct = getPercent(pCogs + ship)
-    const managementPct = getPercent(mgmt + rights)
-    const boostPct = getPercent(boost)
+    const adPct = getPercent(ad)
+    const productPct = getPercent(costPerItem * orders)
+    const shippingPct = getPercent(ship * orders)
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
@@ -111,114 +110,77 @@ export function InfluencerROICalculator() {
                 <div className="lg:col-span-7 space-y-4">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
                         <CalculatorCardHeader
-                            title="Campaign Budget"
-                            description="Log every dollar invested into the campaign."
+                            title="Campaign Details"
+                            description="Enter your campaign costs, product details, and sales data."
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
 
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                            {/* Direct Costs */}
+                            {/* Campaign Costs */}
                             <div className="space-y-4">
                                 <CalculatorInput
                                     label="Influencer Fee"
                                     value={influencerFee}
                                     onChange={setInfluencerFee}
                                     placeholder="1000.00"
-                                    tooltip="The flat fee paid directly to the creator."
+                                    tooltip="The flat fee or commission paid directly to the influencer."
                                     currency={currency}
-                                    groupingTitle="Direct costs"
+                                    groupingTitle="Campaign Costs"
                                     groupingIcon={DollarSign}
                                 />
                                 <CalculatorInput
-                                    label="Boosting / Ad Spend"
-                                    value={boostingSpend}
-                                    onChange={setBoostingSpend}
+                                    label="Ad Spend"
+                                    value={adSpend}
+                                    onChange={setAdSpend}
                                     placeholder="500.00"
-                                    tooltip="Amount spent on Meta/TikTok ads to boost the creator's post."
+                                    tooltip="Amount spent on paid ads to boost or promote the campaign."
                                     currency={currency}
                                 />
                             </div>
 
-                            {/* Logistics & Product */}
+                            {/* Product Costs */}
                             <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-4">
                                 <CalculatorInput
-                                    label="Product COGS"
-                                    value={productCogs}
-                                    onChange={setProductCogs}
-                                    placeholder="50.00"
-                                    tooltip="The manufacturing cost or wholesale price of gifted products."
+                                    label="Product Cost per Item"
+                                    value={productCostPerItem}
+                                    onChange={setProductCostPerItem}
+                                    placeholder="25.00"
+                                    tooltip="The cost to produce or purchase one unit of your product (COGS)."
                                     currency={currency}
-                                    groupingTitle="Fulfillment & logistics"
-                                    groupingIcon={Truck}
+                                    groupingTitle="Product Costs"
+                                    groupingIcon={Package}
                                 />
                                 <CalculatorInput
-                                    label="Shipping & Packaging"
+                                    label="Shipping Cost"
                                     value={shippingCost}
                                     onChange={setShippingCost}
-                                    placeholder="15.00"
-                                    tooltip="Costs to ship the units to the influencer."
+                                    placeholder="5.00"
+                                    tooltip="Average shipping and handling cost per order."
                                     currency={currency}
                                 />
                             </div>
 
-                            {/* Overhead */}
+                            {/* Sales */}
                             <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-4">
                                 <CalculatorInput
-                                    label="Agency/Mgmt Fee"
-                                    value={managementFee}
-                                    onChange={setManagementFee}
-                                    placeholder="250.00"
-                                    tooltip="Any commission or fee paid to an agency or manager."
+                                    label="Selling Price"
+                                    value={sellingPrice}
+                                    onChange={setSellingPrice}
+                                    placeholder="75.00"
+                                    tooltip="The price at which you sell each unit to the customer."
                                     currency={currency}
-                                    groupingTitle="Management & rights"
-                                    groupingIcon={Users}
+                                    groupingTitle="Sales"
+                                    groupingIcon={ShoppingCart}
                                 />
                                 <CalculatorInput
-                                    label="Content Rights Fee"
-                                    value={contentRightsFee}
-                                    onChange={setContentRightsFee}
-                                    placeholder="100.00"
-                                    tooltip="Additional cost for whitelisting or spark ad rights."
-                                    currency={currency}
-                                />
-                            </div>
-
-                            {/* Performance Data */}
-                            <div className="h-px bg-slate-100 w-full" />
-                            <div className="space-y-4 pt-1">
-                                <CalculatorInput
-                                    label="Total Sales Revenue"
-                                    value={totalSales}
-                                    onChange={setTotalSales}
-                                    placeholder="8500.00"
-                                    tooltip="The total gross revenue generated from tracking links/codes."
-                                    currency={currency}
-                                    groupingTitle="Performance metrics"
-                                    groupingIcon={BarChart3}
-                                />
-                                <CalculatorInput
-                                    label="Total Conversions"
-                                    value={conversions}
-                                    onChange={setConversions}
-                                    placeholder="125"
-                                    tooltip="Number of successful orders or leads generated."
-                                />
-                                <CalculatorInput
-                                    label="Total Impressions"
-                                    value={impressions}
-                                    onChange={setImpressions}
-                                    placeholder="50000"
-                                    tooltip="Number of times the content was viewed."
-                                />
-                                <CalculatorInput
-                                    label="Total Engagements"
-                                    value={engagements}
-                                    onChange={setEngagements}
-                                    placeholder="2500"
-                                    tooltip="Total likes, comments, and shares."
+                                    label="Total Orders"
+                                    value={totalOrders}
+                                    onChange={setTotalOrders}
+                                    placeholder="100"
+                                    tooltip="The total number of orders generated from the influencer campaign."
                                 />
                             </div>
 
@@ -234,64 +196,57 @@ export function InfluencerROICalculator() {
 
                 <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-3">
                     <ResultSummaryCard
-                        title="Return on Investment"
+                        title="ROI"
                         currency={currency}
                         primaryResult={{
                             value: roi.toFixed(2),
                             unit: "%",
-                            label: "Return"
+                            label: "Campaign Performance"
                         }}
                         secondaryResults={[
                             {
-                                key: "roas",
-                                label: "ROAS",
-                                value: roas.toFixed(2),
-                                unit: "x",
-                                tooltip: "Revenue generated for every $1 spent. (Sales / Investment)"
-                            },
-                            {
-                                key: "cpa",
-                                label: "CPA (Cost/Sale)",
-                                value: cpa.toFixed(2),
-                                isCurrency: true,
-                                tooltip: "How much it costs to acquire one customer. (Investment / Sales)"
-                            },
-                            {
-                                key: "cpm",
-                                label: "CPM (1k Views)",
-                                value: cpm.toFixed(2),
-                                isCurrency: true,
-                                tooltip: "Cost per 1,000 impressions. ((Investment / Impressions) * 1000)"
-                            },
-                            {
-                                key: "cpe",
-                                label: "CPE (Engage)",
-                                value: cpe.toFixed(2),
-                                isCurrency: true,
-                                tooltip: "Cost for every like, comment, or share. (Investment / Engagements)"
-                            },
-                            {
-                                key: "netProfit",
+                                key: "profitLoss",
                                 label: "Net Profit",
-                                value: netProfit.toFixed(2),
+                                value: profitLoss.toFixed(2),
                                 isCurrency: true,
-                                tooltip: "Total Sales minus Total Investment"
+                                tooltip: "Revenue minus all costs. Positive = profit. Negative = loss."
+                            },
+                            {
+                                key: "totalRevenue",
+                                label: "Total Revenue",
+                                value: totalRevenue.toFixed(2),
+                                isCurrency: true,
+                                tooltip: "Selling Price × Total Orders."
+                            },
+                            {
+                                key: "totalCost",
+                                label: "Total Cost",
+                                value: totalCost.toFixed(2),
+                                isCurrency: true,
+                                tooltip: "Influencer Fee + Ad Spend + (Product Cost + Shipping) × Orders."
+                            },
+                            {
+                                key: "profitPerOrder",
+                                label: "Profit per Order",
+                                value: profitPerOrder.toFixed(2),
+                                isCurrency: true,
+                                tooltip: "Net Profit ÷ Total Orders. Your earnings per sale."
                             }
                         ]}
                         isCalculated={hasAnyData}
-                        profitLossKey="netProfit"
+                        profitLossKey="profitLoss"
                     />
 
                     <BudgetAllocation
                         fee={fee}
-                        boost={boost}
-                        productAndShipping={pCogs + ship}
-                        mgmtAndRights={mgmt + rights}
-                        totalInvestment={totalInvestment}
+                        adSpend={ad}
+                        productCost={costPerItem * orders}
+                        shippingCost={ship * orders}
+                        totalCost={totalCost}
                         feePct={feePct}
-                        boostPct={boostPct}
+                        adPct={adPct}
                         productPct={productPct}
-                        managementPct={managementPct}
+                        shippingPct={shippingPct}
                         formatCurrency={formatCurrency}
                     />
                 </div>
