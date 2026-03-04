@@ -4,37 +4,31 @@ import { SKUGenerator } from "./_components/SKUGenerator"
 import { SKUHowToUse } from "./_components/SKUHowToUse"
 import { SKUGuide } from "./_components/SKUGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: "E-commerce SKU Generator | Create Professional Product Codes",
     description: "Generate consistent, professional SKU codes for your e-commerce inventory. Customize brand, category, and attributes with real-time preview.",
 }
-
 export default function SKUGeneratorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             SKU Generator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <SKUGenerator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <SKUHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <SKUGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function SKUGeneratorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function SKUGeneratorPage() {
             </div>
         </div>
     )
-}
+}

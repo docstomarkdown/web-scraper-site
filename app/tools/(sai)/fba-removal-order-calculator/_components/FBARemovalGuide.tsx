@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { BookOpen, Info, Trash2, Truck } from "lucide-react"
-
 export function FBARemovalGuide() {
     return (
         <ToolGuide
@@ -36,4 +34,4 @@ export function FBARemovalGuide() {
             ]}
         />
     )
-}
+}

@@ -1,74 +1,82 @@
 "use client"
-
 import { ToolSectionHeader } from "./ToolSectionHeader"
 import { LucideIcon, HelpCircle } from "lucide-react"
-
 export interface StepItem {
     title: string
     description: string
     icon: LucideIcon
 }
-
 interface ToolStepsProps {
     steps: StepItem[]
     title?: string
     icon?: LucideIcon
     goal?: StepItem
 }
-
 export function ToolSteps({ steps, title = "How to Use This Calculator", icon = HelpCircle, goal }: ToolStepsProps) {
+    // If goal exists, we append it to steps for the layout
+    const allSteps = goal ? [...steps, goal] : steps
     return (
         <section id="how-to-use" className="relative">
             <ToolSectionHeader icon={icon} title={title} />
-
-            <div className="relative">
-                {/* Vertical Connector Line */}
-                <div className="absolute left-[20px] sm:left-[24px] top-8 bottom-8 w-0.5 bg-blue-100 -z-10" />
-
-                <div className="space-y-6">
-                    {steps.map((step, index) => {
-                        const Icon = step.icon
-                        const stepNumber = (index + 1).toString().padStart(2, '0')
-
-                        return (
-                            <div key={index} className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
-                                <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
-                                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </div>
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                            Step {stepNumber}
+            {/* ── Desktop: Horizontal Timeline Cards ── */}
+            <div className="hidden md:block w-full py-4">
+                <div className="relative">
+                    <div className="grid gap-8 lg:gap-12 relative z-10" style={{ gridTemplateColumns: `repeat(${allSteps.length}, minmax(0, 1fr))` }}>
+                        {allSteps.map((step, index) => {
+                            const Icon = step.icon
+                            return (
+                                <div key={index} className="relative w-full group">
+                                    {/* Step number badge overlapping the top border (Premium blue border) */}
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34px] h-[34px] rounded-full bg-white border-[2.5px] border-blue-500 shadow-sm flex items-center justify-center z-30 transition-transform duration-300 group-hover:scale-110 group-hover:bg-blue-50">
+                                        <span className="text-sm font-bold text-blue-600 leading-none">
+                                            {index + 1}
                                         </span>
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-1.5">{step.title}</h3>
-                                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: step.description }} />
+                                    {/* Card Content */}
+                                    <div className="bg-white rounded-2xl border border-slate-200/60 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.1)] hover:-translate-y-1 hover:border-blue-200/60 transition-all duration-300 p-6 pt-10 pb-8 w-full h-full flex flex-col text-left font-sans">
+                                        {/* Light grayish-blue icon box at top left */}
+                                        <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 rounded-xl flex items-center justify-center text-blue-600 mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]">
+                                            <Icon className="w-5 h-5" />
+                                        </div>
+                                        <h3 className="text-[18px] font-bold text-slate-900 mb-2 leading-tight group-hover:text-blue-700 transition-colors duration-300">
+                                            Step {index + 1}: {step.title}
+                                        </h3>
+                                        <p
+                                            className="text-[14.5px] text-slate-500 leading-relaxed font-medium line-clamp-6"
+                                            dangerouslySetInnerHTML={{ __html: step.description }}
+                                        />
+                                    </div>
                                 </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+            {/* ── Mobile: Vertical Stacked Timeline ── */}
+            <div className="md:hidden space-y-5 pt-3">
+                {allSteps.map((step, index) => {
+                    const Icon = step.icon
+                    return (
+                        <div key={index} className="relative flex items-start gap-4 group cursor-default">
+                            {/* Mobile Step circle */}
+                            <div className="relative z-10 flex-shrink-0 w-9 h-9 rounded-full bg-white border-[2.5px] border-blue-500 shadow-sm flex items-center justify-center mt-1 transition-transform duration-300 group-hover:scale-110 group-hover:bg-blue-50">
+                                <span className="text-sm font-bold text-blue-600 leading-none">{index + 1}</span>
                             </div>
-                        )
-                    })}
-
-                    {/* Goal Item styled as a regular step */}
-                    {goal && (
-                        <div className="relative flex items-start gap-4 sm:gap-8 group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
-                            <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-100/80 border border-blue-200 rounded-xl flex items-center justify-center text-blue-700 z-10 transition-transform duration-300 group-hover:scale-110">
-                                {(() => {
-                                    const GoalIcon = goal.icon
-                                    return <GoalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                                })()}
-                            </div>
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                        Step {(steps.length + 1).toString().padStart(2, '0')}
-                                    </span>
+                            {/* Card */}
+                            <div className="flex-1 bg-white rounded-2xl border border-slate-200/60 p-5 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-blue-200/60 transition-all duration-300">
+                                <div className="flex items-center gap-3 mb-2.5">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 flex items-center justify-center text-blue-600 rounded-xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                                        <Icon className="w-4 h-4" />
+                                    </div>
+                                    <h3 className="text-[16.5px] font-bold text-slate-900 leading-snug group-hover:text-blue-700 transition-colors duration-300">
+                                        Step {index + 1}: {step.title}
+                                    </h3>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-1.5">{goal.title}</h3>
-                                <p className="text-[15px] text-slate-600 leading-relaxed font-medium opacity-90" dangerouslySetInnerHTML={{ __html: goal.description }} />
+                                <p className="text-[14.5px] text-slate-500 leading-relaxed font-medium pl-11" dangerouslySetInnerHTML={{ __html: step.description }} />
                             </div>
                         </div>
-                    )}
-                </div>
+                    )
+                })}
             </div>
         </section>
     )

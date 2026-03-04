@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolSteps } from "@/app/tools/_shared/components/ToolSteps";
 import { Box, Scale, Calculator } from "lucide-react";
-
 export function DimWeightHowToUse() {
     const steps = [
         {
@@ -21,6 +19,5 @@ export function DimWeightHowToUse() {
             icon: Calculator,
         },
     ];
-
     return <ToolSteps steps={steps} />;
-}
+}

@@ -4,37 +4,31 @@ import { COGSCalculator } from "./_components/COGSCalculator"
 import { COGSHowToUse } from "./_components/COGSHowToUse"
 import { COGSGuide } from "./_components/COGSGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: 'COGS Calculator - Calculate Cost of Goods Sold & Fulfillment | Web Scraper Pro',
     description: 'Free Cost of Goods Sold (COGS) calculator for e-commerce. Calculate true product cost including manufacturing, freight, customs, packaging, and fulfillment fees.',
 }
-
 export default function COGSCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Cost of Goods Sold (COGS) Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <COGSCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <COGSHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <COGSGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function COGSCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function COGSCalculatorPage() {
             </div>
         </div>
     )
-}
+}

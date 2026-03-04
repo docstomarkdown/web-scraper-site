@@ -1,13 +1,10 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Info } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
-
 export function DropshippingCalculator() {
     // State for inputs - initialized as empty for placeholder effect
     const [currency, setCurrency] = useState("USD")
@@ -19,10 +16,8 @@ export function DropshippingCalculator() {
     const [adsCostPerProduct, setAdsCostPerProduct] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
     const [otherCosts, setOtherCosts] = useState<number | "">("")
-
     // Helper to safely get number for calculation
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     // Currency symbols map
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
@@ -42,7 +37,6 @@ export function DropshippingCalculator() {
         setShippingCost("")
         setOtherCosts("")
     }
-
     // Calculations
     const purchasePriceVal = val(purchasePrice)
     const salesPriceVal = val(salesPrice)
@@ -52,22 +46,17 @@ export function DropshippingCalculator() {
     const adsCostPerProductVal = val(adsCostPerProduct)
     const shippingCostVal = val(shippingCost)
     const otherCostsVal = val(otherCosts)
-
     const marginPerOrder = salesPriceVal - purchasePriceVal
     const totalOrderValue = salesPriceVal * ordersReceivedVal
-
     const rtoQty = Math.floor(ordersReceivedVal * (rtoPercentageVal / 100))
     const deliveredOrders = Math.max(0, ordersReceivedVal - cancelledQtyVal - rtoQty)
-
     const totalRtoCost = rtoQty * shippingCostVal
     const totalAdsCost = ordersReceivedVal * adsCostPerProductVal
     const totalOtherCosts = ordersReceivedVal * otherCostsVal
     const totalPurchaseCost = deliveredOrders * purchasePriceVal
     const revenueGenerated = deliveredOrders * salesPriceVal
-
     const totalExpenses = totalPurchaseCost + totalAdsCost + totalRtoCost + (deliveredOrders * shippingCostVal) + totalOtherCosts
     const netProfit = revenueGenerated - totalExpenses
-
     // Currency formatter
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -76,29 +65,21 @@ export function DropshippingCalculator() {
             maximumFractionDigits: 0
         }).format(val)
     }
-
     const symbol = getSymbol()
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs (Col Span 7) */}
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
                         <Card className="border border-slate-200 shadow-sm bg-white">
                             <CalculatorCardHeader
-
                                 description="Calculate your dropshipping net profit."
-
                                 onReset={handleReset}
-
                                 currency={currency}
-
                                 onCurrencyChange={setCurrency}
-
                             />
-                            <CardContent className="space-y-6 pt-6">
+                            <CardContent className="space-y-3 pt-6">
                                 <CalculatorInput
                                     label={`Purchase Price (${symbol})`}
                                     value={purchasePrice}
@@ -163,16 +144,13 @@ export function DropshippingCalculator() {
                                     max={1000}
                                     tooltip="Other: Additional expenses per order like packaging, gateway fees, or handling."
                                 />
-
                             </CardContent>
                         </Card>
                     </FadeIn>
                 </div>
-
                 {/* Right Column: Results (Col Span 5) - Sticky & Dark Theme */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-6">
-
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
+                    <FadeIn delay={0.4} direction="left" className="space-y-3">
                         <ResultFeedbackCard
                             title="Net Profit / Loss"
                             titleLabel="Live"
@@ -192,7 +170,6 @@ export function DropshippingCalculator() {
                                 }
                             ]}
                         />
-
                         {/* Metrics Grid */}
                         <div className="grid grid-cols-2 gap-3">
                             <ResultFeedbackCard
@@ -221,7 +198,6 @@ export function DropshippingCalculator() {
                                 tooltip="RTO (Return to Origin): Orders sent back to you. This costs you double shipping plus wasted ad money."
                             />
                         </div>
-
                         {/* Breakdown Card */}
                         {deliveredOrders > 0 ? (
                             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -265,6 +241,4 @@ export function DropshippingCalculator() {
             </div>
         </FadeIn>
     )
-}
-
-
+}

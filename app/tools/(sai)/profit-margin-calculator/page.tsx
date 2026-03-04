@@ -4,38 +4,31 @@ import { MarginGuide } from "./_components/MarginGuide"
 import { MarginHowToUse } from "./_components/MarginHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: 'Profit Margin Calculator - Calculate Gross Margin & Markup | Web Scraper Pro',
     description: 'Free profit margin calculator to instantly calculate gross margin, markup percentage, and profit per unit. Essential tool for retailers and dropshippers.',
 }
-
 export default function ProfitMarginCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 md:text-[42px] mb-4">
                             Profit Margin Calculator
                         </h1>
-
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <MarginCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <MarginHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <MarginGuide />
                     </FadeIn>
-
                     {/* FAQ Section */}
                     <FadeIn delay={0.2}>
                         <ToolFAQ
@@ -55,7 +48,6 @@ export default function ProfitMarginCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     {/* CTA Section */}
                     <FadeIn delay={0.2}>
                         <CTA />
@@ -64,4 +56,4 @@ export default function ProfitMarginCalculatorPage() {
             </div>
         </div>
     )
-}
+}

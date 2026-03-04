@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { BarChart2, Search, Clock } from "lucide-react"
-
 export function ABDurationHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Set Baseline Rate",
-                    description: "Enter your current conversion rate for the page or element you are testing.",
+                    title: "Current Data",
+                    description: "Enter baseline page conversion rate and the minimum detectable outcome.",
                     icon: BarChart2
                 },
                 {
-                    title: "Define MDE",
-                    description: "Enter the Minimum Detectable Effect. This is the % lift you hope to see (e.g., improve from 5% to 6% is a 20% MDE).",
+                    title: "Traffic Volume",
+                    description: "Input your average daily total visitors sent to the measured test pages.",
                     icon: Search
                 },
                 {
-                    title: "Input Traffic",
-                    description: "Enter the total daily visitors that will be part of the test (Control + Variation).",
+                    title: "Check Duration",
+                    description: "See exactly how many days the ongoing test must run for clear results.",
                     icon: Clock
                 }
             ]}
         />
     )
-}
+}

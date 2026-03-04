@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { TrendingDown, AlertTriangle, Clock, BookOpen } from "lucide-react"
-
 export function LeadTimeGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function LeadTimeGuide() {
             ]}
         />
     )
-}
+}

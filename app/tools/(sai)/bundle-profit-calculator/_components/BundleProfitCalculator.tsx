@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,19 +7,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { DollarSign, Percent, Package, AlertCircle, Plus, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 type Product = {
     id: string
     name: string
     cost: number | ""
     price: number | ""
 }
-
 export function BundleProfitCalculator() {
     // State
     const [currency, setCurrency] = useState("USD")
     const [showAdvanced, setShowAdvanced] = useState(false)
-
     const handleReset = () => {
         setProducts([
             { id: "A", name: "Product A", cost: "", price: "" },
@@ -30,27 +26,21 @@ export function BundleProfitCalculator() {
         setBundleValue("")
         setShowAdvanced(false)
     }
-
     // Dynamic Products State
     const [products, setProducts] = useState<Product[]>([
         { id: "A", name: "Product A", cost: "", price: "" },
         { id: "B", name: "Product B", cost: "", price: "" }
     ])
-
     // Bundle Logic
     const [bundleMode, setBundleMode] = useState<"percentage" | "fixed">("percentage")
     const [bundleValue, setBundleValue] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     // Calculations
     const totalCost = products.reduce((sum, p) => sum + val(p.cost), 0)
     const originalPrice = products.reduce((sum, p) => sum + val(p.price), 0)
-
     let bundlePrice = 0
     let discountAmount = 0
     let discountPercent = 0
-
     if (showAdvanced) {
         if (bundleMode === "percentage") {
             discountPercent = val(bundleValue)
@@ -67,10 +57,8 @@ export function BundleProfitCalculator() {
         discountAmount = 0
         discountPercent = 0
     }
-
     const profit = bundlePrice - totalCost
     const margin = bundlePrice > 0 ? (profit / bundlePrice) * 100 : 0
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥',
         CNY: '¥', AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$',
@@ -79,7 +67,6 @@ export function BundleProfitCalculator() {
         SAR: '﷼', NZD: 'NZ$', EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
     // Actions
     const addProduct = () => {
         const nextLetter = String.fromCharCode(65 + products.length) // A, B, C...
@@ -91,16 +78,13 @@ export function BundleProfitCalculator() {
         }
         setProducts([...products, newProduct])
     }
-
     const removeProduct = (id: string) => {
         if (products.length <= 1) return // Prevent removing last product
         setProducts(products.filter(p => p.id !== id))
     }
-
     const updateProduct = (id: string, field: keyof Product, value: any) => {
         setProducts(products.map(p => p.id === id ? { ...p, [field]: value } : p))
     }
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -108,7 +92,6 @@ export function BundleProfitCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     // Helper to get color for product badge (cycling through some colors)
     const getBadgeColor = (index: number) => {
         const colors = [
@@ -121,13 +104,11 @@ export function BundleProfitCalculator() {
         ]
         return colors[index % colors.length]
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter costs and selling prices for each item in the bundle."
@@ -135,8 +116,7 @@ export function BundleProfitCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-6 pt-6">
-
+                        <CardContent className="space-y-3 pt-6">
                             {products.map((product, index) => (
                                 <div key={product.id} className="relative group p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors">
                                     <div className="flex items-center justify-between mb-3">
@@ -173,7 +153,6 @@ export function BundleProfitCalculator() {
                                     </div>
                                 </div>
                             ))}
-
                             <Button
                                 variant="outline"
                                 className="w-full border-dashed border-2 border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
@@ -182,10 +161,8 @@ export function BundleProfitCalculator() {
                                 <Plus className="w-4 h-4 mr-2" />
                                 Add Another Product
                             </Button>
-
                         </CardContent>
                     </Card>
-
                     {/* Advanced Toggle */}
                     <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
                         <div className="space-y-0.5">
@@ -204,7 +181,6 @@ export function BundleProfitCalculator() {
                             {showAdvanced ? "Disable Advanced" : "Enable Advanced"}
                         </Button>
                     </div>
-
                     {showAdvanced && (
                         <FadeIn>
                             <Card className="border border-slate-200 shadow-sm bg-white">
@@ -214,7 +190,7 @@ export function BundleProfitCalculator() {
                                     </CardTitle>
                                     <CardDescription>Define how you want to price your bundle.</CardDescription>
                                 </CardHeader>
-                                <CardContent className="space-y-6 pt-6">
+                                <CardContent className="space-y-3 pt-6">
                                     <div className="space-y-3">
                                         <Label>Discount Type</Label>
                                         <RadioGroup
@@ -236,7 +212,6 @@ export function BundleProfitCalculator() {
                                             </div>
                                         </RadioGroup>
                                     </div>
-
                                     <CalculatorInput
                                         label={bundleMode === "percentage" ? "Discount Percentage" : `Bundle Price (${symbol})`}
                                         value={bundleValue}
@@ -252,9 +227,8 @@ export function BundleProfitCalculator() {
                         </FadeIn>
                     )}
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Bundle Profit Margin"
                         titleLabel={margin >= 20 ? "Highly Profitable" : (margin > 0 ? "Profitable" : "Unprofitable")}
@@ -278,7 +252,6 @@ export function BundleProfitCalculator() {
                             }
                         ] : []}
                     />
-
                     {/* Indicator Badge */}
                     {margin !== 0 && (
                         <div className={cn(
@@ -290,7 +263,6 @@ export function BundleProfitCalculator() {
                             {margin >= 20 ? "🚀 Highly Profitable Bundle" : margin > 0 ? "⚠️ Low Margin Bundle" : "🛑 Unprofitable Bundle"}
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {margin !== 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -327,9 +299,8 @@ export function BundleProfitCalculator() {
                             <p className="text-sm text-slate-400">Enter product details to calculate profit.</p>
                         </div>
                     )}
-
                 </div>
             </div>
         </FadeIn>
     )
-}
+}

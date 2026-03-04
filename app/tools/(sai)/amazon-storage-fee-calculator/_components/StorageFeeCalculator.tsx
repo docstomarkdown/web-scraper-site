@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -7,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Box, Layers, Archive } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
-
 // Constants for Fees (2024 Estimates)
 const RATES = {
     standard: {
@@ -19,7 +17,6 @@ const RATES = {
         "oct-dec": 1.40
     }
 }
-
 export function StorageFeeCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [length, setLength] = useState<number | "">("")
@@ -28,9 +25,7 @@ export function StorageFeeCalculator() {
     const [quantity, setQuantity] = useState<number | "">("")
     const [season, setSeason] = useState<"jan-sept" | "oct-dec">("jan-sept")
     const [sizeTier, setSizeTier] = useState<"standard" | "oversize">("standard")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const handleReset = () => {
         setLength("")
         setWidth("")
@@ -39,24 +34,18 @@ export function StorageFeeCalculator() {
         setSeason("jan-sept")
         setSizeTier("standard")
     }
-
-
-
     // Calculation
     const l = val(length)
     const w = val(width)
     const h = val(height)
     const qty = val(quantity)
-
     // Volume in Cubic Feet
     // (L x W x H) / 1728
     const volumePerUnit = (l * w * h) / 1728
     const totalVolume = volumePerUnit * qty
-
     // Fee Calculation
     const rate = RATES[sizeTier][season]
     const monthlyFee = totalVolume * rate
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -64,13 +53,11 @@ export function StorageFeeCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter product dimensions and inventory details."
@@ -79,9 +66,8 @@ export function StorageFeeCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-5 pt-6">
-
-                            <div className="space-y-4">
+                        <CardContent className="space-y-3 pt-6">
+                            <div className="space-y-3">
                                 <label className="text-sm font-semibold text-slate-700">Dimensions (inches)</label>
                                 <div className="grid grid-cols-1 gap-4">
                                     <CalculatorInput
@@ -104,7 +90,6 @@ export function StorageFeeCalculator() {
                                     />
                                 </div>
                             </div>
-
                             <CalculatorInput
                                 label="Quantity on Hand"
                                 value={quantity}
@@ -113,7 +98,6 @@ export function StorageFeeCalculator() {
                                 max={100000}
                                 tooltip="Total number of units stored in Amazon fulfillment centers."
                             />
-
                             {/* Dropdowns */}
                             <div className="grid grid-cols-1 gap-5">
                                 <div className="space-y-2">
@@ -128,7 +112,6 @@ export function StorageFeeCalculator() {
                                         </SelectContent>
                                     </Select>
                                 </div>
-
                                 <div className="space-y-2">
                                     <label className="text-sm font-semibold text-slate-700">Product Size Tier</label>
                                     <Select value={sizeTier} onValueChange={(v: "standard" | "oversize") => setSizeTier(v)}>
@@ -142,13 +125,11 @@ export function StorageFeeCalculator() {
                                     </Select>
                                 </div>
                             </div>
-
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Monthly Storage Fee"
                         mainValue={
@@ -168,7 +149,6 @@ export function StorageFeeCalculator() {
                             }
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {monthlyFee > 0 && (
                         <div className={cn(
@@ -178,7 +158,6 @@ export function StorageFeeCalculator() {
                             {season === "oct-dec" ? "⚠️ Peak Season Rates (Oct-Dec)" : "✅ Standard Season Rates (Jan-Sept)"}
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {monthlyFee > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
@@ -213,4 +192,4 @@ export function StorageFeeCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { ShoppingCart, CreditCard, Percent } from "lucide-react"
-
 export function AbandonmentHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Count Shopping Carts",
-                    description: "Identify how many unique shopping carts were created or initiated by users in your analytics.",
+                    title: "Started Carts",
+                    description: "Enter the overall number of checkout carts created by curious shoppers.",
                     icon: ShoppingCart
                 },
                 {
-                    title: "Count Completed Sales",
-                    description: "Count the number of those carts that successfully resulted in a completed transaction.",
+                    title: "Finished Sales",
+                    description: "Input the actual concrete number of retail transactions that finalized.",
                     icon: CreditCard
                 },
                 {
-                    title: "See Abandonment Rate",
-                    description: "The calculator will show the percentage of users who left without buying. Lower is better.",
+                    title: "Check Droprate",
+                    description: "Instantly see your specific percentage of ghosted sales to optimize funnels.",
                     icon: Percent
                 }
             ]}
         />
     )
-}
+}

@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { DollarSign, Activity, AlertCircle, BookOpen } from "lucide-react"
-
 export function EOQGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function EOQGuide() {
             ]}
         />
     )
-}
+}

@@ -1,19 +1,15 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingUp, DollarSign, ShoppingCart, Search } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-
 export function AOVCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [revenue, setRevenue] = useState<number | "">("")
     const [orders, setOrders] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -22,26 +18,19 @@ export function AOVCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
     const handleReset = () => {
         setRevenue("")
         setOrders("")
     }
-
-
-
     // Calculation
     const revenueVal = val(revenue)
     const ordersVal = val(orders)
-
     let aov = 0
     let isValid = false
-
     if (revenueVal > 0 && ordersVal > 0) {
         aov = revenueVal / ordersVal
         isValid = true
     }
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -49,13 +38,11 @@ export function AOVCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter your sales data."
@@ -64,7 +51,7 @@ export function AOVCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Total Revenue(${symbol})`}
                                 value={revenue}
@@ -84,9 +71,8 @@ export function AOVCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Average Order Value (AOV)"
                         mainValue={
@@ -106,14 +92,12 @@ export function AOVCalculator() {
                             }
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {isValid && (
                         <div className="px-4 py-3 rounded-xl border bg-blue-50 border-blue-200 text-blue-700 text-center text-sm font-semibold">
                             📊 Sales Metrics Analyzed
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {isValid ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -140,7 +124,6 @@ export function AOVCalculator() {
                             <p className="text-sm text-slate-400">Enter sales data to see breakdown.</p>
                         </div>
                     )}
-
                     {/* Strategy Tip */}
                     <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <Search className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
@@ -155,4 +138,4 @@ export function AOVCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

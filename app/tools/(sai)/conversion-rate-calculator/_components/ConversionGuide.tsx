@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { MousePointerClick, Users, TrendingUp, Target } from "lucide-react"
-
 export function ConversionGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function ConversionGuide() {
             ]}
         />
     )
-}
+}

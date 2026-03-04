@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { Box, Calculator, Zap, BookOpen } from "lucide-react";
-
 export function DimWeightGuide() {
     const items = [
         {
@@ -63,6 +61,5 @@ export function DimWeightGuide() {
             statLabel: "Optimize Packaging",
         },
     ];
-
     return <ToolGuide title="Understanding Dimensional Weight" icon={BookOpen} items={items} />;
-}
+}

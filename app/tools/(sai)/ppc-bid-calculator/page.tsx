@@ -4,38 +4,31 @@ import { PPCBidCalculator } from "./_components/PPCBidCalculator"
 import { PPCBidHowToUse } from "./_components/PPCBidHowToUse"
 import { PPCBidGuide } from "./_components/PPCBidGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: "Pay-Per-Click (PPC) Bid Calculator | Calculate Max Cost Per Click",
     description: "Calculate your maximum profitable PPC bid based on your product price, conversion rate, and target ACoS.",
 }
-
 export default function PPCBidCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Pay-Per-Click (PPC) Bid Calculator
                         </h1>
-
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <PPCBidCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <PPCBidHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <PPCBidGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -54,7 +47,6 @@ export default function PPCBidCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA />
                     </FadeIn>
@@ -62,4 +54,4 @@ export default function PPCBidCalculatorPage() {
             </div>
         </div>
     )
-}
+}

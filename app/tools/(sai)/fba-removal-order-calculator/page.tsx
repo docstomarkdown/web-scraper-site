@@ -3,12 +3,10 @@ import { FBARemovalCalculator } from "./_components/FBARemovalCalculator"
 import { FBARemovalHowToUse } from "./_components/FBARemovalHowToUse"
 import { FBARemovalGuide } from "./_components/FBARemovalGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata = {
     title: "FBA Removal Order Cost Calculator | Web Scraper Pro",
     description: "Calculate Amazon FBA removal and disposal order fees for 2025. Estimate costs for standard and oversize items."
 }
-
 export default function Page() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
@@ -20,17 +18,14 @@ export default function Page() {
                         </h1>
                     </div>
                 </FadeIn>
-
                 <div className="mb-20">
                     <FadeIn delay={0.1}>
                         <FBARemovalCalculator />
                     </FadeIn>
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}><FBARemovalHowToUse /></FadeIn>
                     <FadeIn delay={0.3}><FBARemovalGuide /></FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -49,10 +44,9 @@ export default function Page() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}><CTA /></FadeIn>
                 </div>
             </div>
         </div>
     )
-}
+}

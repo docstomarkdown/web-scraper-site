@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { DollarSign, MousePointerClick, Users, Target, Info, BarChart3 } from "lucide-react"
@@ -7,22 +6,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function CPACalculator() {
     const [currency, setCurrency] = useState("USD")
     const [mode, setMode] = useState<"campaign-data" | "estimation">("campaign-data")
-
     // Mode 1: Campaign Data
     const [adSpend, setAdSpend] = useState<number | "">("")
     const [conversions, setConversions] = useState<number | "">("")
-
     // Mode 2: Estimation
     const [cpc, setCpc] = useState<number | "">("")
     const [conversionRate, setConversionRate] = useState<number | "">("")
-
     // Common
     const [targetCPA, setTargetCPA] = useState<number | "">("")
-
     const handleReset = () => {
         setAdSpend("")
         setConversions("")
@@ -31,9 +25,7 @@ export function CPACalculator() {
         setTargetCPA("")
         setMode("campaign-data")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -45,7 +37,6 @@ export function CPACalculator() {
     // --- Calculations ---
     let cpa = 0
     let validCalculation = false
-
     if (mode === "campaign-data") {
         const spendVal = val(adSpend)
         const conversionsVal = val(conversions)
@@ -61,14 +52,11 @@ export function CPACalculator() {
             validCalculation = true
         }
     }
-
     const target = val(targetCPA)
-
     // Determine Color
     // We'll return specific class sets for the badge to ensure consistency
     let badgeClasses = "bg-slate-100 border-slate-200 text-slate-600"
     let valueColor = "text-white"
-
     if (validCalculation && target > 0) {
         if (cpa <= target) {
             valueColor = "text-white"
@@ -80,7 +68,6 @@ export function CPACalculator() {
             badgeClasses = "bg-red-50 border-red-200 text-red-700"
         }
     }
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -88,29 +75,20 @@ export function CPACalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter your campaign metrics."
-
                             onReset={handleReset}
-
                             guideId="cpa-guide"
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-5 pt-6">
-
+                        <CardContent className="space-y-3 pt-6">
                             {/* Simplified Mode Toggle */}
                             <div className="relative flex bg-slate-100/80 p-1.5 rounded-xl border border-slate-200/60 w-full mb-4 shadow-sm">
                                 {/* Animated Background Pill */}
@@ -129,7 +107,6 @@ export function CPACalculator() {
                                         zIndex: 0
                                     }}
                                 />
-
                                 {/* Campaign Data Button */}
                                 <div className="relative z-10 flex-1">
                                     <button
@@ -155,7 +132,6 @@ export function CPACalculator() {
                                         </TooltipProvider>
                                     </button>
                                 </div>
-
                                 {/* Estimation Button */}
                                 <div className="relative z-10 flex-1">
                                     <button
@@ -182,7 +158,6 @@ export function CPACalculator() {
                                     </button>
                                 </div>
                             </div>
-
                             {mode === "campaign-data" ? (
                                 <>
                                     <CalculatorInput
@@ -219,7 +194,6 @@ export function CPACalculator() {
                                     />
                                 </>
                             )}
-
                             <div className="pt-4 border-t border-slate-100">
                                 <CalculatorInput
                                     label={`Target CPA (${symbol}) (Optional)`}
@@ -229,13 +203,11 @@ export function CPACalculator() {
                                     tooltip="Your desired maximum cost per acquisition. Used to calculate status."
                                 />
                             </div>
-
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Cost Per Acquisition (CPA)"
                         mainValue={
@@ -243,7 +215,6 @@ export function CPACalculator() {
                         }
                         valueColor={valueColor}
                     />
-
                     {/* Breakdown Card */}
                     {validCalculation ? (
                         <div className={cn(
@@ -281,14 +252,12 @@ export function CPACalculator() {
                                         </div>
                                     </>
                                 )}
-
                                 {target > 0 && (
                                     <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
                                         <span className="text-sm font-medium text-slate-500">Target CPA</span>
                                         <span className="text-sm font-bold text-slate-700">{formatCurrency(target)}</span>
                                     </div>
                                 )}
-
                                 <div className={cn("flex justify-between items-center px-5 py-4", cpa <= (target || cpa) ? "bg-blue-50/50" : "bg-red-50/50")}>
                                     <span className={cn("text-sm font-bold", cpa <= (target || cpa) ? "text-blue-700" : "text-red-700")}>
                                         Measured CPA
@@ -304,7 +273,6 @@ export function CPACalculator() {
                             <p className="text-sm text-slate-400">Enter campaign data to see analysis.</p>
                         </div>
                     )}
-
                     {/* Indicator Badge */}
                     {validCalculation && (
                         <div className={cn(
@@ -320,12 +288,8 @@ export function CPACalculator() {
                             ) : "📊 CPA Calculated"}
                         </div>
                     )}
-
-
-
-
                 </div>
             </div>
         </FadeIn>
     )
-}
+}

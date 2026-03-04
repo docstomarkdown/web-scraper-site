@@ -1,8 +1,6 @@
 "use client"
-
 import { BookOpen, AlertTriangle, CircleDollarSign, Calculator, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
 const DrawingTrendingDown = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +17,6 @@ const DrawingTrendingDown = () => (
         <polyline points="17 18 23 18 23 12" />
     </svg>
 )
-
 const insights = [
     {
         icon: DrawingTrendingDown,
@@ -65,7 +62,6 @@ const insights = [
         tooltip: "CPA (Cost Per Acquisition): The average cost to get one paying customer. If your CPA is lower than your break-even point, you make money."
     }
 ]
-
 export function ProfitGuide() {
     return (
         <section id="profit-guide">
@@ -75,7 +71,6 @@ export function ProfitGuide() {
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Dropshipping Profitability</h2>
             </div>
-
             <div className="space-y-6">
                 {insights.map((insight, index) => {
                     const Icon = insight.icon
@@ -113,7 +108,6 @@ export function ProfitGuide() {
                                         {insight.description}
                                     </p>
                                 </div>
-
                                 {/* Right: Takeaway Stat Panel (Neutral Background) */}
                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
@@ -131,4 +125,4 @@ export function ProfitGuide() {
             </div>
         </section>
     )
-}
+}

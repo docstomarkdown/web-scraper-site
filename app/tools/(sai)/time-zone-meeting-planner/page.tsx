@@ -4,35 +4,29 @@ import { MeetingPlannerHowToUse } from "./_components/MeetingPlannerHowToUse";
 import { MeetingPlannerGuide } from "./_components/MeetingPlannerGuide";
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
 import { CTA } from "@/components/sections/CTA";
-
 export const metadata: Metadata = {
     title: "Time Zone Meeting Planner - E-commerce Logistics",
     description: "Coordinate meetings with international suppliers, VAs, and teams. Find the perfect overlap time between EST, CST (Beijing), GMT, and more.",
 };
-
 export default function TimeZonePlannerPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 md:text-[42px] mb-4">
                             Time Zone Meeting Planner
                         </h1>
                     </FadeIn>
                 </div>
-
                 <TimeZonePlanner />
-
                 <div className="max-w-4xl mx-auto mt-20 space-y-16">
                     <FadeIn delay={0.1}>
                         <MeetingPlannerHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <MeetingPlannerGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <ToolFAQ
                             faqs={[
@@ -47,7 +41,6 @@ export default function TimeZonePlannerPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <CTA />
                     </FadeIn>
@@ -55,4 +48,4 @@ export default function TimeZonePlannerPage() {
             </div>
         </div>
     );
-}
+}

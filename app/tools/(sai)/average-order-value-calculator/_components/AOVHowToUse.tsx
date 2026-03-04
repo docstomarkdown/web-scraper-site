@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { DollarSign, ShoppingBag, Calculator } from "lucide-react"
-
 export function AOVHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Enter Revenue",
-                    description: "Input the total revenue generated over a specific period (e.g., last month or year).",
+                    title: "Gross Revenue",
+                    description: "Enter the combined sales revenue over your chosen reporting window.",
                     icon: DollarSign
                 },
                 {
-                    title: "Enter Orders",
-                    description: "Input the total number of individual orders placed during that same period.",
+                    title: "Total Orders",
+                    description: "Input the total number of single distinct checkout transactions recorded.",
                     icon: ShoppingBag
                 },
                 {
-                    title: "Calculate AOV",
-                    description: "The calculator divides revenue by orders to show you how much the average customer spends per transaction.",
+                    title: "Check Value",
+                    description: "Instantly evaluate exactly how much the average consumer spends total.",
                     icon: Calculator
                 }
             ]}
         />
     )
-}
+}

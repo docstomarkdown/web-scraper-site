@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { TrendingDown, AlertTriangle, Truck, DollarSign, BookOpen } from "lucide-react"
-
 export function PalletGuide() {
     return (
         <ToolGuide
@@ -56,4 +54,4 @@ export function PalletGuide() {
             ]}
         />
     )
-}
+}

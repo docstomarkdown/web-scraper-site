@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Box, Calendar, Package } from "lucide-react"
-
 export function StorageFeeHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Measure Product",
-                    description: "Enter the Length, Width, and Height of a SINGLE packaged unit in inches.",
+                    title: "Item Volume",
+                    description: "Enter your specific product dimensions to calculate true cubic footage.",
                     icon: Box
                 },
                 {
-                    title: "Total Inventory",
-                    description: "Input the total number of units you plan to store in Amazon's warehouses.",
+                    title: "Inventory Size",
+                    description: "Input the average number of physical units held in Amazon facilities.",
                     icon: Package
                 },
                 {
-                    title: "Select Season",
-                    description: "Choose the time of year. Remember that fees are significantly higher during Q4 (Oct-Dec).",
+                    title: "Check Cost",
+                    description: "Instantly see your total monthly storage fee based on current FBA terms.",
                     icon: Calendar
                 }
             ]}
         />
     )
-}
+}

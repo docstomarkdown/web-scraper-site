@@ -4,37 +4,31 @@ import { NetProfitCalculator } from "./_components/NetProfitCalculator"
 import { NetProfitHowToUse } from "./_components/NetProfitHowToUse"
 import { NetProfitGuide } from "./_components/NetProfitGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: "Net Profit Calculator - Calculate True Business Profit | Web Scraper Pro",
     description: "Calculate your net profit after expenses, ads, overhead, and taxes. Get a clear view of your business bottom line with our free calculator.",
 }
-
 export default function NetProfitCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Net Profit Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <NetProfitCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <NetProfitHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <NetProfitGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function NetProfitCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function NetProfitCalculatorPage() {
             </div>
         </div>
     )
-}
+}

@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { Sun, Moon } from "lucide-react";
-
 export function MeetingPlannerGuide() {
     return (
         <ToolGuide
@@ -32,4 +30,4 @@ export function MeetingPlannerGuide() {
             ]}
         />
     );
-}
+}

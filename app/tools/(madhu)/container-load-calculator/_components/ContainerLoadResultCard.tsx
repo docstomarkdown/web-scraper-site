@@ -1,5 +1,4 @@
 "use client"
-
 import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -10,14 +9,12 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-
 interface SecondaryMetric {
     label: string
     value: React.ReactNode
     color?: string
     tooltip?: string
 }
-
 interface ContainerLoadResultCardProps {
     variant?: "default" | "compact"
     title: string
@@ -30,7 +27,6 @@ interface ContainerLoadResultCardProps {
     tooltip?: string
     children?: React.ReactNode
 }
-
 export function ContainerLoadResultCard({
     variant = "default",
     title,
@@ -55,7 +51,6 @@ export function ContainerLoadResultCard({
                     <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none bg-emerald-500 opacity-10" />
                 </>
             )}
-
             <CardHeader className={cn("pb-2 relative z-10", variant === "compact" ? "px-4 pt-4" : "px-6 pt-6")}>
                 <CardTitle className={cn(
                     "font-medium uppercase tracking-wider flex justify-between items-center",
@@ -89,7 +84,6 @@ export function ContainerLoadResultCard({
                     )}
                 </CardTitle>
             </CardHeader>
-
             <CardContent className={cn("relative z-10", variant === "compact" ? "px-4 pb-4" : "px-6 pb-6")}>
                 {mainValue && (
                     <div className={cn("flex items-baseline gap-3", variant === "compact" ? "mb-0" : "mb-6")}>
@@ -102,7 +96,6 @@ export function ContainerLoadResultCard({
                         </div>
                     </div>
                 )}
-
                 {secondaryMetrics.length > 0 && (
                     <div className={cn(
                         "pt-4 space-y-4",
@@ -139,8 +132,6 @@ export function ContainerLoadResultCard({
                         </TooltipProvider>
                     </div>
                 )}
-
-
                 {children && (
                     <div className={cn(
                         "mt-4",
@@ -152,4 +143,4 @@ export function ContainerLoadResultCard({
             </CardContent>
         </Card>
     )
-}
+}

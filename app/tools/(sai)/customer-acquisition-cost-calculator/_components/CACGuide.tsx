@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { DollarSign, Users, PieChart, Target } from "lucide-react"
-
 export function CACGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function CACGuide() {
             ]}
         />
     )
-}
+}

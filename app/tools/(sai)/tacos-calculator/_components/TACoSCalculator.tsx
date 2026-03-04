@@ -1,36 +1,29 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { TrendingUp, DollarSign, Percent, BarChart3, PieChart } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function TACoSCalculator() {
     const [currency, setCurrency] = useState("USD");
     const [totalAdSpend, setTotalAdSpend] = useState<number | "">("")
     const [totalRevenue, setTotalRevenue] = useState<number | "">("")
     const [grossMargin, setGrossMargin] = useState<number | "">("");
-
     const [tacos, setTacos] = useState<number>(0);
     const [netMargin, setNetMargin] = useState<number>(0);
     const [netProfit, setNetProfit] = useState<number>(0);
-
     const val = (v: number | "") => (v === "" ? 0 : v);
     const spend = val(totalAdSpend);
     const revenue = val(totalRevenue);
     const margin = val(grossMargin);
-
     useEffect(() => {
         if (revenue > 0) {
             const calculatedTacos = (spend / revenue) * 100;
             setTacos(calculatedTacos);
-
             if (margin > 0) {
                 const calculatedNetMargin = margin - calculatedTacos;
                 setNetMargin(calculatedNetMargin);
-
                 // Net Profit $ = Revenue * (Net Margin %)
                 setNetProfit(revenue * (calculatedNetMargin / 100));
             } else {
@@ -43,29 +36,24 @@ export function TACoSCalculator() {
             setNetProfit(0);
         }
     }, [spend, revenue, margin]);
-
     const handleReset = () => {
         setTotalAdSpend("");
         setTotalRevenue("");
         setGrossMargin("");
     };
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency', currency: currency, maximumFractionDigits: 0
         }).format(val);
     };
-
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) element.scrollIntoView({ behavior: 'smooth' });
     };
-
     // Determine Health Status
     let status = "Waiting";
     let statusColor = "text-slate-400";
     let statusBg = "bg-slate-100";
-
     if (revenue > 0) {
         if (margin > 0) {
             if (tacos < (margin * 0.3)) { // Spending < 30% of margin
@@ -92,27 +80,21 @@ export function TACoSCalculator() {
             else { status = "High"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
         }
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
-
                             description="Enter total ad spend, revenue, and product margins."
-
                             onReset={handleReset}
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-6 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Business Data */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <BarChart3 className="w-4 h-4" />
@@ -134,9 +116,8 @@ export function TACoSCalculator() {
                                     tooltip="Total spend on all ad platforms."
                                 />
                             </div>
-
                             {/* Group 2: Profitability */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <PieChart className="w-4 h-4" />
@@ -155,11 +136,9 @@ export function TACoSCalculator() {
                             </div>
                         </CardContent>
                     </Card>
-
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="TACoS Percentage"
                         mainValue={
@@ -177,7 +156,6 @@ export function TACoSCalculator() {
                             { label: "Net Profit", value: formatCurrency(netProfit), color: netProfit >= 0 ? "text-blue-400" : "text-red-400" }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {revenue > 0 && margin > 0 && (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -202,9 +180,8 @@ export function TACoSCalculator() {
                             </div>
                         </div>
                     )}
-
                     {/* Insight Card */}
-                    <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
+                    <Card className="border border-slate-200 shadow-sm p-6 space-y-3 bg-white">
                         <div className="flex items-center justify-between">
                             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                                 <TrendingUp className="w-5 h-5 text-blue-600" />
@@ -216,8 +193,6 @@ export function TACoSCalculator() {
                                 </span>
                             )}
                         </div>
-
-
                         <div className="pt-2">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Profitability Scale</p>
@@ -229,7 +204,6 @@ export function TACoSCalculator() {
                                     </span>
                                 )}
                             </div>
-
                             <div className="relative pt-2 pb-1">
                                 {/* Visual Bar: Spend Impact on Margin */}
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
@@ -237,7 +211,6 @@ export function TACoSCalculator() {
                                     <div className="h-full bg-amber-400" style={{ width: '20%' }} /> {/* Warning Zone */}
                                     <div className="h-full bg-red-400" style={{ width: '20%' }} /> {/* Danger Zone */}
                                 </div>
-
                                 {/* Dynamic Pointer for TACoS relative to Margin */}
                                 {margin > 0 && revenue > 0 && (
                                     <motion.div
@@ -261,6 +234,4 @@ export function TACoSCalculator() {
             </div>
         </FadeIn>
     );
-}
-
-const Separator = () => <div className="h-px w-full bg-slate-100" />
+}

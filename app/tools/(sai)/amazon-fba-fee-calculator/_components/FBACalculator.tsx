@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,12 +9,9 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Info, Check, ChevronsUpDown } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
-
 import { ChevronDown, ChevronUp } from "lucide-react"
-
 // --- Market Configurations ---
 // Define fee structures and unit preferences for each region
-
 type MarketConfig = {
     units: { weight: string, dim: string },
     shippingZone?: boolean, // Some markets have zones (e.g. India)
@@ -24,7 +20,6 @@ type MarketConfig = {
     getReferralFee: (price: number, category?: string) => number // UPDATED: Category aware
     getClosingFee?: (price: number) => number // India specific
 }
-
 // --- Categories & Referral Fees ---
 const categories: Record<string, number> = {
     "General (Default)": 0.15,
@@ -38,7 +33,6 @@ const categories: Record<string, number> = {
     "Toys & Games": 0.15,
     "Sports": 0.15,
 }
-
 const markets: Record<string, MarketConfig> = {
     // === UNITED STATES (Imperial) ===
     USD: {
@@ -47,7 +41,6 @@ const markets: Record<string, MarketConfig> = {
         getFbaFee: (l, w, h, wt, price) => {
             // Estimated 2026 US Rates (Base + Inflation Adjustment)
             if (l === 0 || w === 0 || h === 0 || wt === 0) return 0;
-
             let baseFee = 0;
             // Small Standard
             if (l <= 15 && w <= 12 && h <= 0.75 && wt <= 1) baseFee = 3.30; // +0.08 approx
@@ -64,7 +57,6 @@ const markets: Record<string, MarketConfig> = {
             }
             // Oversize
             else baseFee = 9.98 + ((Math.ceil(wt) - 1) * 0.44);
-
             // 2026 Low-Inventory / Inflation Surcharge Logic (Simplified)
             // If price > 50, add ~$0.31, < 10 add ~$0.12 (Averaged to +0.10 for simplicity in this tool)
             if (price) {
@@ -74,14 +66,12 @@ const markets: Record<string, MarketConfig> = {
             }
             return parseFloat(baseFee.toFixed(2));
         },
-
         getReferralFee: (price, category) => {
             if (!price) return 0;
             const rate = category && categories[category] ? categories[category] : 0.15;
             return Math.max(0.30, price * rate);
         },
     },
-
     // === INDIA (Metric) ===
     INR: {
         units: { weight: "kg", dim: "cm" },
@@ -93,12 +83,10 @@ const markets: Record<string, MarketConfig> = {
             // Addl 500g: ~₹24
             // Fixed Closing Fee based on price range
             if (wt === 0) return 0;
-
             const weightInGrams = wt * 1000;
             // Volumetric weight (LxWxH / 5000)
             const volWeight = (l * w * h) / 5000 * 1000;
             const chargeableWeight = Math.max(weightInGrams, volWeight);
-
             // Basic slab calculation (National standard estimate)
             let fee = 0;
             if (chargeableWeight <= 500) {
@@ -122,7 +110,6 @@ const markets: Record<string, MarketConfig> = {
             if (price <= 1000) return 30;
             return 61; // > 1000
         },
-
         getReferralFee: (price, category) => {
             if (!price) return 0;
             // In India, electronics can be very low, apparel can be high.
@@ -131,7 +118,6 @@ const markets: Record<string, MarketConfig> = {
             return Math.max(3, price * rate);
         }
     },
-
     // === UK (Metric) ===
     GBP: {
         units: { weight: "kg", dim: "cm" },
@@ -154,10 +140,8 @@ const markets: Record<string, MarketConfig> = {
             }
             return 7.00 + (Math.ceil(wt) * 0.40); // Oversize estimate
         },
-
         getReferralFee: (price, category) => price > 0 ? Math.max(0.25, price * (category ? categories[category] : 0.153)) : 0
     },
-
     // === EUROPE (Metric - Generic EUR) ===
     EUR: {
         units: { weight: "kg", dim: "cm" },
@@ -172,7 +156,6 @@ const markets: Record<string, MarketConfig> = {
             if (weightG <= 2000) return 5.99;
             return 7.00 + (Math.ceil(wt - 2) * 0.5);
         },
-
         getReferralFee: (price, category) => {
             if (price <= 0) return 0;
             // 2026 EU Rate Updates for Low Price Items
@@ -182,7 +165,6 @@ const markets: Record<string, MarketConfig> = {
             return Math.max(0.30, price * (category ? categories[category] : 0.15));
         }
     },
-
     // === CANADA (Metric) ===
     CAD: {
         units: { weight: "kg", dim: "cm" },
@@ -197,14 +179,11 @@ const markets: Record<string, MarketConfig> = {
             if (weightG <= 3000) return 10.37;
             return 11.00 + (Math.ceil(wt - 3) * 0.40);
         },
-
         getReferralFee: (price, category) => price > 0 ? Math.max(1.00, price * (category ? categories[category] : 0.15)) : 0
     }
 }
-
 // Fallback for others
 const defaultMarket = markets.USD;
-
 export function FBACalculator() {
     // State for inputs
     const [currency, setCurrency] = useState("USD")
@@ -215,18 +194,14 @@ export function FBACalculator() {
     const [length, setLength] = useState<number | "">("")
     const [width, setWidth] = useState<number | "">("")
     const [height, setHeight] = useState<number | "">("")
-
     // Advanced State
     const [showAdvanced, setShowAdvanced] = useState(false)
     const [category, setCategory] = useState("General (Default)")
     const [storageMonths, setStorageMonths] = useState<number | "">("")
-
     const market = markets[currency] || defaultMarket;
     const units = market.units;
-
     // Helper to safely get number for calculation
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     // Currency symbols map
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
@@ -236,9 +211,6 @@ export function FBACalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const getSymbol = () => currencySymbols[currency] || "$"
-
-
-
     const handleReset = () => {
         setSalesPrice("")
         setWeight("")
@@ -248,29 +220,24 @@ export function FBACalculator() {
         setCategory("General (Default)")
         setStorageMonths("")
     }
-
     const salesPriceVal = val(salesPrice)
     const weightVal = val(weight)
     const lengthVal = val(length)
     const widthVal = val(width)
     const heightVal = val(height)
-
     // Calculate Fees
     // Calculate Fees
     const fbaFee = market.getFbaFee(lengthVal, widthVal, heightVal, weightVal, salesPriceVal)
     const referralFee = market.getReferralFee(salesPriceVal, category)
     const closingFee = market.getClosingFee ? market.getClosingFee(salesPriceVal) : 0;
-
     // Storage Fee Calculation
     const getStorageFee = () => {
         if (lengthVal === 0 || widthVal === 0 || heightVal === 0) return 0;
         const months = val(storageMonths) || 0;
         if (months === 0) return 0;
-
         // Calculate Volume
         let volume = lengthVal * widthVal * heightVal; // base unit volume (e.g. in³ or cm³)
         let volumeInFeeUnits = 0;
-
         if (market.units.dim === "in" && market.currencyParams.storageUnit === "ft³") {
             // in³ to ft³ => / 1728
             volumeInFeeUnits = volume / 1728;
@@ -284,13 +251,10 @@ export function FBACalculator() {
             // Fallback approximation
             return 0;
         }
-
         return volumeInFeeUnits * market.currencyParams.storagePerCubic * months;
     }
-
     const storageFee = getStorageFee();
     const totalFees = fbaFee + referralFee + closingFee + storageFee;
-
     // Size Tier Display (Rough Logic)
     const getSizeTier = () => {
         if (lengthVal === 0 || widthVal === 0 || heightVal === 0 || weightVal === 0) return "Unknown"
@@ -306,7 +270,6 @@ export function FBACalculator() {
         }
         return "Oversize / Heavy"
     }
-
     // Currency formatter
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -315,13 +278,10 @@ export function FBACalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     const symbol = getSymbol()
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs (Col Span 7) */}
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
@@ -332,8 +292,8 @@ export function FBACalculator() {
                                 currency={currency}
                                 onCurrencyChange={setCurrency}
                             />
-                            <CardContent className="space-y-4 pt-6">
-                                <div className="space-y-4">
+                            <CardContent className="space-y-3 pt-6">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label={`Selling Price (${symbol})`}
                                         value={salesPrice}
@@ -342,7 +302,6 @@ export function FBACalculator() {
                                         max={100000}
                                         tooltip="The price you list your product for on Amazon."
                                     />
-
                                     <div className="grid grid-cols-1 gap-4">
                                         <CalculatorInput
                                             label={`Packaged Weight (${units.weight})`}
@@ -352,14 +311,13 @@ export function FBACalculator() {
                                             max={150}
                                             tooltip={`Total weight including packaging in ${units.weight}.`}
                                         />
-
                                         <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-3">
                                             <div className="space-y-1">
                                                 <label className="text-base font-semibold text-slate-700 flex items-center justify-between">
                                                     <span>Dimensions ({units.dim})</span>
                                                     <span className="text-[11px] font-medium text-slate-400/80 bg-slate-50 px-2 py-0.5 rounded">L x W x H</span>
                                                 </label>
-                                                <div className="grid grid-cols-1 gap-6 pt-2">
+                                                <div className="grid grid-cols-1 gap-4 pt-2">
                                                     <CalculatorInput
                                                         label="Length"
                                                         value={length}
@@ -383,9 +341,6 @@ export function FBACalculator() {
                                         </div>
                                     </div>
                                 </div>
-
-
-
                                 {/* Advanced Toggle */}
                                 <div className="pt-6 mt-4 border-t border-slate-100">
                                     <div
@@ -423,9 +378,8 @@ export function FBACalculator() {
                                             {showAdvanced ? <ChevronUp className="w-4 h-4 text-emerald-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
                                         </div>
                                     </div>
-
                                     {showAdvanced && (
-                                        <FadeIn className="mt-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-6">
+                                        <FadeIn className="mt-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-3">
                                             {/* Category Selector */}
                                             <div className="space-y-3">
                                                 <div className="flex items-center justify-between">
@@ -452,7 +406,6 @@ export function FBACalculator() {
                                                         Fee: <span className="text-emerald-600 font-bold">{Math.round(categories[category] * 100)}%</span>
                                                     </span>
                                                 </div>
-
                                                 <Popover>
                                                     <PopoverTrigger asChild>
                                                         <Button
@@ -495,7 +448,6 @@ export function FBACalculator() {
                                                     </PopoverContent>
                                                 </Popover>
                                             </div>
-
                                             {/* Storage Input */}
                                             <div className="pt-2 border-t border-slate-200/50">
                                                 <div className="grid grid-cols-1 gap-4">
@@ -523,11 +475,9 @@ export function FBACalculator() {
                         </Card>
                     </FadeIn>
                 </div>
-
                 {/* Right Column: Results (Col Span 5) - Sticky & Dark Theme */}
-                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-4">
-
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
+                    <FadeIn delay={0.4} direction="left" className="space-y-3">
                         <ResultFeedbackCard
                             title="Total Amazon Fees"
                             titleLabel="Estimated (2026 Rates)"
@@ -537,7 +487,6 @@ export function FBACalculator() {
                             valueColor="text-slate-100"
                             secondaryMetrics={[]}
                         />
-
                         {/* Fee Breakdown Card */}
                         {salesPriceVal > 0 ? (
                             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
@@ -577,15 +526,9 @@ export function FBACalculator() {
                                 <p className="text-sm text-slate-400">Enter product details to calculate fees.</p>
                             </div>
                         )}
-
-
                     </FadeIn>
                 </div >
             </div >
-
-
         </FadeIn >
     )
-}
-
-
+}

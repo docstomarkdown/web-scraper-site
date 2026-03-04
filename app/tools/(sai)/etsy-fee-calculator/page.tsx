@@ -4,38 +4,31 @@ import { EtsyFeeGuide } from "./_components/EtsyFeeGuide"
 import { EtsyFeeHowToUse } from "./_components/EtsyFeeHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: 'Etsy Fee Calculator - Calculate Transaction & Listing Fees | Web Scraper Pro',
     description: 'Calculate your exact Etsy fees and net profit. Includes listing fees, transaction fees (6.5%), payment processing, and Offsite Ads calculations.',
 }
-
 export default function EtsyFeeCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 md:text-[42px] mb-4">
                             Etsy Fee Calculator
                         </h1>
-
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <EtsyFeeCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <EtsyFeeHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <EtsyFeeGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <ToolFAQ
                             faqs={[
@@ -54,7 +47,6 @@ export default function EtsyFeeCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <CTA />
                     </FadeIn>
@@ -62,4 +54,4 @@ export default function EtsyFeeCalculatorPage() {
             </div>
         </div>
     )
-}
+}

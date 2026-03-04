@@ -1,26 +1,21 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { TrendingUp, DollarSign, Percent, AlertTriangle, CheckCircle2 } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function FreeShippingCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [aov, setAov] = useState<number | "">("")
     const [marginPercent, setMarginPercent] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
     const [proposedThreshold, setProposedThreshold] = useState<number | "">("")
-
     const handleReset = () => {
         setAov("")
         setMarginPercent("")
         setShippingCost("")
         setProposedThreshold("")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -34,26 +29,20 @@ export function FreeShippingCalculator() {
     const margin = val(marginPercent) / 100
     const shipCost = val(shippingCost)
     const threshold = val(proposedThreshold)
-
     // 1. Current Profit per Order (assuming shipping is paid by customer or handled differently, 
     // but usually "Free Shipping" means we absorb the cost. 
     // Let's assume currently shipping is paid by customer (Revenue = AOV), so Profit = AOV * Margin.
     // If we offer Free Shipping, we absorb 'shipCost'.
-
     // To maintain the SAME total profit, we need more sales volume or higher AOV.
     // Breakeven AOV with Free Shipping = AOV / (1 - (ShippingCost / (AOV * Margin))) ... this is getting complex.
-
     // Simpler approach for the user:
     // "How much do sales need to increase to cover the free shipping cost?"
     // Required Sales Increase % = (Shipping Cost / (AOV * Margin - Shipping Cost)) * 100
-
     // Let's protect against divide by zero or negative margin
     const grossProfitPerOrder = currentAOV * margin
     const netProfitWithFreeShipping = grossProfitPerOrder - shipCost
-
     let salesIncreaseNeeded = 0
     let isViable = true
-
     if (currentAOV > 0 && margin > 0) {
         if (netProfitWithFreeShipping <= 0) {
             isViable = false
@@ -61,18 +50,15 @@ export function FreeShippingCalculator() {
         } else {
             // Formula: Sales Increase = (Cost of Free Shipping) / (Gross Profit - Cost of Free Shipping)
             // Wait, standard formula: Required Lift = (Cost / (Margin - Cost)) doesn't look right.
-
             // Let's simple Break Even Analysis:
             // Current Profit = Sales * (AOV * Margin) [Assuming Shipping is paid by customer in "Current" state, so it's pass-through]
             // New Profit = (Sales * (1 + Lift)) * (AOV_New * Margin - Shipping)
-
             // If we assume AOV stays same for simplicity (or acts as a floor):
             // Old Profit = AOV * Margin
             // New Profit = AOV * Margin - Shipping
             // We need Volume Lift (L) such that: (1+L) * (Profit - Shipping) = Profit
             // (1+L) = Profit / (Profit - Shipping)
             // L = (Profit / (Profit - Shipping)) - 1
-
             if (grossProfitPerOrder > shipCost) {
                 salesIncreaseNeeded = ((grossProfitPerOrder / (grossProfitPerOrder - shipCost)) - 1) * 100
             } else {
@@ -80,7 +66,6 @@ export function FreeShippingCalculator() {
             }
         }
     }
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -88,26 +73,19 @@ export function FreeShippingCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter your current metrics."
-
                             onReset={handleReset}
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Average Order Value (AOV) (${symbol})`}
                                 value={aov}
@@ -140,9 +118,8 @@ export function FreeShippingCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Required Sales Increase"
                         titleLabel={isViable ? "Feasible" : "High Risk"}
@@ -168,7 +145,6 @@ export function FreeShippingCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {currentAOV > 0 || shipCost > 0 || threshold > 0 ? (
                         <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${isViable ? 'border-l-blue-500' : 'border-l-red-500'}`}>
@@ -213,4 +189,4 @@ export function FreeShippingCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

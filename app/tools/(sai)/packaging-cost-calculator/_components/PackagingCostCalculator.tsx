@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,7 +7,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { cn } from "@/lib/utils"
 import { CurrencyCombobox } from "@/app/tools/_shared/components"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function PackagingCostCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [showAdvanced, setShowAdvanced] = useState(false)
@@ -19,9 +17,7 @@ export function PackagingCostCalculator() {
     const [brandingCost, setBrandingCost] = useState<number | "">("")
     const [laborTime, setLaborTime] = useState<number | "">("")
     const [hourlyWage, setHourlyWage] = useState<number | "">("")
-
     const [orderQuantity, setOrderQuantity] = useState<number | "">("")
-
     const handleReset = () => {
         setBoxCost("")
         setPaddingCost("")
@@ -33,9 +29,7 @@ export function PackagingCostCalculator() {
         setOrderQuantity(1)
         setShowAdvanced(false)
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -44,37 +38,30 @@ export function PackagingCostCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
     const scrollToGuide = () => {
         const element = document.getElementById('packaging-guide');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
     };
-
     // Calculations
     const box = val(boxCost)
     const padding = val(paddingCost)
     const tape = val(tapeCost)
     const label = val(labelCost)
     const branding = val(brandingCost)
-
     // Labor Calculation
     const time = val(laborTime)
     const wage = val(hourlyWage)
     const laborCostPerUnit = time > 0 && wage > 0 ? (time / 60) * wage : 0
-
     const totalMaterialCost = box + padding + tape + label + branding
     const totalPackagingCost = totalMaterialCost + laborCostPerUnit
     const qty = val(orderQuantity)
     const batchTotal = totalPackagingCost * (qty > 0 ? qty : 1)
-
     const hasInput = totalPackagingCost > 0
-
     // Percentage breakdown
     const materialPercentage = totalPackagingCost > 0 ? (totalMaterialCost / totalPackagingCost) * 100 : 0
     const laborPercentage = totalPackagingCost > 0 ? (laborCostPerUnit / totalPackagingCost) * 100 : 0
-
     const formatCurrency = (v: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -82,14 +69,11 @@ export function PackagingCostCalculator() {
             maximumFractionDigits: 2
         }).format(v)
     }
-
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <div className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0 p-6">
                             <div className="space-y-1">
@@ -123,17 +107,15 @@ export function PackagingCostCalculator() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 </div>
-
                             </div>
                             <div className="w-[140px]">
                                 <CurrencyCombobox value={currency} onValueChange={setCurrency} />
                             </div>
                         </div>
                         <div className="space-y-8 pt-6 p-6">
-
                             {/* Main Inputs */}
-                            <div className="space-y-4">
-                                <div className="space-y-4">
+                            <div className="space-y-3">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label={`Box / Mailer Cost (${symbol})`}
                                         value={boxCost}
@@ -168,7 +150,6 @@ export function PackagingCostCalculator() {
                                     />
                                 </div>
                             </div>
-
                             {/* Advanced Settings */}
                             <div className="pt-4 border-t border-slate-100">
                                 <div
@@ -206,10 +187,9 @@ export function PackagingCostCalculator() {
                                         {showAdvanced ? <ChevronUp className="w-4 h-4 text-blue-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
                                     </div>
                                 </div>
-
                                 {showAdvanced && (
-                                    <FadeIn className="mt-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-6">
-                                        <div className="space-y-4">
+                                    <FadeIn className="mt-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-3">
+                                        <div className="space-y-3">
                                             <CalculatorInput
                                                 label={`Padding / Infill (${symbol})`}
                                                 value={paddingCost}
@@ -246,14 +226,11 @@ export function PackagingCostCalculator() {
                                     </FadeIn>
                                 )}
                             </div>
-
                         </div>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     {/* Main Result Card */}
                     <ResultFeedbackCard
                         title="Total Packaging Cost Per Unit"
@@ -269,7 +246,6 @@ export function PackagingCostCalculator() {
                             }] : [])
                         ]}
                     />
-
                     {/* Cost Breakdown Card */}
                     {hasInput ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -300,13 +276,8 @@ export function PackagingCostCalculator() {
                             <p className="text-sm text-slate-400">Enter packaging costs to see breakdown.</p>
                         </div>
                     )}
-
-
                 </div>
             </div>
         </FadeIn>
     )
-}
-
-
-
+}

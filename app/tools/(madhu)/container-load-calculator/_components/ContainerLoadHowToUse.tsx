@@ -1,29 +1,27 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Container, Box, CheckCircle2, Truck } from "lucide-react"
-
 export function ContainerLoadHowToUse() {
     return (
         <ToolSteps
             title="How to Use This Tool"
             steps={[
                 {
-                    title: "Select Container",
-                    description: "Choose between standard <strong>20ft</strong>, <strong>40ft</strong>, or <strong>High Cube</strong> containers to match your shipping plan.",
+                    title: "Container Type",
+                    description: "Select standard sizes (20ft, 40ft) or enter customized container specs.",
                     icon: Container
                 },
                 {
-                    title: "Enter Dimensions",
-                    description: "Input your unit's L/W/H and Weight. If using pallets, toggle to <strong>Pallet</strong> mode and provide pallet details.",
+                    title: "Item Details",
+                    description: "Input the exact length, width, height, and weight of your cargo boxes.",
                     icon: Box
                 },
                 {
-                    title: "Check Capacity",
-                    description: "We calculate the maximum units that fit, accounting for <b>volume</b> and <b>weight limits</b> automatically.",
+                    title: "Calculate Fit",
+                    description: "See max capacity, utilization rates, and optimal stacking efficiency.",
                     icon: CheckCircle2
                 }
             ]}
         />
     )
-}
+}

@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,25 +8,19 @@ import { cn } from "@/lib/utils"
 import { FadeIn } from "../../../_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Counter, ResultFeedbackCard, CalculatorInput } from "../../../_shared/components"
-
 type Unit = "in" | "cm"
-
 interface Dimensions {
     length: string
     width: string
     height: string
 }
-
 export function DimensionConverterContent() {
-    const [isCopied, setIsCopied] = useState(false);
     const [dimensions, setDimensions] = useState<Dimensions>({ length: "", width: "", height: "" })
     const [unit, setUnit] = useState<Unit>("in")
     const [volume, setVolume] = useState<{ in3: number; cm3: number } | null>(null)
     const [converted, setConverted] = useState<{ in: Dimensions; cm: Dimensions } | null>(null)
-
     // Constants
     const IN_TO_CM = 2.54
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         // Allow only numbers and one decimal point
@@ -35,23 +28,18 @@ export function DimensionConverterContent() {
             setDimensions((prev: Dimensions) => ({ ...prev, [name]: value }))
         }
     }
-
     const parseValue = (val: string) => parseFloat(val) || 0
-
     useEffect(() => {
         const l = parseValue(dimensions.length)
         const w = parseValue(dimensions.width)
         const h = parseValue(dimensions.height)
-
         if (l === 0 && w === 0 && h === 0) {
             setVolume(null)
             setConverted(null)
             return
         }
-
         // Convert everything to a base unit (cm) for calculation
         let l_cm = 0, w_cm = 0, h_cm = 0
-
         if (unit === "in") {
             l_cm = l * IN_TO_CM
             w_cm = w * IN_TO_CM
@@ -61,19 +49,15 @@ export function DimensionConverterContent() {
             w_cm = w
             h_cm = h
         }
-
         // Volume Calculations
         const vol_cm3 = l_cm * w_cm * h_cm
         const vol_in3 = vol_cm3 / (IN_TO_CM ** 3)
-
         setVolume({
             in3: vol_in3,
             cm3: vol_cm3,
         })
-
         // Conversions
         const toIn = (val_cm: number) => val_cm / IN_TO_CM
-
         setConverted({
             in: {
                 length: toIn(l_cm).toFixed(2),
@@ -86,45 +70,35 @@ export function DimensionConverterContent() {
                 height: h_cm.toFixed(2)
             }
         })
-
     }, [dimensions, unit])
-
     const copyToClipboard = () => {
         if (!converted) return
         const text = `
 Dimensions:
 ${converted.in.length}" x ${converted.in.width}" x ${converted.in.height}"
 ${converted.cm.length}cm x ${converted.cm.width}cm x ${converted.cm.height}cm
-
 Volume:
 ${volume?.in3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} in³
 ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} cm³
     `.trim()
-
         navigator.clipboard.writeText(text)
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
     }
-
     const clearAll = () => {
         setDimensions({ length: "", width: "", height: "" })
         setUnit("in")
-
     }
-
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
     };
-
     return (
         <div className="flex flex-col gap-10 max-w-4xl mx-auto">
-
             {/* Power Dashboard Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
                 {/* LEFT COLUMN: Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col">
@@ -157,12 +131,11 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         </CardHeader>
                         <CardContent className="p-6 md:p-10 space-y-10">
                             {/* Measurement Unit Section */}
-                            <div className="space-y-6">
+                            <div className="space-y-3">
                                 <label className="text-sm font-semibold text-slate-600 flex items-center gap-2 mb-2">
                                     <RefreshCw className="w-4 h-4 text-slate-400" />
                                     Measurement Unit
                                 </label>
-
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
                                         Base Unit
@@ -185,17 +158,14 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                     </div>
                                 </div>
                             </div>
-
                             <Separator className="bg-slate-100" />
-
                             {/* Dimension Details Section */}
-                            <div className="space-y-6">
+                            <div className="space-y-3">
                                 <label className="text-sm font-semibold text-slate-600 flex items-center gap-2 mb-2">
                                     <Box className="w-4 h-4 text-slate-400" />
                                     Dimension Details
                                 </label>
-
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     {(["length", "width", "height"] as const).map((dim) => (
                                         <CalculatorInput
                                             key={dim}
@@ -209,7 +179,6 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                     ))}
                                 </div>
                             </div>
-
                             <div className="flex gap-4 pt-8 border-t border-slate-100">
                                 <Button
                                     variant="outline"
@@ -238,10 +207,9 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* RIGHT COLUMN: Results (Col Span 5) */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-6">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
+                    <FadeIn delay={0.4} direction="left" className="space-y-3">
                         {/* Main Volume Card (Dark Theme) */}
                         <ResultFeedbackCard
                             title="Total Volume"
@@ -270,7 +238,6 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 </div>
                             </div>
                         </ResultFeedbackCard>
-
                         {/* Conversion Results Table Card */}
                         <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                             <CardHeader className="pb-4 bg-slate-50/30 border-b border-slate-100">
@@ -306,11 +273,9 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 </div>
                             </CardContent>
                         </Card>
-
-
                     </FadeIn>
                 </div>
             </div>
         </div>
     )
-}
+}

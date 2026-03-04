@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { DollarSign, ShoppingBag, TrendingUp, Package } from "lucide-react"
-
 export function AOVGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function AOVGuide() {
             ]}
         />
     )
-}
+}

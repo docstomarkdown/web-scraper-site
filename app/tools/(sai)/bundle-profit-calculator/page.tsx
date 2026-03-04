@@ -4,12 +4,10 @@ import { BundleHowToUse } from './_components/BundleHowToUse';
 import { BundleGuide } from './_components/BundleGuide';
 import { FadeIn, ToolFAQ } from '@/app/tools/_shared/components';
 import { CTA } from '@/components/sections/CTA';
-
 export const metadata: Metadata = {
     title: 'Bundle Profit Calculator | Web Scraper Pro',
     description: 'Calculate profit margins and ROI for product bundles. Optimize your e-commerce bundling strategy.',
 };
-
 const faqs = [
     {
         question: "What is a product bundle?",
@@ -28,7 +26,6 @@ const faqs = [
         answer: "Yes, typically by increasing the Average Order Value (AOV) and reducing per-unit shipping and marketing costs."
     }
 ];
-
 export default function BundleCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
@@ -43,11 +40,9 @@ export default function BundleCalculatorPage() {
                         </p>
                     </div>
                 </FadeIn>
-
                 <div className="mb-20">
                     <BundleProfitCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}><BundleHowToUse /></FadeIn>
                     <FadeIn delay={0.2}><BundleGuide /></FadeIn>
@@ -57,4 +52,4 @@ export default function BundleCalculatorPage() {
             </div>
         </div>
     );
-}
+}

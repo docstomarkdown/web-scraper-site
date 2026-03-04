@@ -1,14 +1,11 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-
 import { Package, Scale, Info, Box, Truck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
-
 export function FBARemovalCalculator() {
     // State
     const [unitWeight, setUnitWeight] = useState<number | "">("")
@@ -17,13 +14,11 @@ export function FBARemovalCalculator() {
     const [height, setHeight] = useState<number | "">("")
     const [quantity, setQuantity] = useState<number | "">("")
     const [currency, setCurrency] = useState("USD")
-
     // Derived State
     const [sizeTier, setSizeTier] = useState<"Standard" | "Large/Bulky" | null>(null)
     const [shippingWeight, setShippingWeight] = useState<number>(0)
     const [removalFeePerUnit, setRemovalFeePerUnit] = useState<number>(0)
     const [totalCost, setTotalCost] = useState<number>(0)
-
     const handleReset = () => {
         setUnitWeight("")
         setLength("")
@@ -31,10 +26,8 @@ export function FBARemovalCalculator() {
         setHeight("")
         setQuantity("")
     }
-
     // Get currency symbol
     const currencySymbol = currencies.find(c => c.code === currency)?.symbol || "$"
-
     // specific 2025 fee logic
     useEffect(() => {
         const w = Number(unitWeight) || 0
@@ -42,14 +35,12 @@ export function FBARemovalCalculator() {
         const wi = Number(width) || 0
         const h = Number(height) || 0
         const q = Number(quantity) || 0
-
         if (w === 0 || l === 0 || wi === 0 || h === 0) {
             setTotalCost(0)
             setRemovalFeePerUnit(0)
             setSizeTier(null)
             return
         }
-
         // 1. Determine Size Tier
         // Standard: <= 18 x 14 x 8 inches AND <= 20 lbs
         const isStandardDims = l <= 18 && wi <= 14 && h <= 8
@@ -57,20 +48,16 @@ export function FBARemovalCalculator() {
         const isStandard = isStandardDims && isStandardWeight
         const specificTier = isStandard ? "Standard" : "Large/Bulky"
         setSizeTier(specificTier)
-
         // 2. Calculate Dimensional Weight (Divisor 139)
         const dimWeight = (l * wi * h) / 139
-
         // 3. Determine Shipping Weight
         // For Standard: Unit weight only? No, usually greater of unit or dim weight for fees, 
         // BUT for removal fees specifically, the rate card uses "Shipping Weight".
         // Use greater of unit or dim weight.
         const shipW = Math.max(w, dimWeight)
         setShippingWeight(shipW)
-
         // 4. Calculate Fee based on 2025 Rate Card
         let fee = 0
-
         if (isStandard) {
             // Standard Size Tiers (Weight in lb ranges)
             // Rate card: 
@@ -78,7 +65,6 @@ export function FBARemovalCalculator() {
             // 0.5-1.0 lb: $1.53
             // 1.0-2.0 lb: $2.27
             // > 2 lb: $2.89 + $1.06/lb above 2lb
-
             if (shipW <= 0.5) fee = 1.04
             else if (shipW <= 1.0) fee = 1.53
             else if (shipW <= 2.0) fee = 2.27
@@ -94,10 +80,8 @@ export function FBARemovalCalculator() {
             // 2-4 lb: $6.36
             // 4-10 lb: $10.04
             // > 10 lb: $14.32 + $1.06/lb above 10 lb
-
             // "For these size tiers, shipping weight is rounded up to the nearest whole pound"
             const roundedShipW = Math.ceil(shipW)
-
             if (roundedShipW <= 1) fee = 3.12
             else if (roundedShipW <= 2) fee = 4.30
             else if (roundedShipW <= 4) fee = 6.36
@@ -107,14 +91,9 @@ export function FBARemovalCalculator() {
                 fee = 14.32 + (additionalLbs * 1.06)
             }
         }
-
         setRemovalFeePerUnit(fee)
         setTotalCost(fee * q)
-
     }, [unitWeight, length, width, height, quantity])
-
-
-
     return (
         <div className="w-full max-w-6xl mx-auto space-y-8">
             {/* Header Section */}
@@ -124,28 +103,19 @@ export function FBARemovalCalculator() {
                         Removal Order Cost Calculator
                     </h2>
                 </div>
-
             </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
                     <CalculatorCardHeader
-
                         description="Enter your details."
-
                         onReset={handleReset}
-
                         currency={currency}
-
                         onCurrencyChange={setCurrency}
-
                     />
-
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Dimensional Data */}
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             <div className="flex items-center justify-between">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Box className="w-4 h-4 text-slate-400" />
@@ -173,12 +143,10 @@ export function FBARemovalCalculator() {
                                 />
                             </div>
                         </div>
-
                         <Separator className="bg-slate-100" />
-
                         {/* Weight & Quantity */}
-                        <div className="grid grid-cols-1 gap-6">
-                            <div className="space-y-4">
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Scale className="w-4 h-4 text-slate-400" />
                                     Unit Weight
@@ -191,8 +159,7 @@ export function FBARemovalCalculator() {
                                     tooltip="The actual weight of a single unit."
                                 />
                             </div>
-
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Truck className="w-4 h-4 text-slate-400" />
                                     Removal Quantity
@@ -206,7 +173,6 @@ export function FBARemovalCalculator() {
                                 />
                             </div>
                         </div>
-
                         {/* Size Tier Alert */}
                         {Boolean(sizeTier) && (
                             <FadeIn>
@@ -241,9 +207,8 @@ export function FBARemovalCalculator() {
                         )}
                     </CardContent>
                 </Card>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Estimated Removal Cost"
                         titleLabel="Total Fees"
@@ -267,7 +232,6 @@ export function FBARemovalCalculator() {
                             </Badge>
                         </div>
                     </ResultFeedbackCard>
-
                     {/* Breakdown Card */}
                     {totalCost > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
@@ -294,9 +258,8 @@ export function FBARemovalCalculator() {
                             <p className="text-sm text-slate-400">Enter details to calculate removal cost.</p>
                         </div>
                     )}
-
                 </div>
             </div>
         </div>
     )
-}
+}

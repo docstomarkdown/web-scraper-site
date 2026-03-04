@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { AlertTriangle, Wallet, TrendingUp, BookOpen } from "lucide-react"
-
 export function GrossMarginGuide() {
     return (
         <ToolGuide
@@ -44,4 +42,4 @@ export function GrossMarginGuide() {
             ]}
         />
     )
-}
+}

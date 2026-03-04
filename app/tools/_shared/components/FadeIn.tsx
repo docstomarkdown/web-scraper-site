@@ -1,10 +1,7 @@
 "use client"
-
 import React from "react"
-
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
-
 interface FadeInProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode
     className?: string
@@ -12,7 +9,6 @@ interface FadeInProps extends React.HTMLAttributes<HTMLDivElement> {
     duration?: number
     direction?: "up" | "down" | "left" | "right" | "none"
 }
-
 export function FadeIn({
     children,
     className,
@@ -32,7 +28,6 @@ export function FadeIn({
             y: 0,
         },
     }
-
     return (
         <motion.div
             initial="hidden"
@@ -49,4 +44,4 @@ export function FadeIn({
             {children}
         </motion.div>
     )
-}
+}

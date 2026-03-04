@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useMemo } from "react"
 import {
     Calendar,
@@ -17,25 +16,20 @@ import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
 interface DOIState {
     currentStock: string | number
     salesVelocity: string | number
     velocityUnit: "daily" | "weekly" | "monthly"
     safetyStock: string | number
 }
-
 const DEFAULT_STATE: DOIState = {
     currentStock: "",
     salesVelocity: "",
     velocityUnit: "daily",
     safetyStock: ""
 }
-
 export function DaysOfInventoryCalculator() {
     const [values, setValues] = useState<DOIState>(DEFAULT_STATE)
-    const [isCopying, setIsCopying] = useState(false)
-
     const handleInputChange = (field: keyof DOIState, value: string | number) => {
         if (field === "velocityUnit") {
             setValues(prev => ({ ...prev, [field]: value as any }))
@@ -43,18 +37,15 @@ export function DaysOfInventoryCalculator() {
         }
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
-
     const hasInputs = useMemo(() => {
         const stock = Number(values.currentStock) || 0
         const velocity = Number(values.salesVelocity) || 0
         return values.currentStock !== "" && values.salesVelocity !== "" && stock > 0 && velocity > 0
     }, [values])
-
     const results = useMemo(() => {
         const stock = Number(values.currentStock) || 0
         const velocity = Number(values.salesVelocity) || 0
         const safety = Number(values.safetyStock) || 0
-
         if (stock === 0 || velocity === 0) return {
             dailyVelocity: 0,
             daysRemaining: 0,
@@ -62,23 +53,18 @@ export function DaysOfInventoryCalculator() {
             runOutDate: new Date(),
             status: "waiting" as const
         }
-
         let dailyVelocity = velocity
         if (values.velocityUnit === "weekly") dailyVelocity = velocity / 7
         if (values.velocityUnit === "monthly") dailyVelocity = velocity / 30
-
         const totalDaysRemaining = stock / dailyVelocity
         const useableStock = Math.max(0, stock - safety)
         const useableDays = useableStock / dailyVelocity
-
         const runOutDate = new Date()
         runOutDate.setDate(runOutDate.getDate() + totalDaysRemaining)
-
         let status: "critical" | "warning" | "healthy" | "overstock" = "healthy"
         if (totalDaysRemaining < 7) status = "critical"
         else if (totalDaysRemaining < 21) status = "warning"
         else if (totalDaysRemaining > 90) status = "overstock"
-
         return {
             dailyVelocity,
             daysRemaining: Math.floor(totalDaysRemaining),
@@ -87,36 +73,7 @@ export function DaysOfInventoryCalculator() {
             status
         }
     }, [values])
-
     const handleReset = () => setValues(DEFAULT_STATE)
-
-    const handleCopy = async () => {
-        setIsCopying(true)
-        const dateString = results.runOutDate.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        })
-
-        const text = `
-Inventory Runway Analysis:
----------------------------------------
-- Current Stock: ${values.currentStock} units
-- Sales Velocity: ${values.salesVelocity} units/${values.velocityUnit}
-- Safety Stock Buffer: ${values.safetyStock} units
-
-Results:
-- DAYS OF INVENTORY REMAINING: ${results.daysRemaining} days
-- Useable Days (excluding safety buffer): ${results.useableDays} days
-- Estimated Stock-out Date: ${dateString}
-- Daily Burn Rate: ${results.dailyVelocity.toFixed(2)} units/day
-        `.trim()
-
-        await navigator.clipboard.writeText(text)
-        setTimeout(() => setIsCopying(false), 2000)
-    }
-
     const getStatusColor = (status: string) => {
         switch (status) {
             case "critical": return "text-red-500 bg-red-50 border-red-100"
@@ -126,11 +83,9 @@ Results:
             default: return "text-slate-400 bg-slate-50 border-slate-100"
         }
     }
-
     return (
         <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
-
                 {/* Left Column: Smart Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-[2.5rem]">
@@ -139,7 +94,6 @@ Results:
                             subtitle="Analyze your remaining stock runway."
                             scrollId="how-to-use"
                         />
-
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Velocity Unit Tabs */}
                             <div className="space-y-2">
@@ -193,13 +147,12 @@ Results:
                                     </TabsList>
                                 </Tabs>
                             </div>
-
                             <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Package className="w-4 h-4 text-slate-400" />
                                     Stock & Sales Details
                                 </label>
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Current Stock on Hand"
                                         value={values.currentStock}
@@ -223,21 +176,16 @@ Results:
                                     />
                                 </div>
                             </div>
-
                             <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
-                                    onCopy={handleCopy}
-                                    copyDisabled={!hasInputs || isCopying}
-                                    isCopied={isCopying}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col">
+                <div className="lg:col-span-5 space-y-3 flex flex-col">
                     <ResultFeedbackCard
                         title="TOTAL INVENTORY RUNWAY"
                         titleLabel="Days Remaining"
@@ -261,7 +209,7 @@ Results:
                             </div>
                         }
                     >
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/30">
                                     <Calendar className="w-5 h-5 text-blue-400" />
@@ -281,7 +229,6 @@ Results:
                                     </p>
                                 </div>
                             </div>
-
                             {/* Useable Days vs Buffer */}
                             <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
                                 <p className="text-slate-400 text-sm font-semibold mb-1">Net Useable Runway</p>
@@ -296,5 +243,3 @@ Results:
         </div>
     )
 }
-
-

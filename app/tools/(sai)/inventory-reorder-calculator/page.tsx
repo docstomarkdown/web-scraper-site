@@ -4,37 +4,31 @@ import { ReorderGuide } from "./_components/ReorderGuide"
 import { ReorderHowToUse } from "./_components/ReorderHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: 'Inventory Reorder Point Calculator | Web Scraper Pro',
     description: 'Calculate exactly when to reorder stock. Prevent stockouts and overstocking with our scientific Reorder Point calculator.',
 }
-
 export default function ReorderCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 md:text-[42px] mb-4">
                             Inventory Reorder Point Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <ReorderCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16" id="how-to-use">
                     <FadeIn delay={0.2}>
                         <ReorderHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <ReorderGuide />
                     </FadeIn>
-
                     {/* FAQ Section */}
                     <FadeIn delay={0.2}>
                         <ToolFAQ
@@ -54,7 +48,6 @@ export default function ReorderCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     {/* CTA Section */}
                     <FadeIn delay={0.2}>
                         <CTA />
@@ -63,4 +56,4 @@ export default function ReorderCalculatorPage() {
             </div>
         </div>
     )
-}
+}

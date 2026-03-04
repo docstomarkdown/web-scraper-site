@@ -1,27 +1,22 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingUp, DollarSign, Percent, BarChart3, AlertCircle, CheckCircle2 } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
-
 export function ACoSCalculator() {
     const [adSpend, setAdSpend] = useState<number | "">("")
     const [adRevenue, setAdRevenue] = useState<number | "">("")
     const [profitMargin, setProfitMargin] = useState<number | "">("")
-
     const [acos, setAcos] = useState<number>(0)
     const [roas, setRoas] = useState<number>(0)
     const [netProfit, setNetProfit] = useState<number>(0)
     const [breakevenAcos, setBreakevenAcos] = useState<number>(0)
-
     useEffect(() => {
         const spend = Number(adSpend) || 0
         const revenue = Number(adRevenue) || 0
         const margin = Number(profitMargin) || 0
-
         if (revenue > 0) {
             const calculatedAcos = (spend / revenue) * 100
             setAcos(calculatedAcos)
@@ -30,11 +25,9 @@ export function ACoSCalculator() {
             setAcos(0)
             setRoas(0)
         }
-
         if (revenue > 0 && margin > 0) {
             // Breakeven ACoS is simply the Profit Margin %
             setBreakevenAcos(margin)
-
             // Net Profit = (Revenue * Margin%) - Spend
             const profit = (revenue * (margin / 100)) - spend
             setNetProfit(profit)
@@ -42,22 +35,16 @@ export function ACoSCalculator() {
             setBreakevenAcos(0)
             setNetProfit(0)
         }
-
     }, [adSpend, adRevenue, profitMargin])
-
     const handleReset = () => {
         setAdSpend("")
         setAdRevenue("")
         setProfitMargin("")
     }
-
-
-
     // Determine Status
     // Determine Status & standard badge classes
     let status = "Waiting"
     let badgeClasses = "bg-slate-50 border-slate-200 text-slate-500"
-
     if (acos > 0 && breakevenAcos > 0) {
         if (acos < breakevenAcos) {
             status = "Profitable"
@@ -70,21 +57,19 @@ export function ACoSCalculator() {
             badgeClasses = "bg-red-50 border-red-200 text-red-700"
         }
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
                             description="Enter your ad spend, revenue, and product margin."
                             onReset={handleReset}
                         />
-                        <CardContent className="space-y-6 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Campaign Data */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <TrendingUp className="w-4 h-4" />
@@ -108,11 +93,8 @@ export function ACoSCalculator() {
                                     tooltip="Total sales revenue generated from these ads."
                                 />
                             </div>
-
-                            <Separator />
-
                             {/* Group 2: Product Metrics */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <Percent className="w-4 h-4" />
@@ -131,12 +113,9 @@ export function ACoSCalculator() {
                             </div>
                         </CardContent>
                     </Card>
-
-
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="ACoS Percentage"
                         mainValue={
@@ -162,7 +141,6 @@ export function ACoSCalculator() {
                             }
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {acos > 0 && (
                         <motion.div
@@ -176,7 +154,6 @@ export function ACoSCalculator() {
                             {status === "Profitable" ? " Profitable Campaign" : status === "Breakeven" ? " Breaking Even" : " Unprofitable"}
                         </motion.div>
                     )}
-
                     {/* Breakdown Card */}
                     {Number(adRevenue) > 0 ? (
                         <motion.div
@@ -232,9 +209,6 @@ export function ACoSCalculator() {
         </FadeIn>
     )
 }
-
-const Separator = () => <div className="h-px w-full bg-slate-100" />
-
 function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
     return (
         <div className="flex gap-4">
@@ -250,4 +224,4 @@ function InsightItem({ label, value, description, icon: Icon, color, bg }: { lab
             </div>
         </div>
     )
-}
+}

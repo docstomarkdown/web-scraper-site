@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { BookOpen, TrendingUp, TrendingDown, RefreshCcw } from "lucide-react"
-
 export function PriceElasticityGuide() {
     return (
         <ToolGuide
@@ -57,4 +55,4 @@ export function PriceElasticityGuide() {
             ]}
         />
     )
-}
+}

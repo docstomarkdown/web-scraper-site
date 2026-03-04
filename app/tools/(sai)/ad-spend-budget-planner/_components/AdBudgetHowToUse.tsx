@@ -1,28 +1,26 @@
 "use client";
-
 import { ToolSteps } from "@/app/tools/_shared/components";
 import { Target, TrendingUp, Wallet } from "lucide-react";
-
 export function AdBudgetHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Set Revenue Goal",
-                    description: "Enter the total sales amount you want to generate for the upcoming month.",
-                    icon: Target,
+                    title: "Revenue Goal",
+                    description: "Enter your structured target monthly or annual sales revenue objective.",
+                    icon: Target
                 },
                 {
-                    title: "Define Target Return on Ad Spend (ROAS)",
-                    description: "Input your expected Return on Ad Spend (ROAS). Be realistic based on your historical performance (e.g., 3.0 to 5.0).",
-                    icon: TrendingUp,
+                    title: "Campaign ROI",
+                    description: "Input your firm historical or best anticipated Return on Ad Spend (ROAS).",
+                    icon: TrendingUp
                 },
                 {
-                    title: "Get Budget Plan",
-                    description: "We calculate exactly how much you need to spend monthly and daily to hit your target.",
-                    icon: Wallet,
-                },
+                    title: "Get Budget",
+                    description: "See the exact quantitative advertising spend required to hit your goals.",
+                    icon: Wallet
+                }
             ]}
         />
     );
-}
+}

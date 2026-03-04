@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Store, Megaphone, CreditCard } from "lucide-react"
-
 export function EtsyFeeGuide() {
     return (
         <ToolGuide
@@ -34,4 +32,4 @@ export function EtsyFeeGuide() {
             ]}
         />
     )
-}
+}

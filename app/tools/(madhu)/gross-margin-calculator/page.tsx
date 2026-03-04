@@ -4,37 +4,31 @@ import { GrossMarginCalculator } from "./_components/GrossMarginCalculator"
 import { GrossMarginHowToUse } from "./_components/GrossMarginHowToUse"
 import { GrossMarginGuide } from "./_components/GrossMarginGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: "Gross Margin Calculator - Calculate Margin, Revenue & COGS | Web Scraper Pro",
     description: "Free advanced Gross Margin Calculator. Calculate Gross Margin Percentage from Revenue and COGS. optimize pricing strategies and protect your bottom line.",
 }
-
 export default function GrossMarginCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Gross Margin Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <GrossMarginCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <GrossMarginHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <GrossMarginGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function GrossMarginCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function GrossMarginCalculatorPage() {
             </div>
         </div>
     )
-}
+}

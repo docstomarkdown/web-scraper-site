@@ -4,42 +4,35 @@ import { EmailROIHowToUse } from "./_components/EmailROIHowToUse"
 import { EmailROIGuide } from "./_components/EmailROIGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-
 export const metadata: Metadata = {
     title: "Email Marketing ROI Calculator | Free Tools",
     description:
         "Calculate the ROI of your email marketing campaigns. Optimize your open rates, click-through rates, and conversion rates to maximize profit.",
 }
-
 export default function EmailROICalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-
                 {/* Page Title */}
                 <div className="text-center mb-12">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Email Marketing ROI Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 {/* Calculator Tool */}
                 <div className="mb-20">
                     <EmailROICalculator />
                 </div>
-
                 {/* Supporting Sections */}
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <EmailROIHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <EmailROIGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -71,7 +64,6 @@ export default function EmailROICalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -79,4 +71,4 @@ export default function EmailROICalculatorPage() {
             </div>
         </div>
     )
-}
+}

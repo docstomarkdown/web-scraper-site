@@ -5,12 +5,10 @@ import { DimWeightCalculator } from "./_components/DimWeightCalculator";
 import { DimWeightHowToUse } from "./_components/DimWeightHowToUse";
 import { DimWeightGuide } from "./_components/DimWeightGuide";
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
     title: "Dimensional Weight Calculator | Web Scraper Pro",
     description: "Calculate dimensional weight for shipping with our free DIM weight calculator. Compare actual vs. billable weight for UPS, FedEx, and DHL.",
 };
-
 export default function Page() {
     const faqs = [
         {
@@ -30,37 +28,30 @@ export default function Page() {
             answer: "Yes, you can toggle between Imperial (inches/lbs) and Metric (cm/kg) units using the switch at the top of the calculator.",
         },
     ];
-
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <FadeIn>
                     <div className="text-center mb-12">
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4">
                             Dimensional Weight Calculator
                         </h1>
-
                     </div>
                 </FadeIn>
-
                 <FadeIn delay={0.1}>
                     <DimWeightCalculator />
                 </FadeIn>
-
                 <div className="max-w-4xl mx-auto mt-20 space-y-16">
                     <FadeIn delay={0.2}>
                         <DimWeightHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <DimWeightGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ faqs={faqs} />
                     </FadeIn>
                 </div>
-
                 <FadeIn delay={0.5}>
                     <div className="mt-20">
                         <CTA />
@@ -69,4 +60,4 @@ export default function Page() {
             </div>
         </div>
     );
-}
+}

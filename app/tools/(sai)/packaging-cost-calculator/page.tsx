@@ -4,12 +4,10 @@ import { PackagingGuide } from "./_components/PackagingGuide";
 import { PackagingHowToUse } from "./_components/PackagingHowToUse";
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
 import { CTA } from "@/components/sections/CTA";
-
 export const metadata: Metadata = {
     title: "Packaging Cost Calculator | Calculate Material & Labor Costs",
     description: "Calculate the true cost of your packaging materials and labor per unit. Optimize your shipping expenses with this free calculator.",
 };
-
 const faqs = [
     {
         question: "Why should I calculate labor cost?",
@@ -28,24 +26,20 @@ const faqs = [
         answer: "This includes anything extra you put in the box for customer experience: stickers, thank you cards, tissue paper, crinkle paper, or promotional flyers.",
     },
 ];
-
 export default function Page() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <FadeIn>
                     <div className="max-w-4xl mx-auto text-center mb-12">
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4">
                             Packaging Cost Calculator
                         </h1>
-
                     </div>
                 </FadeIn>
-
                 <div className="mb-20">
                     <PackagingCostCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <PackagingHowToUse />
@@ -63,4 +57,4 @@ export default function Page() {
             </div>
         </div>
     );
-}
+}

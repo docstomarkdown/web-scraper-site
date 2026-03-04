@@ -1,31 +1,26 @@
 "use client";
-
 import { ToolSteps } from "@/app/tools/_shared/components/ToolSteps";
 import { Calculator, DollarSign, PackageSearch } from "lucide-react";
-
 export function MOQHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Input Supplier Costs",
-                    description:
-                        "Enter the Unit Price and the Minimum Order Quantity (MOQ) required by your supplier. These are the base figures for your calculation.",
-                    icon: Calculator,
+                    title: "MOQ Target",
+                    description: "Enter the required vendor Minimum Order Quantity plus single piece discount cost.",
+                    icon: Calculator
                 },
                 {
-                    title: "Add Logistics Fees",
-                    description:
-                        "Include your estimated total shipping costs and any miscellaneous fees (like customs or inspection) to get the true 'landed' cost.",
-                    icon: DollarSign,
+                    title: "Holding Debt",
+                    description: "Input variable cumulative storage operational costs generated holding vast capacity.",
+                    icon: DollarSign
                 },
                 {
-                    title: "Assess Inventory Risk",
-                    description:
-                        "Enter your estimated monthly sales. The tool will calculate how many months of inventory this MOQ represents, warning you if it's too high.",
-                    icon: PackageSearch,
-                },
+                    title: "Check Reality",
+                    description: "Analyze mathematically if the specific volume price cut beats massive storage drains.",
+                    icon: PackageSearch
+                }
             ]}
         />
     );
-}
+}

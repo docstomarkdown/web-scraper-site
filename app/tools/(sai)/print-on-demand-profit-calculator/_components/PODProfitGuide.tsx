@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Shirt, Truck, DollarSign } from "lucide-react"
-
 export function PODProfitGuide() {
     return (
         <ToolGuide
@@ -39,4 +37,4 @@ export function PODProfitGuide() {
             ]}
         />
     )
-}
+}

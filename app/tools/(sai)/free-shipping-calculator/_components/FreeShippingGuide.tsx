@@ -1,7 +1,6 @@
 "use client";
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Target, ShieldCheck, Users } from "lucide-react";
-
 export function FreeShippingGuide() {
     return (
         <ToolGuide
@@ -44,4 +43,4 @@ export function FreeShippingGuide() {
             ]}
         />
     );
-}
+}

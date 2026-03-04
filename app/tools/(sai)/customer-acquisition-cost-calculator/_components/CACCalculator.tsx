@@ -1,24 +1,18 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { DollarSign, Users, TrendingUp, Target } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function CACCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [expenses, setExpenses] = useState<number | "">("")
     const [customers, setCustomers] = useState<number | "">("")
-
     const handleReset = () => {
         setExpenses("")
         setCustomers("")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -30,15 +24,12 @@ export function CACCalculator() {
     // Calculation
     const expensesVal = val(expenses)
     const customersVal = val(customers)
-
     let cac = 0
     let isValid = false
-
     if (expensesVal > 0 && customersVal > 0) {
         cac = expensesVal / customersVal
         isValid = true
     }
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -46,28 +37,20 @@ export function CACCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter total costs and customers acquired."
-
                             onReset={handleReset}
-
                             guideId="cac-guide"
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Total Sales & Marketing Costs (${symbol})`}
                                 value={expenses}
@@ -87,9 +70,8 @@ export function CACCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Customer Acquisition Cost (CAC)"
                         mainValue={
@@ -109,7 +91,6 @@ export function CACCalculator() {
                             }
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {isValid && (
                         <div className={cn(
@@ -121,7 +102,6 @@ export function CACCalculator() {
                             {cac < 50 ? "🚀 Efficient Acquisition" : cac < 100 ? "⚖️ Moderate CPA" : "📊 High Acquisition Cost"}
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {isValid ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -148,7 +128,6 @@ export function CACCalculator() {
                             <p className="text-sm text-slate-400">Enter expenses and customers to calculate CAC.</p>
                         </div>
                     )}
-
                     {/* Insight Card */}
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -163,4 +142,4 @@ export function CACCalculator() {
             </div>
         </FadeIn >
     )
-}
+}

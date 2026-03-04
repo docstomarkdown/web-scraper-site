@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect, useMemo } from "react"
 import {
     Clock,
@@ -20,42 +19,30 @@ import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
 interface LeadTimeState {
     supplier: number | ""
     shipping: number | ""
     buffer: number | ""
 }
-
 const DEFAULT_STATE: LeadTimeState = {
     supplier: "",
     shipping: "",
     buffer: ""
 }
-
-
-
 export function LeadTimeCalculator() {
     const [values, setValues] = useState<LeadTimeState>(DEFAULT_STATE)
-    const [isCopying, setIsCopying] = useState(false)
-
     const handleInputChange = (field: keyof LeadTimeState, value: string | number) => {
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : Number(value) }))
     }
-
     const hasInputs = useMemo(() => {
         return Object.values(values).some(v => v !== "")
     }, [values])
-
     const totals = useMemo(() => {
         const sup = Number(values.supplier) || 0
         const shp = Number(values.shipping) || 0
         const buf = Number(values.buffer) || 0
-
         const total = sup + shp + buf
-
         const getPct = (val: number) => total > 0 ? (val / total) * 100 : 0
-
         return {
             total,
             totalFormatted: total.toString(),
@@ -69,13 +56,10 @@ export function LeadTimeCalculator() {
             }
         }
     }, [values])
-
     const [mounted, setMounted] = useState(false)
-
     useEffect(() => {
         setMounted(true)
     }, [])
-
     const deliveryDate = useMemo(() => {
         if (!mounted || !hasInputs) return "Waiting for inputs..."
         const date = new Date()
@@ -87,26 +71,7 @@ export function LeadTimeCalculator() {
             day: 'numeric'
         })
     }, [totals.total, mounted, hasInputs])
-
     const handleReset = () => setValues(DEFAULT_STATE)
-
-    const handleCopy = async () => {
-        setIsCopying(true)
-        const text = `
-Lead Time Calculation Results:
-------------------------------
-Supplier Time: ${totals.supplier} days
-Shipping Time: ${totals.shipping} days
-Safety Buffer: ${totals.buffer} days
-------------------------------
-Total Lead Time: ${totals.total} days
-Estimated Delivery Date: ${deliveryDate}
-        `.trim()
-
-        await navigator.clipboard.writeText(text)
-        setTimeout(() => setIsCopying(false), 2000)
-    }
-
     return (
         <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
@@ -118,15 +83,13 @@ Estimated Delivery Date: ${deliveryDate}
                             subtitle="Enter your supplier and shipping details."
                             scrollId="how-to-use"
                         />
-
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                            <div className="space-y-6">
+                            <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Clock className="w-4 h-4 text-slate-400" />
                                     Timeline Details (Days)
                                 </label>
-
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Supplier Time"
                                         value={values.supplier}
@@ -150,19 +113,14 @@ Estimated Delivery Date: ${deliveryDate}
                                     />
                                 </div>
                             </div>
-
                             <div className="mt-auto pt-6 border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
-                                    onCopy={handleCopy}
-                                    copyDisabled={!hasInputs || isCopying}
-                                    isCopied={isCopying}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 flex flex-col space-y-8">
                     {/* Primary Result Card */}
@@ -180,7 +138,7 @@ Estimated Delivery Date: ${deliveryDate}
                             </div>
                         }
                     >
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/30">
                                     <Calendar className="w-5 h-5 text-blue-400" />
@@ -190,7 +148,6 @@ Estimated Delivery Date: ${deliveryDate}
                                     <p className="text-base font-bold text-white truncate">{deliveryDate}</p>
                                 </div>
                             </div>
-
                             <div className="grid grid-cols-2 gap-4 pt-2">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                                     <p className="text-xs font-bold text-slate-300 mb-1">Supplier Time</p>
@@ -207,8 +164,4 @@ Estimated Delivery Date: ${deliveryDate}
             </div>
         </div>
     )
-}
-
-
-
-
+}

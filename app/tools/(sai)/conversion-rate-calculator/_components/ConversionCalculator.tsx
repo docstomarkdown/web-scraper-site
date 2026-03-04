@@ -1,17 +1,13 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Users, MousePointerClick, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function ConversionCalculator() {
     const [visitors, setVisitors] = useState<number | "">("")
     const [conversions, setConversions] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const handleReset = () => {
         setVisitors("")
         setConversions("")
@@ -19,28 +15,24 @@ export function ConversionCalculator() {
     // Calculation
     const visitorsVal = val(visitors)
     const conversionsVal = val(conversions)
-
     let rate = 0
     let isValid = false
-
     if (visitorsVal > 0 && conversionsVal >= 0) {
         rate = (conversionsVal / visitorsVal) * 100
         isValid = true
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter traffic and conversion data."
                             onReset={handleReset}
                             guideId="conversion-guide"
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label="Total Visitors (Sessions)"
                                 value={visitors}
@@ -60,9 +52,8 @@ export function ConversionCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Conversion Rate"
                         mainValue={
@@ -82,7 +73,6 @@ export function ConversionCalculator() {
                             }
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {isValid && (
                         <div className={cn(
@@ -94,7 +84,6 @@ export function ConversionCalculator() {
                             {rate >= 3 ? "🚀 Excellent Conversion Rate" : rate >= 1 ? "✅ Average Conversion Rate" : "⚠️ Low Conversion Rate"}
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {isValid ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
@@ -121,7 +110,6 @@ export function ConversionCalculator() {
                             <p className="text-sm text-slate-400">Enter traffic data to see breakdown.</p>
                         </div>
                     )}
-
                     {/* Insight Card */}
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <TrendingUp className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -136,4 +124,4 @@ export function ConversionCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

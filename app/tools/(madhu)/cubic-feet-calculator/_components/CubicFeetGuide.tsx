@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { DollarSign, Package, AlertCircle, Truck, BookOpen } from "lucide-react"
-
 export function CubicFeetGuide() {
     return (
         <ToolGuide
@@ -54,4 +52,4 @@ export function CubicFeetGuide() {
             ]}
         />
     )
-}
+}

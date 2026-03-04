@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Activity, AlertCircle, Calendar, Warehouse, BookOpen } from "lucide-react"
-
 export function InventoryTurnoverGuide() {
     return (
         <ToolGuide
@@ -53,4 +51,4 @@ export function InventoryTurnoverGuide() {
             ]}
         />
     )
-}
+}

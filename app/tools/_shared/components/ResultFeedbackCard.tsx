@@ -1,16 +1,13 @@
 "use client"
-
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-
 interface SecondaryMetric {
     label: string
     value: React.ReactNode
     color?: string
     tooltip?: string
 }
-
 interface ResultFeedbackCardProps {
     title: React.ReactNode
     titleLabel?: string | React.ReactNode // e.g. "High Performance"
@@ -25,10 +22,8 @@ interface ResultFeedbackCardProps {
     children?: React.ReactNode
     hideChildrenBorder?: boolean
 }
-
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Info } from "lucide-react"
-
 export function ResultFeedbackCard({
     title,
     titleLabel,
@@ -45,7 +40,6 @@ export function ResultFeedbackCard({
     children,
     hideChildrenBorder = false
 }: ResultFeedbackCardProps & { variant?: "default" | "warning" | "compact", tooltip?: string }) {
-
     // Default styles based on variant
     const getBaseStyles = () => {
         switch (variant) {
@@ -57,22 +51,18 @@ export function ResultFeedbackCard({
                 return "bg-slate-700 border-0 text-white"
         }
     }
-
     const getLabelStyles = () => {
         if (labelClassName) return labelClassName
         if (variant === "compact") return "bg-slate-100 text-slate-600"
         return "text-blue-400 bg-slate-600/50 border-slate-500/50"
     }
-
     const getValueColor = () => {
         if (valueColor) return valueColor
         if (variant === "compact") return "text-slate-900"
         return "text-white"
     }
-
     // Background effects (only for default/warning dark themes)
     const showEffects = variant !== "compact"
-
     return (
         <Card className={cn(
             "shadow-xl overflow-hidden relative transition-all duration-300",
@@ -93,7 +83,6 @@ export function ResultFeedbackCard({
                     )} />
                 </>
             )}
-
             {/* Header Section */}
             <div className={cn(
                 "p-6 pb-2 relative z-10 flex flex-col space-y-1.5",
@@ -130,7 +119,6 @@ export function ResultFeedbackCard({
                     )}
                 </div>
             </div>
-
             {/* Content Section */}
             <div className={cn(
                 "p-6 pt-0 relative z-10",
@@ -148,7 +136,6 @@ export function ResultFeedbackCard({
                         </div>
                     </div>
                 )}
-
                 {/* Metrics Section */}
                 {(mainMetricLabel || secondaryMetrics.length > 0) && (
                     <div className={cn(
@@ -164,7 +151,6 @@ export function ResultFeedbackCard({
                                 </div>
                             </div>
                         )}
-
                         {/* Secondary Supporting Metrics Grid */}
                         {secondaryMetrics.length > 0 && (
                             <div className="grid grid-cols-2 gap-4">
@@ -199,7 +185,6 @@ export function ResultFeedbackCard({
                         )}
                     </div>
                 )}
-
                 {/* Custom Children */}
                 {children && (
                     <div className={cn(
@@ -212,4 +197,4 @@ export function ResultFeedbackCard({
             </div>
         </Card>
     )
-}
+}

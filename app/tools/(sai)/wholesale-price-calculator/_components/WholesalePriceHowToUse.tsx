@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Tag, Percent, DollarSign } from "lucide-react"
-
 export function WholesalePriceHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Enter Unit Cost",
-                    description: "Input the total cost to produce or acquire one single unit of your product.",
+                    title: "Build Costs",
+                    description: "Enter deeply thorough explicitly validated aggregate landed expense bounds covering holistic factory manufacturing alongside absolute logistic import drops.",
                     icon: Tag
                 },
                 {
-                    title: "Set Target Margin",
-                    description: "Enter the profit margin percentage you want to achieve on the final wholesale price.",
+                    title: "Set Metrics",
+                    description: "Input fundamentally required percentage margin thresholds structurally targeting totally viable sustainable gross profitability metrics actively growing scale.",
                     icon: Percent
                 },
                 {
-                    title: "Get Wholesale Price",
-                    description: "Instantly see the recommended wholesale price, profit per unit, and markup percentage.",
+                    title: "Check Targets",
+                    description: "Instantly trace specifically aligned suggested raw retail pricing limits explicitly accommodating middle distributor markups preserving net core gross.",
                     icon: DollarSign
                 }
             ]}
         />
     )
-}
+}

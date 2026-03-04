@@ -1,43 +1,34 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { AlertTriangle, ShieldCheck } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function SafetyStockCalculator() {
     const [maxDailySales, setMaxDailySales] = useState<number | "">("")
     const [maxLeadTime, setMaxLeadTime] = useState<number | "">("")
     const [avgDailySales, setAvgDailySales] = useState<number | "">("")
     const [avgLeadTime, setAvgLeadTime] = useState<number | "">("")
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     // --- Calculations ---
     const maxSales = val(maxDailySales)
     const maxLead = val(maxLeadTime)
     const avgSales = val(avgDailySales)
     const avgLead = val(avgLeadTime)
-
     // Formula: (Max Daily Sales * Max Lead Time) - (Avg Daily Sales * Avg Lead Time)
     const maxUsage = maxSales * maxLead
     const avgUsage = avgSales * avgLead
     const safetyStock = Math.max(0, Math.ceil(maxUsage - avgUsage))
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter your best and average case scenarios."
-
                             onReset={() => { setMaxDailySales(""); setMaxLeadTime(""); setAvgDailySales(""); setAvgLeadTime(""); }}
-
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label="Max Daily Sales"
                                 value={maxDailySales}
@@ -69,9 +60,8 @@ export function SafetyStockCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Recommended Safety Stock"
                         titleLabel="Buffer Needed"
@@ -99,7 +89,6 @@ export function SafetyStockCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {maxSales > 0 || maxLead > 0 || avgSales > 0 || avgLead > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -126,9 +115,8 @@ export function SafetyStockCalculator() {
                             <p className="text-sm text-slate-400">Enter sales and lead times to see stock calculation.</p>
                         </div>
                     )}
-
                     {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                         <div className="flex items-start gap-3">
                             <ShieldCheck className="w-5 h-5 text-blue-500 mt-0.5" />
                             <div>
@@ -145,4 +133,4 @@ export function SafetyStockCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

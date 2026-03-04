@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { Target, Search, AlertCircle, BookOpen, TrendingUp } from "lucide-react"
-
 export function AffiliateGuide() {
     return (
         <ToolGuide
@@ -53,4 +51,4 @@ export function AffiliateGuide() {
             ]}
         />
     )
-}
+}

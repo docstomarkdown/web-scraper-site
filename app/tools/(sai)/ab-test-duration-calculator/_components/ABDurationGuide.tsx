@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { Clock, BarChart2, Split, Search } from "lucide-react"
-
 export function ABDurationGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function ABDurationGuide() {
             ]}
         />
     )
-}
+}

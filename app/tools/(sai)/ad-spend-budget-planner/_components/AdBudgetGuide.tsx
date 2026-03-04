@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, PieChart, Calculator, AlertTriangle } from "lucide-react";
-
 export function AdBudgetGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function AdBudgetGuide() {
             ]}
         />
     );
-}
+}

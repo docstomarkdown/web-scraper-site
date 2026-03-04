@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { AlertCircle, Scale, CreditCard, BookOpen } from "lucide-react"
-
 export function COGSGuide() {
     return (
         <ToolGuide
@@ -45,4 +43,4 @@ export function COGSGuide() {
             ]}
         />
     )
-}
+}

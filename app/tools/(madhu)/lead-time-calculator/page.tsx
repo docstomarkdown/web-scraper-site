@@ -4,37 +4,31 @@ import { LeadTimeHowToUse } from "./_components/LeadTimeHowToUse"
 import { LeadTimeGuide } from "./_components/LeadTimeGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-
 export const metadata: Metadata = {
     title: "Lead Time Calculator - Production to Delivery Estimator",
     description: "Calculate total inventory lead time including production, shipping, customs, and buffers. Plan your restock cycles with precision.",
 }
-
 export default function LeadTimeCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Lead Time Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <LeadTimeCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <LeadTimeHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <LeadTimeGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function LeadTimeCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function LeadTimeCalculatorPage() {
             </div>
         </div>
     )
-}
+}

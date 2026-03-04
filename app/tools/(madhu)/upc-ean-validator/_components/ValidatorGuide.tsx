@@ -1,7 +1,5 @@
 "use client"
-
 import { BookOpen, Calculator, Globe2, AlertTriangle, ShieldCheck } from "lucide-react"
-
 const insights = [
     {
         icon: Calculator,
@@ -44,7 +42,6 @@ const insights = [
         description: "Using an invalid, unverified, or duplicate barcode on platforms like Amazon can lead to immediate listing suspension or costly inventory relabeling fees. Always validate before printing."
     }
 ]
-
 export function ValidatorGuide() {
     return (
         <section id="validator-guide" className="relative">
@@ -54,7 +51,6 @@ export function ValidatorGuide() {
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Barcode Validation</h2>
             </div>
-
             <div className="relative">
                 {/* Connector Line (optional visual flair for lists) */}
                 <div className="space-y-6">
@@ -78,7 +74,6 @@ export function ValidatorGuide() {
                                             {insight.description}
                                         </p>
                                     </div>
-
                                     {/* Right: Takeaway Stat Panel */}
                                     <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                         <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
@@ -97,4 +92,4 @@ export function ValidatorGuide() {
             </div>
         </section>
     )
-}
+}

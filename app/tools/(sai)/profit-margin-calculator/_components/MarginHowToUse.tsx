@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { CircleDollarSign, Calculator, TrendingUp } from "lucide-react"
-
 export function MarginHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Enter Cost & Price",
-                    description: "Input your buying price (Cost) and your selling price (Revenue). This is the foundation of your margin analysis.",
+                    title: "Sale Return",
+                    description: "Enter absolute final storefront ticket pricing actively charged completely to final checkout buyers.",
                     icon: CircleDollarSign
                 },
                 {
-                    title: "View Margins",
-                    description: "The calculator instantly shows your Gross Margin % and Markup %. Understanding the difference is key to profitability.",
+                    title: "Total Spend",
+                    description: "Input comprehensive sheer costs physically manufacturing, importing, packing, and holding goods.",
                     icon: Calculator
                 },
                 {
-                    title: "Analyze Profit",
-                    description: "See your exact profit per unit. Use this to determine if your pricing strategy covers your overhead and desired profit.",
+                    title: "Get Margins",
+                    description: "Instantly map precise specific gross profitability metrics showing hard dollars and raw percentage.",
                     icon: TrendingUp
                 }
             ]}
         />
     )
-}
+}

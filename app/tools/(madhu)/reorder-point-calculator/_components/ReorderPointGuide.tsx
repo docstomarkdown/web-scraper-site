@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { AlertCircle, Timer, Warehouse, BookOpen } from "lucide-react"
-
 export function ReorderPointGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function ReorderPointGuide() {
             ]}
         />
     )
-}
+}

@@ -4,37 +4,31 @@ import { EOQHowToUse } from "./_components/EOQHowToUse"
 import { EOQGuide } from "./_components/EOQGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-
 export const metadata: Metadata = {
     title: "Economic Order Quantity (EOQ) Calculator | Inventory Optimization Tool",
     description: "Calculate the optimal order quantity to minimize annual inventory costs. Find the perfect balance between ordering and holding costs with our free EOQ tool.",
 }
-
 export default function EOQCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Economic Order Quantity (EOQ) Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <EOQCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <EOQHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <EOQGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function EOQCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function EOQCalculatorPage() {
             </div>
         </div>
     )
-}
+}

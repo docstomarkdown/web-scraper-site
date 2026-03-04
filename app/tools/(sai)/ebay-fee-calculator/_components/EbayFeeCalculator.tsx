@@ -1,41 +1,32 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 import { ShoppingCart, Truck, Percent, DollarSign, Tag } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
-
 export function EbayFeeCalculator() {
     const [currency, setCurrency] = useState("USD")
-
     // Revenue
     const [soldPrice, setSoldPrice] = useState<number | "">("")
     const [shippingCharged, setShippingCharged] = useState<number | "">("")
-
     // Costs
     const [itemCost, setItemCost] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
-
     // Fees
     const [feeRate, setFeeRate] = useState<number | "">("") // 13.25% standard
     const [fixedFee, setFixedFee] = useState<number | "">("") // $0.30
     const [adRate, setAdRate] = useState<number | "">("") // Promoted Listings
-
     const currencySymbol = currencies.find(c => c.code === currency)?.symbol || "$"
-
     // Results
     const [totalRevenue, setTotalRevenue] = useState(0)
     const [totalFees, setTotalFees] = useState(0)
     const [netProfit, setNetProfit] = useState(0)
     const [margin, setMargin] = useState(0)
-
     useEffect(() => {
         if (feeRate === "") setFeeRate(13.25)
         if (fixedFee === "") setFixedFee(0.30)
     }, [])
-
     const handleReset = () => {
         setSoldPrice("")
         setShippingCharged("")
@@ -45,7 +36,6 @@ export function EbayFeeCalculator() {
         setFixedFee(0.30)
         setAdRate("")
     }
-
     useEffect(() => {
         const price = Number(soldPrice) || 0
         const charge = Number(shippingCharged) || 0
@@ -54,10 +44,8 @@ export function EbayFeeCalculator() {
         const rate = Number(feeRate) || 0
         const fixed = Number(fixedFee) || 0
         const ad = Number(adRate) || 0
-
         // 1. Revenue
         const revenue = price + charge
-
         if (revenue === 0) {
             setTotalRevenue(0)
             setTotalFees(0)
@@ -65,51 +53,36 @@ export function EbayFeeCalculator() {
             setMargin(0)
             return
         }
-
         // 2. Fees
         // Final Value Fee applies to (Price + Shipping + Sales Tax). 
         // We ignore tax here as it varies by buyer location and is a pass-through.
         const fvf = (revenue * (rate / 100)) + fixed
-
         // Ad Fee applies to the same total amount
         const adFee = revenue * (ad / 100)
-
         const fees = fvf + adFee
-
         // 3. Profit
         const totalExpenses = cost + shipCost + fees
         const profit = revenue - totalExpenses
-
         const calcMargin = (profit / revenue) * 100
-
         setTotalRevenue(revenue)
         setTotalFees(fees)
         setNetProfit(profit)
         setMargin(calcMargin)
-
     }, [soldPrice, shippingCharged, itemCost, shippingCost, feeRate, fixedFee, adRate])
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
                     <CalculatorCardHeader
-
                         description="Enter your details."
-
                         onReset={handleReset}
-
                         currency={currency}
-
                         onCurrencyChange={setCurrency}
-
                     />
-
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Revenue */}
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                 <Tag className="w-4 h-4 text-slate-400" />
                                 Sale Amount
@@ -130,11 +103,8 @@ export function EbayFeeCalculator() {
                                 />
                             </div>
                         </div>
-
-                        <Separator />
-
                         {/* Costs */}
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                 <DollarSign className="w-4 h-4 text-slate-400" />
                                 Your Costs
@@ -156,11 +126,8 @@ export function EbayFeeCalculator() {
                                 />
                             </div>
                         </div>
-
-                        <Separator />
-
                         {/* Fees */}
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                 <Percent className="w-4 h-4 text-slate-400" />
                                 eBay Fees
@@ -191,9 +158,8 @@ export function EbayFeeCalculator() {
                         </div>
                     </CardContent>
                 </Card>
-
                 {/* Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Net Profit"
                         titleLabel="Cash in Hand"
@@ -212,7 +178,6 @@ export function EbayFeeCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown */}
                     {totalRevenue > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
@@ -255,4 +220,4 @@ export function EbayFeeCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

@@ -1,11 +1,9 @@
 "use client"
-
 import React from "react"
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { HelpCircle, RotateCcw } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CurrencyCombobox } from "./CurrencyCombobox"
-
 interface CalculatorCardHeaderProps {
     title?: string
     description: string
@@ -15,7 +13,6 @@ interface CalculatorCardHeaderProps {
     tooltip?: string
     onReset?: () => void
 }
-
 export function CalculatorCardHeader({
     title,
     description,
@@ -30,14 +27,12 @@ export function CalculatorCardHeader({
             const offset = 100 // Adjust this value for desired top spacing
             const elementPosition = element.getBoundingClientRect().top + window.scrollY
             const offsetPosition = elementPosition - offset
-
             window.scrollTo({
                 top: offsetPosition,
                 behavior: "smooth"
             })
         }
     }
-
     return (
         <CardHeader className="px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 space-y-0">
             <div className="space-y-1">
@@ -72,4 +67,4 @@ export function CalculatorCardHeader({
             )}
         </CardHeader>
     )
-}
+}

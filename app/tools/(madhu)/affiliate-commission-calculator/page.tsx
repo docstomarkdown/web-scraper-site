@@ -4,37 +4,31 @@ import { AffiliateHowToUse } from "./_components/AffiliateHowToUse"
 import { AffiliateGuide } from "./_components/AffiliateGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-
 export const metadata: Metadata = {
     title: "Affiliate Commission Calculator - Free Payout & Profit Tool",
     description: "Calculate affiliate commission payouts, net revenue, break-even rates, and profitability at different commission structures. Free tool for e-commerce sellers and affiliate program managers.",
 }
-
 export default function AffiliateCommissionCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Affiliate Commission Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <AffiliateCommissionCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <AffiliateHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <AffiliateGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -65,7 +59,6 @@ export default function AffiliateCommissionCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -73,4 +66,4 @@ export default function AffiliateCommissionCalculatorPage() {
             </div>
         </div>
     )
-}
+}

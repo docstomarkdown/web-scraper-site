@@ -1,17 +1,14 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { TrendingUp, AlertTriangle } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function SalesVelocityCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [unitsSold, setUnitsSold] = useState<number | "">("")
     const [periodDays, setPeriodDays] = useState<number | "">("")
     const [outOfStockDays, setOutOfStockDays] = useState<number | "">("")
     const [price, setPrice] = useState<number | "">("")
-
     const handleReset = () => {
         setUnitsSold("")
         setPeriodDays("")
@@ -19,7 +16,6 @@ export function SalesVelocityCalculator() {
         setPrice("")
     }
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -28,23 +24,18 @@ export function SalesVelocityCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
     // --- Calculations ---
     const totalSold = val(unitsSold)
     const days = val(periodDays)
     const oosDays = val(outOfStockDays)
     const unitPrice = val(price)
-
     const activeDays = Math.max(1, days - oosDays)
     const rawVelocity = days > 0 ? totalSold / days : 0
     const trueVelocity = activeDays > 0 ? totalSold / activeDays : 0
-
     const velocityDiff = trueVelocity - rawVelocity
     const velocityIncreasePercent = rawVelocity > 0 ? (velocityDiff / rawVelocity) * 100 : 0
-
     const monthlyRunRate = trueVelocity * 30
     const revenueRunRate = monthlyRunRate * unitPrice
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -52,19 +43,17 @@ export function SalesVelocityCalculator() {
             maximumFractionDigits: 0
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter sales history and stockout details."
                             onReset={handleReset}
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label="Total Units Sold"
                                 value={unitsSold}
@@ -95,9 +84,8 @@ export function SalesVelocityCalculator() {
                             />
                         </CardContent>
                     </Card>
-
                     {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                         <div className="flex items-start gap-3">
                             <TrendingUp className="w-5 h-5 text-blue-500 mt-0.5" />
                             <div>
@@ -121,9 +109,8 @@ export function SalesVelocityCalculator() {
                         </div>
                     </div>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="True Sales Velocity"
                         titleLabel="Adjusted Rate"
@@ -151,7 +138,6 @@ export function SalesVelocityCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {days > 0 || totalSold > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -178,7 +164,6 @@ export function SalesVelocityCalculator() {
                             <p className="text-sm text-slate-400">Enter sales history to see velocity breakdown.</p>
                         </div>
                     )}
-
                     {/* Revenue Card */}
                     {unitPrice > 0 && (
                         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2">
@@ -194,4 +179,4 @@ export function SalesVelocityCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

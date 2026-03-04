@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { Box, Calendar, AlertTriangle, TrendingUp } from "lucide-react"
-
 export function StorageFeeGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function StorageFeeGuide() {
             ]}
         />
     )
-}
+}

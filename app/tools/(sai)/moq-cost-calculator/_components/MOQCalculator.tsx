@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalculatorInput } from "@/app/tools/_shared/components/CalculatorInput";
@@ -7,7 +6,6 @@ import { ResultFeedbackCard } from "@/app/tools/_shared/components/ResultFeedbac
 import { FadeIn } from "@/app/tools/_shared/components/FadeIn";
 import { AlertTriangle } from "lucide-react";
 import { CalculatorCardHeader } from "@/app/tools/_shared/components";
-
 export function MOQCalculator() {
     const [currency, setCurrency] = useState("USD");
     const [unitPrice, setUnitPrice] = useState<number | "">("");
@@ -15,7 +13,6 @@ export function MOQCalculator() {
     const [shippingCost, setShippingCost] = useState<number | "">("");
     const [miscCost, setMiscCost] = useState<number | "">("");
     const [monthlySales, setMonthlySales] = useState<number | "">("");
-
     const handleReset = () => {
         setUnitPrice("");
         setMoq("");
@@ -23,7 +20,6 @@ export function MOQCalculator() {
         setMiscCost("");
         setMonthlySales("");
     }
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -32,7 +28,6 @@ export function MOQCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     };
     const symbol = currencySymbols[currency] || "$";
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -40,7 +35,6 @@ export function MOQCalculator() {
             maximumFractionDigits: 2
         }).format(val);
     };
-
     const [totalInvestment, setTotalInvestment] = useState<number>(0);
     const [effectiveCostPerUnit, setEffectiveCostPerUnit] = useState<number>(0);
     const [monthsInventory, setMonthsInventory] = useState<number>(0);
@@ -49,30 +43,25 @@ export function MOQCalculator() {
         text: string;
         color: string;
     }>({ level: "neutral", text: "Enter details", color: "text-slate-400" });
-
     useEffect(() => {
         const p = unitPrice === "" ? 0 : unitPrice;
         const m = moq === "" ? 0 : moq;
         const s = shippingCost === "" ? 0 : shippingCost;
         const c = miscCost === "" ? 0 : miscCost;
         const v = monthlySales === "" ? 0 : monthlySales;
-
         // 1. Total Investment
         const investment = (p * m) + s + c;
         setTotalInvestment(investment);
-
         // 2. Effective Cost Per Unit
         if (m > 0) {
             setEffectiveCostPerUnit(investment / m);
         } else {
             setEffectiveCostPerUnit(0);
         }
-
         // 3. Months of Inventory & Risk
         if (v > 0 && m > 0) {
             const months = m / v;
             setMonthsInventory(months);
-
             if (months <= 3) {
                 setRiskAssessment({ level: "good", text: "Low Risk", color: "text-blue-400" });
             } else if (months <= 6) {
@@ -85,13 +74,11 @@ export function MOQCalculator() {
             setRiskAssessment({ level: "neutral", text: "Enter Sales", color: "text-slate-400" });
         }
     }, [unitPrice, moq, shippingCost, miscCost, monthlySales]);
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter your supplier pricing, shipping, and sales data."
@@ -99,7 +86,7 @@ export function MOQCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Unit Price (${symbol})`}
                                 value={unitPrice}
@@ -138,9 +125,8 @@ export function MOQCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Total Upfront Investment"
                         titleLabel="Landed Cost"
@@ -160,7 +146,6 @@ export function MOQCalculator() {
                             },
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {totalInvestment > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -191,9 +176,8 @@ export function MOQCalculator() {
                             <p className="text-sm text-slate-400">Enter MOQ details to calculate investment.</p>
                         </div>
                     )}
-
                     {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                         <div className="flex items-start gap-3">
                             <AlertTriangle className={`w-5 h-5 mt-0.5 ${riskAssessment.level === "bad" ? "text-rose-500" : riskAssessment.level === "good" ? "text-blue-500" : "text-amber-500"}`} />
                             <div>
@@ -215,4 +199,4 @@ export function MOQCalculator() {
             </div>
         </FadeIn>
     );
-}
+}
