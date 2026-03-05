@@ -7,21 +7,21 @@ export function EmailROIHowToUse() {
             title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Add Values",
-                    description: "Input your baseline amounts in the fields provided to the left.",
+                    title: "Define Campaign Scope",
+                    description: "Enter your <strong>Number of Email Subscribers</strong> and <strong>Total Campaign Cost</strong> to establish your campaign's scale.",
                     icon: Users
                 },
                 {
-                    title: "Adjust Data",
-                    description: "Optionally toggle secondary parameters to reflect true conditions.",
+                    title: "Engagement Metrics",
+                    description: "Input your <strong>Open Rate</strong> and <strong>Email CTR</strong> to calculate the traffic generated from your list.",
                     icon: BarChart3
                 },
                 {
-                    title: "Check Output",
-                    description: "Instantly view exact performance calculations and copy metrics.",
+                    title: "Sales & Valuation",
+                    description: "Apply your <strong>Conversion Rate</strong> and <strong>Average Order Value</strong> to reveal your total sales revenue and final campaign ROI.",
                     icon: DollarSign
                 }
             ]}
         />
     )
-}
+}

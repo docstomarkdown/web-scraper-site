@@ -231,8 +231,9 @@ export function Validator() {
                                 title="Validator Inputs"
                                 subtitle="Enter your barcode number or upload an image below."
                                 onHelpClick={scrollToGuide}
+                                onReset={clearAll}
                             />
-                            <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                            <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                                 <div className="space-y-3">
                                     <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                     <CalculatorInput
@@ -276,11 +277,7 @@ export function Validator() {
                                         </Button>
                                     </div>
                                 </div>
-                                <div className="pt-6 border-t border-slate-100">
-                                    <ActionButtons
-                                        onReset={clearAll}
-                                    />
-                                </div>
+
                             </CardContent>
                         </Card>
                     </FadeIn>
@@ -476,4 +473,4 @@ function Row({ label, value, className }: { label: React.ReactNode, value: React
             </span>
         </div>
     )
-}
+}

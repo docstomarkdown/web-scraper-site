@@ -2,9 +2,9 @@
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info } from "lucide-react"
+import { Info, BarChart3, Lock, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 interface SecondaryResult {
     key: string
     label: string
@@ -140,10 +140,10 @@ export function ResultSummaryCard({
     const badge = (() => {
         if (!isCalculated) {
             return {
-                text: liveBadgeText || "AWAITING DATA",
-                bg: "bg-emerald-100/50",
-                dot: "bg-emerald-500",
-                textCol: "text-emerald-700"
+                text: "AWAITING DATA",
+                bg: "bg-blue-100/50",
+                dot: "bg-blue-400",
+                textCol: "text-blue-600"
             }
         }
         if (profitLossKey) {
@@ -211,14 +211,16 @@ export function ResultSummaryCard({
     const displayValue = getDisplayValue(primaryResult.value, primaryResult.key)
     return (
         <Card className={cn(
-            "relative overflow-hidden border border-blue-100/60 bg-gradient-to-br from-blue-100/40 via-blue-50/20 to-indigo-100/40 shadow-[0_15px_50px_rgba(59,130,246,0.08)] p-6 rounded-2xl backdrop-blur-3xl",
+            "relative overflow-hidden border-2 border-blue-200/80 bg-gradient-to-br from-blue-100/40 via-blue-50/20 to-indigo-100/40 shadow-[0_15px_50px_rgba(59,130,246,0.15)] p-6 rounded-2xl backdrop-blur-3xl",
             className
         )}>
             {/* Inner subtle border for glass effect */}
             <div className="absolute inset-0 border border-white/60 rounded-2xl pointer-events-none" />
+
             {/* Background Effects matching a premium aesthetic */}
             <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[100px] pointer-events-none opacity-[0.12]" />
             <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-indigo-500 rounded-full blur-[100px] pointer-events-none opacity-[0.1]" />
+
             {/* Header Section */}
             <div className="relative z-10 flex justify-between items-start gap-4 mb-6">
                 <div className="flex-1 min-w-0 space-y-3">
@@ -233,19 +235,39 @@ export function ResultSummaryCard({
                             )
                         ))}
                     </h3>
-                    <div className="flex items-baseline gap-2 mt-1 flex-wrap min-w-0 relative">
-                        {/* Glow behind main text */}
-                        <div className="absolute -inset-4 bg-white/40 blur-2xl rounded-full z-0 block pointer-events-none"></div>
-                        <div className="relative z-10 text-2xl sm:text-5xl font-extrabold text-blue-600 tracking-tight leading-none overflow-visible">
-                            {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
-                        </div>
-                        {displayLabel && (
-                            <span className="relative z-10 text-xs sm:text-base text-slate-500 font-medium opacity-80 pb-0.5">
-                                {displayLabel}
-                            </span>
+
+                    <AnimatePresence mode="wait">
+                        {isCalculated && (
+                            /* ─── ACTIVE STATE: Real calculated values ─── */
+                            <motion.div
+                                key="active-primary"
+                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                className="space-y-1.5"
+                            >
+                                <div className="flex items-baseline gap-2 mt-1 flex-wrap min-w-0 relative">
+                                    {/* Glow behind main text */}
+                                    <div className="absolute -inset-4 bg-white/40 blur-2xl rounded-full z-0 block pointer-events-none"></div>
+                                    <div className="relative z-10 text-2xl sm:text-5xl font-extrabold text-blue-600 tracking-tight leading-none overflow-visible">
+                                        {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
+                                    </div>
+                                    {displayLabel && (
+                                        <span className="relative z-10 text-xs sm:text-base text-slate-500 font-medium opacity-80 pb-0.5">
+                                            {displayLabel}
+                                        </span>
+                                    )}
+                                </div>
+                                {/* Contextual description below the value */}
+                                <p className="text-xs text-slate-400 font-medium leading-relaxed">
+                                    {displayDescription}
+                                </p>
+                            </motion.div>
                         )}
-                    </div>
+                    </AnimatePresence>
                 </div>
+
                 {showLiveBadge && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9, y: -5 }}
@@ -265,59 +287,109 @@ export function ResultSummaryCard({
                     </motion.div>
                 )}
             </div>
+
             {/* Divider Line - Soft gradient */}
-            <div className="relative h-px w-full bg-gradient-to-r from-transparent via-blue-200/60 to-transparent mb-4" />
-            {/* Grid Layout for secondary metrics */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10 auto-rows-fr">
-                {secondaryResults.map((result, idx) => {
-                    const is3rdOf3 = secondaryResults.length === 3 && idx === 2;
-                    return (
-                        <motion.div
-                            key={result.key}
-                            initial={{ opacity: 0, scale: 0.98 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: idx * 0.05 }}
-                            className={cn(
-                                "group bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] p-3 sm:p-4 rounded-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_12px_30px_rgba(59,130,246,0.08)]",
-                                is3rdOf3 ? "sm:col-span-2" : "",
-                                result.className
-                            )}
-                        >
-                            <div className="flex items-center gap-1.5 mb-2">
-                                <span className="text-[14.5px] font-medium text-slate-500 whitespace-nowrap group-hover:text-blue-600 transition-colors duration-300">
-                                    {autoAdjustText(result.label)}
+            {isCalculated && (
+                <div className="relative h-px w-full bg-gradient-to-r from-transparent via-blue-200/60 to-transparent mb-4" />
+            )}
+
+            {/* ─── SECTION: Secondary metrics OR empty-state preview ─── */}
+            <AnimatePresence mode="wait">
+                {!isCalculated ? (
+                    /* ════════════════════════════════════════════════════
+                       EMPTY STATE — Locked metrics preview panel
+                    ════════════════════════════════════════════════════ */
+                    <motion.div
+                        key="empty-metrics"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="relative z-10"
+                    >
+                        {/* Simple, unified empty state CTA */}
+                        <div className="flex justify-center items-center py-6">
+                            <div className="flex items-center gap-2.5 bg-white/60 border border-blue-200/60 rounded-full px-5 py-2.5 shadow-sm backdrop-blur-sm">
+                                <Lock className="w-4 h-4 text-blue-400" strokeWidth={2.5} />
+                                <span className="text-xs font-bold text-blue-500 tracking-widest uppercase">
+                                    Fill inputs to unlock
                                 </span>
-                                {result.tooltip && (
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button
-                                                type="button"
-                                                tabIndex={-1}
-                                                className="text-slate-400 hover:text-blue-500 transition-colors cursor-help shrink-0"
-                                            >
-                                                <Info className="w-3.5 h-3.5" />
-                                            </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
-                                            {result.tooltip}
-                                        </TooltipContent>
-                                    </Tooltip>
-                                )}
+                                <Sparkles className="w-4 h-4 text-indigo-400" />
                             </div>
-                            <div className={cn(
-                                "text-[19px] font-extrabold tracking-tight transition-colors duration-300",
-                                getSecondaryValueColor(result)
-                            )}>
-                                {formatValueWithUnit(
-                                    getDisplayValue(result.value, result.key),
-                                    result.unit,
-                                    result.isCurrency
-                                )}
-                            </div>
-                        </motion.div>
-                    );
-                })}
-            </div>
+                        </div>
+
+
+                    </motion.div>
+                ) : (
+                    /* ════════════════════════════════════════════════════
+                       ACTIVE STATE — Real secondary metric cards
+                    ════════════════════════════════════════════════════ */
+                    <motion.div
+                        key="active-metrics"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10 auto-rows-fr"
+                    >
+                        {secondaryResults.map((result, idx) => {
+                            const is3rdOf3 = secondaryResults.length === 3 && idx === 2;
+                            return (
+                                <motion.div
+                                    key={result.key}
+                                    initial={{ opacity: 0, scale: 0.98 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                    className={cn(
+                                        "group bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] p-3 sm:p-4 rounded-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_12px_30px_rgba(59,130,246,0.08)]",
+                                        is3rdOf3 ? "sm:col-span-2" : "",
+                                        result.className
+                                    )}
+                                >
+                                    <div className="flex items-center gap-1.5 mb-2">
+                                        <span className="text-[14.5px] font-medium text-slate-500 whitespace-nowrap group-hover:text-blue-600 transition-colors duration-300">
+                                            {autoAdjustText(result.label)}
+                                        </span>
+                                        {result.tooltip && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <button
+                                                        type="button"
+                                                        tabIndex={-1}
+                                                        className="text-slate-400 hover:text-blue-500 transition-colors cursor-help shrink-0"
+                                                    >
+                                                        <Info className="w-3.5 h-3.5" />
+                                                    </button>
+                                                </TooltipTrigger>
+                                                <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
+                                                    {result.tooltip}
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        )}
+                                    </div>
+
+                                    <motion.div
+                                        key={`value-${result.key}`}
+                                        initial={{ opacity: 0, y: 6 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.35, delay: idx * 0.08 }}
+                                        className={cn(
+                                            "text-[19px] font-extrabold tracking-tight transition-colors duration-300",
+                                            getSecondaryValueColor(result)
+                                        )}
+                                    >
+                                        {formatValueWithUnit(
+                                            getDisplayValue(result.value, result.key),
+                                            result.unit,
+                                            result.isCurrency
+                                        )}
+                                    </motion.div>
+                                </motion.div>
+                            );
+                        })}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </Card>
     )
 }

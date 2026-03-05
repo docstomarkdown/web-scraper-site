@@ -93,8 +93,9 @@ export function DaysOfInventoryCalculator() {
                             title="Inventory Configuration"
                             subtitle="Analyze your remaining stock runway."
                             scrollId="how-to-use"
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             {/* Velocity Unit Tabs */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-1.5 mb-1 pl-1">
@@ -176,11 +177,7 @@ export function DaysOfInventoryCalculator() {
                                     />
                                 </div>
                             </div>
-                            <div className="pt-6 mt-auto border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={handleReset}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>

@@ -11,7 +11,6 @@ import {
 } from "lucide-react"
 import {
     InputCardHeader,
-    ActionButtons,
     MadhuSubHeader
 } from "../../ToolTemplate"
 import { FadeIn, Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
@@ -82,8 +81,9 @@ export function LeadTimeCalculator() {
                             title="Calculator Inputs"
                             subtitle="Enter your supplier and shipping details."
                             scrollId="how-to-use"
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Clock className="w-4 h-4 text-slate-400" />
@@ -113,11 +113,7 @@ export function LeadTimeCalculator() {
                                     />
                                 </div>
                             </div>
-                            <div className="mt-auto pt-6 border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={handleReset}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -164,4 +160,4 @@ export function LeadTimeCalculator() {
             </div>
         </div>
     )
-}
+}

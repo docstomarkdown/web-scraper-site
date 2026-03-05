@@ -7,21 +7,21 @@ export function AffiliateHowToUse() {
             title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Traffic Data",
-                    description: "Enter expected visitors, click conversion, and total checkout values.",
+                    title: "Pricing & Cost",
+                    description: "Enter the <strong>Selling Price</strong> and <strong>Product Cost</strong> to define your base profit margin per unit.",
                     icon: DollarSign
                 },
                 {
-                    title: "Commission Rate",
-                    description: "Input your flat fee or percentage rate applied per successful sale.",
+                    title: "Affiliate Forecast",
+                    description: "Input the <strong>Number of Active Affiliates</strong> and <strong>Average Sales</strong> to project your program's total volume.",
                     icon: Percent
                 },
                 {
-                    title: "View Earnings",
-                    description: "Instantly check your projected affiliate income and total revenue.",
+                    title: "Program Expenses",
+                    description: "Set your <strong>Commission Rate</strong> and <strong>Refund Rate</strong> to calculate final payouts and net earnings.",
                     icon: TrendingUp
                 }
             ]}
         />
     )
-}
+}

@@ -85,6 +85,7 @@ export function Converter() {
     const [inputCode, setInputCode] = useState("")
     const [status, setStatus] = useState<ValidationStatus>({ isValid: false, message: "Awaiting input...", format: "Unknown" })
     const [results, setResults] = useState<ConversionResult | null>(null)
+    const [isCopied, setIsCopied] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
     const [canvasError, setCanvasError] = useState(false)
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -336,8 +337,9 @@ export function Converter() {
                             title="Converter Inputs"
                             subtitle="Enter your barcode number or upload an image below."
                             onHelpClick={scrollToGuide}
+                            onReset={clearAll}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-3">
                                 <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                 <CalculatorInput
@@ -366,11 +368,7 @@ export function Converter() {
                                     </Button>
                                 </div>
                             </div>
-                            <div className="pt-6 border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={clearAll}
-                                />
-                            </div>
+
                             {/* Status Card */}
                             {inputCode && (
                                 <div
@@ -634,4 +632,4 @@ function ResultRow({ label, value, onCopy, disabled, tooltip }: { label: string,
             </div>
         </div>
     )
-}
+}

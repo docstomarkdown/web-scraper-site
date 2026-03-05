@@ -88,8 +88,9 @@ export function COGSCalculator() {
                             title="Unit Economics"
                             subtitle="Calculate the true cost and profitability of a single product unit."
                             scrollId="how-to-use"
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             {/* Section 1: Acquisition Costs */}
                             <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -172,11 +173,7 @@ export function COGSCalculator() {
                                     />
                                 </div>
                             </div>
-                            <div className="pt-6 mt-auto border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={handleReset}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -298,4 +295,4 @@ export function COGSCalculator() {
             </div>
         </div>
     )
-}
+}

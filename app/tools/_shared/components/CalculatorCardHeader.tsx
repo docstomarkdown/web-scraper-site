@@ -20,7 +20,10 @@ export function CalculatorCardHeader({
     currency,
     onCurrencyChange,
     tooltip,
+    onReset,
 }: CalculatorCardHeaderProps) {
+    const [isSpinning, setIsSpinning] = React.useState(false)
+
     const scrollToGuide = () => {
         const element = document.getElementById(guideId)
         if (element) {
@@ -56,15 +59,40 @@ export function CalculatorCardHeader({
                         </TooltipContent>
                     </Tooltip>
                 </div>
-                <CardDescription className="text-sm text-slate-500 font-medium">
+                <CardDescription className="text-sm text-slate-500 font-medium whitespace-pre-wrap">
                     {description}
                 </CardDescription>
             </div>
-            {currency && onCurrencyChange && (
-                <div className="w-[145px]">
-                    <CurrencyCombobox value={currency} onValueChange={onCurrencyChange} />
-                </div>
-            )}
+            <div className="flex items-center gap-3">
+                {currency && onCurrencyChange && (
+                    <div className="w-[145px]">
+                        <CurrencyCombobox value={currency} onValueChange={onCurrencyChange} />
+                    </div>
+                )}
+                {onReset && (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (!isSpinning) {
+                                        setIsSpinning(true)
+                                        setTimeout(() => setIsSpinning(false), 500)
+                                    }
+                                    if (onReset) onReset()
+                                }}
+                                className="group flex items-center justify-center h-10 w-10 text-slate-400 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-md rounded-xl transition-all duration-300 active:scale-90"
+                                aria-label="Reset Calculator"
+                            >
+                                <RotateCcw className={`h-4 w-4 transition-transform duration-500 ${isSpinning ? '-rotate-180' : ''}`} />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800 font-medium">
+                            Reset inputs
+                        </TooltipContent>
+                    </Tooltip>
+                )}
+            </div>
         </CardHeader>
     )
-}
+}

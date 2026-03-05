@@ -127,8 +127,9 @@ export function CubicFeetCalculator() {
                             title="Calculator Inputs"
                             subtitle="Enter dimensions to calculate total volume."
                             onHelpClick={scrollToGuide}
+                            onReset={() => setInputs({ length: "", width: "", height: "", quantity: "" })}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             {/* Unit Switcher */}
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between gap-4">
@@ -192,11 +193,7 @@ export function CubicFeetCalculator() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="pt-6 mt-auto border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={() => setInputs({ length: "", width: "", height: "", quantity: "" })}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -345,4 +342,4 @@ export function CubicFeetCalculator() {
             </div>
         </div>
     )
-}
+}

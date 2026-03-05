@@ -41,7 +41,7 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                                 </div>
                                 {/* Content */}
                                 <div className="flex-1 min-w-0">
-                                    <h3 className="text-[18px] font-bold text-slate-900 mb-1 leading-snug group-hover:text-blue-700 transition-colors">
+                                    <h3 className="text-[18px] font-bold text-slate-600 mb-1 leading-snug transition-colors">
                                         {item.title}
                                     </h3>
                                     <div className="text-[14.5px] text-slate-500 leading-relaxed font-medium">

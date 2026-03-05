@@ -19,6 +19,7 @@ export function DimensionConverterContent() {
     const [unit, setUnit] = useState<Unit>("in")
     const [volume, setVolume] = useState<{ in3: number; cm3: number } | null>(null)
     const [converted, setConverted] = useState<{ in: Dimensions; cm: Dimensions } | null>(null)
+    const [isCopied, setIsCopied] = useState(false)
     // Constants
     const IN_TO_CM = 2.54
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,7 +130,7 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
                                 <CardDescription className="text-slate-500 font-medium">Configure your dimensions and units below.</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-6 md:p-10 space-y-10">
+                        <CardContent className="p-6 md:p-10 pb-12 md:pb-16 space-y-10">
                             {/* Measurement Unit Section */}
                             <div className="space-y-3">
                                 <label className="text-sm font-semibold text-slate-600 flex items-center gap-2 mb-2">
@@ -278,4 +279,4 @@ ${volume?.cm3.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFract
             </div>
         </div>
     )
-}
+}

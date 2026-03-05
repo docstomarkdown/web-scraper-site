@@ -58,8 +58,9 @@ export function ReorderPointCalculator() {
                             title="Calculator Inputs"
                             subtitle="Configure your inventory restock triggers."
                             scrollId="how-to-use"
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-3">
                                 <CalculatorInput
                                     label="Daily Sales Velocity"
@@ -83,11 +84,7 @@ export function ReorderPointCalculator() {
                                     tooltip="How many units do you want to keep as an emergency buffer?"
                                 />
                             </div>
-                            <div className="pt-6 mt-auto border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={handleReset}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -216,4 +213,4 @@ export function ReorderPointCalculator() {
             </div>
         </div>
     )
-}
+}

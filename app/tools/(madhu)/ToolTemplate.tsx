@@ -7,7 +7,7 @@
 // 3.Frequently Asked Questions
 "use client"
 import React from "react"
-import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy, Check } from "lucide-react"
+import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy, Check, RotateCcw } from "lucide-react"
 import { FadeIn, ToolFAQ, Counter } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { CTA } from "@/components/sections/CTA"
@@ -36,8 +36,9 @@ export interface InputCardHeaderProps {
     onHelpClick?: () => void
     scrollId?: string
     tooltip?: string
+    onReset?: () => void
 }
-export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scrollId, tooltip }: InputCardHeaderProps) {
+export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scrollId, tooltip, onReset }: InputCardHeaderProps) {
     const handleHelp = () => {
         if (onHelpClick) {
             onHelpClick()
@@ -82,6 +83,27 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
                     {subtitle && <p className="text-sm text-slate-500 font-medium">{subtitle}</p>}
                 </div>
             </div>
+            <div className="flex items-center gap-2 pr-1">
+                {onReset && (
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    type="button"
+                                    onClick={onReset}
+                                    className="group flex items-center justify-center h-10 w-10 text-slate-400 bg-white border border-slate-200 shadow-sm rounded-xl transition-all duration-200 active:scale-90"
+                                    aria-label="Reset Calculator"
+                                >
+                                    <RotateCcw className="h-4 w-4 transition-transform duration-500 group-active:rotate-[-180deg]" />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800 font-medium">
+                                Reset inputs
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
+            </div>
         </div>
     )
 }
@@ -97,30 +119,35 @@ export function ActionButtons({ onReset, onCopy, copyDisabled, isCopied, classNa
         <div className={cn("flex gap-3", className)}>
             <Button
                 variant="outline"
-                className="flex-[2] h-11 border-dashed border-slate-200 hover:bg-slate-50 text-slate-500 hover:text-slate-900 transition-all font-medium rounded-xl"
+                className={cn(
+                    "group h-11 border-dashed border-slate-200 hover:bg-slate-50 text-slate-500 hover:text-slate-900 transition-all font-medium rounded-xl",
+                    onCopy ? "flex-[2]" : "w-full"
+                )}
                 onClick={onReset}
             >
-                <RefreshCw className="w-4 h-4 mr-2" /> Reset Input
+                <RefreshCw className="w-4 h-4 mr-2 transition-transform duration-500 group-hover:rotate-180" /> Reset Input
             </Button>
-            <Button
-                onClick={onCopy}
-                variant="outline"
-                disabled={copyDisabled}
-                className={cn(
-                    "flex-[3] h-11 px-6 shadow-sm border-slate-200 transition-all font-bold text-slate-950 disabled:opacity-30 rounded-xl",
-                    isCopied ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-100" : "hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
-                )}
-            >
-                {isCopied ? (
-                    <>
-                        <Check className="w-4 h-4 mr-2" /> Copied!
-                    </>
-                ) : (
-                    <>
-                        <Copy className="w-4 h-4 mr-2" /> Copy Results
-                    </>
-                )}
-            </Button>
+            {!!onCopy && (
+                <Button
+                    onClick={onCopy}
+                    variant="outline"
+                    disabled={copyDisabled}
+                    className={cn(
+                        "flex-[3] h-11 px-6 shadow-sm border-slate-200 transition-all font-bold text-slate-950 disabled:opacity-30 rounded-xl",
+                        isCopied ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-100" : "hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
+                    )}
+                >
+                    {isCopied ? (
+                        <>
+                            <Check className="w-4 h-4 mr-2" /> Copied!
+                        </>
+                    ) : (
+                        <>
+                            <Copy className="w-4 h-4 mr-2" /> Copy Results
+                        </>
+                    )}
+                </Button>
+            )}
         </div>
     )
 }

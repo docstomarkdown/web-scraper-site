@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react"
-import { ActionButtons } from "../../ToolTemplate"
+
 import {
     FadeIn,
     CalculatorInput,
@@ -64,13 +64,14 @@ export function EmailROICalculator() {
                             description="Essential metrics for quick ROI calculation."
                             currency={currency}
                             onCurrencyChange={setCurrency}
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-4 md:p-6 space-y-3 flex-1 flex flex-col">
+                        <CardContent className="p-4 md:p-6 pb-12 md:pb-16 space-y-3 flex-1 flex flex-col">
                             {/* Campaign Setup */}
                             <div className="space-y-3">
                                 <CalculatorInput
                                     hideSeparator={true}
-                                  label="Number of Email Subscribers"
+                                    label="Number of Email Subscribers"
                                     value={listSize}
                                     onChange={setListSize}
                                     placeholder="10000"
@@ -129,10 +130,7 @@ export function EmailROICalculator() {
                                     hint="Industry standard range: $50 – $150"
                                 />
                             </div>
-                            <ActionButtons
-                                onReset={handleReset}
-                                className="pt-4"
-                            />
+
                         </CardContent>
                     </Card>
                 </div>
@@ -188,4 +186,4 @@ export function EmailROICalculator() {
             </div>
         </FadeIn>
     )
-}
+}

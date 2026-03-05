@@ -209,7 +209,7 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        'w-full flex items-center gap-2 h-10 text-sm font-bold border-slate-200/60 bg-white shadow-sm px-3 transition-all rounded-xl hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
+                        'w-full flex items-center gap-2 h-10 text-sm font-bold border border-slate-200 bg-white shadow-sm px-3 transition-all rounded-xl hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
                         !value && 'text-muted-foreground',
                         className
                     )}
@@ -275,4 +275,4 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
             </PopoverContent>
         </Popover>
     );
-}
+}

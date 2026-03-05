@@ -12,7 +12,7 @@ export function ToolSectionHeader({ icon: Icon, title }: ToolSectionHeaderProps)
             <div className="p-2 bg-blue-50 rounded-xl text-blue-600 transition-transform group-focus-visible:scale-110">
                 <Icon className="h-5 w-5" />
             </div>
-            <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">{title}</h2>
+            <h2 className="text-[22px] font-bold text-slate-600 tracking-tight">{title}</h2>
         </div>
     )
 }
