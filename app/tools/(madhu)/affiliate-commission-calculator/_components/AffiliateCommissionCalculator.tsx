@@ -6,9 +6,7 @@ import {
     Tag,
     Handshake
 } from "lucide-react"
-import {
-    ActionButtons,
-} from "../../ToolTemplate"
+
 import {
     Counter,
     CalculatorInput,
@@ -96,8 +94,9 @@ export function AffiliateCommissionCalculator() {
                             description="Set your pricing, costs, and affiliate terms to calculate payouts."
                             currency={currencyCode}
                             onCurrencyChange={setCurrencyCode}
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-4 md:p-6 space-y-3 flex-1 flex flex-col">
+                        <CardContent className="p-4 md:p-6 pb-12 md:pb-16 space-y-3 flex-1 flex flex-col">
                             {/* Section: Product & Pricing */}
                             <div className="space-y-3">
                                 <div className="flex flex-col gap-4">
@@ -169,11 +168,7 @@ export function AffiliateCommissionCalculator() {
                                     />
                                 </div>
                             </div>
-                            <div className="mt-auto pt-6 border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={handleReset}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -190,7 +185,7 @@ export function AffiliateCommissionCalculator() {
                         secondaryResults={[
                             {
                                 key: "totalPayout",
-                                label: "Total Payout",
+                                label: "Affiliate Payout",
                                 value: Math.round(results.totalPayout).toLocaleString(),
                                 unit: currencySymbol,
                                 tooltip: "Total commission paid across all affiliates."
@@ -245,4 +240,4 @@ export function AffiliateCommissionCalculator() {
             </div>
         </div>
     )
-}
+}

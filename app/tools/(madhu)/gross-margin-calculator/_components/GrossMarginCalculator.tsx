@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HelpCircle, Info, TrendingUp, DollarSign, Percent, ArrowRightLeft, Target, Wallet, BarChart3, RefreshCw, RotateCcw } from "lucide-react"
-import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
+import { InputCardHeader } from "../../ToolTemplate"
 import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 export function GrossMarginCalculator() {
@@ -90,6 +90,7 @@ export function GrossMarginCalculator() {
                                 subtitle="Set your parameters to calculate margin."
                                 icon={BarChart3}
                                 scrollId="how-to-use"
+                                onReset={handleReset}
                             />
                             <div className="flex items-center gap-3">
                                 <div className="w-[140px]">
@@ -97,7 +98,7 @@ export function GrossMarginCalculator() {
                                 </div>
                             </div>
                         </div>
-                        <CardContent className="p-6 md:p-8 space-y-8">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8">
                             {/* Calculation Mode Selector - Enhanced Design */}
                             <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200/60">
                                 <ModeButton
@@ -178,9 +179,7 @@ export function GrossMarginCalculator() {
                                     </>
                                 )}
                             </div>
-                            <ActionButtons
-                                onReset={handleReset}
-                            />
+
                         </CardContent>
                     </Card>
                 </div>
@@ -303,4 +302,4 @@ function ModeButton({ active, onClick, icon: Icon, label }: { active: boolean, o
             <span className="text-[11px] font-bold tracking-tight">{label}</span>
         </button>
     )
-}
+}

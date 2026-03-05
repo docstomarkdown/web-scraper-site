@@ -135,6 +135,7 @@ export function CalculatorInput({
             clearTimeout(secondTimer);
         };
     }, [autoFocus])
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value
         if (type === "number") {
@@ -176,13 +177,13 @@ export function CalculatorInput({
     const inputId = React.useId()
     return (
         <div
-            className="space-y-1 max-w-[520px] mx-auto w-full relative calculator-input-row"
+            className="space-y-0 max-w-[520px] mx-auto w-full relative calculator-input-row"
             ref={containerRef}
             data-has-title={!!groupingTitle}
         >
             {/* ── Section Separator (Global) ── */}
             {groupingTitle && !hideSeparator && (
-                <div className="h-px bg-slate-100/80 w-[calc(100%+48px)] -ml-6 mb-8 mt-4" />
+                <div className="h-px bg-slate-100/80 w-[calc(100%+48px)] -ml-6 mb-3 mt-1" />
             )}
 
             {/* Content Container: Relative to handle absolute vertical lines correctly regardless of separators */}
@@ -198,7 +199,7 @@ export function CalculatorInput({
                     />
                 )}
                 {groupingTitle && (
-                    <div className="flex items-center gap-2 -ml-[33px] mb-1 relative h-7">
+                    <div className="flex items-center gap-2 -ml-[33px] mb-0.5 relative h-7">
                         {GroupIcon && (
                             <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
                                 <GroupIcon className="w-3.5 h-3.5 text-blue-600" />
@@ -211,7 +212,7 @@ export function CalculatorInput({
                             <>
                                 <span className="text-slate-300 text-sm z-10 select-none">·</span>
                                 <span className="text-[11px] text-blue-400 italic z-10 whitespace-nowrap">
-                                    Benchmarks pre-filled
+                                    Industry benchmarks pre-filled
                                 </span>
                             </>
                         )}
@@ -247,7 +248,7 @@ export function CalculatorInput({
                             <TooltipTrigger asChild>
                                 <div className="relative">
                                     {finalPrefix && (
-                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
                                             {finalPrefix}
                                         </div>
                                     )}
@@ -259,7 +260,7 @@ export function CalculatorInput({
                                         onChange={handleInputChange}
                                         className={cn(
                                             "calculator-input-field",
-                                            "h-11 text-[16px] font-semibold border-2 border-slate-200 bg-white shadow-sm transition-all duration-200",
+                                            "h-11 text-[16px] font-semibold text-slate-600 border-2 border-slate-200 bg-white shadow-sm transition-all duration-200",
                                             "placeholder:text-slate-300 placeholder:font-normal placeholder:text-[15px] rounded-xl text-right",
                                             "hover:border-blue-300 hover:shadow-md",
                                             "focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none",
@@ -268,13 +269,13 @@ export function CalculatorInput({
                                             finalPrefix && "pl-10",
                                             finalSuffix && "pr-10"
                                         )}
-                                        min={type === "number" ? min : undefined}
-                                        max={type === "number" ? max : undefined}
-                                        step={type === "number" ? step : undefined}
-                                        placeholder={placeholder ? (type === "number" && !placeholder.startsWith("Eg:") ? `Eg: ${placeholder}` : placeholder) : undefined}
+                                        min={String(type) === "number" ? min : undefined}
+                                        max={String(type) === "number" ? max : undefined}
+                                        step={String(type) === "number" ? step : undefined}
+                                        placeholder={placeholder ? (String(type) === "number" && !placeholder.startsWith("Eg:") ? `Eg: ${placeholder}` : placeholder) : undefined}
                                     />
                                     {finalSuffix && (
-                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
+                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
                                             {finalSuffix}
                                         </div>
                                     )}

@@ -282,8 +282,9 @@ export function ContainerLoadCalculator() {
                             title="Configuration inputs"
                             subtitle="Enter box details, pallet type, and stack limits."
                             onHelpClick={scrollToGuide}
+                            onReset={clearAll}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-3 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-3 flex-1 flex flex-col">
                             <div className="space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
@@ -380,11 +381,7 @@ export function ContainerLoadCalculator() {
                                     </>
                                 )}
                             </div>
-                            <div className="pt-6 mt-auto border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={clearAll}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -455,4 +452,4 @@ export function ContainerLoadCalculator() {
             </div>
         </div >
     )
-}
+}

@@ -1,4 +1,4 @@
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { EmailROICalculator } from "./_components/EmailROICalculator"
 import { EmailROIHowToUse } from "./_components/EmailROIHowToUse"
 import { EmailROIGuide } from "./_components/EmailROIGuide"
@@ -14,13 +14,7 @@ export default function EmailROICalculatorPage() {
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 {/* Page Title */}
-                <div className="text-center mb-12">
-                    <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Email Marketing ROI Calculator
-                        </h1>
-                    </FadeIn>
-                </div>
+                <ToolPageTitle title="Email Marketing ROI Calculator" direction="down" duration={0.6} />
                 {/* Calculator Tool */}
                 <div className="mb-20">
                     <EmailROICalculator />
@@ -71,4 +65,4 @@ export default function EmailROICalculatorPage() {
             </div>
         </div>
     )
-}
+}

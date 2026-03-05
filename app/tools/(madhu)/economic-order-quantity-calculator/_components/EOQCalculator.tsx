@@ -5,8 +5,7 @@ import {
     Info
 } from "lucide-react"
 import {
-    InputCardHeader,
-    ActionButtons
+    InputCardHeader
 } from "../../ToolTemplate"
 import { FadeIn, Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
@@ -70,8 +69,9 @@ export function EOQCalculator() {
                             title="EOQ Configuration"
                             subtitle="Configure your annual supply chain costs to identify your optimal order equilibrium."
                             scrollId="how-to-use"
+                            onReset={handleReset}
                         />
-                        <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-3">
                                 <CalculatorInput
                                     label="Annual Demand (Units)"
@@ -97,11 +97,7 @@ export function EOQCalculator() {
                                     tooltip="Cost to store one unit for one year (storage rent, insurance, capital cost)."
                                 />
                             </div>
-                            <div className="pt-6 mt-auto border-t border-slate-100">
-                                <ActionButtons
-                                    onReset={handleReset}
-                                />
-                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
@@ -204,4 +200,4 @@ export function EOQCalculator() {
             </div>
         </div>
     )
-}
+}

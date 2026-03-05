@@ -66,4 +66,4 @@ export default function PalletConfigurationCalculatorPage() {
             </div>
         </div>
     )
-}
+}

@@ -19,6 +19,7 @@ export function WeightConverter() {
     const [inputValue, setInputValue] = useState<string>("")
     const [inputUnit, setInputUnit] = useState<WeightUnit>("lbs")
     const [targetUnit, setTargetUnit] = useState<WeightUnit>("kg")
+    const [isCopied, setIsCopied] = useState(false)
     // Smart default switching: When input unit changes, ensure target isn't the same (if possible)
     useEffect(() => {
         if (inputUnit === targetUnit || (inputUnit === 'lbs' && targetUnit === 'lbs')) {
@@ -168,7 +169,7 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
                                 <CardDescription className="text-slate-500 font-medium">Configure your weight and target unit.</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-6 md:p-8 space-y-8">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8">
                             {/* Weight Configuration Section */}
                             <div className="space-y-6">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -415,4 +416,4 @@ Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
             </div >
         </div >
     )
-}
+}

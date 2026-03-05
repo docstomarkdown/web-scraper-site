@@ -1,4 +1,4 @@
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { AffiliateCommissionCalculator } from "./_components/AffiliateCommissionCalculator"
 import { AffiliateHowToUse } from "./_components/AffiliateHowToUse"
 import { AffiliateGuide } from "./_components/AffiliateGuide"
@@ -12,13 +12,7 @@ export default function AffiliateCommissionCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Affiliate Commission Calculator
-                        </h1>
-                    </FadeIn>
-                </div>
+                <ToolPageTitle title="Affiliate Commission Calculator" />
                 <div className="mb-20">
                     <AffiliateCommissionCalculator />
                 </div>
@@ -66,4 +60,4 @@ export default function AffiliateCommissionCalculatorPage() {
             </div>
         </div>
     )
-}
+}

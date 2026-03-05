@@ -38,7 +38,7 @@ export function ToolFAQ({ title = "Frequently Asked Questions", icon = MessagesS
                                     <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 font-bold text-xs ring-1 ring-inset ring-blue-500/5 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-300">
                                         Q{index + 1}
                                     </div>
-                                    <h3 className="text-[18px] font-bold text-slate-800 group-data-[state=open]:text-blue-700 transition-colors leading-snug flex-1 min-w-0">
+                                    <h3 className="text-[18px] font-bold text-slate-600 group-data-[state=open]:text-blue-700 transition-colors leading-snug flex-1 min-w-0">
                                         {faq.question}
                                     </h3>
                                 </div>

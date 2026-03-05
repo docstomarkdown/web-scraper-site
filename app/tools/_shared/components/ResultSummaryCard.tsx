@@ -211,7 +211,7 @@ export function ResultSummaryCard({
     const displayValue = getDisplayValue(primaryResult.value, primaryResult.key)
     return (
         <Card className={cn(
-            "relative overflow-hidden border border-blue-100/60 bg-gradient-to-br from-blue-100/40 via-blue-50/20 to-indigo-100/40 shadow-[0_15px_50px_rgba(59,130,246,0.08)] p-6 rounded-2xl backdrop-blur-3xl",
+            "relative overflow-hidden border-2 border-blue-200/80 bg-gradient-to-br from-blue-100/40 via-blue-50/20 to-indigo-100/40 shadow-[0_15px_50px_rgba(59,130,246,0.15)] p-6 rounded-2xl backdrop-blur-3xl",
             className
         )}>
             {/* Inner subtle border for glass effect */}
