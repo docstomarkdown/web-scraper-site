@@ -4,38 +4,31 @@ import { EbayFeeGuide } from "./_components/EbayFeeGuide"
 import { EbayFeeHowToUse } from "./_components/EbayFeeHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: 'eBay Fee Calculator - Calculate Final Value Fees & Profit | Web Scraper Pro',
     description: 'Calculate your exact eBay fees, including Final Value Fees, Ad Fees, and shipping costs. Determine your true net profit per item.',
 }
-
 export default function EbayFeeCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-800 md:text-[42px] mb-4">
                             eBay Fee Calculator
                         </h1>
-
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <EbayFeeCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <EbayFeeHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <EbayFeeGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <ToolFAQ
                             faqs={[
@@ -54,7 +47,6 @@ export default function EbayFeeCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <CTA />
                     </FadeIn>
@@ -62,4 +54,4 @@ export default function EbayFeeCalculatorPage() {
             </div>
         </div>
     )
-}
+}

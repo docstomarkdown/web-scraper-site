@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
@@ -17,19 +16,16 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Info, Box, Scale, Ruler } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function DimWeightCalculator() {
     const [length, setLength] = useState<number | "">("");
     const [width, setWidth] = useState<number | "">("");
     const [height, setHeight] = useState<number | "">("");
     const [divisor, setDivisor] = useState<string>("139");
     const [actualWeight, setActualWeight] = useState<number | "">("");
-
     const [dimWeight, setDimWeight] = useState<number>(0);
     const [billableWeight, setBillableWeight] = useState<number>(0);
     const [dimUnit, setDimUnit] = useState<"in" | "cm">("in");
     const [weightUnit, setWeightUnit] = useState<"lb" | "kg">("lb");
-
     const handleReset = () => {
         setLength("");
         setWidth("");
@@ -39,20 +35,16 @@ export function DimWeightCalculator() {
         setWeightUnit("lb");
         setDivisor("139");
     }
-
     const calculate = useCallback(() => {
         const l = length === "" ? 0 : length;
         const w = width === "" ? 0 : width;
         const h = height === "" ? 0 : height;
         const div = parseFloat(divisor);
         const weight = actualWeight === "" ? 0 : actualWeight;
-
         if (div > 0) {
             let calculatedDimWeight = (l * w * h) / div;
-
             // Round up to the next whole number (standard carrier practice)
             calculatedDimWeight = Math.ceil(calculatedDimWeight);
-
             setDimWeight(calculatedDimWeight);
             setBillableWeight(Math.max(calculatedDimWeight, Math.ceil(weight)));
         } else {
@@ -60,11 +52,9 @@ export function DimWeightCalculator() {
             setBillableWeight(0);
         }
     }, [length, width, height, divisor, actualWeight]);
-
     useEffect(() => {
         calculate();
     }, [calculate]);
-
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use'); // Ideally ID matches ToolSteps wrapper
         if (element) {
@@ -74,11 +64,9 @@ export function DimWeightCalculator() {
             if (guide) guide.scrollIntoView({ behavior: 'smooth' });
         }
     };
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
@@ -87,7 +75,7 @@ export function DimWeightCalculator() {
                                 description="Enter dimensions and weight."
                                 onReset={handleReset}
                             />
-                            <CardContent className="space-y-6 pt-6">
+                            <CardContent className="space-y-3 pt-6">
                                 <CalculatorInput
                                     label={`Length (${dimUnit})`}
                                     value={length}
@@ -109,7 +97,6 @@ export function DimWeightCalculator() {
                                     placeholder="0"
                                     tooltip="The height of the package."
                                 />
-
                                 {/* Custom Select for Divisor to match CalculatorInput style slightly */}
                                 {/* DIM Divisor Selection - Optimized Design */}
                                 <div className="space-y-2">
@@ -128,7 +115,6 @@ export function DimWeightCalculator() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     </div>
-
                                     <Select value={divisor} onValueChange={setDivisor}>
                                         <SelectTrigger className="h-11 border-slate-200 bg-white shadow-sm focus:ring-blue-500/10 hover:border-blue-500 focus:border-blue-500 focus:ring-4 transition-all w-full text-slate-700">
                                             <SelectValue placeholder="Select divisor" />
@@ -176,7 +162,6 @@ export function DimWeightCalculator() {
                                         </SelectContent>
                                     </Select>
                                 </div>
-
                                 <CalculatorInput
                                     label={`Actual Weight (${weightUnit})`}
                                     value={actualWeight}
@@ -184,15 +169,13 @@ export function DimWeightCalculator() {
                                     placeholder="0"
                                     tooltip="The actual physical weight of the package on a scale."
                                 />
-
                             </CardContent>
                         </Card>
                     </FadeIn>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-6">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
+                    <FadeIn delay={0.4} direction="left" className="space-y-3">
                         <ResultFeedbackCard
                             title="Billable Weight"
                             mainValue={
@@ -210,7 +193,6 @@ export function DimWeightCalculator() {
                                 }
                             ]}
                         />
-
                         {/* Breakdown Card */}
                         {(dimWeight > 0 || actualWeight !== "") ? (
                             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -249,20 +231,16 @@ export function DimWeightCalculator() {
                                 <p className="text-sm text-slate-400">Enter package details to see breakdown.</p>
                             </div>
                         )}
-
                         <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
                             Carriers charge based on the <strong>greater</strong> of Actual Weight or Dimensional Weight.
                             In this case, you will be billed for <strong>{billableWeight} {weightUnit === "lb" ? "lbs" : "kg"}</strong>.
                         </div>
-
                     </FadeIn>
                 </div>
-
             </div>
         </FadeIn>
     );
 }
-
 function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
     return (
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
@@ -291,4 +269,4 @@ function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, valu
             </div>
         </div>
     )
-}
+}

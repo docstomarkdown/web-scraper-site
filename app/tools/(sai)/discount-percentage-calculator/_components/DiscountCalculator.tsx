@@ -1,29 +1,23 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { TrendingDown, DollarSign, Percent, ArrowRight, ShoppingCart } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function DiscountCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [mode, setMode] = useState("find-price") // find-price | find-discount
-
     // Inputs
     const [originalPrice, setOriginalPrice] = useState<number | "">("")
     const [discountValue, setDiscountValue] = useState<number | "">("") // Can be % or price depending on mode
     const [quantity, setQuantity] = useState<number | "">("")
-
     // Results
     const [finalPrice, setFinalPrice] = useState<number>(0)
     const [savings, setSavings] = useState<number>(0)
     const [totalSavings, setTotalSavings] = useState<number>(0)
     const [calculatedDiscount, setCalculatedDiscount] = useState<number>(0)
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -41,13 +35,11 @@ export function DiscountCalculator() {
         setTotalSavings(0)
         setCalculatedDiscount(0)
     }
-
     // Effect to calculate based on mode
     useEffect(() => {
         const price = val(originalPrice)
         const secondVal = val(discountValue)
         const qty = val(quantity) || 1
-
         if (mode === "find-price") {
             if (price > 0 && secondVal >= 0) {
                 const save = price * (secondVal / 100)
@@ -72,7 +64,6 @@ export function DiscountCalculator() {
             }
         }
     }, [originalPrice, discountValue, mode, quantity])
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -80,12 +71,11 @@ export function DiscountCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter your details."
@@ -94,8 +84,8 @@ export function DiscountCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-6 pt-6">
-                            <div className="space-y-4 mb-2 pb-6 border-b border-slate-50">
+                        <CardContent className="space-y-3 pt-6">
+                            <div className="space-y-3 mb-2 pb-6 border-b border-slate-50">
                                 <label className="text-sm font-bold text-slate-600">Calculation Mode</label>
                                 <div className="relative flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-fit">
                                     <motion.div
@@ -129,8 +119,7 @@ export function DiscountCalculator() {
                                     </button>
                                 </div>
                             </div>
-
-                            <div className="space-y-5">
+                            <div className="space-y-3">
                                 <CalculatorInput
                                     label={`Original Price (${symbol})`}
                                     value={originalPrice}
@@ -139,7 +128,6 @@ export function DiscountCalculator() {
                                     max={1000000}
                                     tooltip="The price before any discount is applied."
                                 />
-
                                 <motion.div
                                     layout
                                     initial={{ opacity: 0, y: 10 }}
@@ -166,7 +154,6 @@ export function DiscountCalculator() {
                                         />
                                     )}
                                 </motion.div>
-
                                 <CalculatorInput
                                     label="Quantity"
                                     value={quantity}
@@ -179,9 +166,8 @@ export function DiscountCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     {/* Main Result Card */}
                     <ResultFeedbackCard
                         title={mode === "find-price" ? "Total Price" : "Discount Percentage"}
@@ -195,7 +181,6 @@ export function DiscountCalculator() {
                         valueColor="text-white"
                         secondaryMetrics={[]}
                     />
-
                     {/* Savings Indicator */}
                     {(mode === "find-price" ? val(discountValue) > 0 : calculatedDiscount > 0) && (
                         <motion.div
@@ -221,7 +206,6 @@ export function DiscountCalculator() {
                                         : " Modest Savings"}
                         </motion.div>
                     )}
-
                     {/* Price Breakdown */}
                     {originalPrice && discountValue ? (
                         <motion.div
@@ -278,4 +262,4 @@ export function DiscountCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

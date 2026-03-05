@@ -1,28 +1,26 @@
 "use client";
-
 import { ToolSteps } from "@/app/tools/_shared/components";
 import { Calculator, Globe, Heart } from "lucide-react";
-
 export function PayPalHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Enter Amount",
-                    description: "Input the total transaction amount you are invoicing or expecting to receive.",
-                    icon: Calculator,
+                    title: "Sale Target",
+                    description: "Enter the specific monetary checkout charge currently being digitally processed via gateway.",
+                    icon: Calculator
                 },
                 {
-                    title: "Select Rate Type",
-                    description: "Choose 'Standard' for domestic sales, 'International' for cross-border, or 'Non-Profit' if applicable.",
-                    icon: Globe,
+                    title: "Route Rules",
+                    description: "Select tightly enforced domestic, international transfer, or digital micro-transaction sets.",
+                    icon: Globe
                 },
                 {
-                    title: "See the Split",
-                    description: "View exactly how much PayPal will take in fees and what lands in your bank account.",
-                    icon: Heart,
-                },
+                    title: "Check Yield",
+                    description: "Instantly map overall required exact PayPal network deductions and your real raw payout.",
+                    icon: Heart
+                }
             ]}
         />
     );
-}
+}

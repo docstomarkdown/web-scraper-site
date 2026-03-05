@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { ShoppingCart, Ban, CreditCard, Mail } from "lucide-react"
-
 export function AbandonmentGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function AbandonmentGuide() {
             ]}
         />
     )
-}
+}

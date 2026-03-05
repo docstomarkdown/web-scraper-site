@@ -1,9 +1,7 @@
 "use client";
-
 import React from "react";
 import { ToolSteps } from "@/app/tools/_shared/components/ToolSteps";
 import { DollarSign, Tag, Truck, Wallet } from "lucide-react";
-
 export function MercariFeeHowToUse() {
     const steps = [
         {
@@ -27,6 +25,5 @@ export function MercariFeeHowToUse() {
             icon: Wallet,
         },
     ];
-
     return <ToolSteps steps={steps} title="How to Calculate Your Mercari Profits" />;
-}
+}

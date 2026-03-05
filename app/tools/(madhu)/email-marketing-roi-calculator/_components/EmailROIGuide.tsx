@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Target, DollarSign, TrendingUp, BookOpen } from "lucide-react"
-
 export function EmailROIGuide() {
     return (
         <ToolGuide
@@ -48,4 +46,4 @@ export function EmailROIGuide() {
             ]}
         />
     )
-}
+}

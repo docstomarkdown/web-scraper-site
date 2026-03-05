@@ -1,18 +1,14 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { DollarSign, TrendingUp } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
-
 export function BreakEvenCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [fixedCosts, setFixedCosts] = useState<number | "">("")
     const [pricePerUnit, setPricePerUnit] = useState<number | "">("")
     const [variableCostPerUnit, setVariableCostPerUnit] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -21,24 +17,18 @@ export function BreakEvenCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
     const handleReset = () => {
         setFixedCosts("")
         setPricePerUnit("")
         setVariableCostPerUnit("")
     }
-
-
-
     // Calculations
     const fixed = val(fixedCosts)
     const price = val(pricePerUnit)
     const variable = val(variableCostPerUnit)
-
     const contributionMargin = price - variable
     const breakEvenUnits = contributionMargin > 0 ? fixed / contributionMargin : 0
     const breakEvenRevenue = breakEvenUnits * price
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -46,13 +36,11 @@ export function BreakEvenCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter your costs and pricing details."
@@ -61,7 +49,7 @@ export function BreakEvenCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Total Fixed Costs(${symbol})`}
                                 value={fixedCosts}
@@ -89,9 +77,8 @@ export function BreakEvenCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     {/* Main Result Card */}
                     <ResultFeedbackCard
                         title="Break-Even Units"
@@ -107,14 +94,12 @@ export function BreakEvenCalculator() {
                             },
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {breakEvenUnits > 0 && (
                         <div className="px-4 py-3 rounded-xl border bg-blue-50 border-blue-200 text-blue-700 text-center text-sm font-semibold">
                             🎯 Break-Even Target Calculated
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {breakEvenUnits > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -149,6 +134,4 @@ export function BreakEvenCalculator() {
             </div>
         </FadeIn>
     )
-}
-
-
+}

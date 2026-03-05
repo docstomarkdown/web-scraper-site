@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Users, Gem, Clock, BarChart3 } from "lucide-react";
-
 export function CLVGuide() {
   return (
     <ToolGuide
@@ -52,4 +50,4 @@ export function CLVGuide() {
       ]}
     />
   );
-}
+}

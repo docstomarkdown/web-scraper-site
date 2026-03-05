@@ -1,25 +1,20 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Info, TrendingUp, DollarSign, Percent, ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function MarginCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [costPrice, setCostPrice] = useState<number | "">("")
     const [salesPrice, setSalesPrice] = useState<number | "">("")
     const [quantity, setQuantity] = useState<number | "">("")
-
     // Advanced Settings State
     const [showAdvanced, setShowAdvanced] = useState(false)
     const [shippingCost, setShippingCost] = useState<number | "">("")
     const [otherCosts, setOtherCosts] = useState<number | "">("")
     const [taxRate, setTaxRate] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -36,7 +31,6 @@ export function MarginCalculator() {
         setOtherCosts("")
         setTaxRate("")
     }
-
     // Calculations
     const cost = val(costPrice)
     const price = val(salesPrice)
@@ -44,24 +38,20 @@ export function MarginCalculator() {
     const shipping = val(shippingCost)
     const other = val(otherCosts)
     const taxPercent = val(taxRate)
-
     // Per Unit Calculations
     const grossProfitPerUnit = price - cost
     const taxAmountPerUnit = price > 0 ? (price * (taxPercent / 100)) : 0
     const totalCostPerUnit = cost + shipping + other + taxAmountPerUnit
     const netProfitPerUnit = price - totalCostPerUnit
-
     // Totals
     const totalRevenue = price * qty
     const totalCostOfGoods = totalCostPerUnit * qty
     const totalNetProfit = netProfitPerUnit * qty
-
     // Margins
     const grossMarginPercent = price > 0 ? (grossProfitPerUnit / price) * 100 : 0
     const netMarginPercent = price > 0 ? (netProfitPerUnit / price) * 100 : 0
     const markupPercent = totalCostPerUnit > 0 ? (netProfitPerUnit / totalCostPerUnit) * 100 : 0
     const roiPercent = (cost + shipping + other) > 0 ? (netProfitPerUnit / (cost + shipping + other)) * 100 : 0
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -69,28 +59,20 @@ export function MarginCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Calculate your net profit and margin."
-
                             onReset={handleReset}
-
                             guideId="margin-guide"
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Cost Price (${symbol})`}
                                 value={costPrice}
@@ -115,7 +97,6 @@ export function MarginCalculator() {
                                 max={10000}
                                 tooltip="Number of units sold. Defaults to 1 if left empty."
                             />
-
                             {/* Advanced Toggle */}
                             <div className="pt-2">
                                 <div
@@ -153,9 +134,8 @@ export function MarginCalculator() {
                                         {showAdvanced ? <ChevronUp className="w-4 h-4 text-blue-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
                                     </div>
                                 </div>
-
                                 {showAdvanced && (
-                                    <FadeIn className="marginTop-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-4 mt-4">
+                                    <FadeIn className="marginTop-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-3 mt-4">
                                         <CalculatorInput
                                             label={`Shipping Cost per Unit (${symbol})`}
                                             value={shippingCost}
@@ -186,9 +166,8 @@ export function MarginCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     {/* Main Profit Card */}
                     <ResultFeedbackCard
                         title={(quantity && quantity > 1) ? 'Total Net Profit' : 'Net Profit per Unit'}
@@ -210,7 +189,6 @@ export function MarginCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {totalRevenue > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -253,4 +231,4 @@ export function MarginCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

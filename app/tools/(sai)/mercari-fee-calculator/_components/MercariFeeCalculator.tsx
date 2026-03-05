@@ -1,19 +1,16 @@
 "use client";
-
 import React, { useState, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { HelpCircle, ShoppingBag, Package, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components";
 import { cn } from "@/lib/utils";
-
 export function MercariFeeCalculator() {
     const [salePrice, setSalePrice] = useState<number | "">("")
     const [itemCost, setItemCost] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
     const [otherCosts, setOtherCosts] = useState<number | "">("")
     const [soldQuantity, setSoldQuantity] = useState<number | "">("")
-
     const handleReset = () => {
         setSalePrice("")
         setItemCost("")
@@ -21,29 +18,23 @@ export function MercariFeeCalculator() {
         setOtherCosts("")
         setSoldQuantity("")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v);
-
     // Calculations
     const price = val(salePrice);
     const cost = val(itemCost);
     const ship = val(shippingCost);
     const other = val(otherCosts);
     const quantity = val(soldQuantity) || 1;
-
     // Mercari Fees: 10% selling fee + 2.9% + $0.50 processing fee
     const merchFee = price * 0.10;
     const processingFee = price > 0 ? (price * 0.029) + 0.50 : 0;
     const totalFees = merchFee + processingFee;
-
     const totalExpenses = cost + ship + other + totalFees;
     const netProfit = price - totalExpenses;
     const margin = price > 0 ? (netProfit / price) * 100 : 0;
     const roi = (cost + ship + other) > 0 ? (netProfit / (cost + ship + other)) * 100 : 0;
-
     // Batch Calculations
     const batchProfit = netProfit * quantity;
-
     const formatCurrency = (v: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -51,10 +42,6 @@ export function MercariFeeCalculator() {
             maximumFractionDigits: 2
         }).format(v);
     };
-
-
-
-
     // Strategic Insights
     const insight = useMemo(() => {
         if (price === 0) {
@@ -66,7 +53,6 @@ export function MercariFeeCalculator() {
                 message: "Enter your item details to see profit and optimization tips."
             };
         }
-
         if (price < 15 && ship > 5) {
             return {
                 icon: AlertTriangle,
@@ -103,7 +89,6 @@ export function MercariFeeCalculator() {
                 message: "Excellent resale price. Ensure you use shipping insurance for items over $200."
             };
         }
-
         // Default "Good" State
         return {
             icon: CheckCircle2,
@@ -113,7 +98,6 @@ export function MercariFeeCalculator() {
             message: "Your fees and margins are within standard ranges. Ready to list!"
         };
     }, [price, ship, netProfit]);
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -125,7 +109,7 @@ export function MercariFeeCalculator() {
                                 description="Enter your listing details."
                                 onReset={handleReset}
                             />
-                            <CardContent className="space-y-6 pt-6">
+                            <CardContent className="space-y-3 pt-6">
                                 <div className="grid grid-cols-1 gap-4">
                                     <CalculatorInput
                                         label="Sale Price ($)"
@@ -169,10 +153,9 @@ export function MercariFeeCalculator() {
                         </Card>
                     </FadeIn>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-6">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
+                    <FadeIn delay={0.4} direction="left" className="space-y-3">
                         <ResultFeedbackCard
                             title="Net Profit"
                             titleLabel="Live"
@@ -199,7 +182,6 @@ export function MercariFeeCalculator() {
                                 }] : [])
                             ] : []}
                         />
-
                         {/* Breakdown Card */}
                         {price > 0 ? (
                             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
@@ -230,8 +212,6 @@ export function MercariFeeCalculator() {
                                 <p className="text-sm text-slate-400">Enter item details to calculate profit.</p>
                             </div>
                         )}
-
-
                         {insight && (
                             <div className={cn("p-4 rounded-xl border shadow-sm flex gap-3", insight.bg, "border-opacity-50")}>
                                 <div className={cn("p-2 rounded-full h-fit bg-white bg-opacity-60", insight.color)}>
@@ -247,6 +227,5 @@ export function MercariFeeCalculator() {
                 </div>
             </div>
         </FadeIn>
-
     );
-}
+}

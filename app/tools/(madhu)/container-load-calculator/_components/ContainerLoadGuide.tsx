@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Scale, Package, Layers, BookOpen } from "lucide-react"
-
 export function ContainerLoadGuide() {
     return (
         <ToolGuide
@@ -42,4 +40,4 @@ export function ContainerLoadGuide() {
             ]}
         />
     )
-}
+}

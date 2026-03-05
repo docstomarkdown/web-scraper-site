@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Package, AlertTriangle, TrendingUp } from "lucide-react";
-
 export function MOQGuide() {
     return (
         <ToolGuide
@@ -45,4 +43,4 @@ export function MOQGuide() {
             ]}
         />
     );
-}
+}

@@ -5,13 +5,11 @@ import { CTA } from "@/components/sections/CTA";
 import { MOQCalculator } from "./_components/MOQCalculator";
 import { MOQHowToUse } from "./_components/MOQHowToUse";
 import { MOQGuide } from "./_components/MOQGuide";
-
 export const metadata: Metadata = {
     title: "Minimum Order Quantity (MOQ) Cost Calculator | Web Scraper Pro",
     description:
         "Calculate the total investment required for Minimum Order Quantities (MOQ), effective cost per unit, and inventory risk.",
 };
-
 const faqs = [
     {
         question: "What is Minimum Order Quantity (MOQ) in manufacturing?",
@@ -34,24 +32,20 @@ const faqs = [
             "Yes! Suppliers often set high MOQs for new clients but are willing to lower them for a 'test order' if you negotiate. You might pay a slightly higher unit price, but it reduces your upfront risk significantly.",
     },
 ];
-
 export default function MOQValidatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <FadeIn>
                     <div className="max-w-3xl mx-auto text-center mb-10">
-                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 md:text-[42px] mb-4">
                             Minimum Order Quantity (MOQ) Cost Calculator
                         </h1>
-
                     </div>
                 </FadeIn>
-
                 <div className="mb-20">
                     <MOQCalculator />
                 </div>
-
                 <div className="max-w-5xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <MOQHowToUse />
@@ -69,4 +63,4 @@ export default function MOQValidatorPage() {
             </div>
         </div>
     );
-}
+}

@@ -4,37 +4,31 @@ import { ReorderPointHowToUse } from "./_components/ReorderPointHowToUse"
 import { ReorderPointGuide } from "./_components/ReorderPointGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-
 export const metadata: Metadata = {
     title: "Reorder Point Calculator - Inventory Restock Estimator",
     description: "Calculate your optimal reorder point based on lead time, sales velocity, and safety stock. Never run out of stock or overstock again.",
 }
-
 export default function ReorderPointCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Reorder Point Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <ReorderPointCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <ReorderPointHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <ReorderPointGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function ReorderPointCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function ReorderPointCalculatorPage() {
             </div>
         </div>
     )
-}
+}

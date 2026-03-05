@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Layers, Users, Zap } from "lucide-react";
-
 export function BundleGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function BundleGuide() {
             ]}
         />
     );
-}
+}

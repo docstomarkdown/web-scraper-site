@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useMemo } from "react"
 import {
     Info,
@@ -22,7 +21,6 @@ import {
 import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-
 interface COGSState {
     productCost: string | number
     inboundShipping: string | number
@@ -33,7 +31,6 @@ interface COGSState {
     returnRate: string | number
     sellPrice: string | number
 }
-
 const DEFAULT_STATE: COGSState = {
     productCost: "",
     inboundShipping: "",
@@ -44,19 +41,14 @@ const DEFAULT_STATE: COGSState = {
     returnRate: "",
     sellPrice: ""
 }
-
 export function COGSCalculator() {
     const [values, setValues] = useState<COGSState>(DEFAULT_STATE)
-    const [isCopying, setIsCopying] = useState(false)
-
     const handleInputChange = (field: keyof COGSState, value: string | number) => {
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
-
     const hasInputs = useMemo(() => {
         return Object.values(values).some(val => val !== "")
     }, [values])
-
     const results = useMemo(() => {
         const product = Number(values.productCost) || 0
         const inbound = Number(values.inboundShipping) || 0
@@ -66,22 +58,17 @@ export function COGSCalculator() {
         const outbound = Number(values.outboundShipping) || 0
         const rate = Number(values.returnRate) || 0
         const price = Number(values.sellPrice) || 0
-
         // 1. Landed Cost
         const landedCost = product + inbound + duties + pkg
-
         // 2. Return Risk (Simplified as % of Sell Price, as lost revenue/cost)
         // Alternatively, it could be % of COGS, but usually sellers budget a % of revenue for returns.
         const returnRiskCost = price * (rate / 100)
-
         // 3. True COGS (Total Cost to Sell one unit)
         // Landed Cost + Fulfillment (Pick/Pack) + Shipping to Customer + Return Allowance
         const trueCogs = landedCost + fulfillment + outbound + returnRiskCost
-
         // 4. Gross Profit & Margin
         const grossProfit = price - trueCogs
         const grossMargin = price > 0 ? (grossProfit / price) * 100 : 0
-
         return {
             landedCost,
             returnRiskCost,
@@ -90,44 +77,10 @@ export function COGSCalculator() {
             grossMargin
         }
     }, [values])
-
     const handleReset = () => setValues(DEFAULT_STATE)
-
-    const handleCopy = async () => {
-        setIsCopying(true)
-        const text = `
-COGS & Profitability Analysis:
------------------------------
-Sell Price: $${values.sellPrice}
-
-Direct Costs:
-- Product Cost: $${values.productCost}
-- Inbound Shipping: $${values.inboundShipping}
-- Duties & Taxes: $${values.duties}
-- Packaging: $${values.packaging}
------------------------------
-= Landed Cost: $${results.landedCost.toFixed(2)}
-
-Operational Costs:
-- Fulfillment Fee: $${values.fulfillmentFee}
-- Outbound Shipping: $${values.outboundShipping}
-- Return Risk (${values.returnRate}%): $${results.returnRiskCost.toFixed(2)}
-
-Summary:
------------------------------
-TRUE COGS: $${results.trueCogs.toFixed(2)}
-GROSS PROFIT: $${results.grossProfit.toFixed(2)}
-GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
-        `.trim()
-
-        await navigator.clipboard.writeText(text)
-        setTimeout(() => setIsCopying(false), 2000)
-    }
-
     return (
         <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-1">
-
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start pt-1">
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
@@ -136,16 +89,14 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                             subtitle="Calculate the true cost and profitability of a single product unit."
                             scrollId="how-to-use"
                         />
-
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-
                             {/* Section 1: Acquisition Costs */}
                             <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Package className="w-4 h-4 text-slate-400" />
                                     Acquisition (Landed) Cost
                                 </label>
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Product Cost"
                                         value={values.productCost}
@@ -180,15 +131,13 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                     />
                                 </div>
                             </div>
-
                             {/* Section 2: Fulfillment & Sales */}
-                            <div className="h-px bg-slate-100 w-full" />
                             <div className="space-y-3">
                                 <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                     <Truck className="w-4 h-4 text-slate-400" />
                                     Fulfillment & Sales
                                 </label>
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Fulfillment Fee"
                                         value={values.fulfillmentFee}
@@ -223,21 +172,16 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                     />
                                 </div>
                             </div>
-
                             <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
-                                    onCopy={handleCopy}
-                                    copyDisabled={!hasInputs || isCopying}
-                                    isCopied={isCopying}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 sticky top-6">
+                <div className="lg:col-span-5 space-y-3 sticky top-6">
                     <ResultFeedbackCard
                         title="TRUE COGS"
                         titleLabel="Total Cost Per Unit"
@@ -251,7 +195,7 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                             </div>
                         }
                     >
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             {/* Breakdown Items - Updated to Match Reorder Point Calculator Style */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
@@ -297,8 +241,6 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                                     </div>
                                 </div>
                             </div>
-
-
                             {/* Profit Card */}
                             <div className={cn(
                                 "rounded-xl p-5 border mt-4 transition-colors",
@@ -351,12 +293,9 @@ GROSS MARGIN: ${results.grossMargin.toFixed(1)}%
                             </div>
                         </div>
                     </ResultFeedbackCard>
-
                     {/* Add a breakdown list or mini-chart if needed, but the above is quite dense already */}
                 </div>
             </div>
         </div>
     )
-}
-
-
+}

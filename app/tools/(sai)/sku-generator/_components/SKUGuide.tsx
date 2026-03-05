@@ -1,7 +1,6 @@
 "use client";
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Hash, Search, Zap, ListChecks } from "lucide-react";
-
 export function SKUGuide() {
     return (
         <div id="sku-guide">
@@ -57,4 +56,4 @@ export function SKUGuide() {
             />
         </div>
     );
-}
+}

@@ -4,37 +4,31 @@ import { CLVHowToUse } from "./_components/CLVHowToUse";
 import { CLVGuide } from "./_components/CLVGuide";
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
 import { CTA } from "@/components/sections/CTA";
-
 export const metadata: Metadata = {
     title: "Customer Lifetime Value (CLV) Calculator",
     description: "Calculate the total revenue a single customer will generate for your business over their entire relationship with you.",
 };
-
 export default function CLVPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
-                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
+                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 md:text-[42px] mb-4">
                             Customer Lifetime Value (CLV) Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <CLVCalculator />
-
                 <div className="max-w-4xl mx-auto mt-20 space-y-16">
                     <div id="how-to-use">
                         <FadeIn delay={0.1}>
                             <CLVHowToUse />
                         </FadeIn>
                     </div>
-
                     <FadeIn delay={0.2}>
                         <CLVGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function CLVPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.2}>
                         <CTA />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function CLVPage() {
             </div>
         </div>
     );
-}
+}

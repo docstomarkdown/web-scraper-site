@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { BarChart, DollarSign, MousePointer } from "lucide-react"
-
 export function PPCBidGuide() {
     return (
         <ToolGuide
@@ -44,4 +42,4 @@ export function PPCBidGuide() {
             ]}
         />
     )
-}
+}

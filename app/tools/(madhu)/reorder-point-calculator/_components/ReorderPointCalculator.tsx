@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useMemo, useEffect } from "react"
 import {
     CheckCircle2,
@@ -13,39 +12,30 @@ import { FadeIn, Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tool
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
-
 interface ROPState {
     salesVelocity: number | ""
     leadTime: number | ""
     safetyStock: number | ""
 }
-
 const DEFAULT_STATE: ROPState = {
     salesVelocity: "",
     leadTime: "",
     safetyStock: ""
 }
-
 export function ReorderPointCalculator() {
     const [values, setValues] = useState<ROPState>(DEFAULT_STATE)
-    const [isCopying, setIsCopying] = useState(false)
-
     const handleInputChange = (field: keyof ROPState, value: string | number) => {
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : Number(value) }))
     }
-
     const hasInputs = useMemo(() => {
         return values.salesVelocity !== "" && values.leadTime !== ""
     }, [values])
-
     const results = useMemo(() => {
         const velocity = Number(values.salesVelocity) || 0
         const leadTime = Number(values.leadTime) || 0
         const safetyStock = Number(values.safetyStock) || 0
-
         const leadTimeDemand = velocity * leadTime
         const reorderPoint = leadTimeDemand + safetyStock
-
         return {
             leadTimeDemand,
             reorderPoint: Math.ceil(reorderPoint),
@@ -53,35 +43,14 @@ export function ReorderPointCalculator() {
             totalCoverage: velocity > 0 ? Math.floor(reorderPoint / velocity) : 0
         }
     }, [values])
-
     const handleReset = () => setValues({
         salesVelocity: "",
         leadTime: "",
         safetyStock: ""
     })
-
-    const handleCopy = async () => {
-        setIsCopying(true)
-        const text = `
-Reorder Point Analysis:
------------------------
-- Daily Sales: ${values.salesVelocity} units
-- Lead Time: ${values.leadTime} days
-- Safety Stock: ${values.safetyStock} units
-
-Result:
-- REORDER POINT: ${results.reorderPoint} units
-- Inventory Coverage: ${results.totalCoverage} days
-        `.trim()
-
-        await navigator.clipboard.writeText(text)
-        setTimeout(() => setIsCopying(false), 2000)
-    }
-
     return (
         <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
-
                 {/* Left Column: Smart Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden flex flex-col rounded-3xl h-fit">
@@ -90,9 +59,8 @@ Result:
                             subtitle="Configure your inventory restock triggers."
                             scrollId="how-to-use"
                         />
-
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                            <div className="space-y-5">
+                            <div className="space-y-3">
                                 <CalculatorInput
                                     label="Daily Sales Velocity"
                                     value={values.salesVelocity}
@@ -115,21 +83,16 @@ Result:
                                     tooltip="How many units do you want to keep as an emergency buffer?"
                                 />
                             </div>
-
                             <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
-                                    onCopy={handleCopy}
-                                    copyDisabled={!hasInputs || isCopying}
-                                    isCopied={isCopying}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6">
+                <div className="lg:col-span-5 space-y-3">
                     <ResultFeedbackCard
                         title="REORDER POINT"
                         titleLabel="Live calculation"
@@ -143,7 +106,7 @@ Result:
                             </div>
                         }
                     >
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             {/* Secondary Metrics Grid - Now on Top */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
@@ -155,7 +118,6 @@ Result:
                                     <p className="text-xl font-bold text-blue-400">{Math.round(results.leadTimeDemand)}</p>
                                 </div>
                             </div>
-
                             {/* Action Plan - Refined Style */}
                             <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
                                 <div className="flex items-center gap-2 mb-1">
@@ -168,7 +130,6 @@ Result:
                             </div>
                         </div>
                     </ResultFeedbackCard>
-
                     {/* Timeline Analysis - Premium Minimalist Style */}
                     {/* Restock Journey - Always Visible */}
                     <FadeIn delay={0.1}>
@@ -181,7 +142,6 @@ Result:
                                 <div className="mb-10 flex items-center justify-between">
                                     <h2 className="text-sm font-medium uppercase tracking-wider text-slate-500">RESTOCK JOURNEY</h2>
                                 </div>
-
                                 <div className="px-2">
                                     <div className={cn(
                                         "relative h-1 rounded-full mb-10 transition-colors duration-500",
@@ -194,7 +154,6 @@ Result:
                                                 !hasInputs ? "w-0 opacity-0" : "w-[70%] opacity-100"
                                             )}
                                         />
-
                                         {/* Start Node */}
                                         <div className={cn(
                                             "absolute left-0 -top-1.5 w-4 h-4 bg-white border-2 rounded-full transition-all",
@@ -205,7 +164,6 @@ Result:
                                                 <span className="text-[8px] font-medium text-slate-500 whitespace-nowrap">Day 0</span>
                                             </div>
                                         </div>
-
                                         {/* Reorder Point Hub */}
                                         <div
                                             className={cn(
@@ -231,7 +189,6 @@ Result:
                                                 )}>Order point</span>
                                             </div>
                                         </div>
-
                                         {/* Arrival Node */}
                                         <div className={cn(
                                             "absolute right-0 -top-1.5 w-4 h-4 bg-white border-2 rounded-full transition-all",
@@ -245,7 +202,6 @@ Result:
                                     </div>
                                 </div>
                             </div>
-
                             {/* Floating Overlay for Empty State - Transparent Background */}
                             {!hasInputs && (
                                 <div className="absolute inset-0 z-20 flex items-start justify-end p-7 pointer-events-none">
@@ -260,6 +216,4 @@ Result:
             </div>
         </div>
     )
-}
-
-
+}

@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Target, TrendingUp, BarChart2, DollarSign } from "lucide-react"
-
 export function CouponROIGuide() {
     return (
         <ToolGuide
@@ -35,4 +33,4 @@ export function CouponROIGuide() {
             ]}
         />
     )
-}
+}

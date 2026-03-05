@@ -1,9 +1,7 @@
 "use client";
-
 import React from "react";
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { DollarSign, Truck, TrendingUp } from "lucide-react";
-
 export function MercariFeeGuide() {
     const guideItems = [
         {
@@ -24,13 +22,11 @@ export function MercariFeeGuide() {
             stat: "Costly",
             statLabel: "Shipping Var"
         },
-
     ];
-
     return (
         <ToolGuide
             title="Mastering Mercari Selling & Profitability"
             items={guideItems}
         />
     );
-}
+}

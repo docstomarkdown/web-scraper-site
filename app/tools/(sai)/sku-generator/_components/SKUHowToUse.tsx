@@ -1,32 +1,26 @@
 "use client";
 import { ToolSteps } from "@/app/tools/_shared/components";
 import { Tag, Blocks, Sliders, Copy } from "lucide-react";
-
 export function SKUHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Define Your Codes",
-                    description: "Enter short, consistent codes for your Brand, Category, and Model (e.g., NK for Nike, SHO for Shoes).",
+                    title: "Class Info",
+                    description: "Enter tightly mapped standardized core internal branding categories explicitly tied referencing unique specialized individual colors.",
                     icon: Tag
                 },
                 {
-                    title: "Add Attributes",
-                    description: "Include specific variations like Color (WHT) and Size (10) to make each SKU unique.",
+                    title: "Set Pattern",
+                    description: "Define structured uniform universal separating string characters forcing absolutely consistent scalable physical packaging labels.",
                     icon: Blocks
                 },
                 {
-                    title: "Customize Format",
-                    description: "Choose your preferred separator (dash, underscore) and letter casing to match your inventory system.",
+                    title: "Get Value",
+                    description: "Instantly map perfectly organized deeply structured clean scannable distinct global alphanumeric warehouse tracking inventory outputs.",
                     icon: Sliders
-                },
-                {
-                    title: "Generate & Copy",
-                    description: "Review the real-time preview and click 'Copy SKU' to use it in your store or spreadsheet.",
-                    icon: Copy
                 }
             ]}
         />
     );
-}
+}

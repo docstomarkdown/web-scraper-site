@@ -1,7 +1,6 @@
 "use client";
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Package, Scissors, Timer } from "lucide-react";
-
 export function PackagingGuide() {
     return (
         <ToolGuide
@@ -42,4 +41,4 @@ export function PackagingGuide() {
             ]}
         />
     );
-}
+}

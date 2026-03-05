@@ -1,28 +1,26 @@
 "use client";
-
 import { ToolSteps } from "@/app/tools/_shared/components";
 import { Calendar, Globe, Clock } from "lucide-react";
-
 export function MeetingPlannerHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Set Your Time",
-                    description: "Enter the date and time you want to host the meeting in your local time zone.",
-                    icon: Calendar,
+                    title: "Home Clock",
+                    description: "Enter entirely specific localized home city environments combined directly setting acceptable workable morning to afternoon constraints.",
+                    icon: Calendar
                 },
                 {
-                    title: "Add Locations",
-                    description: "Add the time zones of your teammates or suppliers (e.g., Beijing, London, New York).",
-                    icon: Globe,
+                    title: "Away Zones",
+                    description: "Add globally explicit target coordinate locations ensuring absolute accurate geographic distribution matching client requirements globally.",
+                    icon: Globe
                 },
                 {
-                    title: "Find Overlap",
-                    description: "Look for the green 'Business Hours' cards to find a time that works for everyone.",
-                    icon: Clock,
-                },
+                    title: "Check Block",
+                    description: "Instantly overlay absolute synchronized cross global explicit available timezone hours successfully securing maximum active available participant connectivity.",
+                    icon: Clock
+                }
             ]}
         />
     );
-}
+}

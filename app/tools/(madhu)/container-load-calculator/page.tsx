@@ -4,38 +4,32 @@ import { ContainerLoadHowToUse } from "./_components/ContainerLoadHowToUse"
 import { ContainerLoadGuide } from "./_components/ContainerLoadGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-
 export const metadata: Metadata = {
     title: "Container Load Calculator - Optimize Shipping & Cargo Space",
     description: "Calculate how many boxes fit in a 20ft or 40ft container. Optimize pallet loading, cubic volume, and weight limits to maximize your shipping ROI.",
     keywords: ["container load calculator", "cargo space optimizer", "shipping calculator", "pallet loading", "20ft container capacity", "40ft container capacity"],
 }
-
 export default function ContainerLoadCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Container Load Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <ContainerLoadCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <ContainerLoadHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <ContainerLoadGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -54,7 +48,6 @@ export default function ContainerLoadCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -62,4 +55,4 @@ export default function ContainerLoadCalculatorPage() {
             </div>
         </div>
     )
-}
+}

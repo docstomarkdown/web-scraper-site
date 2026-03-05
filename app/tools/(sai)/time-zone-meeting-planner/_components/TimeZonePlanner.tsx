@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useMemo, useEffect, type ChangeEvent, type ElementType } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
@@ -10,9 +9,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Clock, Plus, Trash2, Calendar as CalendarIcon, Search, Check, Sun, Moon, MapPin, Globe, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { CalculatorCardHeader, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 // --- Constants ---
-
 // Each country maps to one representative IANA timezone
 const COUNTRY_LIST: { name: string; flag: string; code: string; timezone: string; isPriority?: boolean }[] = [
     // Priority countries (E-commerce hubs)
@@ -26,7 +23,6 @@ const COUNTRY_LIST: { name: string; flag: string; code: string; timezone: string
     { name: "Singapore", flag: "🇸🇬", code: "sg", timezone: "Asia/Singapore", isPriority: true },
     { name: "Japan", flag: "🇯🇵", code: "jp", timezone: "Asia/Tokyo", isPriority: true },
     { name: "Canada", flag: "🇨🇦", code: "ca", timezone: "America/Toronto", isPriority: true },
-
     // Expanded Database (A-Z)
     { name: "Afghanistan", flag: "🇦🇫", code: "af", timezone: "Asia/Kabul" },
     { name: "Albania", flag: "🇦🇱", code: "al", timezone: "Europe/Tirane" },
@@ -115,7 +111,6 @@ const COUNTRY_LIST: { name: string; flag: string; code: string; timezone: string
     { name: "Venezuela", flag: "🇻🇪", code: "ve", timezone: "America/Caracas" },
     { name: "Vietnam", flag: "🇻🇳", code: "vn", timezone: "Asia/Ho_Chi_Minh" },
 ];
-
 // --- Types ---
 type CountryInfo = {
     name: string;
@@ -127,7 +122,6 @@ type CountryInfo = {
     offsetStr: string; // e.g. "UTC+5:30"
     label: string; // Full label for search: "🇮🇳 India (UTC+5:30)"
 };
-
 const Flag = ({ code, className }: { code: string; className?: string }) => (
     <div className={cn("inline-flex items-center justify-center shrink-0 overflow-hidden rounded-[2px] shadow-sm ring-1 ring-slate-200/50", className)}>
         <img
@@ -137,23 +131,18 @@ const Flag = ({ code, className }: { code: string; className?: string }) => (
         />
     </div>
 );
-
 // --- Helpers ---
-
 // Compute offsets for all countries
 const getCountries = (): CountryInfo[] => {
     const now = new Date();
-
     return COUNTRY_LIST.map(c => {
         const tzDate = new Date(now.toLocaleString("en-US", { timeZone: c.timezone }));
         const utcDate = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
         const offsetMinutes = (tzDate.getTime() - utcDate.getTime()) / 60000;
-
         const h = Math.floor(Math.abs(offsetMinutes) / 60);
         const m = Math.abs(offsetMinutes) % 60;
         const sign = offsetMinutes >= 0 ? "+" : "-";
         const offsetStr = `UTC${sign}${h}${m ? ":" + m : ""}`;
-
         return {
             name: c.name,
             flag: c.flag,
@@ -166,62 +155,48 @@ const getCountries = (): CountryInfo[] => {
         };
     });
 };
-
 const formatTime = (minutesSinceMidnight: number) => {
     let h = Math.floor(minutesSinceMidnight / 60) % 24;
     let m = Math.floor(minutesSinceMidnight % 60);
     if (h < 0) h += 24;
-
     const ampm = h >= 12 ? "PM" : "AM";
     const displayH = h % 12 || 12;
     const displayM = m.toString().padStart(2, "0");
-
     return `${displayH}:${displayM} ${ampm}`;
 };
-
 const getTimeOfDayStatus = (hour: number) => {
     if (hour >= 9 && hour < 17) return { label: "Business Hours", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Sun };
     if (hour >= 6 && hour < 9) return { label: "Morning", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-100", icon: Sun };
     if (hour >= 17 && hour < 22) return { label: "Evening", color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-100", icon: Moon };
     return { label: "Off Hours", color: "text-slate-500", bg: "bg-slate-50", border: "border-slate-200", icon: Moon };
 };
-
 export function TimeZonePlanner() {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
     const [baseTime, setBaseTime] = useState("09:00");
-
     // Find initial country from browser timezone
     const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const initialCountry = COUNTRY_LIST.find(c => c.timezone === browserTz);
     const [baseTimezone, setBaseTimezone] = useState(initialCountry?.timezone || "Asia/Kolkata");
     const [compareTimezones, setCompareTimezones] = useState<string[]>(["Europe/London", "Asia/Tokyo", "America/New_York"]);
     const [activeCompareIndex, setActiveCompareIndex] = useState(0);
-
     const [countries, setCountries] = useState<CountryInfo[]>([]);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
     useEffect(() => {
         setCountries(getCountries());
     }, []);
-
     const baseCountry = useMemo(() => countries.find((c: CountryInfo) => c.timezone === baseTimezone), [countries, baseTimezone]);
-
     const calculateTargetTime = (targetTimezone: string) => {
         if (!baseCountry) return null;
         const targetCountry = countries.find((c: CountryInfo) => c.timezone === targetTimezone);
         if (!targetCountry) return null;
-
         const [h, m] = baseTime.split(":").map(Number);
         const baseTotalMinutes = h * 60 + m;
-
         // Offset difference
         const diff = targetCountry.offset - baseCountry.offset;
         const targetTotalMinutes = baseTotalMinutes + diff;
-
         // Day offset
         let dayOffset = 0;
         let normalizedMinutes = targetTotalMinutes;
-
         if (targetTotalMinutes >= 1440) {
             dayOffset = 1;
             normalizedMinutes = targetTotalMinutes % 1440;
@@ -229,10 +204,8 @@ export function TimeZonePlanner() {
             dayOffset = -1;
             normalizedMinutes = 1440 + (targetTotalMinutes % 1440);
         }
-
         const targetHour = (Math.floor(normalizedMinutes / 60)) % 24;
         const status = getTimeOfDayStatus(targetHour);
-
         return {
             time: formatTime(normalizedMinutes),
             dayOffset,
@@ -240,18 +213,15 @@ export function TimeZonePlanner() {
             country: targetCountry
         };
     };
-
     const addCountry = (timezone: string) => {
         if (!compareTimezones.includes(timezone) && timezone !== baseTimezone) {
             setCompareTimezones((prev: string[]) => [...prev, timezone]);
         }
         setIsMenuOpen(false);
     };
-
     const removeCountry = (timezone: string) => {
         setCompareTimezones((prev: string[]) => prev.filter((tz: string) => tz !== timezone));
     };
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4">
             <div className="space-y-8">
@@ -263,7 +233,6 @@ export function TimeZonePlanner() {
                     />
                     <CardContent className="p-8">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
                             {/* Date Picker */}
                             <div className="space-y-3">
                                 <Label className="text-[13px] font-bold text-slate-600 flex items-center gap-2 mb-2 px-1">
@@ -282,7 +251,6 @@ export function TimeZonePlanner() {
                                     </div>
                                 </div>
                             </div>
-
                             {/* Base Time */}
                             <div className="space-y-3">
                                 <Label className="text-[13px] font-bold text-slate-600 flex items-center gap-2 mb-2 px-1">
@@ -301,7 +269,6 @@ export function TimeZonePlanner() {
                                     </div>
                                 </div>
                             </div>
-
                             {/* My Location - Country Dropdown */}
                             <div className="space-y-3">
                                 <Label className="text-[13px] font-bold text-slate-600 flex items-center gap-2 mb-2 px-1">
@@ -366,7 +333,6 @@ export function TimeZonePlanner() {
                                 </Popover>
                             </div>
                         </div>
-
                         {/* Add Country Search Bar */}
                         <div className="mt-8 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
                             <div className="flex items-center gap-2 text-slate-400 font-medium text-sm italic">
@@ -426,8 +392,6 @@ export function TimeZonePlanner() {
                         </div>
                     </CardContent>
                 </Card>
-
-
                 {/* Attendee Grid */}
                 <div className="space-y-6">
                     <div className="flex items-center justify-between">
@@ -448,14 +412,11 @@ export function TimeZonePlanner() {
                             </Button>
                         )}
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {compareTimezones.map((tz: string) => {
                             const result = calculateTargetTime(tz);
                             if (!result) return null;
-
                             const StatusIcon = result.status.icon as ElementType;
-
                             return (
                                 <FadeIn key={tz}>
                                     <ResultFeedbackCard
@@ -499,7 +460,6 @@ export function TimeZonePlanner() {
                                                         </span>
                                                     )}
                                                 </div>
-
                                                 <div className="flex items-center justify-between pt-4 opacity-60">
                                                     <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
                                                         <Globe className="h-3.5 w-3.5 opacity-40 text-blue-500" />
@@ -528,4 +488,4 @@ export function TimeZonePlanner() {
             </div>
         </FadeIn>
     );
-}
+}

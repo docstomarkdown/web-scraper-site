@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { Calculator, Target, TrendingDown } from "lucide-react"
-
 export function CPAGuide() {
     return (
         <ToolGuide
@@ -59,4 +57,4 @@ export function CPAGuide() {
             ]}
         />
     )
-}
+}

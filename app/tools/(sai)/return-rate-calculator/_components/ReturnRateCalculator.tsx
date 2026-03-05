@@ -1,41 +1,33 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Package, RotateCcw, AlertTriangle, DollarSign, Calculator } from "lucide-react";
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-
 export function ReturnRateCalculator() {
     const [currency, setCurrency] = useState("USD");
     const [unitsSold, setUnitsSold] = useState<number | "">("")
     const [unitsReturned, setUnitsReturned] = useState<number | "">("")
-
     // New Financial Inputs
     const [sellingPrice, setSellingPrice] = useState<number | "">("")
     const [returnCost, setReturnCost] = useState<number | "">("")
-
     const [returnRate, setReturnRate] = useState<number>(0);
     const [lostRevenue, setLostRevenue] = useState<number>(0);
     const [totalReturnCost, setTotalReturnCost] = useState<number>(0);
     const [profitLeakage, setProfitLeakage] = useState<number>(0);
-
     const val = (v: number | "") => (v === "" ? 0 : v);
     const sold = val(unitsSold);
     const returned = val(unitsReturned);
     const price = val(sellingPrice);
     const cost = val(returnCost);
-
     useEffect(() => {
         if (sold > 0) {
             const calculatedRate = (returned / sold) * 100;
             setReturnRate(calculatedRate);
-
             // Financial Impact
             const revenueLost = returned * price;
             const processingFees = returned * cost;
-
             setLostRevenue(revenueLost);
             setTotalReturnCost(processingFees);
             setProfitLeakage(revenueLost + processingFees); // Total financial hit (Revenue Lost + Fees)
@@ -49,39 +41,32 @@ export function ReturnRateCalculator() {
             setProfitLeakage(0);
         }
     }, [sold, returned, price, cost]);
-
     const handleReset = () => {
         setUnitsSold("");
         setUnitsReturned("");
         setSellingPrice("");
         setReturnCost("");
     };
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency', currency: currency, maximumFractionDigits: 0
         }).format(val);
     };
-
-
-
     // Determine Status
     let status = "Calculate";
     let statusColor = "text-slate-400";
     let statusBg = "bg-slate-100";
-
     if (sold > 0) {
         if (returnRate < 5) { status = "Excellent"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
         else if (returnRate < 10) { status = "Healthy"; statusColor = "text-blue-600"; statusBg = "bg-blue-100"; }
         else if (returnRate < 15) { status = "Warning"; statusColor = "text-amber-600"; statusBg = "bg-amber-100"; }
         else { status = "High Risk"; statusColor = "text-red-600"; statusBg = "bg-red-100"; }
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
                             description="Enter sales, returns, and item values."
@@ -89,9 +74,9 @@ export function ReturnRateCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-6 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Volume Data */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <Package className="w-4 h-4" />
@@ -113,11 +98,8 @@ export function ReturnRateCalculator() {
                                     tooltip="Total items sent back by customers."
                                 />
                             </div>
-
-                            <Separator />
-
                             {/* Group 2: Financial Impact */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
                                         <DollarSign className="w-4 h-4" />
@@ -141,7 +123,6 @@ export function ReturnRateCalculator() {
                             </div>
                         </CardContent>
                     </Card>
-
                     {/* Logic Highlight */}
                     <FadeIn delay={0.2}>
                         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex gap-4">
@@ -160,9 +141,8 @@ export function ReturnRateCalculator() {
                         </div>
                     </FadeIn>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Return Rate"
                         mainValue={
@@ -180,7 +160,6 @@ export function ReturnRateCalculator() {
                             { label: "Processing Costs", value: formatCurrency(totalReturnCost), color: "text-orange-400" }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {sold > 0 && (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-red-500">
@@ -203,9 +182,8 @@ export function ReturnRateCalculator() {
                             </div>
                         </div>
                     )}
-
                     {/* Insight Card */}
-                    <Card className="border border-slate-200 shadow-sm p-6 space-y-6 bg-white">
+                    <Card className="border border-slate-200 shadow-sm p-6 space-y-3 bg-white">
                         <div className="flex items-center justify-between">
                             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                                 <RotateCcw className="w-5 h-5 text-blue-600" />
@@ -217,8 +195,7 @@ export function ReturnRateCalculator() {
                                 </span>
                             )}
                         </div>
-
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             <InsightItem
                                 label="Total Profit Leakage"
                                 value={formatCurrency(profitLeakage)}
@@ -236,9 +213,6 @@ export function ReturnRateCalculator() {
                                 bg="bg-slate-50"
                             />
                         </div>
-
-                        <Separator />
-
                         <div className="pt-2">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Rate Benchmarks</p>
@@ -252,7 +226,6 @@ export function ReturnRateCalculator() {
                                     </span>
                                 )}
                             </div>
-
                             <div className="relative pt-2 pb-1">
                                 {/* Visual Scale: Green -> Blue -> Red */}
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
@@ -261,7 +234,6 @@ export function ReturnRateCalculator() {
                                     <div className="h-full bg-amber-400" style={{ width: '25%' }} /> {/* < 15% */}
                                     <div className="h-full bg-red-400" style={{ width: '25%' }} /> {/* > 15% */}
                                 </div>
-
                                 {/* Dynamic Pointer */}
                                 {sold > 0 && (
                                     <motion.div
@@ -286,9 +258,6 @@ export function ReturnRateCalculator() {
         </FadeIn>
     );
 }
-
-const Separator = () => <div className="h-px w-full bg-slate-100" />
-
 function InsightItem({ label, value, description, icon: Icon, color, bg }: { label: string, value: string, description: string, icon: any, color: string, bg: string }) {
     return (
         <div className="flex gap-4">
@@ -304,4 +273,4 @@ function InsightItem({ label, value, description, icon: Icon, color, bg }: { lab
             </div>
         </div>
     )
-}
+}

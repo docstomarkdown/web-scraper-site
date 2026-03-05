@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, AlertTriangle, Shirt } from "lucide-react";
-
 // Force rebuild
 export function ReturnRateGuide() {
   return (
@@ -33,4 +31,4 @@ export function ReturnRateGuide() {
       ]}
     />
   );
-}
+}

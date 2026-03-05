@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { ShieldCheck, Activity, Timer, BookOpen } from "lucide-react"
-
 export function DaysOfInventoryGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function DaysOfInventoryGuide() {
             ]}
         />
     )
-}
+}

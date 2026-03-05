@@ -1,11 +1,9 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Package, DollarSign, Ship, Percent } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
-
 export function LandedCostCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [productCost, setProductCost] = useState<number | "">("")
@@ -14,7 +12,6 @@ export function LandedCostCalculator() {
     const [dutyRate, setDutyRate] = useState<number | "">("")
     const [insuranceCost, setInsuranceCost] = useState<number | "">("")
     const [otherFees, setOtherFees] = useState<number | "">("")
-
     const handleReset = () => {
         setProductCost("")
         setUnits("")
@@ -23,9 +20,7 @@ export function LandedCostCalculator() {
         setInsuranceCost("")
         setOtherFees("")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -34,9 +29,6 @@ export function LandedCostCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
-
-
     // Calculations
     const unitCost = val(productCost)
     const unitCount = val(units)
@@ -44,13 +36,11 @@ export function LandedCostCalculator() {
     const duty = val(dutyRate)
     const insurance = val(insuranceCost)
     const fees = val(otherFees)
-
     const totalProductCost = unitCost * unitCount
     const dutyAmount = (totalProductCost * duty) / 100
     const totalLandedCost = totalProductCost + shipping + dutyAmount + insurance + fees
     const landedCostPerUnit = unitCount > 0 ? totalLandedCost / unitCount : 0
     const costUplift = unitCost > 0 ? ((landedCostPerUnit - unitCost) / unitCost) * 100 : 0
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -58,13 +48,11 @@ export function LandedCostCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter product and import cost details."
@@ -73,7 +61,7 @@ export function LandedCostCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Product Cost Per Unit (${symbol})`}
                                 value={productCost}
@@ -127,9 +115,8 @@ export function LandedCostCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     {/* Main Landed Cost Card */}
                     <ResultFeedbackCard
                         title="Landed Cost Per Unit"
@@ -142,7 +129,6 @@ export function LandedCostCalculator() {
                                 : (costUplift > 100 ? "text-red-400" : "text-amber-400")
                         }
                     />
-
                     {/* Cost Breakdown Card */}
                     {unitCount > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -162,14 +148,12 @@ export function LandedCostCalculator() {
                                     <span className="text-sm text-slate-600">Import Taxes & Fees</span>
                                     <span className="text-sm font-semibold text-amber-600">{formatCurrency(dutyAmount + fees)}</span>
                                 </div>
-
                                 {costUplift > 0 && (
                                     <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
                                         <span className="text-sm font-medium text-slate-500">Cost Uplift</span>
                                         <span className="text-sm font-bold text-slate-700">+{costUplift.toFixed(1)}%</span>
                                     </div>
                                 )}
-
                                 <div className="flex justify-between items-center px-5 py-4 bg-blue-50/30">
                                     <span className="text-sm font-bold text-slate-900">Total Landed Investment</span>
                                     <span className={cn("text-base font-bold text-blue-700")}>
@@ -187,6 +171,4 @@ export function LandedCostCalculator() {
             </div>
         </FadeIn>
     )
-}
-
-
+}

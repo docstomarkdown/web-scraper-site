@@ -1,33 +1,25 @@
 // create a  new tool under the folder madhu ------- withput using API .
 // the tool should created in a format with thecomponents  following the tooltemplate
 // Update the contents according to my tool ,it should have the optimized version to the other avialble same tools in the website
-
 // update the components according to the current updation of the tool 
 // 1.How to Use This Tool.
 // 2.The Hidden Truth About This Process
 // 3.Frequently Asked Questions
-
-
 "use client"
-
 import React from "react"
 import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy, Check } from "lucide-react"
 import { FadeIn, ToolFAQ, Counter } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { CTA } from "@/components/sections/CTA"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
 import { Button } from "@/components/ui/button"
-
 export { Counter, FadeIn }
-
 export interface MadhuSubHeaderProps {
     title: string
     icon?: LucideIcon | React.ElementType
     className?: string
     withDot?: boolean
 }
-
 export function MadhuSubHeader({ title, icon: Icon, className, withDot = false }: MadhuSubHeaderProps) {
     return (
         <label className={cn("text-sm font-medium text-slate-700 flex items-center gap-2 mb-4", className)}>
@@ -37,7 +29,6 @@ export function MadhuSubHeader({ title, icon: Icon, className, withDot = false }
         </label>
     )
 }
-
 export interface InputCardHeaderProps {
     title: string
     subtitle?: string
@@ -46,7 +37,6 @@ export interface InputCardHeaderProps {
     scrollId?: string
     tooltip?: string
 }
-
 export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scrollId, tooltip }: InputCardHeaderProps) {
     const handleHelp = () => {
         if (onHelpClick) {
@@ -57,7 +47,6 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
                 const offset = 100 // Adjust this value for desired top spacing
                 const elementPosition = element.getBoundingClientRect().top + window.scrollY
                 const offsetPosition = elementPosition - offset
-
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: "smooth"
@@ -65,9 +54,7 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
             }
         }
     }
-
     const showHelp = !!onHelpClick || !!scrollId
-
     return (
         <div className="px-6 py-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -98,15 +85,13 @@ export function InputCardHeader({ title, subtitle, icon: Icon, onHelpClick, scro
         </div>
     )
 }
-
 interface ActionButtonsProps {
     onReset: () => void
-    onCopy: () => void
+    onCopy?: () => void
     copyDisabled?: boolean
     isCopied?: boolean
     className?: string
 }
-
 export function ActionButtons({ onReset, onCopy, copyDisabled, isCopied, className }: ActionButtonsProps) {
     return (
         <div className={cn("flex gap-3", className)}>
@@ -139,13 +124,11 @@ export function ActionButtons({ onReset, onCopy, copyDisabled, isCopied, classNa
         </div>
     )
 }
-
 export interface Step {
     title: string
     description: string
     icon: LucideIcon | React.ElementType
 }
-
 export interface Insight {
     title: string
     description: string
@@ -157,16 +140,13 @@ export interface Insight {
     statColor: string
     tooltip?: string
 }
-
 export interface FAQ {
     question: string
     answer: string
 }
-
 interface MadhuToolTemplateProps {
     title: string
     toolComponent: React.ReactNode
-
     // How to Use Section
     howToUseTitle?: string
     howToUseSteps: Step[]
@@ -175,15 +155,12 @@ interface MadhuToolTemplateProps {
         description: string
         icon: LucideIcon | React.ElementType
     }
-
     // Hidden Truth Section
     hiddenTruthTitle?: string
     hiddenTruthInsights: Insight[]
-
     // FAQ Section
     faqs: FAQ[]
 }
-
 export function MadhuToolTemplate({
     title,
     toolComponent,
@@ -205,11 +182,9 @@ export function MadhuToolTemplate({
                         </h1>
                     </FadeIn>
                 </div>
-
                 {/* Main Tool Component */}
                 <div className="space-y-24">
                     {toolComponent}
-
                     {/* How to Use Section */}
                     <FadeIn delay={0.1}>
                         <section id="how-to-use" className="relative max-w-4xl mx-auto">
@@ -219,12 +194,10 @@ export function MadhuToolTemplate({
                                 </div>
                                 <h2 className="text-2xl font-bold text-slate-900">{howToUseTitle}</h2>
                             </div>
-
                             <div className="max-w-3xl mx-auto space-y-6">
                                 {howToUseSteps.map((step, index) => {
                                     const Icon = step.icon
                                     const stepNumber = (index + 1).toString().padStart(2, '0')
-
                                     return (
                                         <div key={index} className="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
                                             <div className="flex items-start gap-4 sm:gap-6">
@@ -244,7 +217,6 @@ export function MadhuToolTemplate({
                                         </div>
                                     )
                                 })}
-
                                 {/* Goal Step */}
                                 {howToUseGoal && (
                                     <div className="relative flex items-start gap-4 sm:gap-8 group bg-blue-50/50 p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-sm transition-all duration-300">
@@ -266,7 +238,6 @@ export function MadhuToolTemplate({
                             </div>
                         </section>
                     </FadeIn>
-
                     {/* Hidden Truth Section */}
                     <FadeIn delay={0.2}>
                         <section id="insights" className="max-w-4xl mx-auto">
@@ -276,7 +247,6 @@ export function MadhuToolTemplate({
                                 </div>
                                 <h2 className="text-2xl font-bold text-slate-900">{hiddenTruthTitle}</h2>
                             </div>
-
                             <div className="space-y-6">
                                 {hiddenTruthInsights.map((insight, index) => {
                                     const Icon = insight.icon
@@ -314,7 +284,6 @@ export function MadhuToolTemplate({
                                                         {insight.description}
                                                     </p>
                                                 </div>
-
                                                 {/* Right: Takeaway Stat Panel */}
                                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
@@ -332,12 +301,10 @@ export function MadhuToolTemplate({
                             </div>
                         </section>
                     </FadeIn>
-
                     {/* FAQ Section */}
                     <FadeIn delay={0.2} className="max-w-4xl mx-auto">
                         <ToolFAQ faqs={faqs} />
                     </FadeIn>
-
                     {/* CTA Section */}
                     <FadeIn delay={0.2} className="mt-24 max-w-7xl mx-auto">
                         <CTA />

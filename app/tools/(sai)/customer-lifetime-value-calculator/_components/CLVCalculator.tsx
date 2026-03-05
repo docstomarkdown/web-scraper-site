@@ -1,51 +1,41 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { User, Repeat, Calendar, DollarSign, Percent, TrendingUp, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function CLVCalculator() {
     const [currency, setCurrency] = useState("USD");
-
     // Core Value Drivers
     const [aov, setAov] = useState<number | "">("")
     const [frequency, setFrequency] = useState<number | "">("")
     const [lifespan, setLifespan] = useState<number | "">("")
-
     // Profit & Acquisition
     const [grossMargin, setGrossMargin] = useState<number | "">("")
     const [cac, setCac] = useState<number | "">("")
-
     const [clvRevenue, setClvRevenue] = useState(0);
     const [clvProfit, setClvProfit] = useState(0);
     const [ltvCacRatio, setLtvCacRatio] = useState(0);
     const [annualProfit, setAnnualProfit] = useState(0);
-
     const val = (v: number | "") => (v === "" ? 0 : v);
     const aovVal = val(aov);
     const freqVal = val(frequency);
     const lifespanVal = val(lifespan);
     const marginVal = val(grossMargin);
     const cacVal = val(cac);
-
     useEffect(() => {
         const revenue = aovVal * freqVal * lifespanVal;
         const grossProfit = revenue * (marginVal / 100);
-
         setClvRevenue(revenue);
         setClvProfit(grossProfit - cacVal);
         setAnnualProfit(grossProfit / (lifespanVal || 1));
-
         if (cacVal > 0) {
             setLtvCacRatio(grossProfit / cacVal);
         } else {
             setLtvCacRatio(0);
         }
     }, [aovVal, freqVal, lifespanVal, marginVal, cacVal]);
-
     const handleReset = () => {
         setAov("");
         setFrequency("");
@@ -53,41 +43,30 @@ export function CLVCalculator() {
         setGrossMargin("");
         setCac("");
     };
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency', currency: currency, maximumFractionDigits: 0
         }).format(val);
     };
-
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) element.scrollIntoView({ behavior: 'smooth' });
     };
-
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
-
                             description="Define your customer value and costs."
-
                             onReset={handleReset}
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-6 pt-6">
-
+                        <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Value Drivers */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <User className="w-4 h-4" />
@@ -116,11 +95,8 @@ export function CLVCalculator() {
                                     tooltip="How many years they stay active."
                                 />
                             </div>
-
-                            <div className="h-px w-full bg-slate-100" />
-
                             {/* Group 2: Unit Economics */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                         <TrendingUp className="w-4 h-4" />
@@ -145,9 +121,8 @@ export function CLVCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Lifetime Profit (LTV)"
                         mainValue={
@@ -168,7 +143,6 @@ export function CLVCalculator() {
                             }
                         ] : []}
                     />
-
                     {/* Breakdown Card */}
                     {clvRevenue > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -188,14 +162,12 @@ export function CLVCalculator() {
                                     <span className="text-sm text-slate-600">Acquisition Cost (CAC)</span>
                                     <span className="text-sm font-semibold text-red-600">-{formatCurrency(cacVal)}</span>
                                 </div>
-
                                 {annualProfit > 0 && (
                                     <div className="flex justify-between items-center px-5 py-3.5 bg-slate-50/50">
                                         <span className="text-sm font-medium text-slate-500">Annual Profit Contribution</span>
                                         <span className="text-sm font-bold text-slate-700">{formatCurrency(annualProfit)}</span>
                                     </div>
                                 )}
-
                                 <div className="flex justify-between items-center px-5 py-4 bg-blue-50/30">
                                     <span className="text-sm font-bold text-slate-900">Net Lifetime Profit</span>
                                     <span className={cn("text-base font-bold text-blue-600")}>
@@ -213,4 +185,4 @@ export function CLVCalculator() {
             </div>
         </FadeIn>
     );
-}
+}

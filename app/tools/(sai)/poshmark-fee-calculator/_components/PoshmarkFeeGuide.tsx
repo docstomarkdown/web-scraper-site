@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { ShoppingBag, Truck, DollarSign } from "lucide-react"
-
 export function PoshmarkFeeGuide() {
     return (
         <ToolGuide
@@ -39,4 +37,4 @@ export function PoshmarkFeeGuide() {
             ]}
         />
     )
-}
+}

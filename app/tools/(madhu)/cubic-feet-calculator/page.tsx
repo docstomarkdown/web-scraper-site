@@ -4,37 +4,31 @@ import { CubicFeetCalculator } from "./_components/CubicFeetCalculator"
 import { CubicFeetHowToUse } from "./_components/CubicFeetHowToUse"
 import { CubicFeetGuide } from "./_components/CubicFeetGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: "Cubic Feet Calculator - Freight & Storage Cost Estimator",
     description: "Calculate cubic feet (CFT) from dimensions for freight and storage cost estimation. Support for Inches, Feet, CM, and Meters with instant shipping volume calculations.",
 }
-
 export default function CubicFeetCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Cubic Feet Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <CubicFeetCalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <CubicFeetHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <CubicFeetGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -61,7 +55,6 @@ export default function CubicFeetCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -69,4 +62,4 @@ export default function CubicFeetCalculatorPage() {
             </div>
         </div>
     )
-}
+}

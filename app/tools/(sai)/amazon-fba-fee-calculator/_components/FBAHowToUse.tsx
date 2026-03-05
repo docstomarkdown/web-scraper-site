@@ -1,29 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Scale, Package, Banknote } from "lucide-react"
-
 export function FBAHowToUse() {
     return (
         <ToolSteps
-
             steps={[
                 {
-                    title: "Measure Your Product",
-                    description: "Enter how big and heavy your package is. Amazon's fees change based on the size of the box, so accurate numbers are important.",
+                    title: "Item Setup",
+                    description: "Enter physical product weight, box dimensions, and base retail price.",
                     icon: Scale
                 },
                 {
-                    title: "Set Your Selling Price",
-                    description: "Enter the price you want to sell your item for. This helps calculate Amazon's commission (the fee they take for every sale).",
+                    title: "Set Category",
+                    description: "Choose the accurate Amazon storefront category to parse referral rules.",
                     icon: Banknote
                 },
                 {
-                    title: "See Your Total Fees",
-                    description: "Look at the results to see exactly what Amazon will charge you. This tells you how much money you will keep after paying Amazon.",
+                    title: "Check Fees",
+                    description: "Instantly reveal your pick rates, referral costs, and final net profit.",
                     icon: Package
                 }
             ]}
         />
     )
-}
+}

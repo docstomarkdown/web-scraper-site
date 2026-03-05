@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { ShoppingCart, Percent, DollarSign, Truck } from "lucide-react"
-
 export function EbayFeeGuide() {
     return (
         <ToolGuide
@@ -35,5 +33,4 @@ export function EbayFeeGuide() {
             ]}
         />
     )
-}
-
+}

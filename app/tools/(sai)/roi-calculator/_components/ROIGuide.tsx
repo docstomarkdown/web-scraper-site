@@ -1,9 +1,7 @@
 "use client"
-
 import { BookOpen, CircleDollarSign, TrendingUp, Percent, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { ToolSectionHeader } from "@/app/tools/_shared/components"
-
 const insights = [
     {
         icon: CircleDollarSign,
@@ -50,13 +48,10 @@ const insights = [
         tooltip: "The real money you take home after all costs."
     }
 ]
-
 export function ROIGuide() {
     return (
         <section id="roi-guide">
-
             <ToolSectionHeader icon={BookOpen} title="Understanding Return on Investment (ROI)" />
-
             <div className="space-y-6">
                 {insights.map((insight, index) => {
                     const Icon = insight.icon
@@ -94,7 +89,6 @@ export function ROIGuide() {
                                         {insight.description}
                                     </p>
                                 </div>
-
                                 {/* Right: Takeaway Stat Panel */}
                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
@@ -112,4 +106,4 @@ export function ROIGuide() {
             </div>
         </section>
     )
-}
+}

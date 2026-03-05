@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,23 +7,18 @@ import { HelpCircle, Info, TrendingUp, DollarSign, Percent, ArrowRightLeft, Targ
 import { ActionButtons, InputCardHeader } from "../../ToolTemplate"
 import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
-
 export function GrossMarginCalculator() {
     // Calculator Mode State
     // "margin": Calculate Margin % & Profit (Given Revenue, COGS)
     // "revenue": Calculate Revenue Needed (Given COGS, Target Margin)
     // "cogs": Calculate COGS Limit (Given Revenue, Target Margin)
     const [mode, setMode] = useState<"margin" | "revenue" | "cogs">("margin")
-
     const [currency, setCurrency] = useState("USD")
-
     // Inputs (stored as strings to allow empty states)
     const [revenue, setRevenue] = useState<number | "">("")
     const [cogs, setCogs] = useState<number | "">("")
     const [targetMargin, setTargetMargin] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -33,20 +27,17 @@ export function GrossMarginCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
     const handleReset = () => {
         setRevenue("")
         setCogs("")
         setTargetMargin("")
     }
-
     // Calculations based on Mode
     let derivedMargin = 0
     let derivedProfit = 0
     let derivedRevenue = 0
     let derivedCogs = 0
     let derivedMarkup = 0
-
     // Mode Logic
     if (mode === "margin") {
         const r = val(revenue)
@@ -80,18 +71,6 @@ export function GrossMarginCalculator() {
         derivedMargin = m
         derivedMarkup = derivedCogs > 0 ? (derivedProfit / derivedCogs) * 100 : 0
     }
-
-    const [isCopied, setIsCopied] = useState(false)
-
-    const handleCopy = () => {
-        const text = `Gross Margin Calculator Results:\n\nMode: ${mode === 'margin' ? 'Find Margin' : (mode === 'revenue' ? 'Find Revenue' : 'Find COGS')}\nRevenue: ${formatCurrency(derivedRevenue)}\nCOGS: ${formatCurrency(derivedCogs)}\n\nGross Margin: ${derivedMargin.toFixed(2)}%\nGross Profit: ${formatCurrency(derivedProfit)}\nMarkup: ${derivedMarkup.toFixed(2)}%`
-
-        navigator.clipboard.writeText(text).then(() => {
-            setIsCopied(true)
-            setTimeout(() => setIsCopied(false), 2000)
-        })
-    }
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -99,13 +78,11 @@ export function GrossMarginCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Left Column: Inputs & Mode Selection */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
                         <div className="flex flex-row items-center justify-between border-b border-slate-100 pr-6">
                             <InputCardHeader
@@ -120,9 +97,7 @@ export function GrossMarginCalculator() {
                                 </div>
                             </div>
                         </div>
-
                         <CardContent className="p-6 md:p-8 space-y-8">
-
                             {/* Calculation Mode Selector - Enhanced Design */}
                             <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200/60">
                                 <ModeButton
@@ -144,9 +119,8 @@ export function GrossMarginCalculator() {
                                     label="Find COGS Cost"
                                 />
                             </div>
-
                             {/* Dynamic Inputs based on Mode */}
-                            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                 {mode === "margin" && (
                                     <>
                                         <CalculatorInput
@@ -165,7 +139,6 @@ export function GrossMarginCalculator() {
                                         />
                                     </>
                                 )}
-
                                 {mode === "revenue" && (
                                     <>
                                         <CalculatorInput
@@ -185,7 +158,6 @@ export function GrossMarginCalculator() {
                                         />
                                     </>
                                 )}
-
                                 {mode === "cogs" && (
                                     <>
                                         <CalculatorInput
@@ -206,19 +178,14 @@ export function GrossMarginCalculator() {
                                     </>
                                 )}
                             </div>
-
                             <ActionButtons
                                 onReset={handleReset}
-                                onCopy={handleCopy}
-                                isCopied={isCopied}
                             />
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32 animate-in fade-in slide-in-from-right-4 duration-700 delay-100">
-
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-32 animate-in fade-in slide-in-from-right-4 duration-700 delay-100">
                     {/* Primary Result Card */}
                     <ResultFeedbackCard
                         title={mode === "margin" ? "GROSS MARGIN" : (mode === "revenue" ? "REQUIRED REVENUE" : "MAX COGS LIMIT")}
@@ -240,7 +207,7 @@ export function GrossMarginCalculator() {
                             </div>
                         }
                     >
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             {/* Secondary Metrics Grid */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
@@ -282,9 +249,6 @@ export function GrossMarginCalculator() {
                             </div>
                         </div>
                     </ResultFeedbackCard>
-
-
-
                     {/* Visual Breakdown Bar */}
                     <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-5">
                         <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
@@ -299,7 +263,6 @@ export function GrossMarginCalculator() {
                             >
                                 {derivedRevenue > 0 && (derivedCogs / derivedRevenue) > 0.1 && "COGS"}
                             </div>
-
                             {/* Profit Part */}
                             <div
                                 style={{ width: `${Math.min(Math.max((derivedProfit / derivedRevenue) * 100, 0), 100)}%` }}
@@ -308,7 +271,7 @@ export function GrossMarginCalculator() {
                                 {derivedRevenue > 0 && (derivedProfit / derivedRevenue) > 0.1 && "PROFIT"}
                             </div>
                         </div>
-                        <div className="flex items-center justify-start gap-6 mt-2 text-xs text-slate-500 font-medium px-1">
+                        <div className="flex items-center justify-start gap-4 mt-2 text-xs text-slate-500 font-medium px-1">
                             <div className="flex items-center gap-1.5">
                                 <div className="w-2 h-2 rounded-full bg-slate-400"></div>
                                 Cost: {derivedRevenue > 0 ? ((derivedCogs / derivedRevenue) * 100).toFixed(1) : 0}%
@@ -319,13 +282,11 @@ export function GrossMarginCalculator() {
                             </div>
                         </div>
                     </Card>
-
                 </div>
             </div>
         </FadeIn >
     )
 }
-
 // Sub-component for Mode Buttons
 function ModeButton({ active, onClick, icon: Icon, label }: { active: boolean, onClick: () => void, icon: any, label: string }) {
     return (
@@ -342,6 +303,4 @@ function ModeButton({ active, onClick, icon: Icon, label }: { active: boolean, o
             <span className="text-[11px] font-bold tracking-tight">{label}</span>
         </button>
     )
-}
-
-
+}

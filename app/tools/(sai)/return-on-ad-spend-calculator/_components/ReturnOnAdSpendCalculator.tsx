@@ -1,33 +1,25 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingUp, DollarSign, Percent, BarChart3, AlertCircle } from "lucide-react"
 import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
-
 export function ReturnOnAdSpendCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [mode, setMode] = useState<"calculate-roas" | "calculate-revenue">("calculate-roas")
-
     // Common Input
     const [adSpend, setAdSpend] = useState<number | "">("")
-
     // Mode: Calculate ROAS (Standard)
     const [revenueFromAds, setRevenueFromAds] = useState<number | "">("")
-
     // Mode: Calculate Revenue (Planning)
     const [targetROAS, setTargetROAS] = useState<number | "">("")
-
     const handleReset = () => {
         setAdSpend("")
         setRevenueFromAds("")
         setTargetROAS("")
         setMode("calculate-roas")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -36,23 +28,17 @@ export function ReturnOnAdSpendCalculator() {
         EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
     }
     const symbol = currencySymbols[currency] || "$"
-
-
-
     // --- Calculations ---
     const spend = val(adSpend)
-
     // Standard Mode Results
     const revenue = val(revenueFromAds)
     const roas = spend > 0 ? revenue / spend : 0
     const roasPercent = roas * 100
     const profit = revenue - spend
-
     // Planning Mode Results
     const targetRoasVal = val(targetROAS)
     const calculatedRevenue = spend * targetRoasVal
     const plannedProfit = calculatedRevenue - spend
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -60,33 +46,26 @@ export function ReturnOnAdSpendCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     // Determine ROAS health (shared logic)
     const getROASHealth = (roasValue: number, hasInput: boolean) => {
         if (!hasInput) {
             return { color: "text-slate-400", bg: "bg-slate-800", label: "---" }
         }
-
         let label = "High Performance"
         if (roasValue < 1) label = "Loss Making"
         else if (roasValue < 2) label = "Break Even / Low Profit"
         else if (roasValue < 4) label = "Profitable"
-
         let color = "text-blue-400"
         if (roasValue < 1) color = "text-red-400"
         else if (roasValue < 2) color = "text-amber-400"
-
         return { color, bg: "bg-slate-900", label }
     }
-
     const currentHealth = mode === "calculate-roas" ? getROASHealth(roas, spend > 0) : getROASHealth(targetRoasVal, targetRoasVal > 0)
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter your ad spend details."
@@ -95,8 +74,7 @@ export function ReturnOnAdSpendCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="space-y-5 pt-6">
-
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Total Ad Spend (${symbol})`}
                                 value={adSpend}
@@ -105,7 +83,6 @@ export function ReturnOnAdSpendCalculator() {
                                 max={1000000}
                                 tooltip="The total amount spent on advertising campaigns."
                             />
-
                             {/* Simplified Input Mode Selection via Tabs or just stacked inputs? 
                                 User asked to "Simplify revenue input". The previous toggle was "Do you know your revenue? Yes/No".
                                 "Yes" -> Show Revenue Input. "No" -> Show Target ROAS Input.
@@ -114,8 +91,7 @@ export function ReturnOnAdSpendCalculator() {
                                 But the tool has two distinct modes: "Calculate ROAS" (backward looking) and "Calculate Revenue Needed" (forward looking).
                                 I will switch to a Tabs-like approach or a simple dropdown for "Goal", which is cleaner than a "Do you know...?" question.
                             */}
-
-                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-4">
+                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
                                 <label className="text-sm font-medium text-slate-700 block">I want to calculate:</label>
                                 <div className="grid grid-cols-2 gap-2">
                                     <button
@@ -137,7 +113,6 @@ export function ReturnOnAdSpendCalculator() {
                                         Revenue Goal
                                     </button>
                                 </div>
-
                                 {mode === "calculate-roas" ? (
                                     <div className="pt-2">
                                         <CalculatorInput
@@ -166,9 +141,8 @@ export function ReturnOnAdSpendCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     {/* Main Card */}
                     <ResultFeedbackCard
                         title={mode === "calculate-roas" ? "Return on Ad Spend (ROAS)" : "Target Revenue Required"}
@@ -194,7 +168,6 @@ export function ReturnOnAdSpendCalculator() {
                             }
                         ]}
                     />
-
                     {/* Performance Breakdown Card */}
                     {spend > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -223,13 +196,8 @@ export function ReturnOnAdSpendCalculator() {
                             <p className="text-sm text-slate-400">Enter ad spend details to calculate performance.</p>
                         </div>
                     )}
-
-
-
                 </div>
             </div>
         </FadeIn>
     )
-}
-
-
+}

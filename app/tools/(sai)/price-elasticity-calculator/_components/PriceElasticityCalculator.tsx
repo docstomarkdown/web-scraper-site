@@ -1,12 +1,10 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { RefreshCw, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function PriceElasticityCalculator() {
     const [currency, setCurrency] = useState("USD")
     const [initialPrice, setInitialPrice] = useState<number | "">("")
@@ -19,9 +17,7 @@ export function PriceElasticityCalculator() {
         setInitialQuantity("")
         setFinalQuantity("")
     }
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -29,24 +25,19 @@ export function PriceElasticityCalculator() {
             maximumFractionDigits: 0
         }).format(val)
     }
-
     // --- Calculations ---
     const p1 = val(initialPrice)
     const p2 = val(finalPrice)
     const q1 = val(initialQuantity)
     const q2 = val(finalQuantity)
-
     const percentChangePrice = p1 > 0 ? ((p2 - p1) / p1) : 0
     const percentChangeQuantity = q1 > 0 ? ((q2 - q1) / q1) : 0
-
     const ped = percentChangePrice !== 0 ? (percentChangeQuantity / percentChangePrice) : 0
     const absolutePed = Math.abs(ped)
-
     let elasticityType = "Unitary Elastic"
     let elasticityColor = "text-blue-400"
     let elasticityBg = "bg-blue-500/10"
     let elasticityDescription = "Demand changes proportionally to price."
-
     if (absolutePed > 1) {
         elasticityType = "Elastic Demand"
         elasticityColor = "text-orange-400"
@@ -63,34 +54,28 @@ export function PriceElasticityCalculator() {
         elasticityBg = "bg-slate-500/10"
         elasticityDescription = "Demand does not change with price."
     }
-
     const initialRevenue = p1 * q1
     const finalRevenue = p2 * q2
     const revenueChange = finalRevenue - initialRevenue
     const revenueChangePercent = initialRevenue > 0 ? (revenueChange / initialRevenue) * 100 : 0
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter price and quantity changes."
-
                             onReset={handleReset}
-
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Starting Position */}
                             <div className="space-y-3">
                                 <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                                     <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-bold">1</span>
                                     Starting Position
                                 </h3>
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Initial Price"
                                         value={initialPrice}
@@ -107,16 +92,14 @@ export function PriceElasticityCalculator() {
                                     />
                                 </div>
                             </div>
-
                             <Separator className="my-2" />
-
                             {/* Group 2: New Scenario */}
                             <div className="space-y-3">
                                 <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                                     <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">2</span>
                                     New Scenario
                                 </h3>
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Final Price"
                                         value={finalPrice}
@@ -133,9 +116,7 @@ export function PriceElasticityCalculator() {
                                     />
                                 </div>
                             </div>
-
                             <Separator className="my-2" />
-
                             {/* Quick Stats */}
                             <div className="grid grid-cols-2 gap-4 pt-2">
                                 <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -150,9 +131,8 @@ export function PriceElasticityCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Price Elasticity of Demand (PED)"
                         titleLabel="Score"
@@ -189,7 +169,6 @@ export function PriceElasticityCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
                         <div className="px-5 py-3.5 border-b border-slate-100">
@@ -216,7 +195,6 @@ export function PriceElasticityCalculator() {
                             </div>
                         </div>
                     </div>
-
                     {/* Interpretation Card */}
                     <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         {/* Elasticity Visual Scale */}
@@ -241,7 +219,6 @@ export function PriceElasticityCalculator() {
                                 <span>3+</span>
                             </div>
                         </div>
-
                         <div className="p-6 pt-2">
                             <div className="flex items-start gap-4">
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${elasticityBg}`}>
@@ -256,7 +233,6 @@ export function PriceElasticityCalculator() {
                                     <p className="text-sm text-slate-600 leading-relaxed mb-4">
                                         {elasticityDescription}
                                     </p>
-
                                     <div className={`text-sm p-4 rounded-xl border ${absolutePed > 1 ? "bg-orange-50 border-orange-100 text-orange-800" : "bg-blue-50 border-blue-100 text-blue-800"}`}>
                                         <div className="flex items-center gap-2 font-bold mb-1">
                                             <ArrowRight className="w-4 h-4" />
@@ -278,7 +254,6 @@ export function PriceElasticityCalculator() {
         </FadeIn>
     )
 }
-
 function ReadOnlyField({ label, value, color = "text-slate-700" }: { label: string, value: string, color?: string }) {
     return (
         <div className="flex items-center justify-between gap-4 py-1">
@@ -286,4 +261,4 @@ function ReadOnlyField({ label, value, color = "text-slate-700" }: { label: stri
             <span className={`text-lg font-bold ${color}`}>{value}</span>
         </div>
     )
-}
+}

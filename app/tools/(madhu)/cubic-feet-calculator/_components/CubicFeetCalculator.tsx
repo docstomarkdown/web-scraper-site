@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect, useMemo } from "react"
 import { RefreshCw, AlertTriangle, Truck, Copy, HelpCircle, Package, Ruler, Layers } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -7,16 +6,13 @@ import { useToast } from "@/hooks/use-toast"
 import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
 import { Card, CardContent } from "@/components/ui/card"
 import { ResultFeedbackCard, Counter, CalculatorInput } from "@/app/tools/_shared/components"
-
 type DimensionUnit = "in" | "ft" | "cm" | "m"
-
 interface DimensionInputs {
     length: string
     width: string
     height: string
     quantity: string
 }
-
 export function CubicFeetCalculator() {
     const { toast } = useToast()
     const [inputs, setInputs] = useState<DimensionInputs>({
@@ -26,19 +22,15 @@ export function CubicFeetCalculator() {
         quantity: ""
     })
     const [unit, setUnit] = useState<DimensionUnit>("in")
-
     const handleInputChange = (field: keyof DimensionInputs, value: string) => {
         setInputs(prev => ({ ...prev, [field]: value }))
     }
-
     const results = useMemo(() => {
         const l = parseFloat(inputs.length || "0")
         const w = parseFloat(inputs.width || "0")
         const h = parseFloat(inputs.height || "0")
         const qty = parseFloat(inputs.quantity || "1") // default 1 for calc only
-
         let volumeInCubicInches = 0
-
         // Convert all to Inches first as base
         switch (unit) {
             case "in":
@@ -54,9 +46,7 @@ export function CubicFeetCalculator() {
                 volumeInCubicInches = (l * 39.3701) * (w * 39.3701) * (h * 39.3701)
                 break
         }
-
         const totalVolumeInches = volumeInCubicInches * qty
-
         return {
             cft: totalVolumeInches / 1728,
             cbm: totalVolumeInches / 61023.7,
@@ -64,19 +54,16 @@ export function CubicFeetCalculator() {
             cm: totalVolumeInches * 16.3871
         }
     }, [inputs, unit])
-
     const logisticsImpact = useMemo(() => {
         if (!inputs.length || !inputs.width || !inputs.height) return null
         const cft = results.cft
         const cbm = results.cbm
-
         let tierName = ""
         let tierRule = ""
         let costRange = ""
         let status = ""
         let statusColor = ""
         let alert = null
-
         if (cft <= 2) {
             tierName = "Small Parcel"
             tierRule = "Fits standard courier limits"
@@ -106,13 +93,10 @@ export function CubicFeetCalculator() {
                 alert = "You are over 1 CBM. Consider sea freight for better rates."
             }
         }
-
         const storageCost = cft * 0.87
         const formattedStorage = cft === 0 ? "$0.00" : `$${storageCost.toFixed(2)} / mo`
-
         return { tierName, tierRule, costRange, status, statusColor, alert, storageCost: formattedStorage }
     }, [results.cft, results.cbm, inputs])
-
     const formatCompact = (val: number, decimals = 3) => {
         const absVal = Math.abs(val)
         if (absVal < 100000) return val.toLocaleString(undefined, { maximumFractionDigits: decimals })
@@ -121,40 +105,18 @@ export function CubicFeetCalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
-    const copyResults = () => {
-        const text = `
-Cubic Feet Calculator Result:
-Dimensions: ${inputs.length}x${inputs.width}x${inputs.height} ${unit}
-Quantity: ${inputs.quantity}
-
-Total Volume:
-${results.cft.toFixed(3)} Cubic Feet (CFT)
-${results.cbm.toFixed(3)} Cubic Meters (CBM)
-${results.inches.toLocaleString()} Cubic Inches
-`.trim()
-
-        navigator.clipboard.writeText(text)
-        toast({
-            title: "Results Copied",
-            description: "Calculation data copied to clipboard.",
-        })
-    }
-
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
             const offset = 120
             const elementPosition = element.getBoundingClientRect().top + window.scrollY
             const offsetPosition = elementPosition - offset
-
             window.scrollTo({
                 top: offsetPosition,
                 behavior: 'smooth'
             })
         }
     }
-
     return (
         <div className="p-8 sm:p-12 max-w-6xl mx-auto">
             <div className="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
@@ -166,7 +128,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                             subtitle="Enter dimensions to calculate total volume."
                             onHelpClick={scrollToGuide}
                         />
-
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
                             {/* Unit Switcher */}
                             <div className="space-y-3">
@@ -192,16 +153,13 @@ ${results.inches.toLocaleString()} Cubic Inches
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="h-px bg-slate-100 w-full" />
-
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <MadhuSubHeader
                                     title={`Dimensions (${unit === 'in' ? 'Inches' : unit === 'ft' ? 'Feet' : unit === 'cm' ? 'Centimeters' : 'Meters'})`}
                                     icon={Package}
                                     className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400"
                                 />
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <CalculatorInput
                                         label="Length"
                                         value={inputs.length}
@@ -223,9 +181,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                                         placeholder="8"
                                         suffix={unit}
                                     />
-
-                                    <div className="h-px bg-slate-100 w-full my-2" />
-
                                     <div className="pt-2">
                                         <MadhuSubHeader title="Total Quantity" icon={Layers} className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400" />
                                         <CalculatorInput
@@ -237,20 +192,16 @@ ${results.inches.toLocaleString()} Cubic Inches
                                     </div>
                                 </div>
                             </div>
-
                             <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={() => setInputs({ length: "", width: "", height: "", quantity: "" })}
-                                    onCopy={copyResults}
-                                    copyDisabled={!inputs.length || !inputs.width || !inputs.height}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 flex flex-col space-y-6 h-full">
+                <div className="lg:col-span-5 flex flex-col space-y-3 h-full">
                     {/* Primary Result Card */}
                     <ResultFeedbackCard
                         title="TOTAL VOLUME"
@@ -304,7 +255,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                             </div>
                         </div>
                     </ResultFeedbackCard>
-
                     {/* Logistics Analysis Card */}
                     <div className="space-y-2 flex-1 flex flex-col">
                         <div className="flex items-center gap-2 mb-2">
@@ -313,12 +263,11 @@ ${results.inches.toLocaleString()} Cubic Inches
                             </div>
                             <h3 className="text-lg font-bold text-slate-900 font-sans">Freight & Logistics Analysis</h3>
                         </div>
-
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-3 relative overflow-hidden group flex-1 flex flex-col">
                             {logisticsImpact ? (
                                 <>
                                     {/* 1. Calculated Tier Section */}
-                                    <div className="space-y-4 pt-2">
+                                    <div className="space-y-3 pt-2">
                                         <div className="space-y-1">
                                             <div className="flex items-center justify-between">
                                                 <span className="text-xs sm:text-[13px] font-medium text-slate-400 tracking-wide">Calculated tier</span>
@@ -331,10 +280,7 @@ ${results.inches.toLocaleString()} Cubic Inches
                                             </h4>
                                         </div>
                                     </div>
-
-                                    <div className="flex-1 flex flex-col space-y-4">
-                                        <div className="h-px bg-slate-100 w-full" />
-
+                                    <div className="flex-1 flex flex-col space-y-3">
                                         {/* 2. Costs Row */}
                                         <div className="grid grid-cols-2 gap-x-6 pb-1">
                                             <div className="space-y-1">
@@ -350,7 +296,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                                                 </div>
                                             </div>
                                         </div>
-
                                         {logisticsImpact.alert && (
                                             <div className="mt-auto pt-2">
                                                 <div className="flex gap-3 bg-amber-50 p-3 rounded-xl border border-amber-100 text-amber-800 text-sm font-semibold items-center">
@@ -365,7 +310,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                                 <>
                                     {/* Ghost Content Background */}
                                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]" />
-
                                     <div className="relative z-0 space-y-8 blur-[1px] opacity-[0.08] select-none pointer-events-none">
                                         <div className="space-y-3">
                                             <div className="h-3 w-16 bg-slate-400 rounded-full" />
@@ -379,7 +323,6 @@ ${results.inches.toLocaleString()} Cubic Inches
                                             <div className="h-3 w-44 bg-slate-300 rounded-md" />
                                         </div>
                                     </div>
-
                                     {/* Floating Insight Card */}
                                     <div className="absolute inset-0 flex items-center justify-center p-6 bg-white/20 backdrop-blur-[0.5px]">
                                         <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
@@ -402,4 +345,4 @@ ${results.inches.toLocaleString()} Cubic Inches
             </div>
         </div>
     )
-}
+}

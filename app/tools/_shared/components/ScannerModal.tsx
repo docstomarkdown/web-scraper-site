@@ -6,14 +6,12 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-
 interface ScannerModalProps {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     error: string | null
     readerId?: string
 }
-
 export function ScannerModal({ isOpen, onOpenChange, error, readerId = "reader" }: ScannerModalProps) {
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -29,4 +27,4 @@ export function ScannerModal({ isOpen, onOpenChange, error, readerId = "reader" 
             </DialogContent>
         </Dialog>
     )
-}
+}

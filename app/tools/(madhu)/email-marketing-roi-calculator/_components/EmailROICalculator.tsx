@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from "react"
 import { ActionButtons } from "../../ToolTemplate"
 import {
@@ -9,13 +8,11 @@ import {
     CalculatorCardHeader,
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Target } from "lucide-react"
+import { Users, MousePointerClick } from "lucide-react"
 import { CampaignResults } from "./CampaignResults"
-
 export function EmailROICalculator() {
     // Currency
     const [currency, setCurrency] = useState("USD")
-
     // Inputs — pre-filled with realistic industry benchmark defaults
     const [listSize, setListSize] = useState<number | "">("")
     const [campaignCost, setCampaignCost] = useState<number | "">("")
@@ -23,9 +20,7 @@ export function EmailROICalculator() {
     const [clickThroughRate, setClickThroughRate] = useState<number | "">(2.5)   // CTR on opens
     const [conversionRate, setConversionRate] = useState<number | "">(3)          // post-click conversion
     const [averageOrderValue, setAverageOrderValue] = useState<number | "">(50)    // avg order value
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const handleReset = () => {
         setListSize("")
         setCampaignCost("")
@@ -35,7 +30,6 @@ export function EmailROICalculator() {
         setConversionRate(3)
         setAverageOrderValue(50)
     }
-
     // Core Calculations — full funnel: subscribers → opens → clicks → conversions
     const size = val(listSize)
     const cost = val(campaignCost)
@@ -43,7 +37,6 @@ export function EmailROICalculator() {
     const ctrPct = val(clickThroughRate)
     const convPct = val(conversionRate)
     const aov = val(averageOrderValue)
-
     const opens = Math.round(size * (openPct / 100))
     const clicks = Math.round(opens * (ctrPct / 100))
     const conversions = Math.round(clicks * (convPct / 100))
@@ -51,9 +44,7 @@ export function EmailROICalculator() {
     const netProfit = revenue - cost
     const roi = cost > 0 ? (netProfit / cost) * 100 : 0
     const cpa = conversions > 0 ? cost / conversions : 0
-
     const isCalculated = size > 0 || cost > 0
-
     // Currency formatting
     const formatCurrency = (v: number) =>
         new Intl.NumberFormat("en-US", {
@@ -61,63 +52,31 @@ export function EmailROICalculator() {
             currency: currency,
             maximumFractionDigits: 2,
         }).format(v)
-
     const formatNumber = (v: number) => new Intl.NumberFormat("en-US").format(Math.round(v))
-
-    const [isCopied, setIsCopied] = useState(false)
-
-    const handleCopy = () => {
-        const text =
-            `Email Marketing ROI Results:\n\n` +
-            `Inputs:\n` +
-            `- Number of Subscribers: ${formatNumber(size)}\n` +
-            `- Total Campaign Cost: ${formatCurrency(cost)}\n` +
-            `- Estimated Open Rate: ${openPct}%\n` +
-            `- Email CTR (on Opens): ${ctrPct}%\n` +
-            `- Post-Click Conversion Rate: ${convPct}%\n` +
-            `- Avg Order Value: ${formatCurrency(aov)}\n\n` +
-            `Results:\n` +
-            `- Opens: ${formatNumber(opens)}\n` +
-            `- Clicks: ${formatNumber(clicks)}\n` +
-            `- Conversions: ${formatNumber(conversions)}\n` +
-            `- Revenue: ${formatCurrency(revenue)}\n` +
-            `- ROI: ${roi.toFixed(2)}%\n` +
-            `- Net Profit: ${formatCurrency(netProfit)}\n` +
-            `- CPA: ${formatCurrency(cpa)}`
-
-        navigator.clipboard.writeText(text).then(() => {
-            setIsCopied(true)
-            setTimeout(() => setIsCopied(false), 2000)
-        })
-    }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-
                 {/* ── Left Column: Inputs ── */}
-                <div className="lg:col-span-7 flex flex-col h-full space-y-4">
+                <div className="lg:col-span-7 flex flex-col h-full space-y-3">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-2xl overflow-hidden h-full flex flex-col">
-
                         <CalculatorCardHeader
                             title="Campaign Data"
                             description="Essential metrics for quick ROI calculation."
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-
-                        <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
+                        <CardContent className="p-4 md:p-6 space-y-3 flex-1 flex flex-col">
                             {/* Campaign Setup */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <CalculatorInput
-                                    label="Number of Email Subscribers"
+                                    hideSeparator={true}
+                                  label="Number of Email Subscribers"
                                     value={listSize}
                                     onChange={setListSize}
                                     placeholder="10000"
                                     tooltip="Total number of subscribers who will receive your email campaign."
                                     groupingTitle="Campaign setup"
-                                    groupingIcon={Mail}
-                                    highlight={true}
+                                    groupingIcon={Users}
                                 />
                                 <CalculatorInput
                                     label="Total Campaign Cost"
@@ -128,16 +87,8 @@ export function EmailROICalculator() {
                                     currency={currency}
                                 />
                             </div>
-
-                            <div className="h-px bg-slate-100 w-full" />
-
                             {/* Performance Metrics */}
-                            <div className="space-y-4 relative">
-                                <div className="absolute top-1 right-0 z-10 hidden sm:block">
-                                    <span className="text-[10px] text-slate-400 bg-slate-50 border border-slate-200 rounded-full px-2 py-0.5 font-medium shrink-0">
-                                        Industry benchmarks pre-filled
-                                    </span>
-                                </div>
+                            <div className="space-y-3 relative">
                                 <CalculatorInput
                                     label="Estimated Open Rate"
                                     value={openRate}
@@ -147,7 +98,8 @@ export function EmailROICalculator() {
                                     suffix="%"
                                     hint="Industry standard range: 20% – 25%"
                                     groupingTitle="Email Performance"
-                                    groupingIcon={Target}
+                                    groupingIcon={MousePointerClick}
+                                    benchmarkBadge={true}
                                 />
                                 <CalculatorInput
                                     label="Email CTR (on Opens)"
@@ -177,21 +129,15 @@ export function EmailROICalculator() {
                                     hint="Industry standard range: $50 – $150"
                                 />
                             </div>
-
                             <ActionButtons
                                 onReset={handleReset}
-                                onCopy={handleCopy}
-                                isCopied={isCopied}
-                                copyDisabled={!isCalculated}
                                 className="pt-4"
                             />
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* ── Right Column: Results ── */}
-                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-32">
-
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-32">
                     <ResultSummaryCard
                         title="ROI (Return on Investment)"
                         currency={currency}
@@ -217,7 +163,6 @@ export function EmailROICalculator() {
                             },
                         ]}
                         showLiveBadge={true}
-                        liveBadgeText={isCalculated ? (netProfit >= 0 ? "Profit" : "Loss") : "Awaiting Data"}
                         isCalculated={isCalculated}
                         profitLossKey="netProfit"
                         emptyMessage="Enter your list size and campaign cost to estimate your email ROI."
@@ -227,7 +172,6 @@ export function EmailROICalculator() {
                             neutral: "Your campaign is breaking even. Consider optimizing your conversion path for profit."
                         }}
                     />
-
                     {/* Funnel Breakdown */}
                     <CampaignResults
                         opens={opens}
@@ -244,4 +188,4 @@ export function EmailROICalculator() {
             </div>
         </FadeIn>
     )
-}
+}

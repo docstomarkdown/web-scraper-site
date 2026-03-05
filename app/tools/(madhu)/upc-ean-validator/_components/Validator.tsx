@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -32,15 +31,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
 type BarcodeFormat = "UPC-A" | "EAN-13" | "EAN-8" | "UPC-E" | "Unknown"
-
 interface CalculationStep {
     step: number
     description: string
     value: string
 }
-
 interface ValidationResult {
     isValid: boolean
     format: BarcodeFormat
@@ -50,32 +46,26 @@ interface ValidationResult {
     details: string[]
     calculationSteps: CalculationStep[]
 }
-
 export function Validator() {
     const { toast } = useToast()
     const [inputCode, setInputCode] = useState("")
     const [result, setResult] = useState<ValidationResult | null>(null)
     const [isMounted, setIsMounted] = useState(false)
-
     useEffect(() => {
         setIsMounted(true)
     }, [])
-
     // Memoize the validator function to use in the hook callback
     // We need to implement validateBarcode inside the component or outside?
     // It is inside. We need to be careful with dependencies.
     // Ideally validateBarcode shouldn't depend on state, which it doesn't seems to.
-
     // Check Digit Calculation (GTIN standard)
     const calculateCheckDigit = (digits: string): { checkDigit: number, steps: CalculationStep[] } => {
         const reversed = digits.split('').reverse().map(Number)
         let sum = 0;
         const steps: CalculationStep[] = [];
-
         // Step 1: Sum odd/even positions
         let sumOdd = 0;
         let sumEven = 0;
-
         reversed.forEach((digit, idx) => {
             if (idx % 2 === 0) { // Odd position (from right, 0-indexed) -> multiply by 3
                 sumOdd += digit;
@@ -83,47 +73,37 @@ export function Validator() {
                 sumEven += digit;
             }
         });
-
         // The logic for GTIN check digit:
         // iterate from right to left (which we did by reversing).
         // positions 1, 3, 5... (indices 0, 2, 4...) are x3
         // positions 2, 4, 6... (indices 1, 3, 5...) are x1
-
         const totalSum = (sumOdd * 3) + sumEven;
-
         steps.push({
             step: 1,
             description: "Sum of digits in odd positions (from right) × 3",
             value: `${sumOdd} × 3 = ${sumOdd * 3}`
         });
-
         steps.push({
             step: 2,
             description: "Sum of digits in even positions",
             value: `${sumEven}`
         });
-
         steps.push({
             step: 3,
             description: "Add results together",
             value: `${sumOdd * 3} + ${sumEven} = ${totalSum}`
         });
-
         const nearestTen = Math.ceil(totalSum / 10) * 10
         const checkDigit = nearestTen - totalSum
-
         steps.push({
             step: 4,
             description: "Subtract sum from nearest equal or higher multiple of 10",
             value: `${nearestTen} - ${totalSum} = ${checkDigit}`
         });
-
         return { checkDigit, steps }
     }
-
     const validateBarcode = useCallback((code: string): ValidationResult => {
         const cleanCode = code.replace(/[\s-]/g, "")
-
         if (!/^\d+$/.test(cleanCode)) {
             return {
                 isValid: false,
@@ -135,14 +115,12 @@ export function Validator() {
                 calculationSteps: []
             }
         }
-
         let format: BarcodeFormat = "Unknown"
         let isValid = false
         let checkDigit = "-"
         let expectedCheckDigit = "-"
         let message = "Invalid"
         let details: string[] = []
-
         // Determine format based on length
         if (cleanCode.length === 12) format = "UPC-A"
         else if (cleanCode.length === 13) format = "EAN-13"
@@ -163,16 +141,12 @@ export function Validator() {
                 calculationSteps: []
             }
         }
-
         // Validate Check Digit
         const dataDigits = cleanCode.slice(0, -1)
         const providedCheck = cleanCode.slice(-1)
-
         const { checkDigit: calculatedCheck, steps } = calculateCheckDigit(dataDigits)
-
         checkDigit = providedCheck
         expectedCheckDigit = calculatedCheck.toString()
-
         if (parseInt(providedCheck) === calculatedCheck) {
             isValid = true
             message = "Valid Barcode"
@@ -186,17 +160,14 @@ export function Validator() {
                 "The last digit does not match the calculated checksum."
             ]
         }
-
         return { isValid, format, checkDigit, expectedCheckDigit, message, details, calculationSteps: steps }
     }, [])
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value
         if (/^[\d\s-]*$/.test(val)) {
             setInputCode(val)
         }
     }
-
     useEffect(() => {
         if (!inputCode) {
             setResult(null)
@@ -205,28 +176,15 @@ export function Validator() {
         setResult(validateBarcode(inputCode))
         // Auto-close details on new input
     }, [inputCode, validateBarcode])
-
-    const copyResult = () => {
-        if (!inputCode) return
-        const text = `Format: ${result?.format}\nResult: ${result?.isValid ? "Valid" : "Invalid"}\nCode: ${inputCode}`
-        navigator.clipboard.writeText(text)
-        toast({
-            title: "Copied",
-            description: "Validation result copied to clipboard.",
-        })
-    }
-
     const clearAll = () => {
         setInputCode("")
         setResult(null)
         setResult(null) // redundant set
-
         toast({
             title: "Reset",
             description: "Input cleared.",
         })
     }
-
     // useBarcodeScanner Hook
     const { handleFileUpload } = useBarcodeScanner({
         onScan: (decodedText) => {
@@ -234,21 +192,18 @@ export function Validator() {
             setResult(validateBarcode(decodedText))
         }
     })
-
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
             const offset = 100;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
             const offsetPosition = elementPosition - offset;
-
             window.scrollTo({
                 top: offsetPosition,
                 behavior: 'smooth'
             });
         }
     };
-
     const getBarcodeFormat = (format: BarcodeFormat) => {
         switch (format) {
             case "UPC-A": return "UPC"
@@ -257,7 +212,6 @@ export function Validator() {
             default: return "CODE128"
         }
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             {/* Hidden file input for upload */}
@@ -268,9 +222,7 @@ export function Validator() {
                 className="hidden"
                 onChange={handleFileUpload}
             />
-
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* LEFT: Input (Col Span 6) */}
                 <div className="lg:col-span-6">
                     <FadeIn delay={0.2} direction="right">
@@ -281,7 +233,7 @@ export function Validator() {
                                 onHelpClick={scrollToGuide}
                             />
                             <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                     <CalculatorInput
                                         label="Barcode Number"
@@ -295,7 +247,6 @@ export function Validator() {
                                         tooltip="Enter EAN / UPC (8, 12, or 13 digits) to validate."
                                         type="text"
                                     />
-
                                     {/* Scan Controls */}
                                     <div className="pt-2">
                                         <Button
@@ -325,23 +276,19 @@ export function Validator() {
                                         </Button>
                                     </div>
                                 </div>
-
                                 <div className="pt-6 border-t border-slate-100">
                                     <ActionButtons
                                         onReset={clearAll}
-                                        onCopy={copyResult}
-                                        copyDisabled={!inputCode}
                                     />
                                 </div>
                             </CardContent>
                         </Card>
                     </FadeIn>
                 </div>
-
                 {/* RIGHT: Results (Col Span 6) */}
                 <div className="lg:col-span-6">
                     <FadeIn delay={0.4} direction="left" className="h-full">
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             {/* Blue Result Card (Always Visible) */}
                             <ResultFeedbackCard
                                 variant="default"
@@ -390,9 +337,9 @@ export function Validator() {
                                                                 }
                                                             </DialogDescription>
                                                         </DialogHeader>
-                                                        <div className="space-y-4 py-4">
+                                                        <div className="space-y-3 py-4">
                                                             {result && result.calculationSteps.length > 0 ? (
-                                                                <div className="space-y-4 relative">
+                                                                <div className="space-y-3 relative">
                                                                     <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")} />
                                                                     {result.calculationSteps.map((step, idx) => (
                                                                         <div key={idx} className="flex gap-4 relative">
@@ -446,13 +393,11 @@ export function Validator() {
                                     <Row label="Analysis" value={result?.message || "Waiting for input..."} className={cn("transition-colors duration-300", !result ? "text-blue-400" : result.isValid ? "text-emerald-400 font-bold" : "text-rose-400 font-bold")} />
                                 </div>
                             </ResultFeedbackCard>
-
                             {/* Barcode Preview */}
                             <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">
                                 {result && result.isValid && isMounted ? (
                                     <div className="flex flex-col items-center w-full animate-in fade-in zoom-in-95 duration-200 fill-mode-forwards">
                                         <h3 className="text-base font-bold text-slate-900 mb-2">Identified {result.format} Barcode</h3>
-
                                         <div className="p-4 bg-white rounded-lg border border-slate-100 shadow-sm w-full flex justify-center overflow-hidden mb-4">
                                             <div className="scale-110 sm:scale-125 origin-center">
                                                 <Barcode
@@ -484,7 +429,6 @@ export function Validator() {
                                                         lineColor="#64748b"
                                                     />
                                                 </div>
-
                                                 {/* Scanning Laser Animation (Visible when no input) */}
                                                 {!inputCode && (
                                                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -495,7 +439,6 @@ export function Validator() {
                                                 )}
                                             </>
                                         )}
-
                                         {/* Center Text */}
                                         <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2">
                                             <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-100 shadow-sm flex flex-col items-center">
@@ -508,7 +451,6 @@ export function Validator() {
                                                 </p>
                                             </div>
                                         </div>
-
                                         <style jsx global>{`
                                             @keyframes scan {
                                                 0%, 100% { top: 10%; opacity: 0.2; }
@@ -523,10 +465,8 @@ export function Validator() {
                 </div>
             </div>
         </FadeIn >
-
     )
 }
-
 function Row({ label, value, className }: { label: React.ReactNode, value: React.ReactNode, className?: string }) {
     return (
         <div className={`flex justify-between items-center text-sm ${className}`}>
@@ -536,4 +476,4 @@ function Row({ label, value, className }: { label: React.ReactNode, value: React
             </span>
         </div>
     )
-}
+}

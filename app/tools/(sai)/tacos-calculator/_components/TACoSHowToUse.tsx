@@ -1,28 +1,26 @@
 "use client";
-
 import { ToolSteps } from "@/app/tools/_shared/components";
 import { DollarSign, BarChart3, Percent } from "lucide-react";
-
 export function TACoSHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Enter Ad Spend",
-                    description: "Input your total advertising spend for a specific period (e.g., last month). Include all ad platforms.",
-                    icon: DollarSign,
+                    title: "All Ad Cash",
+                    description: "Enter total raw holistic digital financial expenditures strictly funding targeted explicit broad PPC marketing retail campaigns.",
+                    icon: DollarSign
                 },
                 {
-                    title: "Enter Total Revenue",
-                    description: "Input your total gross revenue (sales) for the same period. This includes both organic and paid sales.",
-                    icon: BarChart3,
+                    title: "All Impact",
+                    description: "Input universal cross channel entire gross retail sales encompassing directly attributed revenue alongside all completely organic sales.",
+                    icon: BarChart3
                 },
                 {
-                    title: "Analyze TACoS",
-                    description: "The calculator determines your Total Advertising Cost of Sales. Use this to gauge the overall health of your business.",
-                    icon: Percent,
-                },
+                    title: "Check Scale",
+                    description: "Instantly derive exact Total Advertising Cost metrics outlining precisely broader digital spending impact heavily manipulating base bottomlines.",
+                    icon: Percent
+                }
             ]}
         />
     );
-}
+}

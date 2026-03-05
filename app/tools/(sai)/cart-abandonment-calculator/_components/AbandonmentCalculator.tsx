@@ -1,17 +1,13 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ShoppingCart, CreditCard, XCircle, ShoppingBag } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function AbandonmentCalculator() {
     const [carts, setCarts] = useState<number | "">("")
     const [transactions, setTransactions] = useState<number | "">("")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const handleReset = () => {
         setCarts("")
         setTransactions("")
@@ -19,30 +15,26 @@ export function AbandonmentCalculator() {
     // Calculation
     const cartsVal = val(carts)
     const transactionsVal = val(transactions)
-
     let rate = 0
     let isValid = false
-
     if (cartsVal > 0 && transactionsVal >= 0) {
         if (transactionsVal <= cartsVal) {
             rate = (1 - (transactionsVal / cartsVal)) * 100
             isValid = true
         }
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter cart and transaction data."
                             onReset={handleReset}
                             guideId="abandonment-guide"
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label="Number of Carts Created"
                                 value={carts}
@@ -62,9 +54,8 @@ export function AbandonmentCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Cart Abandonment Rate"
                         mainValue={
@@ -84,7 +75,6 @@ export function AbandonmentCalculator() {
                             }
                         ]}
                     />
-
                     {/* Indicator Badge */}
                     {isValid && (
                         <div className={cn(
@@ -96,7 +86,6 @@ export function AbandonmentCalculator() {
                             {rate < 60 ? "🚀 High Retention Rate" : rate < 75 ? "⚠️ Average Abandonment" : "🛑 High Abandonment"}
                         </div>
                     )}
-
                     {/* Breakdown Card */}
                     {isValid ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-red-500">
@@ -123,7 +112,6 @@ export function AbandonmentCalculator() {
                             <p className="text-sm text-slate-400">Enter data to see breakdown.</p>
                         </div>
                     )}
-
                     {/* Insight Card */}
                     <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <XCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
@@ -138,4 +126,4 @@ export function AbandonmentCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

@@ -1,9 +1,7 @@
 'use client';
-
 import * as React from 'react';
 import Image from "next/image";
 import { Check, ChevronDown } from 'lucide-react';
-
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +17,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-
 export const currencies = [
     { code: 'AFN', symbol: '؋', name: "Afghan Afghani", flag: 'af' },
     { code: 'ALL', symbol: 'L', name: "Albanian Lek", flag: 'al' },
@@ -179,42 +176,31 @@ export const currencies = [
     { code: 'ZMW', symbol: 'K', name: "Zambian Kwacha", flag: 'zm' },
     { code: 'ZWL', symbol: '$', name: "Zimbabwean Dollar", flag: 'zw' },
 ];
-
 interface CurrencyComboboxProps {
     value: string;
     onValueChange: (value: string) => void;
     className?: string;
 }
-
 export function CurrencyCombobox({ value, onValueChange, className }: CurrencyComboboxProps) {
     const [open, setOpen] = React.useState(false);
-
     const selectedCurrency = currencies.find((c) => c.code === value);
-
     const filterCurrency = (value: string, search: string) => {
         if (!search) return 1;
         const normalizedValue = value.toLowerCase();
         const normalizedSearch = search.toLowerCase();
-
         // The value format is "Name Code" (e.g., "Indian Rupee INR")
         const parts = normalizedValue.split(" ");
         const code = parts[parts.length - 1];
-
         // Priority 1: Exact code match
         if (code === normalizedSearch) return 1;
-
         // Priority 2: Code starts with search (e.g., "U" -> "USD")
         if (code.startsWith(normalizedSearch)) return 0.9;
-
         // Priority 3: Name starts with search
         if (normalizedValue.startsWith(normalizedSearch)) return 0.8;
-
         // Priority 4: Contains search term
         if (normalizedValue.includes(normalizedSearch)) return 0.7;
-
         return 0;
     };
-
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -289,4 +275,4 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
             </PopoverContent>
         </Popover>
     );
-}
+}

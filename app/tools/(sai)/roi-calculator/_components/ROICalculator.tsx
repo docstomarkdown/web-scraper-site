@@ -1,28 +1,22 @@
 "use client"
-
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { TrendingUp, DollarSign, Percent, BarChart3 } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function ROICalculator() {
     const [currency, setCurrency] = useState("USD")
     const [amountInvested, setAmountInvested] = useState<number | "">("")
     const [amountReturned, setAmountReturned] = useState<number | "">("")
     const [mode, setMode] = useState<"dates" | "length">("dates")
-
     // Date mode states
     const [fromDate, setFromDate] = useState<string>(new Date().toISOString().split('T')[0])
     const [toDate, setToDate] = useState<string>(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0])
-
     // Length mode states
     const [lengthValue, setLengthValue] = useState<number | "">("")
     const [lengthUnit, setLengthUnit] = useState<"days" | "months" | "years">("years")
-
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     const currencySymbols: Record<string, string> = {
         USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
         AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
@@ -38,11 +32,9 @@ export function ROICalculator() {
         setFromDate(new Date().toISOString().split('T')[0])
         setToDate(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0])
     }
-
     // Calculations
     const invested = val(amountInvested)
     const returned = val(amountReturned)
-
     // Calculate investment length in years
     let years = 0
     if (mode === "dates") {
@@ -57,14 +49,11 @@ export function ROICalculator() {
         else if (lengthUnit === "months") years = Math.max(0, lv / 12)
         else if (lengthUnit === "days") years = Math.max(0, lv / 365)
     }
-
     const investmentGain = returned - invested
-
     // Safety check for ROI calculation
     const totalROI = (invested > 0 && Number.isFinite(investmentGain))
         ? (investmentGain / invested) * 100
         : 0
-
     // Annualized ROI formula: ((Returned / Invested) ^ (1 / years) - 1) * 100
     // We need to be very defensive here to prevent NaN/Infinity
     let annualizedROI = 0
@@ -75,13 +64,11 @@ export function ROICalculator() {
             annualizedROI = result
         }
     }
-
     // Final safety check for all values passed to the UI
     const safeROI = Number.isFinite(totalROI) ? totalROI : 0
     const safeAnnualized = Number.isFinite(annualizedROI) ? annualizedROI : 0
     const safeGain = Number.isFinite(investmentGain) ? investmentGain : 0
     const safeYears = Number.isFinite(years) ? years : 0
-
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -89,28 +76,20 @@ export function ROICalculator() {
             maximumFractionDigits: 2
         }).format(val)
     }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Calculate your return on investment."
-
                             onReset={handleReset}
-
                             guideId="roi-guide"
-
                             currency={currency}
-
                             onCurrencyChange={setCurrency}
-
                         />
-                        <CardContent className="space-y-6 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label={`Amount Invested (${symbol})`}
                                 value={amountInvested}
@@ -127,8 +106,7 @@ export function ROICalculator() {
                                 max={10000000}
                                 tooltip="The final total value you received back from the investment (including your original capital)."
                             />
-
-                            <div className="space-y-4 pt-4 border-t border-slate-50">
+                            <div className="space-y-3 pt-4 border-t border-slate-50">
                                 <label className="text-sm font-bold text-slate-600">Investment Time</label>
                                 <div className="relative flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-fit">
                                     <motion.div
@@ -161,16 +139,15 @@ export function ROICalculator() {
                                         Use Length
                                     </button>
                                 </div>
-
                                 <motion.div
                                     layout
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     key={mode}
-                                    className="space-y-4"
+                                    className="space-y-3"
                                 >
                                     {mode === "dates" ? (
-                                        <div className="space-y-4">
+                                        <div className="space-y-3">
                                             <div className="flex items-center justify-between gap-4 group">
                                                 <label className="text-base font-semibold text-slate-700 group-hover:text-blue-600 transition-colors">From Date</label>
                                                 <input
@@ -220,9 +197,8 @@ export function ROICalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Investment ROI"
                         mainValue={
@@ -230,7 +206,6 @@ export function ROICalculator() {
                         }
                         valueColor={safeGain > 0 ? "text-blue-400" : (safeGain < 0 ? "text-red-400" : "text-white")}
                     />
-
                     {/* Return Indicator */}
                     {invested > 0 && returned > 0 && (
                         <motion.div
@@ -256,7 +231,6 @@ export function ROICalculator() {
                                         : " Loss on Investment"}
                         </motion.div>
                     )}
-
                     {/* Investment Breakdown */}
                     {invested > 0 || returned > 0 ? (
                         <motion.div
@@ -307,6 +281,4 @@ export function ROICalculator() {
             </div>
         </FadeIn>
     )
-}
-
-
+}

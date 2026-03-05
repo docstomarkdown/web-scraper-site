@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,76 +9,59 @@ import { Info } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function PromoCodeCalculator() {
     // --- State ---
     const [prefix, setPrefix] = useState("")
     const [suffix, setSuffix] = useState("")
     const [length, setLength] = useState<number | "">("")
     const [count, setCount] = useState<number | "">("")
-
     const [useUppercase, setUseUppercase] = useState(true)
     const [useNumbers, setUseNumbers] = useState(true)
     const [useSymbols, setUseSymbols] = useState(false)
     const [showAdvanced, setShowAdvanced] = useState(false)
-
     const [generatedCodes, setGeneratedCodes] = useState<string[]>([])
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
-
     // --- Helpers ---
     const generateRandomString = (len: number) => {
         let chars = ""
         if (useUppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         if (useNumbers) chars += "0123456789"
         if (useSymbols) chars += "!@#$%^&*"
-
         if (chars === "") chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" // Fallback
-
         let result = ""
         for (let i = 0; i < len; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length))
         }
         return result
     }
-
     const handleGenerate = () => {
         const numCodes = count === "" ? 1 : Math.min(Math.max(1, count), 50)
         const charLen = length === "" ? 8 : Math.min(Math.max(1, length), 32)
-
         const newCodes = Array.from({ length: numCodes }, () => {
             const randomPart = generateRandomString(charLen)
             return `${prefix}${randomPart}${suffix}`.toUpperCase()
         })
-
         setGeneratedCodes(newCodes)
         toast.success(`Generated ${numCodes} promo codes`)
     }
-
     const copyToClipboard = (text: string, index: number) => {
         navigator.clipboard.writeText(text)
         setCopiedIndex(index)
         toast.success("Copied to clipboard")
         setTimeout(() => setCopiedIndex(null), 2000)
     }
-
-    const copyAll = () => {
-        navigator.clipboard.writeText(generatedCodes.join("\n"))
-        toast.success("All codes copied to clipboard")
-    }
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Set your prefix, suffix and randomization rules."
                             onReset={() => { setPrefix(""); setSuffix(""); setLength(8); setCount(5); setGeneratedCodes([]); }}
                         />
-                        <CardContent className="space-y-6 pt-6">
-                            <div className="space-y-5">
+                        <CardContent className="space-y-3 pt-6">
+                            <div className="space-y-3">
                                 <CalculatorInput
                                     label="Random Part Length"
                                     value={length}
@@ -95,7 +77,6 @@ export function PromoCodeCalculator() {
                                     tooltip="How many unique codes to generate at once."
                                 />
                             </div>
-
                             <div className="pt-2">
                                 <button
                                     onClick={() => setShowAdvanced(!showAdvanced)}
@@ -122,7 +103,6 @@ export function PromoCodeCalculator() {
                                         <ChevronDown className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
                                     )}
                                 </button>
-
                                 <AnimatePresence>
                                     {showAdvanced && (
                                         <motion.div
@@ -132,9 +112,9 @@ export function PromoCodeCalculator() {
                                             transition={{ duration: 0.3, ease: "easeInOut" }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="pt-6 pb-2 px-1 space-y-6">
+                                            <div className="pt-6 pb-2 px-1 space-y-3">
                                                 {/* Prefix/Suffix Grid */}
-                                                <div className="space-y-4">
+                                                <div className="space-y-3">
                                                     <CalculatorInput
                                                         label="Prefix (Optional)"
                                                         value={prefix}
@@ -152,7 +132,6 @@ export function PromoCodeCalculator() {
                                                         tooltip="Text added to the end of every generated code."
                                                     />
                                                 </div>
-
                                                 {/* Character Selection Chips */}
                                                 <div className="space-y-3">
                                                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Include Characters</label>
@@ -185,7 +164,6 @@ export function PromoCodeCalculator() {
                                     )}
                                 </AnimatePresence>
                             </div>
-
                             <Button
                                 onClick={handleGenerate}
                                 className="w-full h-12 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all active:scale-[0.98]"
@@ -195,7 +173,6 @@ export function PromoCodeCalculator() {
                             </Button>
                         </CardContent>
                     </Card>
-
                     {/* Codes List Card (only if generated) */}
                     {generatedCodes.length > 0 && (
                         <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
@@ -226,9 +203,8 @@ export function PromoCodeCalculator() {
                         </Card>
                     )}
                 </div>
-
                 {/* Results Section (Right) */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Latest Reward Code"
                         titleLabel="Active"
@@ -255,15 +231,11 @@ export function PromoCodeCalculator() {
                             }
                         ]}
                     />
-
-
                 </div>
             </div>
-
         </FadeIn>
     )
 }
-
 function CharacterChip({ label, sub, icon: Icon, checked, onChange }: { label: string, sub: string, icon: any, checked: boolean, onChange: (v: boolean) => void }) {
     return (
         <button
@@ -288,4 +260,4 @@ function CharacterChip({ label, sub, icon: Icon, checked, onChange }: { label: s
             </div>
         </button>
     )
-}
+}

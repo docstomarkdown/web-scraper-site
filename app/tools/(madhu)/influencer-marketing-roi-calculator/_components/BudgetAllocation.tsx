@@ -1,10 +1,8 @@
 "use client"
-
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer } from "recharts"
 import { Wallet } from "lucide-react"
-
 interface BudgetAllocationProps {
     fee: number
     adSpend: number
@@ -17,7 +15,6 @@ interface BudgetAllocationProps {
     shippingPct: number
     formatCurrency: (val: number) => string
 }
-
 export function BudgetAllocation({
     fee,
     adSpend,
@@ -36,14 +33,12 @@ export function BudgetAllocation({
         { name: "Product Costs", value: productCost, color: "#f59e0b" },
         { name: "Shipping Costs", value: shippingCost, color: "#a855f7" },
     ].filter(i => i.value > 0)
-
     return (
         <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 flex flex-col">
             <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                 <Wallet className="w-4 h-4 text-blue-500" />
-                Cost Breakdown
+                Budget Allocation
             </h4>
-
             <div className="flex items-center gap-4 min-h-0">
                 {/* Left: Chart */}
                 <div className="h-[140px] w-[140px] relative shrink-0">
@@ -67,8 +62,8 @@ export function BudgetAllocation({
                             </RechartsPie>
                         </ResponsiveContainer>
                     ) : (
-                        <div className="absolute inset-0 flex items-center justify-center text-slate-300 text-sm border-2 border-dashed border-slate-100 rounded-full">
-                            No data
+                        <div className="absolute inset-0 flex items-center justify-center text-center p-4 text-slate-400 text-[10.5px] leading-tight font-medium border-2 border-dashed border-slate-100 rounded-full bg-slate-50/40">
+                            Add data to see your Budget split
                         </div>
                     )}
                     {/* Center Label */}
@@ -79,7 +74,6 @@ export function BudgetAllocation({
                         </div>
                     )}
                 </div>
-
                 {/* Right: Legend */}
                 <div className="flex-1 grid grid-cols-1 gap-2">
                     {[
@@ -101,4 +95,4 @@ export function BudgetAllocation({
             </div>
         </Card>
     )
-}
+}

@@ -1,8 +1,6 @@
 "use client"
-
 import { BookOpen, Box, Truck, Percent, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
 const insights = [
     {
         icon: Percent,
@@ -38,7 +36,6 @@ const insights = [
         tooltip: "Inbound Shipping: The cost you pay to ship your inventory from your supplier or home to Amazon's fulfillment centers."
     },
 ]
-
 export function FBAGuide() {
     return (
         <section id="fba-guide">
@@ -48,7 +45,6 @@ export function FBAGuide() {
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900">Understanding Amazon FBA Fees</h2>
             </div>
-
             <div className="space-y-6">
                 {insights.map((insight, index) => {
                     const Icon = insight.icon
@@ -86,7 +82,6 @@ export function FBAGuide() {
                                         {insight.description}
                                     </p>
                                 </div>
-
                                 {/* Right: Takeaway Stat Panel (Neutral Background) */}
                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
@@ -104,4 +99,4 @@ export function FBAGuide() {
             </div>
         </section>
     )
-}
+}

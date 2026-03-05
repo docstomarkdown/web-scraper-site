@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useMemo } from "react"
 import {
     Info,
@@ -14,42 +13,34 @@ import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_share
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
-
 interface TurnoverState {
     cogs: string | number
     beginningInventory: string | number
     endingInventory: string | number
     periodInDays: string | number
 }
-
 const DEFAULT_STATE: TurnoverState = {
     cogs: "",
     beginningInventory: "",
     endingInventory: "",
     periodInDays: ""
 }
-
 export function InventoryTurnoverCalculator() {
     const [values, setValues] = useState<TurnoverState>(DEFAULT_STATE)
-    const [isCopying, setIsCopying] = useState(false)
-
     const handleInputChange = (field: keyof TurnoverState, value: string | number) => {
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
-
     const hasInputs = useMemo(() => {
         const cogs = Number(values.cogs) || 0
         const begInv = Number(values.beginningInventory) || 0
         const endInv = Number(values.endingInventory) || 0
         return values.cogs !== "" && (values.beginningInventory !== "" || values.endingInventory !== "") && cogs > 0
     }, [values])
-
     const results = useMemo(() => {
         const cogs = Number(values.cogs) || 0
         const begInv = Number(values.beginningInventory) || 0
         const endInv = Number(values.endingInventory) || 0
         const period = Number(values.periodInDays) || 365
-
         if (!hasInputs) return {
             avgInventory: 0,
             turnoverRatio: 0,
@@ -57,20 +48,16 @@ export function InventoryTurnoverCalculator() {
             status: "waiting" as const,
             efficiency: 0
         }
-
         const avgInventory = (begInv + endInv) / (begInv && endInv ? 2 : 1)
         const turnoverRatio = avgInventory > 0 ? cogs / avgInventory : 0
         const dsi = turnoverRatio > 0 ? period / turnoverRatio : 0
-
         let status: "low" | "moderate" | "high" | "excellent" = "moderate"
         if (turnoverRatio < 3) status = "low"
         else if (turnoverRatio < 7) status = "moderate"
         else if (turnoverRatio < 12) status = "high"
         else status = "excellent"
-
         // Simplified efficiency score (0-100)
         const efficiency = Math.min(100, (turnoverRatio / 8) * 100)
-
         return {
             avgInventory,
             turnoverRatio,
@@ -79,30 +66,7 @@ export function InventoryTurnoverCalculator() {
             efficiency
         }
     }, [values, hasInputs])
-
     const handleReset = () => setValues(DEFAULT_STATE)
-
-    const handleCopy = async () => {
-        setIsCopying(true)
-        const text = `
-Inventory Turnover Analysis:
----------------------------------------
-- Cost of Goods Sold (COGS): $${values.cogs}
-- Beginning Inventory: $${values.beginningInventory}
-- Ending Inventory: $${values.endingInventory}
-- Analysis Period: ${values.periodInDays} days
-
-Results:
-- INVENTORY TURNOVER RATIO: ${results.turnoverRatio.toFixed(2)}x
-- DAYS SALES IN INVENTORY (DSI): ${results.dsi.toFixed(1)} days
-- AVERAGE INVENTORY VALUE: $${results.avgInventory.toFixed(2)}
-- EFFICIENCY RATING: ${results.status.toUpperCase()}
-        `.trim()
-
-        await navigator.clipboard.writeText(text)
-        setTimeout(() => setIsCopying(false), 2000)
-    }
-
     const getStatusStyles = (status: string) => {
         switch (status) {
             case "low": return "text-red-500 bg-red-50 border-red-100"
@@ -112,11 +76,9 @@ Results:
             default: return "text-slate-400 bg-slate-50 border-slate-100"
         }
     }
-
     return (
         <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
-
                 {/* Left Column: Smart Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-[2.5rem]">
@@ -125,9 +87,8 @@ Results:
                             subtitle="Input your financial data to analyze how effectively you're managing inventory."
                             scrollId="how-to-use"
                         />
-
                         <CardContent className="p-6 md:p-8 space-y-8 flex-1 flex flex-col">
-                            <div className="space-y-6">
+                            <div className="space-y-3">
                                 <CalculatorInput
                                     label="Cost of Goods Sold (COGS)"
                                     value={values.cogs}
@@ -136,7 +97,6 @@ Results:
                                     tooltip="The total cost of products sold during the period (found on your Income Statement)."
                                     prefix="$"
                                 />
-
                                 <div className="space-y-2">
                                     <div className="flex gap-1.5 justify-end w-full">
                                         {[
@@ -166,7 +126,6 @@ Results:
                                         tooltip="Length of time analyzed. Standard: 365 (Year), 90 (Quarter), 30 (Month)."
                                     />
                                 </div>
-
                                 <CalculatorInput
                                     label="Beginning Inventory"
                                     value={values.beginningInventory}
@@ -184,21 +143,16 @@ Results:
                                     prefix="$"
                                 />
                             </div>
-
                             <div className="pt-6 mt-auto border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
-                                    onCopy={handleCopy}
-                                    copyDisabled={!hasInputs || isCopying}
-                                    isCopied={isCopying}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col">
+                <div className="lg:col-span-5 space-y-3 flex flex-col">
                     <ResultFeedbackCard
                         title="INVENTORY TURNOVER RATIO"
                         titleLabel="Efficiency Score"
@@ -228,7 +182,7 @@ Results:
                             </div>
                         }
                     >
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             <div className="grid grid-cols-2 gap-4">
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
@@ -248,7 +202,6 @@ Results:
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
-
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
@@ -274,6 +227,4 @@ Results:
             </div>
         </div >
     )
-}
-
-
+}

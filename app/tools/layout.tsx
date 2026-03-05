@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
     title: "All Tools - Free Business Tools",
     description: "Explore our collection of 20+ free business tools. From GST invoice generators to inventory management, streamline your workflow with professional-grade tools.",
@@ -23,11 +22,10 @@ export const metadata: Metadata = {
         type: "website",
     },
 };
-
 export default function ToolsLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return children;
-}
+}

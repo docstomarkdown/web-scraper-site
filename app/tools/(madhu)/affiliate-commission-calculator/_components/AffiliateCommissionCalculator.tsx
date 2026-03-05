@@ -1,12 +1,10 @@
 "use client"
-
 import React, { useState, useMemo } from "react"
 import {
     TrendingUp,
     CheckCircle2,
-    Package,
-    Users,
-    BarChart3
+    Tag,
+    Handshake
 } from "lucide-react"
 import {
     ActionButtons,
@@ -20,7 +18,6 @@ import {
 } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
-
 interface AffiliateState {
     productPrice: number | ""
     productCost: number | ""
@@ -29,7 +26,6 @@ interface AffiliateState {
     salesPerAffiliate: number | ""
     refundRate: number | ""
 }
-
 const DEFAULT_STATE: AffiliateState = {
     productPrice: "",
     productCost: "",
@@ -38,25 +34,19 @@ const DEFAULT_STATE: AffiliateState = {
     salesPerAffiliate: "",
     refundRate: 5
 }
-
 export function AffiliateCommissionCalculator() {
     const [values, setValues] = useState<AffiliateState>(DEFAULT_STATE)
     const [currencyCode, setCurrencyCode] = useState("USD")
-    const [isCopying, setIsCopying] = useState(false)
-
     // Get current currency symbol
     const currencySymbol = useMemo(() => {
         return currencies.find(c => c.code === currencyCode)?.symbol || "$"
     }, [currencyCode])
-
     const handleInputChange = (field: keyof AffiliateState, value: string | number) => {
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : Number(value) }))
     }
-
     const hasInputs = useMemo(() => {
         return values.productPrice !== "" && values.commissionRate !== ""
     }, [values])
-
     const results = useMemo(() => {
         const price = Number(values.productPrice) || 0
         const cogs = Number(values.productCost) || 0
@@ -64,24 +54,18 @@ export function AffiliateCommissionCalculator() {
         const affiliates = Number(values.affiliateCount) || 0
         const salesPer = Number(values.salesPerAffiliate) || 0
         const refundRatePct = Number(values.refundRate) || 0
-
         const grossMargin = price - cogs
         const breakEvenRate = price > 0 ? (grossMargin / price) * 100 : 0
-
         const commissionPerSale = price * (rate / 100)
         const netPerSale = price - commissionPerSale - cogs
-
         const totalGrossSales = affiliates * salesPer
         const refundedSales = totalGrossSales * (refundRatePct / 100)
         const netSales = totalGrossSales - refundedSales
-
         const totalPayout = commissionPerSale * netSales
         const totalRevenue = price * netSales
         const totalCOGS = cogs * netSales
         const netRevenue = totalRevenue - totalPayout - totalCOGS
-
         const isAboveBreakEven = rate > breakEvenRate
-
         return {
             commissionPerSale,
             netPerSale,
@@ -97,44 +81,15 @@ export function AffiliateCommissionCalculator() {
             isAboveBreakEven
         }
     }, [values])
-
     const handleReset = () => {
         setValues(DEFAULT_STATE)
         setCurrencyCode("USD")
     }
-
-    const handleCopy = async () => {
-        setIsCopying(true)
-        const text = `
-Affiliate Commission Analysis:
--------------------------------
-Inputs:
-- Product Price:       ${currencySymbol}${values.productPrice}
-- Product Cost (COGS): ${currencySymbol}${values.productCost || "0"}
-- Commission Rate:     ${values.commissionRate}%
-- Refund Rate:         ${values.refundRate || "0"}%
-- Active Affiliates:   ${values.affiliateCount || "0"}
-- Sales per Affiliate: ${values.salesPerAffiliate || "0"}
-
-Results:
-- Commission per Sale:     ${currencySymbol}${results.commissionPerSale.toFixed(2)}
-- Net Profit per Sale:     ${currencySymbol}${results.netPerSale.toFixed(2)}
-- Net Sales (post-refund): ${Math.round(results.netSales)} units
-- Total Payout:            ${currencySymbol}${results.totalPayout.toFixed(2)}
-- Total Net Revenue:       ${currencySymbol}${results.netRevenue.toFixed(2)}
-- Break-Even Rate:         ${results.breakEvenRate.toFixed(1)}%
-        `.trim()
-
-        await navigator.clipboard.writeText(text)
-        setTimeout(() => setIsCopying(false), 2000)
-    }
-
     return (
         <div className="max-w-6xl mx-auto py-2">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-2">
-
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 flex flex-col h-full space-y-4">
+                <div className="lg:col-span-7 flex flex-col h-full space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
                         <CalculatorCardHeader
                             title="Program Configuration"
@@ -142,12 +97,12 @@ Results:
                             currency={currencyCode}
                             onCurrencyChange={setCurrencyCode}
                         />
-
-                        <CardContent className="p-5 md:p-6 space-y-6 flex-1 flex flex-col">
+                        <CardContent className="p-4 md:p-6 space-y-3 flex-1 flex flex-col">
                             {/* Section: Product & Pricing */}
                             <div className="space-y-3">
                                 <div className="flex flex-col gap-4">
                                     <CalculatorInput
+                                        hideSeparator={true}
                                         label="Product Price"
                                         value={values.productPrice}
                                         onChange={(v) => handleInputChange('productPrice', v)}
@@ -155,8 +110,7 @@ Results:
                                         tooltip="Amount customers pay for one product."
                                         prefix={currencySymbol}
                                         groupingTitle="Product & Pricing"
-                                        groupingIcon={Package}
-                                        highlight={true}
+                                        groupingIcon={Tag}
                                     />
                                     <CalculatorInput
                                         label="Product Cost (Your Cost)"
@@ -168,9 +122,6 @@ Results:
                                     />
                                 </div>
                             </div>
-
-                            <Separator />
-
                             {/* Section: Scale */}
                             <div className="space-y-3">
                                 <div className="flex flex-col gap-4">
@@ -181,7 +132,7 @@ Results:
                                         placeholder="10"
                                         tooltip="How many affiliates are currently promoting your product."
                                         groupingTitle="Sales Projection"
-                                        groupingIcon={BarChart3}
+                                        groupingIcon={TrendingUp}
                                     />
                                     <CalculatorInput
                                         label="Average Sales per Affiliate"
@@ -192,16 +143,8 @@ Results:
                                     />
                                 </div>
                             </div>
-
-                            <Separator />
-
                             {/* Section: Affiliate Program */}
                             <div className="space-y-3 relative">
-                                <div className="absolute top-1 right-0 z-10 hidden sm:block">
-                                    <span className="text-[10px] text-slate-400 bg-slate-50 border border-slate-200 rounded-full px-2 py-0.5 font-medium shrink-0">
-                                        Industry benchmarks pre-filled
-                                    </span>
-                                </div>
                                 <div className="flex flex-col gap-4">
                                     <CalculatorInput
                                         label="Commission Rate"
@@ -212,7 +155,8 @@ Results:
                                         suffix="%"
                                         hint="Industry standard range: 10% – 20%"
                                         groupingTitle="Affiliate Settings"
-                                        groupingIcon={Users}
+                                        groupingIcon={Handshake}
+                                        benchmarkBadge={true}
                                     />
                                     <CalculatorInput
                                         label="Refund Rate"
@@ -225,21 +169,16 @@ Results:
                                     />
                                 </div>
                             </div>
-
                             <div className="mt-auto pt-6 border-t border-slate-100">
                                 <ActionButtons
                                     onReset={handleReset}
-                                    onCopy={handleCopy}
-                                    copyDisabled={!hasInputs || isCopying}
-                                    isCopied={isCopying}
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-4">
+                <div className="lg:col-span-5 space-y-3">
                     <ResultSummaryCard
                         title={results.netRevenue < 0 ? "Estimated Loss (After Costs & Commissions)" : "Estimated Profit (After Costs & Commissions)"}
                         primaryResult={{
@@ -273,7 +212,6 @@ Results:
                             neutral: "Your program is breaking even. You're covering costs but not making a profit."
                         }}
                     />
-
                     {/* Break-Even inline alert — only shows when COGS is entered */}
                     {(hasInputs && Number(values.productCost) > 0) && (
                         <div className={cn(
@@ -307,9 +245,4 @@ Results:
             </div>
         </div>
     )
-}
-
-const Separator = () => <div className="h-px w-full bg-slate-100" />
-
-
-
+}

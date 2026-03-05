@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { TrendingUp, AlertTriangle, CircleDollarSign, BookOpen } from "lucide-react"
-
 export function DimensionConverterGuide() {
     return (
         <ToolGuide
@@ -42,4 +40,4 @@ export function DimensionConverterGuide() {
             ]}
         />
     )
-}
+}

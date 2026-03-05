@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -12,7 +11,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 interface SKUEntry {
     id: string
     productName: string
@@ -22,7 +20,6 @@ interface SKUEntry {
     size: string
     sku: string
 }
-
 export function SKUGenerator() {
     // Component States
     const [brand, setBrand] = useState("")
@@ -38,30 +35,24 @@ export function SKUGenerator() {
     const [copied, setCopied] = useState(false)
     const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
     const [entries, setEntries] = useState<SKUEntry[]>([])
-
     // Handle SKU generation logic (pulling X characters from each part)
     useEffect(() => {
         const limit = parseInt(charLimit) || 3
         const parts = [brand, category, product, attribute1, attribute2]
             .map(p => p.trim().substring(0, limit))
             .filter(p => p !== "")
-
         if (sequentialStart) {
             parts.push(sequentialStart)
         }
-
         const sep = separator === "none" ? "" : separator
         let sku = parts.join(sep)
-
         if (caseType === "uppercase") {
             sku = sku.toUpperCase()
         } else if (caseType === "lowercase") {
             sku = sku.toLowerCase()
         }
-
         setGeneratedSKU(sku)
     }, [brand, category, product, attribute1, attribute2, sequentialStart, separator, caseType, charLimit])
-
     const copyToClipboard = () => {
         if (!generatedSKU) return
         navigator.clipboard.writeText(generatedSKU)
@@ -69,7 +60,6 @@ export function SKUGenerator() {
         toast.success("SKU copied to clipboard!")
         setTimeout(() => setCopied(false), 2000)
     }
-
     const resetFields = () => {
         setBrand("")
         setCategory("")
@@ -81,13 +71,11 @@ export function SKUGenerator() {
         setCaseType("uppercase")
         setCharLimit("3")
     }
-
     const addItemToList = (retain: boolean = false) => {
         if (!generatedSKU) {
             toast.error("Please enter item information first")
             return
         }
-
         const newEntry: SKUEntry = {
             id: Math.random().toString(36).substr(2, 9),
             productName: product || "Unnamed Product",
@@ -97,10 +85,8 @@ export function SKUGenerator() {
             size: attribute2,
             sku: generatedSKU
         }
-
         setEntries([newEntry, ...entries])
         toast.success("Item added to list")
-
         if (!retain) {
             setProduct("")
             setAttribute1("")
@@ -112,14 +98,11 @@ export function SKUGenerator() {
             }
         }
     }
-
     const removeEntry = (id: string) => {
         setEntries(entries.filter(e => e.id !== id))
     }
-
     const downloadCSV = () => {
         if (entries.length === 0) return
-
         const headers = ["Product Name", "Brand", "Category", "Color", "Size", "SKU"]
         const data = entries.map(e => [
             `"${e.productName}"`,
@@ -129,7 +112,6 @@ export function SKUGenerator() {
             `"${e.size}"`,
             `"${e.sku}"`
         ].join(","))
-
         const csvContent = [headers.join(","), ...data].join("\n")
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
         const url = URL.createObjectURL(blob)
@@ -144,20 +126,15 @@ export function SKUGenerator() {
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
-
                             description="Enter the data to build your SKU structure."
-
                             onReset={resetFields}
-
                             guideId="sku-guide"
-
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <SKUInput
                                 label="Brand Prefix"
                                 value={brand}
@@ -182,7 +159,6 @@ export function SKUGenerator() {
                                 icon={Maximize2}
                                 tooltip="A short identifier for the model (e.g., AF1 for Air Force 1)."
                             />
-
                             <div className="grid grid-cols-2 gap-4 pt-2">
                                 <Button
                                     onClick={() => addItemToList(false)}
@@ -199,7 +175,6 @@ export function SKUGenerator() {
                                     Add & Retain
                                 </Button>
                             </div>
-
                             {/* Advanced Settings Toggle */}
                             <div className="pt-2">
                                 <button
@@ -228,7 +203,6 @@ export function SKUGenerator() {
                                     )}
                                 </button>
                             </div>
-
                             {/* Collapsible Advanced Content */}
                             <AnimatePresence>
                                 {isAdvancedOpen && (
@@ -239,7 +213,7 @@ export function SKUGenerator() {
                                         transition={{ duration: 0.3, ease: "easeInOut" }}
                                         className="overflow-hidden"
                                     >
-                                        <div className="pt-6 pb-2 px-1 space-y-5">
+                                        <div className="pt-6 pb-2 px-1 space-y-3">
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <SKUInput
                                                     label="Color Part"
@@ -258,7 +232,6 @@ export function SKUGenerator() {
                                                     tooltip="Size identifier (e.g., 10 for Size 10)."
                                                 />
                                             </div>
-
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div className="flex items-center justify-between gap-4">
                                                     <span className="text-sm font-semibold text-slate-700">Char Pull Count</span>
@@ -280,7 +253,6 @@ export function SKUGenerator() {
                                                     tooltip="Unique numeric identifier."
                                                 />
                                             </div>
-
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div className="flex items-center justify-between gap-4">
                                                     <span className="text-sm font-semibold text-slate-700">Separator</span>
@@ -317,9 +289,8 @@ export function SKUGenerator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6">
+                <div className="lg:col-span-5 space-y-3">
                     <ResultFeedbackCard
                         title="Generated SKU"
                         mainValue={
@@ -350,7 +321,6 @@ export function SKUGenerator() {
                             </Button>
                         </div>
                     </ResultFeedbackCard>
-
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CardHeader className="pb-4 border-b border-slate-50 flex flex-row items-center justify-between space-y-0">
                             <div className="space-y-1">
@@ -423,7 +393,6 @@ export function SKUGenerator() {
         </FadeIn>
     )
 }
-
 interface SKUInputProps {
     label: string
     value: string
@@ -432,7 +401,6 @@ interface SKUInputProps {
     icon: any
     tooltip?: string
 }
-
 function SKUInput({ label, value, onChange, placeholder, icon: Icon, tooltip }: SKUInputProps) {
     return (
         <div className="flex items-center justify-between gap-4">
@@ -466,4 +434,4 @@ function SKUInput({ label, value, onChange, placeholder, icon: Icon, tooltip }: 
             </div>
         </div>
     )
-}
+}

@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { BookOpen, ShieldCheck, Zap, Target, MousePointer2 } from "lucide-react"
-
 export function PromoCodeGuide() {
     return (
         <ToolGuide
@@ -49,4 +47,4 @@ export function PromoCodeGuide() {
             ]}
         />
     )
-}
+}

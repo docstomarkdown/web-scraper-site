@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Package, Ship, Calculator } from "lucide-react"
-
 export function LandedCostHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Enter Product Details",
-                    description: "Input your product cost per unit and the total number of units in your shipment.",
+                    title: "Base Cost",
+                    description: "Enter the absolute pure manufacturing or bulk factory invoice price per exact item.",
                     icon: Package
                 },
                 {
-                    title: "Add Import Costs",
-                    description: "Enter international shipping, customs duty rate, insurance, and any additional fees like brokerage or handling.",
+                    title: "Extra Debt",
+                    description: "Input combined freight charges, global customs tariffs, cargo insurance, and tax.",
                     icon: Ship
                 },
                 {
-                    title: "View Landed Cost",
-                    description: "See your total landed cost, per-unit landed cost, duty amount, and cost uplift percentage instantly.",
+                    title: "Check Price",
+                    description: "Instantly formulate the actual true final monetary cost physically arriving dockside.",
                     icon: Calculator
                 }
             ]}
         />
     )
-}
+}

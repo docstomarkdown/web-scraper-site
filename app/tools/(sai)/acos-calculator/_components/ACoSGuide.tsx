@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { BarChart, Percent, DollarSign } from "lucide-react"
-
 export function ACoSGuide() {
     return (
         <ToolGuide
@@ -43,4 +41,4 @@ export function ACoSGuide() {
             ]}
         />
     )
-}
+}

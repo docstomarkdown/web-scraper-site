@@ -1,28 +1,26 @@
 "use client"
-
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { MousePointerClick, Calculator, TrendingUp } from "lucide-react"
-
 export function CPAHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Select Calculation Mode",
-                    description: "Choose <strong>Campaign Data</strong> if you have realized results (Spend & Conversions), or <strong>Estimation</strong> to plan based on Cost Per Click (CPC) and Conversion Rate.",
+                    title: "Marketing Cost",
+                    description: "Enter the total combined budget given strictly to ads, tools, and labor.",
                     icon: MousePointerClick
                 },
                 {
-                    title: "Enter Your Metrics",
-                    description: "Input your ad spend details or click metrics. Optionally, set a <strong>Target Cost Per Acquisition (CPA)</strong> to see if your performance is on track (Green) or needs improvement (Red).",
+                    title: "New Shoppers",
+                    description: "Input the absolute exact number of fresh buyers acquired via the promo.",
                     icon: Calculator
                 },
                 {
-                    title: "Analyze Results",
-                    description: "Review your calculated Cost Per Acquisition (CPA). Use this data to optimize your bids, improve landing page conversion rates, or adjust your budget allocation.",
+                    title: "Check CPA",
+                    description: "Instantly view your average holistic cost to bring in one single new customer.",
                     icon: TrendingUp
                 }
             ]}
         />
     )
-}
+}

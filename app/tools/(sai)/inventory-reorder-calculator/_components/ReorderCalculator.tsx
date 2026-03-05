@@ -1,16 +1,13 @@
 "use client"
-
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { AlertTriangle, CheckCircle2, Clock, Package } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
-
 export function ReorderCalculator() {
     const [dailySales, setDailySales] = useState<number | "">("")
     const [leadTime, setLeadTime] = useState<number | "">("")
     const [safetyStockDays, setSafetyStockDays] = useState<number | "">("")
     const [currentStock, setCurrentStock] = useState<number | "">("")
-
     const handleReset = () => {
         setDailySales("")
         setLeadTime("")
@@ -18,19 +15,15 @@ export function ReorderCalculator() {
         setCurrentStock("")
     }
     const val = (v: number | "") => (v === "" ? 0 : v)
-
     // --- Calculations ---
     const sales = val(dailySales)
     const lead = val(leadTime)
     const safetyDays = val(safetyStockDays)
     const stock = val(currentStock)
-
     const leadTimeDemand = sales * lead
     const safetyStockUnits = sales * safetyDays
     const reorderPoint = Math.ceil(leadTimeDemand + safetyStockUnits)
-
     const isReorderNeeded = stock <= reorderPoint
-
     // Days until reorder point is reached
     // If stock > reorderPoint, we have (stock - reorderPoint) surplus units.
     // Days = Surplus / DailySales
@@ -40,21 +33,18 @@ export function ReorderCalculator() {
     } else if (stock <= reorderPoint) {
         daysUntilReorder = 0 // Already there
     }
-
     const titleLabel = isReorderNeeded ? "Order Now" : "Stock Healthy"
-
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             description="Enter your sales velocity and lead times."
                             onReset={handleReset}
                         />
-                        <CardContent className="space-y-5 pt-6">
+                        <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
                                 label="Average Daily Sales (Units)"
                                 value={dailySales}
@@ -86,9 +76,8 @@ export function ReorderCalculator() {
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
                     <ResultFeedbackCard
                         title="Reorder Point"
                         titleLabel={titleLabel}
@@ -115,7 +104,6 @@ export function ReorderCalculator() {
                             }
                         ]}
                     />
-
                     {/* Breakdown Card */}
                     {sales > 0 || lead > 0 || safetyDays > 0 || stock > 0 ? (
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
@@ -142,9 +130,8 @@ export function ReorderCalculator() {
                             <p className="text-sm text-slate-400">Enter sales and lead times to see reorder calculation.</p>
                         </div>
                     )}
-
                     {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                         <div className="flex items-start gap-3">
                             {isReorderNeeded ?
                                 <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" /> :
@@ -173,4 +160,4 @@ export function ReorderCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

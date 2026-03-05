@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
 import { Calculator, Globe2, Shield, Fingerprint, BookOpen } from "lucide-react"
-
 export function GTINGuide() {
     return (
         <ToolGuide
@@ -52,4 +50,4 @@ export function GTINGuide() {
             ]}
         />
     )
-}
+}

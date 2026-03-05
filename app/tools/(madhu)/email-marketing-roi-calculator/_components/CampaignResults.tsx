@@ -1,11 +1,9 @@
 "use client"
-
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { Mail, MousePointer, Target, BarChart3, Info } from "lucide-react"
 import { Counter } from "@/app/tools/_shared/components"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
 interface CampaignResultsProps {
     opens: number
     clicks: number
@@ -17,7 +15,6 @@ interface CampaignResultsProps {
     formatNumber: (v: number) => string
     formatCurrency: (v: number) => string
 }
-
 export function CampaignResults({
     opens,
     clicks,
@@ -35,10 +32,8 @@ export function CampaignResults({
                 <BarChart3 className="w-4 h-4 text-blue-500" />
                 Campaign Results
             </h4>
-
             {/* Funnel: Opens → Clicks → Conversions */}
             <div className="grid grid-cols-3 gap-2 mb-3">
-
                 {/* Opens */}
                 <div className="bg-blue-50/60 rounded-xl p-3 border border-blue-100 flex flex-col justify-between relative">
                     <div className="flex items-center justify-between mb-2">
@@ -61,7 +56,6 @@ export function CampaignResults({
                         <div className="w-0 h-0 border-t-[3px] border-t-transparent border-b-[3px] border-b-transparent border-l-[4px] border-l-slate-300" />
                     </div>
                 </div>
-
                 {/* Clicks */}
                 <div className="bg-purple-50/60 rounded-xl p-3 border border-purple-100 flex flex-col justify-between relative">
                     <div className="flex items-center justify-between mb-2">
@@ -84,7 +78,6 @@ export function CampaignResults({
                         <div className="w-0 h-0 border-t-[3px] border-t-transparent border-b-[3px] border-b-transparent border-l-[4px] border-l-slate-300" />
                     </div>
                 </div>
-
                 {/* Conversions */}
                 <div className="bg-emerald-50/60 rounded-xl p-3 border border-emerald-100 flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-2">
@@ -103,7 +96,6 @@ export function CampaignResults({
                     </div>
                 </div>
             </div>
-
             {/* Total Revenue Summary Row */}
             <div className="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                 <div className="flex items-center gap-1.5">
@@ -119,10 +111,10 @@ export function CampaignResults({
                         </TooltipContent>
                     </Tooltip>
                 </div>
-                <span className="text-base font-black text-slate-900">
+                <span className="text-base font-bold text-emerald-600">
                     <Counter value={revenue} formatter={formatCurrency} />
                 </span>
             </div>
         </Card>
     )
-}
+}

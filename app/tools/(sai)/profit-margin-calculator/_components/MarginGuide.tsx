@@ -1,8 +1,6 @@
 "use client"
-
 import { ToolGuide } from "@/app/tools/_shared/components"
 import { CircleDollarSign, Percent, Calculator, Info } from "lucide-react"
-
 export function MarginGuide() {
     return (
         <ToolGuide
@@ -55,4 +53,4 @@ export function MarginGuide() {
             ]}
         />
     )
-}
+}

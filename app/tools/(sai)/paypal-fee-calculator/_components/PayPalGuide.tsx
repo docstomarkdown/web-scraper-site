@@ -1,8 +1,6 @@
 "use client";
-
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide";
 import { BookOpen, Wallet, RefreshCcw } from "lucide-react";
-
 export function PayPalGuide() {
     return (
         <ToolGuide
@@ -30,4 +28,4 @@ export function PayPalGuide() {
             ]}
         />
     );
-}
+}

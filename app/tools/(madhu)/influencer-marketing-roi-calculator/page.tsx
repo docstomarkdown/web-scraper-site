@@ -4,37 +4,31 @@ import { InfluencerROICalculator } from "./_components/CalculatorComponent"
 import { InfluencerHowToUse } from "./_components/InfluencerHowToUse"
 import { InfluencerGuide } from "./_components/InfluencerGuide"
 import { CTA } from "@/components/sections/CTA"
-
 export const metadata: Metadata = {
     title: "Influencer Marketing ROI Calculator - Track Campaign Performance | Web Scraper Pro",
     description: "Calculate the true return on investment for your influencer marketing campaigns. Track fees, gifting costs, and sales to measure campaign success.",
 }
-
 export default function InfluencerROICalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <FadeIn>
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
                             Influencer Marketing ROI Calculator
                         </h1>
                     </FadeIn>
                 </div>
-
                 <div className="mb-20">
                     <InfluencerROICalculator />
                 </div>
-
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <InfluencerHowToUse />
                     </FadeIn>
-
                     <FadeIn delay={0.3}>
                         <InfluencerGuide />
                     </FadeIn>
-
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
@@ -57,7 +51,6 @@ export default function InfluencerROICalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-
                     <FadeIn delay={0.5}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
@@ -65,4 +58,4 @@ export default function InfluencerROICalculatorPage() {
             </div>
         </div>
     )
-}
+}
