@@ -49,7 +49,7 @@ export function ToolFAQ({ title = "Frequently Asked Questions", icon = MessagesS
                             <AccordionContent className="px-6 sm:px-8 pb-6 pt-0">
                                 <div className="pl-12">
                                     <p
-                                        className="text-[14.5px] text-slate-500 leading-relaxed font-medium"
+                                        className="text-[14.5px] text-slate-500 leading-relaxed font-medium [&_strong]:font-bold [&_strong]:text-slate-500 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-blue-600"
                                         dangerouslySetInnerHTML={{ __html: faq.answer }}
                                     />
                                 </div>

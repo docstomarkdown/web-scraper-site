@@ -42,7 +42,7 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                             Step {index + 1}: {step.title}
                                         </h3>
                                         <p
-                                            className="text-[14.5px] text-slate-500 leading-relaxed font-medium line-clamp-6"
+                                            className="text-[14.5px] text-slate-500 leading-relaxed font-medium line-clamp-6 [&_strong]:font-bold [&_strong]:text-slate-500 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-blue-600"
                                             dangerouslySetInnerHTML={{ __html: step.description }}
                                         />
                                     </div>
@@ -72,7 +72,7 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                         Step {index + 1}: {step.title}
                                     </h3>
                                 </div>
-                                <p className="text-[14.5px] text-slate-500 leading-relaxed font-medium pl-11" dangerouslySetInnerHTML={{ __html: step.description }} />
+                                <p className="text-[14.5px] text-slate-500 leading-relaxed font-medium pl-11 [&_strong]:font-bold [&_strong]:text-slate-500 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-blue-600" dangerouslySetInnerHTML={{ __html: step.description }} />
                             </div>
                         </div>
                     )

@@ -27,28 +27,28 @@ export default function AffiliateCommissionCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How is 'Net Revenue' calculated in this tool?",
-                                    answer: "Net Revenue = (Net Sales × Product Price) - (Net Sales × Product Cost) - Total Payout. It represents your absolute 'take-home' profit after manufacturing costs and affiliate commissions are paid. It accounts for refunded units, which many other calculators ignore."
+                                    question: "What is the minimum I need to enter to get results?",
+                                    answer: "Three fields: <strong>Affiliate Traffic (Clicks)</strong>, <strong>Average Order Value</strong>, and <strong>Affiliate Commission Rate</strong>. <strong>Conversion Rate</strong> is pre-filled with an industry default, and <strong>Product Cost</strong> is optional for profitability analysis."
                                 },
                                 {
-                                    question: "What is the 'Break-Even Rate' and why is it important?",
-                                    answer: "The Break-Even Rate is the maximum commission percentage you can pay before you start losing money on a sale. For example, if your margin is 40% and you pay 40% commission, you break even. If you pay 45%, you lose money. This tool highlights this with the 'Profit Safe / Loss Warning' badge."
+                                    question: "How is Affiliate Payout calculated?",
+                                    answer: "<strong>Affiliate Payout</strong> = <strong>Total Revenue</strong> × <strong>Commission %</strong>. Total Revenue itself is calculated as <strong>Estimated Sales</strong> × <strong>Average Order Value</strong>, where Estimated Sales = <strong>Clicks</strong> × <strong>Conversion Rate</strong>. This gives you the total commission you'll pay across all affiliate-driven sales."
                                 },
                                 {
-                                    question: "What are industry standard commission rates?",
-                                    answer: "Standard rates vary: Physical goods typically range from 5–15%, while digital products (with lower COGS) can range from 30–50%. Use this tool to see what *your* specific brand can afford based on your actual margins."
+                                    question: "How is Net Profit calculated?",
+                                    answer: "<strong>Net Profit</strong> = <strong>Total Revenue</strong> − <strong>Affiliate Payout</strong> − <strong>Product Cost</strong>. Product Cost is expressed as a percentage of revenue and has no default value. Filling it in shows you what you actually keep after paying affiliates and covering your fulfillment costs."
                                 },
                                 {
-                                    question: "Should I calculate commissions based on Gross or Net Sales?",
-                                    answer: "Always aim for Net Sales (post-refunds). If you pay commission on gross sales, you will lose significantly more money on every returned item. We recommend a 'holding period' (e.g., Net-30) to ensure the refund window has passed before payouts are finalized."
+                                    question: "Why is Affiliate Payout the primary result?",
+                                    answer: "The main purpose of this tool is to estimate how much you will pay affiliates at a given commission rate. That's why <strong>Affiliate Payout</strong> is highlighted as the primary metric, with <strong>Revenue</strong>, <strong>Sales</strong>, and <strong>Net Profit</strong> shown as supporting context."
                                 },
                                 {
-                                    question: "How does the 'Refund Rate' affect my total payout?",
-                                    answer: "The tool multiplies your gross sales by the refund percentage to find 'Refunded Units'. These units are subtracted from your total sales *before* the commission is calculated. This gives you a more realistic estimate of your actual liability."
+                                    question: "What are typical commission rates?",
+                                    answer: "Typical rates vary by industry: Physical goods range from <strong>5% to 15%</strong>, SaaS and digital products from <strong>20% to 50%</strong>. Test a few different rates in the calculator to see how they uniquely affect your profit margins before setting a firm policy."
                                 },
                                 {
-                                    question: "Can I use this for SaaS or digital products?",
-                                    answer: "Absolutely. For digital products, your 'Product Cost (COGS)' might be very low (e.g., $1-5 for server/support costs). This allows you to see how high you can push your commission rates to attract top-tier affiliates while staying profitable."
+                                    question: "What does the Product Cost (% of Revenue) field do?",
+                                    answer: "This optional field represents your cost to produce or source the product as a percentage of revenue. It has no default — leave it blank if you only care about payout. Fill it in to see your <strong>Net Profit</strong> after deducting both affiliate commissions and product costs."
                                 }
                             ]}
                         />

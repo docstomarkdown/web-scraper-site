@@ -1,8 +1,8 @@
 "use client"
 import React from "react"
 import { Card } from "@/components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info, BarChart3, Lock, Sparkles } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Info, CheckCircle2, Circle, ArrowLeft, Percent } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 interface SecondaryResult {
@@ -13,6 +13,11 @@ interface SecondaryResult {
     tooltip?: string
     isCurrency?: boolean // New flag to handle currency formatting
     className?: string // Added to support custom grid layouts
+}
+export interface ChecklistItem {
+    key?: string
+    label: string
+    isComplete: boolean
 }
 interface ResultSummaryCardProps {
     title: string
@@ -37,6 +42,8 @@ interface ResultSummaryCardProps {
         neutral: string
     }
     className?: string
+    checklistItems?: ChecklistItem[]
+    variant?: 'indicators' | 'editorial'
 }
 export function ResultSummaryCard({
     title,
@@ -50,7 +57,9 @@ export function ResultSummaryCard({
     description,
     emptyMessage,
     dynamicMessages,
-    className
+    className,
+    checklistItems,
+    variant = 'indicators'
 }: ResultSummaryCardProps) {
     const formatValueWithUnit = (value: string | number, unit?: string, isCurrency?: boolean) => {
         const numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]+/g, "")) : value
@@ -130,7 +139,6 @@ export function ResultSummaryCard({
         return text.replace(/Profit/g, "Loss").replace(/PROFIT/g, "LOSS").replace(/profit/g, "loss")
     }
     const getSecondaryValueColor = (result: SecondaryResult) => {
-        if (!isCalculated) return "text-slate-400"
         if (profitLossKey && result.key === profitLossKey) {
             if (numericProfitLoss > 0) return "text-emerald-600"
             if (numericProfitLoss < 0) return "text-red-600"
@@ -138,14 +146,6 @@ export function ResultSummaryCard({
         return "text-slate-400"
     }
     const badge = (() => {
-        if (!isCalculated) {
-            return {
-                text: "AWAITING DATA",
-                bg: "bg-blue-100/50",
-                dot: "bg-blue-400",
-                textCol: "text-blue-600"
-            }
-        }
         if (profitLossKey) {
             if (numericProfitLoss > 0) {
                 return {
@@ -174,9 +174,6 @@ export function ResultSummaryCard({
     // Dynamic description generator
     const displayDescription = (() => {
         if (description) return description // User override always wins
-        if (!isCalculated) {
-            return emptyMessage || "Enter your campaign details to see if you will make or lose money."
-        }
         if (profitLossKey) {
             if (numericProfitLoss > 0) {
                 return dynamicMessages?.positive || "Great job! Your campaign is generating a positive return on investment."
@@ -209,48 +206,155 @@ export function ResultSummaryCard({
         return val
     }
     const displayValue = getDisplayValue(primaryResult.value, primaryResult.key)
+
     return (
-        <Card className={cn(
-            "relative overflow-hidden border-2 border-blue-200/80 bg-gradient-to-br from-blue-100/40 via-blue-50/20 to-indigo-100/40 shadow-[0_15px_50px_rgba(59,130,246,0.15)] p-6 rounded-2xl backdrop-blur-3xl",
-            className
-        )}>
-            {/* Inner subtle border for glass effect */}
-            <div className="absolute inset-0 border border-white/60 rounded-2xl pointer-events-none" />
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+            <Card className={cn(
+                "relative overflow-hidden border border-blue-200/60 bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/20 shadow-sm p-6 rounded-2xl backdrop-blur-3xl",
+                className
+            )}>
+                {/* Inner subtle border for glass effect */}
+                <div className="absolute inset-0 border border-white/40 rounded-2xl pointer-events-none" />
 
-            {/* Background Effects matching a premium aesthetic */}
-            <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[100px] pointer-events-none opacity-[0.12]" />
-            <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-indigo-500 rounded-full blur-[100px] pointer-events-none opacity-[0.1]" />
+                {/* Background Effects matching a premium aesthetic */}
+                <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-blue-300 rounded-full blur-[120px] pointer-events-none opacity-[0.08]" />
+                <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-indigo-400 rounded-full blur-[100px] pointer-events-none opacity-[0.05]" />
 
-            {/* Header Section */}
-            <div className="relative z-10 flex justify-between items-start gap-4 mb-6">
-                <div className="flex-1 min-w-0 space-y-3">
-                    <h3 className="text-slate-500 font-bold text-xs sm:text-sm uppercase tracking-normal break-words">
-                        {displayTitle.split(/(\(.*?\))/g).map((part, i) => (
-                            part.startsWith('(') && part.endsWith(')') ? (
-                                <span key={i} className="normal-case font-bold tracking-normal ml-1 text-slate-500">
-                                    {part}
-                                </span>
-                            ) : (
-                                <span key={i}>{part}</span>
-                            )
-                        ))}
-                    </h3>
+                {/* Header Section */}
+                <div className="relative z-10 mb-6">
+                    <div className="flex justify-between items-start gap-4 mb-3">
+                        <div className="flex flex-col gap-2 flex-1">
+                            <span className="text-[10px] sm:text-[11px] font-black text-blue-600/60 uppercase tracking-[0.2em] leading-none">
+                                Summary Result
+                            </span>
+                            <h3 className="text-slate-700 font-bold text-[14px] sm:text-sm tracking-tight">
+                                {displayTitle.split(/(\(.*?\))/g).map((part, i) => (
+                                    part.startsWith('(') && part.endsWith(')') ? (
+                                        <span key={i} className="normal-case font-bold tracking-tight ml-1">
+                                            {part}
+                                        </span>
+                                    ) : (
+                                        <span key={i}>{part}</span>
+                                    )
+                                ))}
+                            </h3>
+                        </div>
 
-                    <AnimatePresence mode="wait">
-                        {isCalculated && (
-                            /* ─── ACTIVE STATE: Real calculated values ─── */
+                        {showLiveBadge && isCalculated && (
                             <motion.div
-                                key="active-primary"
-                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                initial={{ opacity: 0, scale: 0.9, y: -5 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                className={cn(
+                                    "flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md border border-slate-200/50 transition-all shadow-sm shrink-0 mt-0.5",
+                                    badge.bg
+                                )}
+                            >
+                                <span className="relative flex h-2 w-2">
+                                    <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-60", badge.dot)}></span>
+                                    <span className={cn("relative inline-flex rounded-full h-2 w-2", badge.dot)}></span>
+                                </span>
+                                <span className={cn("text-[8px] sm:text-[10px] font-black tracking-[0.15em] leading-none uppercase", badge.textCol)}>
+                                    {badge.text}
+                                </span>
+                            </motion.div>
+                        )}
+                    </div>
+                </div>
+
+                <AnimatePresence mode="wait">
+                    {!isCalculated ? (
+                        <motion.div
+                            key="empty-state"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.35, ease: "easeOut" }}
+                            className="mt-4 space-y-6 w-full"
+                        >
+                            {(checklistItems && checklistItems.length > 0) ? (
+                                <>
+                                    <div className="mb-6">
+                                        <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
+                                            {emptyMessage || "Enter the below mentioned fields to get the output."}
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-4 pl-1">
+                                        {checklistItems.map((item, idx) => {
+                                            const key = item.key || `checklist-item-${idx}`;
+                                            return (
+                                                <motion.div
+                                                    key={key}
+                                                    layout
+                                                    className={cn(
+                                                        "flex flex-col gap-1.5 transition-all duration-500",
+                                                        item.isComplete ? "opacity-20 translate-x-1" : "opacity-100"
+                                                    )}
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        {/* A subtle indicator bar instead of a clickable circle */}
+                                                        <div className={cn(
+                                                            "w-1 h-4 rounded-full transition-all duration-500",
+                                                            item.isComplete ? "bg-emerald-400" : "bg-blue-400/30"
+                                                        )} />
+                                                        <span className={cn(
+                                                            "text-[12px] font-semibold tracking-tight transition-all duration-500",
+                                                            item.isComplete ? "text-slate-400" : "text-slate-600"
+                                                        )}>
+                                                            {item.label}
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Progress bar line that fills when complete */}
+                                                    <div className="h-[1px] w-full bg-slate-200/50 relative overflow-hidden">
+                                                        <motion.div
+                                                            initial={false}
+                                                            animate={{ x: item.isComplete ? "0%" : "-100%" }}
+                                                            className="absolute inset-0 bg-gradient-to-r from-blue-400 to-emerald-400"
+                                                        />
+                                                    </div>
+                                                </motion.div>
+                                            )
+                                        })}
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center min-h-[220px] px-2 w-full relative z-10">
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[100px] bg-blue-200/20 blur-[50px] rounded-full pointer-events-none" />
+                                    <div className="relative group">
+                                        <div className="relative bg-white/40 backdrop-blur-xl px-7 py-5 rounded-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100/50 text-center transition-all duration-500 hover:bg-white/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+                                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90" />
+                                            <p className="text-[12px] font-medium leading-relaxed tracking-wide bg-gradient-to-br from-slate-600 to-slate-400 bg-clip-text text-transparent max-w-[280px] mx-auto">
+                                                {emptyMessage || "Your results will appear here once you enter the required values."}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="results-state"
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.4, ease: "easeOut" }}
+                            className="flex flex-col relative z-10"
+                        >
+                            {/* ─── Primary Result Value ─── */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
                                 className="space-y-1.5"
                             >
                                 <div className="flex items-baseline gap-2 mt-1 flex-wrap min-w-0 relative">
-                                    {/* Glow behind main text */}
                                     <div className="absolute -inset-4 bg-white/40 blur-2xl rounded-full z-0 block pointer-events-none"></div>
-                                    <div className="relative z-10 text-2xl sm:text-5xl font-extrabold text-blue-600 tracking-tight leading-none overflow-visible">
+                                    <div className="relative z-10 text-2xl sm:text-4xl font-extrabold text-blue-600 tracking-tight leading-none overflow-visible">
                                         {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
                                     </div>
                                     {displayLabel && (
@@ -259,137 +363,70 @@ export function ResultSummaryCard({
                                         </span>
                                     )}
                                 </div>
-                                {/* Contextual description below the value */}
-                                <p className="text-xs text-slate-400 font-medium leading-relaxed">
+                                <p className="text-xs text-slate-500 font-medium leading-relaxed">
                                     {displayDescription}
                                 </p>
                             </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
 
-                {showLiveBadge && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: -5 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        className={cn(
-                            "flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md border border-slate-200/50 transition-all shadow-sm shrink-0 self-start mt-0.5",
-                            badge.bg
-                        )}
-                    >
-                        <span className="relative flex h-2 w-2">
-                            <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-60", badge.dot)}></span>
-                            <span className={cn("relative inline-flex rounded-full h-2 w-2", badge.dot)}></span>
-                        </span>
-                        <span className={cn("text-[8px] sm:text-[10px] font-black tracking-[0.15em] leading-none uppercase", badge.textCol)}>
-                            {badge.text}
-                        </span>
-                    </motion.div>
-                )}
-            </div>
+                            {/* Divider Line */}
+                            <div className="relative h-px w-full bg-gradient-to-r from-transparent via-blue-200/60 to-transparent my-4" />
 
-            {/* Divider Line - Soft gradient */}
-            {isCalculated && (
-                <div className="relative h-px w-full bg-gradient-to-r from-transparent via-blue-200/60 to-transparent mb-4" />
-            )}
+                            {/* Grid Layout for secondary metrics */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10 auto-rows-fr">
+                                {secondaryResults.map((result, idx) => {
+                                    const is3rdOf3 = secondaryResults.length === 3 && idx === 2;
+                                    return (
+                                        <motion.div
+                                            key={result.key}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.35, delay: 0.15 + idx * 0.08, ease: "easeOut" }}
+                                            className={cn(
+                                                "group bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] p-3 sm:p-4 rounded-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_12px_30px_rgba(59,130,246,0.08)]",
+                                                is3rdOf3 ? "sm:col-span-2" : "",
+                                                result.className
+                                            )}
+                                        >
+                                            <div className="flex items-center gap-1.5 mb-2">
+                                                <span className="text-[13px] font-bold text-slate-400 whitespace-nowrap group-hover:text-blue-600/60 transition-colors duration-300">
+                                                    {autoAdjustText(result.label)}
+                                                </span>
+                                                {result.tooltip && (
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button
+                                                                type="button"
+                                                                tabIndex={-1}
+                                                                className="text-slate-400 hover:text-blue-500 transition-colors cursor-help shrink-0"
+                                                            >
+                                                                <Info className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
+                                                            {result.tooltip}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                )}
+                                            </div>
 
-            {/* ─── SECTION: Secondary metrics OR empty-state preview ─── */}
-            <AnimatePresence mode="wait">
-                {!isCalculated ? (
-                    /* ════════════════════════════════════════════════════
-                       EMPTY STATE — Locked metrics preview panel
-                    ════════════════════════════════════════════════════ */
-                    <motion.div
-                        key="empty-metrics"
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8, scale: 0.97 }}
-                        transition={{ duration: 0.35, ease: "easeOut" }}
-                        className="relative z-10"
-                    >
-                        {/* Simple, unified empty state CTA */}
-                        <div className="flex justify-center items-center py-6">
-                            <div className="flex items-center gap-2.5 bg-white/60 border border-blue-200/60 rounded-full px-5 py-2.5 shadow-sm backdrop-blur-sm">
-                                <Lock className="w-4 h-4 text-blue-400" strokeWidth={2.5} />
-                                <span className="text-xs font-bold text-blue-500 tracking-widest uppercase">
-                                    Fill inputs to unlock
-                                </span>
-                                <Sparkles className="w-4 h-4 text-indigo-400" />
+                                            <div className={cn(
+                                                "text-[17.5px] font-black tracking-tight transition-colors duration-300",
+                                                getSecondaryValueColor(result)
+                                            )}>
+                                                {formatValueWithUnit(
+                                                    getDisplayValue(result.value, result.key),
+                                                    result.unit,
+                                                    result.isCurrency
+                                                )}
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
                             </div>
-                        </div>
-
-
-                    </motion.div>
-                ) : (
-                    /* ════════════════════════════════════════════════════
-                       ACTIVE STATE — Real secondary metric cards
-                    ════════════════════════════════════════════════════ */
-                    <motion.div
-                        key="active-metrics"
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.35, ease: "easeOut" }}
-                        className="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10 auto-rows-fr"
-                    >
-                        {secondaryResults.map((result, idx) => {
-                            const is3rdOf3 = secondaryResults.length === 3 && idx === 2;
-                            return (
-                                <motion.div
-                                    key={result.key}
-                                    initial={{ opacity: 0, scale: 0.98 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: idx * 0.05 }}
-                                    className={cn(
-                                        "group bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] p-3 sm:p-4 rounded-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_12px_30px_rgba(59,130,246,0.08)]",
-                                        is3rdOf3 ? "sm:col-span-2" : "",
-                                        result.className
-                                    )}
-                                >
-                                    <div className="flex items-center gap-1.5 mb-2">
-                                        <span className="text-[14.5px] font-medium text-slate-500 whitespace-nowrap group-hover:text-blue-600 transition-colors duration-300">
-                                            {autoAdjustText(result.label)}
-                                        </span>
-                                        {result.tooltip && (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <button
-                                                        type="button"
-                                                        tabIndex={-1}
-                                                        className="text-slate-400 hover:text-blue-500 transition-colors cursor-help shrink-0"
-                                                    >
-                                                        <Info className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </TooltipTrigger>
-                                                <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
-                                                    {result.tooltip}
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        )}
-                                    </div>
-
-                                    <motion.div
-                                        key={`value-${result.key}`}
-                                        initial={{ opacity: 0, y: 6 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.35, delay: idx * 0.08 }}
-                                        className={cn(
-                                            "text-[19px] font-extrabold tracking-tight transition-colors duration-300",
-                                            getSecondaryValueColor(result)
-                                        )}
-                                    >
-                                        {formatValueWithUnit(
-                                            getDisplayValue(result.value, result.key),
-                                            result.unit,
-                                            result.isCurrency
-                                        )}
-                                    </motion.div>
-                                </motion.div>
-                            );
-                        })}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </Card>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Card>
+        </motion.div>
     )
 }

@@ -4,43 +4,43 @@ import { Target, Search, AlertCircle, BookOpen, TrendingUp } from "lucide-react"
 export function AffiliateGuide() {
     return (
         <ToolGuide
-            title="Strategic Commission Strategy"
+            title="How to Plan Your Affiliate Strategy"
             icon={BookOpen}
             items={[
                 {
-                    title: "The 'Net Sales' Principle",
-                    description: "Scaling a program on gross numbers is a common trap. Paying on Net Sales (Total Sales - Refunds - Returns) ensures you're only rewarding affiliates for real, kept revenue. This protects you from 'refund fraud' where an affiliate earns a commission on a purchase that's later returned.",
+                    title: "Start With 3 Core Metrics",
+                    description: "You only need three inputs to get a complete payout estimate: <strong>Affiliate Clicks</strong>, <strong>Average Order Value</strong>, and <strong>Commission Rate</strong>. By starting here, you establish your <strong>baseline revenue</strong> and your <strong>total commission liability</strong> instantly.",
                     icon: Target,
-                    stat: "+12%",
-                    statLabel: "Profit Boost",
+                    stat: "Instant",
+                    statLabel: "Payout Estimate",
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600",
-                    tooltip: "Recover lost profit by paying on net, not gross."
+                    tooltip: "Your core metrics power the Affiliate Payout, Total Revenue, and Estimated Sales outputs."
                 },
                 {
-                    title: "Precision Break-Even Analysis",
-                    description: "Stop guessing your max commission rate. By factorizing your COGS (Cost of Goods Sold), you can identify your mathematical ceiling. This allows you to aggressively offer higher rates for top-performing affiliates without ever dipping into a net loss.",
+                    title: "Test Different Commission Scenarios",
+                    description: "Since <strong>Commission Rate</strong> is a mandatory input with no default, we recommend testing a few different structures. See how a change from <strong>10%</strong> to <strong>15%</strong> immediately inflates your payout overhead vs your expected total revenue.",
                     icon: Search,
-                    stat: "Max Rate",
-                    statLabel: "Calculated",
+                    stat: "Compare",
+                    statLabel: "Scenarios",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600"
                 },
                 {
-                    title: "Managing Performance Risk",
-                    description: "High refund rates can instantly turn a profitable program into a cash drain. Use the Refund Rate input to stress-test your margins. If your refund rate is typically 5%, check if your business still thrives at 10% to ensure your payouts are resilient.",
+                    title: "Understand Product Cost Impact",
+                    description: "The optional <strong>Product Cost</strong> field is your key to calculating <strong>Net Profit</strong>. Without it, you only see top-line revenue and affiliate costs. Adding your cost margin instantly reveals if your program is actually financially sustainable.",
                     icon: AlertCircle,
-                    stat: "Resilient",
-                    statLabel: "Payouts",
+                    stat: "Margins",
+                    statLabel: "Matter",
                     iconBg: "bg-orange-50",
                     iconColor: "text-orange-600",
                     statColor: "text-orange-600"
                 },
                 {
-                    title: "Tiered Commission Advantage",
-                    description: "Instead of a flat rate, consider tiered payouts. Use this calculator to see how a jump from 15% to 20% affects your net revenue per sale. Incentivize volume while keeping your base rate safe for average performers.",
+                    title: "Conversion Rate is Your Lever",
+                    description: "A small change in <strong>conversion rate</strong> has a massive impact on total sales and payout. It is pre-filled at the <strong>2.5%</strong> industry standard, but improving your landing pages to hit <strong>4%</strong> can nearly double your estimated sales and affiliate costs.",
                     icon: TrendingUp,
                     stat: "Scalable",
                     statLabel: "Growth",
@@ -51,4 +51,4 @@ export function AffiliateGuide() {
             ]}
         />
     )
-}
+}

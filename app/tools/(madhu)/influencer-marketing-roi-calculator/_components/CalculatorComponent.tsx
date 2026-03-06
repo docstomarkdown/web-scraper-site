@@ -10,6 +10,7 @@ export function InfluencerROICalculator() {
     // Campaign Costs
     const [influencerFee, setInfluencerFee] = useState<number | "">("")
     const [adSpend, setAdSpend] = useState<number | "">("")
+
     // Product Costs
     const [productCostPerItem, setProductCostPerItem] = useState<number | "">("")
     const [shippingCost, setShippingCost] = useState<number | "">("")
@@ -39,7 +40,7 @@ export function InfluencerROICalculator() {
     const profitLoss = totalRevenue - totalCost
     const roi = totalCost > 0 ? (profitLoss / totalCost) * 100 : 0
     const profitPerOrder = orders > 0 ? profitLoss / orders : 0
-    const hasAnyData = totalCost > 0 || totalRevenue > 0
+    const hasAnyData = influencerFee !== "" && sellingPrice !== "" && totalOrders !== ""
     const formatCurrency = (val: number) => {
         try {
             return new Intl.NumberFormat('en-US', {
@@ -97,27 +98,7 @@ export function InfluencerROICalculator() {
                                     placeholder="500.00"
                                     tooltip="Amount spent on paid ads to boost or promote the campaign."
                                     currency={currency}
-                                />
-                            </div>
-                            {/* Product Costs */}
-                            <div className="space-y-3">
-                                <CalculatorInput
-                                    label="Product Cost per Item"
-                                    value={productCostPerItem}
-                                    onChange={setProductCostPerItem}
-                                    placeholder="25.00"
-                                    tooltip="The cost to produce or purchase one unit of your product (COGS)."
-                                    currency={currency}
-                                    groupingTitle="Product Costs"
-                                    groupingIcon={Box}
-                                />
-                                <CalculatorInput
-                                    label="Shipping Cost"
-                                    value={shippingCost}
-                                    onChange={setShippingCost}
-                                    placeholder="5.00"
-                                    tooltip="Average shipping and handling cost per order."
-                                    currency={currency}
+                                    isOptional={true}
                                 />
                             </div>
                             {/* Sales */}
@@ -138,6 +119,29 @@ export function InfluencerROICalculator() {
                                     onChange={setTotalOrders}
                                     placeholder="50"
                                     tooltip="Total number of orders generated during this campaign."
+                                />
+                            </div>
+                            {/* Product Costs */}
+                            <div className="space-y-3">
+                                <CalculatorInput
+                                    label="Product Cost per Item"
+                                    value={productCostPerItem}
+                                    onChange={setProductCostPerItem}
+                                    placeholder="25.00"
+                                    tooltip="The cost to produce or purchase one unit of your product (COGS)."
+                                    currency={currency}
+                                    groupingTitle="Product Costs"
+                                    groupingIcon={Box}
+                                    isOptional={true}
+                                />
+                                <CalculatorInput
+                                    label="Shipping Cost"
+                                    value={shippingCost}
+                                    onChange={setShippingCost}
+                                    placeholder="5.00"
+                                    tooltip="Average shipping and handling cost per order."
+                                    currency={currency}
+                                    isOptional={true}
                                 />
                             </div>
 
@@ -185,19 +189,27 @@ export function InfluencerROICalculator() {
                         ]}
                         isCalculated={hasAnyData}
                         profitLossKey="profitLoss"
+                        emptyMessage="Enter the below mentioned fields to get the output for your ROI."
+                        checklistItems={[
+                            { key: 'fee', label: 'Set your Influencer Fee', isComplete: influencerFee !== "" },
+                            { key: 'price', label: 'Define Average Selling Price', isComplete: sellingPrice !== "" },
+                            { key: 'orders', label: 'Estimate Number of Orders', isComplete: totalOrders !== "" }
+                        ]}
                     />
-                    <BudgetAllocation
-                        fee={fee}
-                        adSpend={ad}
-                        productCost={costPerItem * orders}
-                        shippingCost={ship * orders}
-                        totalCost={totalCost}
-                        feePct={feePct}
-                        adPct={adPct}
-                        productPct={productPct}
-                        shippingPct={shippingPct}
-                        formatCurrency={formatCurrency}
-                    />
+                    <div className="flex-1">
+                        <BudgetAllocation
+                            fee={fee}
+                            adSpend={ad}
+                            productCost={costPerItem * orders}
+                            shippingCost={ship * orders}
+                            totalCost={totalCost}
+                            feePct={feePct}
+                            adPct={adPct}
+                            productPct={productPct}
+                            shippingPct={shippingPct}
+                            formatCurrency={formatCurrency}
+                        />
+                    </div>
                 </div>
             </div>
         </FadeIn>

@@ -8,39 +8,39 @@ export function InfluencerGuide() {
             icon={BookOpen}
             items={[
                 {
-                    title: "Product Cost Dominates at Scale",
-                    description: "The Influencer Fee is a one-time fixed cost, but Product Cost and Shipping are multiplied by every order. On a campaign with 500 orders, a $10 shipping cost adds $5,000 to your total spend. Always check the Cost Breakdown chart to see which category is eating your margin.",
+                    title: "Gross ROI vs. Net Profit ROI",
+                    description: "If you only fill out the mandatory fields (<strong>Fee</strong>, <strong>Selling Price</strong>, <strong>Orders</strong>), you are calculating a <strong>Gross ROI</strong> (or <strong>ROAS</strong>). This tells you the pure marketing efficiency of the campaign. If you fill out the optional <strong>Product</strong> and <strong>Shipping</strong> costs, you are calculating a <strong>True Net Profit ROI</strong>. Both are incredibly valuable metrics depending on what you are optimizing.",
                     icon: TrendingUp,
-                    stat: "Per Order",
-                    statLabel: "Variable Cost",
+                    stat: "Accuracy",
+                    statLabel: "Calculation Mode",
                     iconBg: "bg-blue-100",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "Product Cost and Shipping scale with every order, making them the biggest margin risk on high-volume campaigns."
+                    tooltip: "Your Profit and ROI dials will auto-adjust based on whether you want a quick Gross estimate or a deep Net Profit breakdown."
                 },
                 {
-                    title: "Selling Price vs. Cost per Order",
-                    description: "Your <strong>Profit per Order</strong> is your most actionable metric. It tells you how much you earn after covering product cost and shipping on each sale. If Profit per Order is negative, no amount of extra orders will save the campaign — you must either raise the selling price or cut unit costs.",
+                    title: "Why Variable Costs Matter at Scale",
+                    description: "Optional fields like <strong>Product Cost</strong> and <strong>Shipping</strong> are <strong>Variable Costs</strong>. Unlike the <strong>Influencer Fee</strong> (which is a one-time fixed cost), variable costs scale with every single order. On a campaign with 1,000 orders, leaving out a $5 shipping cost means your estimated profit is artificially inflated by $5,000. Add it to the 'Product Costs' section to see the real impact.",
                     icon: ShoppingCart,
-                    stat: "Key Metric",
-                    statLabel: "Profit/Order",
+                    stat: "Per Order",
+                    statLabel: "Scale Economics",
                     iconBg: "bg-emerald-100",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600",
-                    tooltip: "Profit per Order = (Selling Price − Product Cost − Shipping) minus a share of campaign fixed costs."
+                    tooltip: "Inputting Product and Shipping Costs allows the calculator to show you your exact 'Profit Per Order' margin."
                 },
                 {
-                    title: "When a Negative ROI is Still Worth It",
-                    description: "A negative ROI does not always mean failure. If the influencer campaign generated significant UGC content, grew your email list, or drove brand search volume, the long-term customer lifetime value (LTV) can easily justify a short-term loss. Use this tool to quantify the direct return, then consider LTV separately.",
+                    title: "When a Negative ROI is Still a 'Win'",
+                    description: "Sometimes a calculated ROI of <strong>-10%</strong> isn't actually a failure. If you ran a campaign where the primary goal was acquiring high-quality User Generated Content (UGC) for your own ads, or growing your brand following, you must consider those secondary assets. If the UGC lowers your facebook ad <strong>CPA</strong> next week, the influencer campaign was a success.",
                     icon: DollarSign,
-                    stat: "LTV",
-                    statLabel: "Long-Term Value",
+                    stat: "Brand Value",
+                    statLabel: "Beyond the Math",
                     iconBg: "bg-purple-100",
                     iconColor: "text-purple-600",
                     statColor: "text-purple-600",
-                    tooltip: "Direct ROI measures only immediate sales. Factor in customer retention and repeat purchases for the full picture."
+                    tooltip: "Use this tool to track direct response math, but always weigh it against the qualitative branding assets obtained."
                 }
             ]}
         />
     )
-}
+}

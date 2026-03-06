@@ -27,20 +27,20 @@ export default function InfluencerROICalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
+                                    question: "Why are some fields mandatory and others optional?",
+                                    answer: "To calculate a basic marketing ROI, you only need three core numbers: <strong>Influencer Fee</strong>, <strong>Selling Price</strong>, and <strong>Number of Orders</strong>. We made secondary costs (like <strong>Ad Spend</strong>, <strong>Product Cost</strong>, and <strong>Shipping</strong>) optional so you can get a quick estimate in seconds, while still offering the flexibility to calculate a deeper <strong>Net Profit ROI</strong> if you know those numbers."
+                                },
+                                {
+                                    question: "What happens if I leave the optional 'Product Cost' or 'Shipping' fields blank?",
+                                    answer: "If you leave the optional fields empty, the calculator simply treats them as $0. This means your final ROI will reflect a <strong>Gross Return on Ad Spend (ROAS)</strong> rather than a <strong>True Net Profit</strong>. It's perfectly fine to do this if you are just evaluating the marketing efficiency of the influencer."
+                                },
+                                {
                                     question: "What is a good ROI % for an influencer campaign?",
-                                    answer: "A healthy direct-response campaign typically targets a <strong>ROI of 100% or higher</strong>, meaning you earn back at least double what you spent. For pure brand awareness campaigns, breaking even (0% ROI) is often acceptable if the campaign builds long-term audience trust and search volume. Anything above 200% is considered strong performance."
+                                    answer: "A healthy direct-response campaign typically targets a <strong>ROI of 100% or higher</strong>, meaning you earn back at least double what you spent on the campaign. For pure brand awareness, breaking even (0% ROI) is often acceptable if the campaign builds long-term audience trust and search volume."
                                 },
                                 {
-                                    question: "Why does 'Product Cost per Item' and 'Shipping Cost' get multiplied by Total Orders?",
-                                    answer: "Because these are <strong>variable costs</strong> — they are incurred once for every single order fulfilled. Unlike the Influencer Fee and Ad Spend which are fixed one-time payments, your product and shipping costs scale directly with sales volume. The tool multiplies them by Total Orders to give you an accurate Total Cost figure."
-                                },
-                                {
-                                    question: "What does 'Profit per Order' tell me?",
-                                    answer: "<strong>Profit per Order</strong> shows how much net profit you make on every individual sale after accounting for all costs (campaign fees + product + shipping). If this number is negative, you are losing money on each order sold and no volume of orders will make the campaign profitable without changes to your pricing or cost structure."
-                                },
-                                {
-                                    question: "How do I track which orders came from the influencer campaign?",
-                                    answer: "The most reliable methods are: (1) a unique <strong>discount code</strong> tied exclusively to the influencer (e.g. 'SARAH20'), (2) a <strong>UTM-tagged link</strong> tracked in Google Analytics, or (3) a dedicated <strong>landing page URL</strong>. Without one of these attribution methods, you will significantly undercount the campaign's actual sales."
+                                    question: "How is 'Total Cost' calculated if I fill out all the fields?",
+                                    answer: "The calculator adds your fixed upfront costs (<strong>Influencer Fee + Ad Spend</strong>) to your variable fulfillment costs. It multiplies your (<strong>Product Cost + Shipping Cost</strong>) by the <strong>Total Orders</strong>, and then adds that figure to your campaign spend to give you a highly accurate <strong>True Total Cost</strong>."
                                 }
                             ]}
                         />

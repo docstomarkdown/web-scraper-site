@@ -7,19 +7,19 @@ export function InfluencerHowToUse() {
             title="How to Calculate Your ROI"
             steps={[
                 {
-                    title: "Investment Details",
-                    description: "Enter the <strong>Influencer Fee</strong> and <strong>Ad Spend</strong> to capture your total upfront campaign investment.",
+                    title: "Campaign Costs",
+                    description: "Start by entering your <strong>Influencer Fee</strong>. You can also optionally include any extra paid <strong>Ad Spend</strong> used to boost the campaign.",
                     icon: DollarSign
                 },
                 {
-                    title: "Cost Allocation",
-                    description: "Add your <strong>Product Cost per Item</strong> and <strong>Shipping Cost</strong> to factor in fulfillment expenses.",
-                    icon: Package
+                    title: "Sales Metrics",
+                    description: "Input your <strong>Average Selling Price</strong> and the <strong>Total Orders</strong> driven by the influencer to instantly generate your Gross ROI.",
+                    icon: ShoppingCart
                 },
                 {
-                    title: "Performance Analysis",
-                    description: "Input the <strong>Average Selling Price</strong> and <strong>Total Orders</strong> to see your net profit and final ROI.",
-                    icon: ShoppingCart
+                    title: "Product Costs",
+                    description: "For the most precise final ROI, input your <strong>Product Cost per Item</strong> and <strong>Shipping</strong>. This transforms your primary result from a Gross Estimate into your <strong>True Net Profit</strong>.",
+                    icon: Package
                 }
             ]}
         />

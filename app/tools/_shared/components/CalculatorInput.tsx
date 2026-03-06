@@ -25,6 +25,7 @@ export interface CalculatorInputProps {
     highlight?: boolean
     benchmarkBadge?: boolean
     hideSeparator?: boolean
+    isOptional?: boolean
 }
 export function CalculatorInput({
     label,
@@ -45,7 +46,8 @@ export function CalculatorInput({
     autoFocus = false,
     highlight = false,
     benchmarkBadge = false,
-    hideSeparator = false
+    hideSeparator = false,
+    isOptional = false
 }: CalculatorInputProps) {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
@@ -65,19 +67,15 @@ export function CalculatorInput({
             const isNextInput = next?.classList.contains('calculator-input-row') && next.getAttribute('data-has-title') !== 'true';
 
             let labeled = false;
-            // Rule: Line only starts if there's a title AND at least one following input
-            if (groupingTitle && isNextInput) {
+            // Rule: Line starts if there's a title (even if single) OR if it's part of an ongoing titled sequence
+            if (groupingTitle) {
                 labeled = true;
-            } else if (!groupingTitle) {
+            } else {
                 // Crawl back to see if this branch was started by a labeled starter
                 let current = prev;
                 while (current && current.classList.contains('calculator-input-row')) {
                     if (current.getAttribute('data-has-title') === 'true') {
-                        // Found the starter of this unlabeled sequence
-                        const nextOfStarter = current.nextElementSibling;
-                        if (nextOfStarter?.classList.contains('calculator-input-row')) {
-                            labeled = true;
-                        }
+                        labeled = true;
                         break;
                     }
                     current = current.previousElementSibling;
@@ -194,7 +192,7 @@ export function CalculatorInput({
                         className="absolute left-[-19.5px] w-[1.5px] bg-blue-200/70 z-0"
                         style={{
                             top: groupingTitle ? '14px' : '-50px', // Start at icon center or reach deep up
-                            bottom: isLastInGroup ? '20px' : '-50px', // Stop at center of last item or reach deep down
+                            bottom: isLastInGroup ? '10px' : '-50px', // Stop at center of last item or reach deep down
                         }}
                     />
                 )}
@@ -225,6 +223,11 @@ export function CalculatorInput({
                             className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1"
                         >
                             {label}
+                            {isOptional && (
+                                <span className="ml-1.5 font-normal italic text-[12px] text-slate-400 lowercase tracking-normal">
+                                    (optional)
+                                </span>
+                            )}
                         </Label>
                         {tooltip && (
                             <Tooltip>
@@ -265,14 +268,14 @@ export function CalculatorInput({
                                             "hover:border-blue-300 hover:shadow-md",
                                             "focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none",
                                             "w-36 sm:w-44",
-                                            isHighlighted && "bg-blue-50/20 border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]",
+                                            isHighlighted && "border-blue-400 shadow-sm",
                                             finalPrefix && "pl-10",
                                             finalSuffix && "pr-10"
                                         )}
                                         min={String(type) === "number" ? min : undefined}
                                         max={String(type) === "number" ? max : undefined}
                                         step={String(type) === "number" ? step : undefined}
-                                        placeholder={placeholder ? (String(type) === "number" && !placeholder.startsWith("Eg:") ? `Eg: ${placeholder}` : placeholder) : undefined}
+                                        placeholder={placeholder ? (String(type) === "number" && !placeholder.startsWith("Eg:") && !placeholder.startsWith("Default:") && !placeholder.startsWith("Avg:") ? `Eg: ${placeholder}` : placeholder) : undefined}
                                     />
                                     {finalSuffix && (
                                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-xs font-semibold group-focus-within:text-blue-500 transition-colors pointer-events-none z-10">
