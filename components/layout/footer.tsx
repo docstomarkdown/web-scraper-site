@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="space-y-6">
             <Link href="/" className="flex items-center space-x-2 group">
               <Icons.logo className="w-8 h-8" />
-              <span className="text-xl font-bold text-slate-900 tracking-tight">{productConfig.product.logoText}</span>
+              <span className="text-xl font-bold text-slate-600 tracking-tight">{productConfig.product.logoText}</span>
             </Link>
             <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
               {productConfig.product.description}
@@ -40,7 +40,7 @@ export default function Footer() {
 
           {/* Product Links */}
           <div>
-            <h3 className="text-slate-900 font-semibold mb-6">Product</h3>
+            <h3 className="text-slate-600 font-bold text-xs uppercase tracking-widest mb-6">Product</h3>
             <ul className="space-y-3 text-sm">
               {navigationConfig.footerNav.product.map((item) => (
                 <li key={item.href}>
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Free Tools (Empty for now) */}
           <div>
-            <h3 className="text-slate-900 font-semibold mb-6">Free Tools</h3>
+            <h3 className="text-slate-600 font-bold text-xs uppercase tracking-widest mb-6">Free Tools</h3>
             <ul className="space-y-3 text-sm">
               {navigationConfig.footerNav.freeTools.map((item) => (
                 <li key={item.href}>
@@ -69,7 +69,7 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h3 className="text-slate-900 font-semibold mb-6">Legal</h3>
+            <h3 className="text-slate-600 font-bold text-xs uppercase tracking-widest mb-6">Legal</h3>
             <ul className="space-y-3 text-sm">
               {navigationConfig.footerNav.legal.map((item) => (
                 <li key={item.href}>

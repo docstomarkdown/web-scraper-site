@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { HelpCircle, RotateCcw } from "lucide-react"
+import { HelpCircle, RotateCw } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CurrencyCombobox } from "./CurrencyCombobox"
 interface CalculatorCardHeaderProps {
@@ -22,7 +22,6 @@ export function CalculatorCardHeader({
     tooltip,
     onReset,
 }: CalculatorCardHeaderProps) {
-    const [isSpinning, setIsSpinning] = React.useState(false)
 
     const scrollToGuide = () => {
         const element = document.getElementById(guideId)
@@ -70,27 +69,14 @@ export function CalculatorCardHeader({
                     </div>
                 )}
                 {onReset && (
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    if (!isSpinning) {
-                                        setIsSpinning(true)
-                                        setTimeout(() => setIsSpinning(false), 500)
-                                    }
-                                    if (onReset) onReset()
-                                }}
-                                className="group flex items-center justify-center h-10 w-10 text-slate-400 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-md rounded-xl transition-all duration-300 active:scale-90"
-                                aria-label="Reset Calculator"
-                            >
-                                <RotateCcw className={`h-4 w-4 transition-transform duration-500 ${isSpinning ? '-rotate-180' : ''}`} />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800 font-medium">
-                            Reset inputs
-                        </TooltipContent>
-                    </Tooltip>
+                    <button
+                        type="button"
+                        onClick={onReset}
+                        className="group flex items-center justify-center h-10 w-10 text-slate-500 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 shadow hover:shadow-md rounded-xl transition-all duration-300 active:scale-90"
+                        aria-label="Reset Calculator"
+                    >
+                        <RotateCw className="h-4 w-4" />
+                    </button>
                 )}
             </div>
         </CardHeader>

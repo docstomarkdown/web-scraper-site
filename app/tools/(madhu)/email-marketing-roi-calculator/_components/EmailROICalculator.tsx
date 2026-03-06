@@ -13,13 +13,16 @@ import { CampaignResults } from "./CampaignResults"
 export function EmailROICalculator() {
     // Currency
     const [currency, setCurrency] = useState("USD")
-    // Inputs — pre-filled with realistic industry benchmark defaults
+    // Mandatory inputs
     const [listSize, setListSize] = useState<number | "">("")
     const [campaignCost, setCampaignCost] = useState<number | "">("")
+
+    // Optional metrics — pre-filled with industry benchmark defaults
     const [openRate, setOpenRate] = useState<number | "">(20)             // industry avg open rate
     const [clickThroughRate, setClickThroughRate] = useState<number | "">(2.5)   // CTR on opens
     const [conversionRate, setConversionRate] = useState<number | "">(3)          // post-click conversion
     const [averageOrderValue, setAverageOrderValue] = useState<number | "">(50)    // avg order value
+
     const val = (v: number | "") => (v === "" ? 0 : v)
     const handleReset = () => {
         setListSize("")
@@ -37,6 +40,7 @@ export function EmailROICalculator() {
     const ctrPct = val(clickThroughRate)
     const convPct = val(conversionRate)
     const aov = val(averageOrderValue)
+
     const opens = Math.round(size * (openPct / 100))
     const clicks = Math.round(opens * (ctrPct / 100))
     const conversions = Math.round(clicks * (convPct / 100))
@@ -44,7 +48,9 @@ export function EmailROICalculator() {
     const netProfit = revenue - cost
     const roi = cost > 0 ? (netProfit / cost) * 100 : 0
     const cpa = conversions > 0 ? cost / conversions : 0
-    const isCalculated = size > 0 || cost > 0
+
+    // Value is calculated ONLY when all mandatory fields (size and cost) are filled
+    const isCalculated = listSize !== "" && campaignCost !== ""
     // Currency formatting
     const formatCurrency = (v: number) =>
         new Intl.NumberFormat("en-US", {
@@ -94,11 +100,11 @@ export function EmailROICalculator() {
                                     label="Estimated Open Rate"
                                     value={openRate}
                                     onChange={setOpenRate}
-                                    placeholder="20"
+                                    placeholder="Avg: 20"
                                     tooltip="Percentage of subscribers who open your email. Industry average: 20–25%."
                                     suffix="%"
                                     hint="Industry standard range: 20% – 25%"
-                                    groupingTitle="Email Performance"
+                                    groupingTitle="Email Performance (Optional)"
                                     groupingIcon={MousePointerClick}
                                     benchmarkBadge={true}
                                 />
@@ -106,7 +112,7 @@ export function EmailROICalculator() {
                                     label="Email CTR (on Opens)"
                                     value={clickThroughRate}
                                     onChange={setClickThroughRate}
-                                    placeholder="2.5"
+                                    placeholder="Avg: 2.5"
                                     tooltip="Percentage of email openers who clicked a link. Industry average: 2–3%."
                                     suffix="%"
                                     hint="Industry standard range: 2% – 3%"
@@ -115,7 +121,7 @@ export function EmailROICalculator() {
                                     label="Post-Click Conversion Rate"
                                     value={conversionRate}
                                     onChange={setConversionRate}
-                                    placeholder="3"
+                                    placeholder="Avg: 3"
                                     tooltip="Percentage of link clickers who completed a purchase. Industry average: 2–5%."
                                     suffix="%"
                                     hint="Industry standard range: 2% – 5%"
@@ -124,8 +130,8 @@ export function EmailROICalculator() {
                                     label="Avg. Order Value (AOV)"
                                     value={averageOrderValue}
                                     onChange={setAverageOrderValue}
-                                    placeholder="50.00"
-                                    tooltip="Average revenue from each purchase. Pre-filled at 50 as a starting point."
+                                    placeholder="Avg: 50"
+                                    tooltip="Average revenue from each purchase. If left empty, 50 is used."
                                     currency={currency}
                                     hint="Industry standard range: $50 – $150"
                                 />
@@ -163,7 +169,11 @@ export function EmailROICalculator() {
                         showLiveBadge={true}
                         isCalculated={isCalculated}
                         profitLossKey="netProfit"
-                        emptyMessage="Enter your list size and campaign cost to estimate your email ROI."
+                        emptyMessage="Enter the below mentioned fields to get the output."
+                        checklistItems={[
+                            { key: 'size', label: 'Enter Email List Size', isComplete: listSize !== "" },
+                            { key: 'cost', label: 'Set Campaign Cost', isComplete: campaignCost !== "" }
+                        ]}
                         dynamicMessages={{
                             positive: "Great job! Your email campaign is profitable and generating a positive return.",
                             negative: "Your campaign is currently at a loss. Try improving your Open Rate or CTR to boost results.",

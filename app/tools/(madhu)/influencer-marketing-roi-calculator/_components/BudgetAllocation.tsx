@@ -34,14 +34,14 @@ export function BudgetAllocation({
         { name: "Shipping Costs", value: shippingCost, color: "#a855f7" },
     ].filter(i => i.value > 0)
     return (
-        <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 flex flex-col">
+        <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden p-5 flex flex-col h-full">
             <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                 <Wallet className="w-4 h-4 text-blue-500" />
                 Budget Allocation
             </h4>
-            <div className="flex items-center gap-4 min-h-0">
+            <div className="flex items-center gap-8 min-h-0 flex-1">
                 {/* Left: Chart */}
-                <div className="h-[140px] w-[140px] relative shrink-0">
+                <div className="h-[160px] w-[160px] relative shrink-0">
                     {totalCost > 0 ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <RechartsPie>
@@ -69,13 +69,13 @@ export function BudgetAllocation({
                     {/* Center Label */}
                     {totalCost > 0 && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span className="text-[10px] font-medium text-slate-400">Total</span>
-                            <span className="text-xs font-bold text-slate-900">{formatCurrency(totalCost)}</span>
+                            <span className="text-[11px] font-medium text-slate-400">Total</span>
+                            <span className="text-sm font-bold text-slate-900">{formatCurrency(totalCost)}</span>
                         </div>
                     )}
                 </div>
                 {/* Right: Legend */}
-                <div className="flex-1 grid grid-cols-1 gap-2">
+                <div className="flex-1 grid grid-cols-1 gap-3">
                     {[
                         { label: "Influencer Fee", value: fee, pct: feePct, color: "bg-blue-500" },
                         { label: "Ad Spend", value: adSpend, pct: adPct, color: "bg-emerald-500" },
@@ -95,4 +95,4 @@ export function BudgetAllocation({
             </div>
         </Card>
     )
-}
+}

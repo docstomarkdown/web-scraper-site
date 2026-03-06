@@ -5,6 +5,11 @@
 // 1.How to Use This Tool.
 // 2.The Hidden Truth About This Process
 // 3.Frequently Asked Questions
+
+// anlayze the Affiliate, which input fields are mandatory and which are optional, even if a particular field is not entered 
+// it can calculate the value, the value should be calculated only when all the mandatory fields are filled. the optional input
+// should be shown to user in best premium ui way
+
 "use client"
 import React from "react"
 import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy, Check, RotateCcw } from "lucide-react"
