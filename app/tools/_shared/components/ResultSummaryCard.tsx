@@ -2,7 +2,7 @@
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info, CheckCircle2, Circle, ArrowLeft, Percent } from "lucide-react"
+import { Info, CheckCircle2, Circle, ArrowLeft, Percent, Check, Activity } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 interface SecondaryResult {
@@ -36,6 +36,7 @@ interface ResultSummaryCardProps {
     profitLossKey?: string
     description?: string
     emptyMessage?: string
+    emptyResultLabel?: string
     dynamicMessages?: {
         positive: string
         negative: string
@@ -56,11 +57,28 @@ export function ResultSummaryCard({
     profitLossKey,
     description,
     emptyMessage,
+    emptyResultLabel,
     dynamicMessages,
     className,
     checklistItems,
     variant = 'indicators'
 }: ResultSummaryCardProps) {
+    const [showResults, setShowResults] = React.useState(isCalculated)
+    const completedCount = checklistItems ? checklistItems.filter(i => i.isComplete).length : 0
+    const totalCount = checklistItems ? checklistItems.length : 0
+
+    React.useEffect(() => {
+        if (isCalculated) {
+            // A micro-delay (200ms) to ensure the very last green tick flashes on screen before the view dissolves, without causing an artificial pause
+            const timer = setTimeout(() => {
+                setShowResults(true)
+            }, 350)
+            return () => clearTimeout(timer)
+        } else {
+            setShowResults(false)
+        }
+    }, [isCalculated])
+
     const formatValueWithUnit = (value: string | number, unit?: string, isCurrency?: boolean) => {
         const numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]+/g, "")) : value
         if (isCurrency && currency && !isNaN(numValue)) {
@@ -149,18 +167,18 @@ export function ResultSummaryCard({
         if (profitLossKey) {
             if (numericProfitLoss > 0) {
                 return {
-                    text: "PROFIT",
+                    text: "Profit",
                     bg: "bg-emerald-100/80",
                     dot: "bg-emerald-500",
-                    textCol: "text-emerald-700"
+                    textCol: "text-emerald-700 font-bold"
                 }
             }
             if (numericProfitLoss < 0) {
                 return {
-                    text: "LOSS",
+                    text: "Loss",
                     bg: "bg-red-100/80",
                     dot: "bg-red-500",
-                    textCol: "text-red-700"
+                    textCol: "text-red-700 font-bold"
                 }
             }
         }
@@ -214,7 +232,7 @@ export function ResultSummaryCard({
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
             <Card className={cn(
-                "relative overflow-hidden border border-blue-200/60 bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/20 shadow-sm p-6 rounded-2xl backdrop-blur-3xl",
+                "relative overflow-hidden border border-blue-200/60 bg-gradient-to-br from-blue-50 to-blue-100/40 shadow-sm p-6 rounded-2xl backdrop-blur-3xl",
                 className
             )}>
                 {/* Inner subtle border for glass effect */}
@@ -225,116 +243,140 @@ export function ResultSummaryCard({
                 <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-indigo-400 rounded-full blur-[100px] pointer-events-none opacity-[0.05]" />
 
                 {/* Header Section */}
-                <div className="relative z-10 mb-6">
-                    <div className="flex justify-between items-start gap-4 mb-3">
-                        <div className="flex flex-col gap-2 flex-1">
-                            <span className="text-[10px] sm:text-[11px] font-black text-blue-600/60 uppercase tracking-[0.2em] leading-none">
-                                Summary Result
-                            </span>
-                            <h3 className="text-slate-700 font-bold text-[14px] sm:text-sm tracking-tight">
-                                {displayTitle.split(/(\(.*?\))/g).map((part, i) => (
-                                    part.startsWith('(') && part.endsWith(')') ? (
-                                        <span key={i} className="normal-case font-bold tracking-tight ml-1">
-                                            {part}
-                                        </span>
-                                    ) : (
-                                        <span key={i}>{part}</span>
-                                    )
-                                ))}
-                            </h3>
+                <div className="relative z-10 mb-4">
+                    <div className="flex justify-between items-start gap-4">
+                        <div className="flex flex-col flex-1 justify-center">
+                            <div className="flex items-center gap-2.5 flex-wrap mt-0.5">
+                                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
+                                    <Activity className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
+                                    Results Panel
+                                </span>
+                            </div>
                         </div>
 
-                        {showLiveBadge && isCalculated && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: -5 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                className={cn(
-                                    "flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md border border-slate-200/50 transition-all shadow-sm shrink-0 mt-0.5",
-                                    badge.bg
-                                )}
-                            >
-                                <span className="relative flex h-2 w-2">
-                                    <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-60", badge.dot)}></span>
-                                    <span className={cn("relative inline-flex rounded-full h-2 w-2", badge.dot)}></span>
-                                </span>
-                                <span className={cn("text-[8px] sm:text-[10px] font-black tracking-[0.15em] leading-none uppercase", badge.textCol)}>
-                                    {badge.text}
-                                </span>
-                            </motion.div>
-                        )}
+                        <AnimatePresence mode="popLayout">
+                            {!showResults && totalCount > 0 && (
+                                <motion.div
+                                    key="progress"
+                                    initial={{ opacity: 0, x: 10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 10 }}
+                                    className="bg-white/60 border border-white/70 px-3 py-1.5 rounded-full flex items-center gap-2.5 shadow-sm mt-0.5"
+                                >
+                                    <span className="text-[10px] font-black text-blue-600">{completedCount}/{totalCount}</span>
+                                    <div className="w-16 h-1.5 bg-blue-100/80 rounded-full overflow-hidden">
+                                        <motion.div
+                                            className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+                                            initial={{ width: "0%" }}
+                                            animate={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
+                                            transition={{ duration: 0.45, ease: "easeOut" }}
+                                        />
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {showLiveBadge && showResults && (
+                                <motion.div
+                                    key="live-badge"
+                                    initial={{ opacity: 0, scale: 0.9, y: -5 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9, y: -5 }}
+                                    className={cn(
+                                        "flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md border border-slate-200/50 transition-all shadow-sm shrink-0 mt-0.5",
+                                        badge.bg
+                                    )}
+                                >
+                                    <span className="relative flex h-2 w-2">
+                                        <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-60", badge.dot)}></span>
+                                        <span className={cn("relative inline-flex rounded-full h-2 w-2", badge.dot)}></span>
+                                    </span>
+                                    <span className={cn("text-[10px] sm:text-[11px] font-bold tracking-[0.05em] leading-none", badge.textCol)}>
+                                        {badge.text}
+                                    </span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
 
                 <AnimatePresence mode="wait">
-                    {!isCalculated ? (
+                    {!showResults ? (
                         <motion.div
                             key="empty-state"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.35, ease: "easeOut" }}
-                            className="mt-4 space-y-6 w-full"
+                            className="relative z-10"
                         >
-                            {(checklistItems && checklistItems.length > 0) ? (
-                                <>
-                                    <div className="mb-6">
-                                        <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                                            {emptyMessage || "Enter the below mentioned fields to get the output."}
-                                        </p>
-                                    </div>
-
-                                    <div className="space-y-4 pl-1">
-                                        {checklistItems.map((item, idx) => {
-                                            const key = item.key || `checklist-item-${idx}`;
-                                            return (
-                                                <motion.div
-                                                    key={key}
-                                                    layout
-                                                    className={cn(
-                                                        "flex flex-col gap-1.5 transition-all duration-500",
-                                                        item.isComplete ? "opacity-20 translate-x-1" : "opacity-100"
-                                                    )}
-                                                >
-                                                    <div className="flex items-center gap-3">
-                                                        {/* A subtle indicator bar instead of a clickable circle */}
-                                                        <div className={cn(
-                                                            "w-1 h-4 rounded-full transition-all duration-500",
-                                                            item.isComplete ? "bg-emerald-400" : "bg-blue-400/30"
-                                                        )} />
-                                                        <span className={cn(
-                                                            "text-[12px] font-semibold tracking-tight transition-all duration-500",
-                                                            item.isComplete ? "text-slate-400" : "text-slate-600"
-                                                        )}>
-                                                            {item.label}
-                                                        </span>
-                                                    </div>
-
-                                                    {/* Progress bar line that fills when complete */}
-                                                    <div className="h-[1px] w-full bg-slate-200/50 relative overflow-hidden">
-                                                        <motion.div
-                                                            initial={false}
-                                                            animate={{ x: item.isComplete ? "0%" : "-100%" }}
-                                                            className="absolute inset-0 bg-gradient-to-r from-blue-400 to-emerald-400"
-                                                        />
-                                                    </div>
-                                                </motion.div>
-                                            )
-                                        })}
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center min-h-[220px] px-2 w-full relative z-10">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[100px] bg-blue-200/20 blur-[50px] rounded-full pointer-events-none" />
-                                    <div className="relative group">
-                                        <div className="relative bg-white/40 backdrop-blur-xl px-7 py-5 rounded-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100/50 text-center transition-all duration-500 hover:bg-white/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-                                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90" />
-                                            <p className="text-[12px] font-medium leading-relaxed tracking-wide bg-gradient-to-br from-slate-600 to-slate-400 bg-clip-text text-transparent max-w-[280px] mx-auto">
-                                                {emptyMessage || "Your results will appear here once you enter the required values."}
-                                            </p>
+                            {/* ─── Floating Glass Instruction Overlay ─── */}
+                            <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9, y: 8 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                                    className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 max-w-[220px] pointer-events-auto"
+                                >
+                                    {/* Pulsing icon */}
+                                    <div className="relative flex items-center justify-center">
+                                        <span className="absolute w-10 h-10 rounded-full bg-blue-400/20 animate-ping" style={{ animationDuration: "2.4s" }} />
+                                        <div className="relative w-9 h-9 rounded-full bg-blue-600/10 border border-blue-200/60 flex items-center justify-center text-blue-500">
+                                            <Activity className="w-4 h-4" />
                                         </div>
                                     </div>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <p className="text-[12.5px] text-slate-500 font-semibold leading-snug text-center">
+                                            Complete the inputs to generate your
+                                        </p>
+                                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-600/10 border border-blue-200/60 text-[11px] font-black text-blue-700 tracking-wide">
+                                            {emptyMessage
+                                                ? emptyMessage
+                                                : emptyResultLabel || primaryResult.label || title || "Result"}
+                                        </span>
+                                    </div>
+                                </motion.div>
+                            </div>
+
+                            {/* ─── Ghosted Skeleton Dashboard (mirrors results layout) ─── */}
+                            <div className="blur-[2.5px] opacity-40 select-none pointer-events-none">
+                                {/* Primary Hero Skeleton */}
+                                <div className="flex flex-col items-center justify-center py-5 px-4 mb-2">
+                                    {/* Label shimmer */}
+                                    <div className="h-2.5 w-24 rounded-full bg-blue-200/60 mb-3 animate-pulse" />
+                                    {/* Value shimmer */}
+                                    <div className="h-12 w-40 rounded-xl bg-blue-200/50 mb-2 animate-pulse" style={{ animationDelay: "0.1s" }} />
+                                    {/* Description shimmer */}
+                                    <div className="flex flex-col items-center gap-1.5 mt-1">
+                                        <div className="h-2 w-44 rounded-full bg-slate-200/60 animate-pulse" style={{ animationDelay: "0.2s" }} />
+                                        <div className="h-2 w-32 rounded-full bg-slate-200/50 animate-pulse" style={{ animationDelay: "0.3s" }} />
+                                    </div>
                                 </div>
-                            )}
+
+                                {/* Divider */}
+                                <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-200/40 to-transparent my-4" />
+
+                                {/* Secondary Metrics Grid Skeleton */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    {secondaryResults.map((result, idx) => {
+                                        const is3rdOf3 = secondaryResults.length === 3 && idx === 2;
+                                        return (
+                                            <div
+                                                key={`skeleton-${result.key}`}
+                                                className={cn(
+                                                    "bg-white/50 border border-white/40 p-3 sm:p-4 rounded-xl flex flex-col justify-between",
+                                                    is3rdOf3 ? "sm:col-span-2" : "",
+                                                    result.className
+                                                )}
+                                            >
+                                                <div className="h-2 w-20 rounded-full bg-slate-200/60 mb-3 animate-pulse" style={{ animationDelay: `${0.1 + idx * 0.08}s` }} />
+                                                <div className="h-4 w-16 rounded-lg bg-slate-200/50 animate-pulse" style={{ animationDelay: `${0.15 + idx * 0.08}s` }} />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         </motion.div>
                     ) : (
                         <motion.div
@@ -345,27 +387,41 @@ export function ResultSummaryCard({
                             transition={{ duration: 0.4, ease: "easeOut" }}
                             className="flex flex-col relative z-10"
                         >
-                            {/* ─── Primary Result Value ─── */}
+                            {/* ─── Floating Hero (Primary Result) ─── */}
                             <motion.div
-                                initial={{ opacity: 0, y: 8 }}
+                                initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
-                                className="space-y-1.5"
+                                transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                                className="relative flex flex-col items-center justify-center py-5 px-4 mb-2"
                             >
-                                <div className="flex items-baseline gap-2 mt-1 flex-wrap min-w-0 relative">
-                                    <div className="absolute -inset-4 bg-white/40 blur-2xl rounded-full z-0 block pointer-events-none"></div>
-                                    <div className="relative z-10 text-2xl sm:text-4xl font-extrabold text-blue-600 tracking-tight leading-none overflow-visible">
-                                        {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
-                                    </div>
+                                {/* Central Aura Spotlight */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[140px] bg-blue-400/10 blur-[60px] rounded-full pointer-events-none z-0" />
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[80px] bg-indigo-400/5 blur-[40px] rounded-full pointer-events-none z-0" />
+
+                                <div className="relative z-10 flex flex-col items-center text-center space-y-1.5">
                                     {displayLabel && (
-                                        <span className="relative z-10 text-xs sm:text-base text-slate-500 font-medium opacity-80 pb-0.5">
+                                        <motion.span
+                                            initial={{ opacity: 0, y: 5 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.4, delay: 0.2 }}
+                                            className="text-[10px] sm:text-[11px] font-black text-slate-500 uppercase tracking-[0.15em] leading-none mb-1"
+                                        >
                                             {displayLabel}
+                                        </motion.span>
+                                    )}
+
+                                    <div className="flex items-baseline justify-center">
+                                        <span className="text-4xl sm:text-6xl font-extrabold text-blue-600 tracking-tighter leading-none drop-shadow-sm">
+                                            {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
                                         </span>
+                                    </div>
+
+                                    {displayDescription && (
+                                        <p className="text-[12px] text-slate-500 font-medium max-w-[280px] mx-auto leading-relaxed mt-1">
+                                            {displayDescription}
+                                        </p>
                                     )}
                                 </div>
-                                <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                                    {displayDescription}
-                                </p>
                             </motion.div>
 
                             {/* Divider Line */}
@@ -388,7 +444,7 @@ export function ResultSummaryCard({
                                             )}
                                         >
                                             <div className="flex items-center gap-1.5 mb-2">
-                                                <span className="text-[13px] font-bold text-slate-400 whitespace-nowrap group-hover:text-blue-600/60 transition-colors duration-300">
+                                                <span className="text-[13px] font-bold text-slate-500 whitespace-nowrap group-hover:text-blue-600/60 transition-colors duration-300">
                                                     {autoAdjustText(result.label)}
                                                 </span>
                                                 {result.tooltip && (

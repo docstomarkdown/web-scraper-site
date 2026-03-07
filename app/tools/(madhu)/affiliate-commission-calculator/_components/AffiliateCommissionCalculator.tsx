@@ -209,16 +209,16 @@ export function AffiliateCommissionCalculator() {
                         ]}
                         isCalculated={hasInputs}
                         profitLossKey="netProfit"
-                        emptyMessage="Enter the below mentioned fields to get the output."
+
                         checklistItems={[
-                            { key: 'traffic', label: 'Enter Affiliate Traffic', isComplete: values.affiliateTraffic !== "" },
-                            { key: 'aov', label: 'Define Average Order Value', isComplete: values.averageOrderValue !== "" },
-                            { key: 'commission', label: 'Set Commission Rate', isComplete: values.affiliateCommission !== "" }
+                            { key: 'traffic', label: 'Affiliate Traffic', isComplete: values.affiliateTraffic !== "" },
+                            { key: 'aov', label: 'Average Order Value', isComplete: values.averageOrderValue !== "" },
+                            { key: 'commission', label: 'Commission Rate', isComplete: values.affiliateCommission !== "" }
                         ]}
                         dynamicMessages={{
-                            positive: "Your affiliate program is profitable at this commission rate. You're earning more than you pay out.",
-                            negative: "Your program is operating at a loss. Try lowering the commission rate or reducing product costs.",
-                            neutral: "Your program is breaking even. Revenue exactly covers affiliate payouts and product costs."
+                            positive: "Revenue comfortably exceeds payouts at this commission rate.",
+                            negative: "Program is operating at a loss. Consider adjusting your commission rate.",
+                            neutral: "Program is breaking even. Revenue exactly covers payouts and costs."
                         }}
                     />
                 </div>

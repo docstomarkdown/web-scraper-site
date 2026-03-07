@@ -155,7 +155,7 @@ export function InfluencerROICalculator() {
                         primaryResult={{
                             value: roi.toFixed(2),
                             unit: "%",
-                            label: "Return"
+                            label: "Return on Investment"
                         }}
                         secondaryResults={[
                             {
@@ -189,11 +189,11 @@ export function InfluencerROICalculator() {
                         ]}
                         isCalculated={hasAnyData}
                         profitLossKey="profitLoss"
-                        emptyMessage="Enter the below mentioned fields to get the output for your ROI."
+                        emptyResultLabel="Return on Investment"
                         checklistItems={[
-                            { key: 'fee', label: 'Set your Influencer Fee', isComplete: influencerFee !== "" },
-                            { key: 'price', label: 'Define Average Selling Price', isComplete: sellingPrice !== "" },
-                            { key: 'orders', label: 'Estimate Number of Orders', isComplete: totalOrders !== "" }
+                            { key: 'fee', label: 'Influencer Fee', isComplete: influencerFee !== "" },
+                            { key: 'price', label: 'Average Selling Price', isComplete: sellingPrice !== "" },
+                            { key: 'orders', label: 'Number of Orders', isComplete: totalOrders !== "" }
                         ]}
                     />
                     <div className="flex-1">

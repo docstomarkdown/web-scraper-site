@@ -148,7 +148,7 @@ export function EmailROICalculator() {
                         primaryResult={{
                             value: roi.toFixed(2),
                             unit: "%",
-                            label: "Return",
+                            label: "Return on Investment",
                         }}
                         secondaryResults={[
                             {
@@ -169,10 +169,10 @@ export function EmailROICalculator() {
                         showLiveBadge={true}
                         isCalculated={isCalculated}
                         profitLossKey="netProfit"
-                        emptyMessage="Enter the below mentioned fields to get the output."
+                        emptyResultLabel="Return on Investment"
                         checklistItems={[
-                            { key: 'size', label: 'Enter Email List Size', isComplete: listSize !== "" },
-                            { key: 'cost', label: 'Set Campaign Cost', isComplete: campaignCost !== "" }
+                            { key: 'size', label: 'Email List Size', isComplete: listSize !== "" },
+                            { key: 'cost', label: 'Campaign Cost', isComplete: campaignCost !== "" }
                         ]}
                         dynamicMessages={{
                             positive: "Great job! Your email campaign is profitable and generating a positive return.",
