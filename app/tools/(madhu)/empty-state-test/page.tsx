@@ -80,7 +80,7 @@ function ChecklistApproach() {
                             { label: "Verify Order Value", isComplete: fields.orderValue !== "" },
                             { label: "Analyze Commission", isComplete: fields.commission !== "" }
                         ]}
-                        emptyMessage="Enter the below mentioned fields to get the output."
+                        emptyMessage="Provide the details below to generate your results."
                     />
                 </div>
             </div>

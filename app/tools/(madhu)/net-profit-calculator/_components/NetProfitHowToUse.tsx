@@ -7,21 +7,21 @@ export function NetProfitHowToUse() {
             title="How to Use This Tool"
             steps={[
                 {
-                    title: "Total Revenue",
-                    description: "Enter complete gross revenue generated from all combined operations.",
+                    title: "Income Data",
+                    description: "Enter your Total Revenue from all sales channels before any deductions.",
                     icon: DollarSign
                 },
                 {
-                    title: "All Expenses",
-                    description: "Input all COGS, operating expenses, taxes, interest, and overhead.",
-                    icon: Search
+                    title: "Business Expenses",
+                    description: "Input COGS, ad spend, overhead, and your estimated tax rate.",
+                    icon: Calculator
                 },
                 {
-                    title: "Net Margin",
-                    description: "Instantly see your final net profit percentage and total take-home pay.",
-                    icon: Calculator
+                    title: "Profit Allocation",
+                    description: "Visualize exactly where your revenue goes with the distribution chart.",
+                    icon: TrendingUp
                 }
             ]}
         />
     )
-}
+}

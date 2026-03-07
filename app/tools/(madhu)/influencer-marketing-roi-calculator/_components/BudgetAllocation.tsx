@@ -34,14 +34,14 @@ export function BudgetAllocation({
         { name: "Shipping Costs", value: shippingCost, color: "#a855f7" },
     ].filter(i => i.value > 0)
     return (
-        <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden p-5 flex flex-col h-full">
-            <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+        <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl p-5 flex flex-col gap-5">
+            <h4 className="text-sm font-bold text-slate-700 flex items-center gap-2">
                 <Wallet className="w-4 h-4 text-blue-500" />
                 Budget Allocation
             </h4>
-            <div className="flex items-center gap-8 min-h-0 flex-1">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
                 {/* Left: Chart */}
-                <div className="h-[160px] w-[160px] relative shrink-0">
+                <div className="h-[140px] w-[140px] relative shrink-0">
                     {totalCost > 0 ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <RechartsPie>
@@ -75,20 +75,22 @@ export function BudgetAllocation({
                     )}
                 </div>
                 {/* Right: Legend */}
-                <div className="flex-1 grid grid-cols-1 gap-3">
+                <div className="flex-1 w-full flex flex-col gap-2">
                     {[
                         { label: "Influencer Fee", value: fee, pct: feePct, color: "bg-blue-500" },
                         { label: "Ad Spend", value: adSpend, pct: adPct, color: "bg-emerald-500" },
                         { label: "Product Costs", value: productCost, pct: productPct, color: "bg-amber-500" },
                         { label: "Shipping Costs", value: shippingCost, pct: shippingPct, color: "bg-purple-500" },
                     ].map((item) => (
-                        <div key={item.label} className="grid grid-cols-[1fr_75px_35px] items-center text-[10px] sm:text-[10px] px-2 bg-slate-50 rounded-lg py-1.5 gap-x-2">
-                            <div className="flex items-center gap-1.5 truncate">
+                        <div key={item.label} className="flex items-center justify-between text-[11px] px-3 bg-slate-50 rounded-lg py-1.5">
+                            <div className="flex items-center gap-2 shrink-0">
                                 <div className={`w-2 h-2 rounded-full ${item.color} shrink-0`} />
-                                <span className="text-slate-600 font-medium truncate">{item.label}</span>
+                                <span className="text-slate-600 font-medium whitespace-nowrap">{item.label}</span>
                             </div>
-                            <span className="text-slate-400 font-medium text-right tabular-nums">{formatCurrency(item.value)}</span>
-                            <span className="font-bold text-slate-900 text-right tabular-nums">{item.pct.toFixed(0)}%</span>
+                            <div className="flex items-center gap-3 shrink-0 ml-4">
+                                <span className="text-slate-400 font-medium tabular-nums min-w-[50px] text-right">{formatCurrency(item.value)}</span>
+                                <span className="font-bold text-slate-900 tabular-nums min-w-[32px] text-right">{item.pct.toFixed(0)}%</span>
+                            </div>
                         </div>
                     ))}
                 </div>
