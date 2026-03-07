@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { NetProfitCalculator } from "./_components/NetProfitCalculator"
 import { NetProfitHowToUse } from "./_components/NetProfitHowToUse"
 import { NetProfitGuide } from "./_components/NetProfitGuide"
@@ -12,13 +12,7 @@ export default function NetProfitCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Net Profit Calculator
-                        </h1>
-                    </FadeIn>
-                </div>
+                <ToolPageTitle title="Net Profit Calculator" />
                 <div className="mb-20">
                     <NetProfitCalculator />
                 </div>
@@ -45,8 +39,8 @@ export default function NetProfitCalculatorPage() {
                                     answer: "A negative ROI means you are losing money on every dollar you spend to run the business. This usually points to high COGS, inefficient ad spend, or a price point that is simply too low."
                                 },
                                 {
-                                    question: "How should I use the Revenue Distribution chart?",
-                                    answer: "The chart helps you visualize the 'Slices of the Pie.' If 'Ads' or 'COGS' is taking up more than 40-50% of the bar, those are the first areas you should target for cost reduction."
+                                    question: "How should I use the Income & Expense Breakdown chart?",
+                                    answer: "The chart helps you visualize the 'Slices of the Pie.' If 'Ads' or 'COGS' is taking up more than 50% of your total revenue, those are your primary targets for optimization and cost reduction."
                                 }
                             ]}
                         />

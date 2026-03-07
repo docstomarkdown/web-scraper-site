@@ -183,7 +183,7 @@ function PrimedDashboardCard({
             </div>
 
             {/* Progress Bar — ONLY visible in empty state */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
                 {!showResults && (
                     <motion.div
                         key="progress"
@@ -225,7 +225,7 @@ function PrimedDashboardCard({
                         </div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence> */}
         </div>
     )
 }

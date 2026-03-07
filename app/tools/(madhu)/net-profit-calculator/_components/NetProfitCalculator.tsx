@@ -11,7 +11,7 @@ import {
 } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"
-import { RevenueBreakdown } from "./RevenueBreakdown"
+import { ProfitAllocation } from "./ProfitAllocation"
 export function NetProfitCalculator() {
     const [currency, setCurrency] = useState("USD")
     // Input States
@@ -88,7 +88,7 @@ export function NetProfitCalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7">
-                    <Card className="border border-slate-200 shadow-lg shadow-slate-200/40 bg-white rounded-3xl overflow-hidden h-full flex flex-col">
+                    <Card className="border border-slate-200 shadow-lg shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
                         <CalculatorCardHeader
                             title="Profit Analysis"
                             description="Enter your revenue and expenses to calculate true take-home pay."
@@ -96,7 +96,7 @@ export function NetProfitCalculator() {
                             onCurrencyChange={setCurrency}
                             onReset={handleReset}
                         />
-                        <CardContent className="p-4 md:p-6 pb-12 md:pb-16 space-y-3 flex-1 flex flex-col justify-between">
+                        <CardContent className="p-4 md:p-6 space-y-3">
                             <div className="space-y-6 max-w-[520px] mx-auto w-full">
                                 {/* Income Section */}
                                 <div className="space-y-3">
@@ -209,7 +209,7 @@ export function NetProfitCalculator() {
                             neutral: "Your business is breaking even. Revenue exactly covers all expenses."
                         }}
                     />
-                    <RevenueBreakdown
+                    <ProfitAllocation
                         revenue={r}
                         cogs={c}
                         adSpend={ads}
