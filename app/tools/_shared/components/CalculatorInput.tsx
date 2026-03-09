@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, TooltipArrow } from "@/components/ui/tooltip"
 import { Info, LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+
 export interface CalculatorInputProps {
     label: string
     value: number | string | ""
@@ -27,6 +28,7 @@ export interface CalculatorInputProps {
     hideSeparator?: boolean
     isOptional?: boolean
 }
+
 export function CalculatorInput({
     label,
     value,
@@ -54,24 +56,25 @@ export function CalculatorInput({
     const [isFirstInput, setIsFirstInput] = React.useState(false)
     const [isInLabeledGroup, setIsInLabeledGroup] = React.useState(false)
     const [isLastInGroup, setIsLastInGroup] = React.useState(false)
+
     // Strict empty check: Don't highlight if user has entered '0'
     const isEmpty = value === "" || value === null || value === undefined
     const isHighlighted = (highlight || isFirstInput) && isEmpty
+
     React.useEffect(() => {
         const checkGroup = () => {
             if (!containerRef.current) return;
             const el = containerRef.current;
             const prev = el.previousElementSibling;
             const next = el.nextElementSibling;
-            // Optimized: We only continue the line if the next element is a row AND it's NOT the start of a new titled section
+
+            // Updated today: Improved path logic to connect rows more reliably
             const isNextInput = next?.classList.contains('calculator-input-row') && next.getAttribute('data-has-title') !== 'true';
 
             let labeled = false;
-            // Rule: Line starts if there's a title (even if single) OR if it's part of an ongoing titled sequence
             if (groupingTitle) {
                 labeled = true;
             } else {
-                // Crawl back to see if this branch was started by a labeled starter
                 let current = prev;
                 while (current && current.classList.contains('calculator-input-row')) {
                     if (current.getAttribute('data-has-title') === 'true') {
@@ -85,19 +88,16 @@ export function CalculatorInput({
             setIsLastInGroup(!isNextInput);
         };
         checkGroup();
-        // Fail-safe for initial layout/mounting shifts
         const timer = setTimeout(checkGroup, 100);
         return () => clearTimeout(timer);
     }, [groupingTitle])
-    // Persistent Focus & Highlight Logic: 
-    // Re-focuses the first input if it becomes empty (e.g. after a Reset click)
+
     React.useEffect(() => {
         if (isFirstInput && isEmpty) {
             const focusTimer = setTimeout(() => {
                 if (inputRef.current) {
                     const activeEl = document.activeElement;
                     const isInputFocused = activeEl?.tagName === 'INPUT' || activeEl?.classList.contains('calculator-input-field');
-                    // Re-focus if no other input is active (common after clicking a 'Reset' button)
                     if (!isInputFocused) {
                         inputRef.current.focus();
                     }
@@ -106,16 +106,14 @@ export function CalculatorInput({
             return () => clearTimeout(focusTimer);
         }
     }, [isFirstInput, isEmpty, value])
+
     React.useEffect(() => {
-        // Automatically focus the first calculator input on the page if not manually specified
-        // This shared logic ensures the primary input always captures user attention
         const checkIndex = () => {
             if (inputRef.current) {
                 const allInputs = document.querySelectorAll('.calculator-input-field');
                 const isFirst = allInputs[0] === inputRef.current;
                 if (isFirst) {
                     setIsFirstInput(true);
-                    // Only auto-focus on initial load to avoid interrupting user typing
                     if (!document.activeElement || document.activeElement === document.body) {
                         inputRef.current.focus();
                     }
@@ -124,14 +122,9 @@ export function CalculatorInput({
                 }
             }
         };
-        // Run immediately and after a short delay to account for React hydration/mounting
         checkIndex();
         const timer = setTimeout(checkIndex, 50);
-        const secondTimer = setTimeout(checkIndex, 300); // Fail-safe for slower loading sections
-        return () => {
-            clearTimeout(timer);
-            clearTimeout(secondTimer);
-        };
+        return () => clearTimeout(timer);
     }, [autoFocus])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,9 +142,8 @@ export function CalculatorInput({
             onChange(val)
         }
     }
-    // Intelligent currency symbol lookup & position
+
     const getCurrencyInfo = React.useCallback((code: string) => {
-        // Try narrowSymbol first (gives ƒ, ₹, etc. instead of full currency codes)
         const tryFormat = (display: 'narrowSymbol' | 'symbol') => {
             try {
                 const formatter = new Intl.NumberFormat('en-US', {
@@ -169,13 +161,21 @@ export function CalculatorInput({
         }
         return tryFormat('narrowSymbol') ?? tryFormat('symbol') ?? { symbol: code, isSuffix: false }
     }, [])
+
     const currencyInfo = React.useMemo(() => currency ? getCurrencyInfo(currency) : null, [currency, getCurrencyInfo])
     const finalPrefix = prefix || (currencyInfo && !currencyInfo.isSuffix ? currencyInfo.symbol : undefined)
     const finalSuffix = suffix || (currencyInfo && currencyInfo.isSuffix ? currencyInfo.symbol : undefined)
     const inputId = React.useId()
+
     return (
         <div
-            className="space-y-0 max-w-[520px] mx-auto w-full relative calculator-input-row"
+            className={cn(
+                "max-w-[520px] mx-auto w-full relative calculator-input-row",
+                // Updated today: Universal mt-3 today to eliminate gaps
+                groupingTitle
+                    ? "[.calculator-input-row+&]:mt-3"
+                    : "[.calculator-input-row+&]:mt-3"
+            )}
             ref={containerRef}
             data-has-title={!!groupingTitle}
         >
@@ -184,15 +184,14 @@ export function CalculatorInput({
                 <div className="h-px bg-slate-100/80 w-[calc(100%+48px)] -ml-6 mb-3 mt-1" />
             )}
 
-            {/* Content Container: Relative to handle absolute vertical lines correctly regardless of separators */}
             <div className="relative w-full">
                 {/* Dynamic Connecting Line Fragment: Ensures a solid vertical path ONLY for labeled groups */}
                 {isInLabeledGroup && (
                     <div
                         className="absolute left-[-19.5px] w-[1.5px] bg-blue-200/70 z-0"
                         style={{
-                            top: groupingTitle ? '14px' : '-50px', // Start at icon center or reach deep up
-                            bottom: isLastInGroup ? '10px' : '-50px', // Stop at center of last item or reach deep down
+                            top: groupingTitle ? '14px' : '-50px',
+                            bottom: isLastInGroup ? '10px' : '-50px',
                         }}
                     />
                 )}
@@ -289,7 +288,7 @@ export function CalculatorInput({
                                     side="right"
                                     sideOffset={8}
                                     align="center"
-                                    className="bg-white text-black border border-black rounded-none px-3 py-1.5 text-[13px] shadow-none animate-none font-sans z-[100] max-w-xs overflow-void font-normal"
+                                    className="bg-white text-black border border-black rounded-none px-3 py-1.5 text-[13px] shadow-none animate-none font-sans z-[100] max-w-xs overflow-void font-normal text-center"
                                 >
                                     <TooltipArrow className="fill-white stroke-black stroke-[1px] -mt-[1px]" width={12} height={6} />
                                     {hint}

@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from "react"
 import {
-    TrendingUp,
     Package,
     Truck
 } from "lucide-react"
@@ -10,7 +9,6 @@ import {
     CalculatorCardHeader,
     CalculatorInput,
     ResultSummaryCard,
-    ToolSectionHeader
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { currencies } from "@/app/tools/_shared/components/CurrencyCombobox"
@@ -63,26 +61,13 @@ export function COGSCalculator() {
         const rate = Number(values.returnRate) || 0
         const price = Number(values.sellPrice) || 0
 
-        // 1. Landed Cost
         const landedCost = product + inbound + duties + pkg
-
-        // 2. Return Risk (Simplified as % of Sell Price, as lost revenue/cost)
         const returnRiskCost = price * (rate / 100)
-
-        // 3. True COGS (Total Cost to Sell one unit)
         const trueCogs = landedCost + fulfillment + outbound + returnRiskCost
-
-        // 4. Gross Profit & Margin
         const grossProfit = price - trueCogs
         const grossMargin = price > 0 ? (grossProfit / price) * 100 : 0
 
-        return {
-            landedCost,
-            returnRiskCost,
-            trueCogs,
-            grossProfit,
-            grossMargin
-        }
+        return { landedCost, returnRiskCost, trueCogs, grossProfit, grossMargin }
     }, [values])
 
     const handleReset = () => setValues(DEFAULT_STATE)
@@ -100,90 +85,81 @@ export function COGSCalculator() {
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
-                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-12 flex-1 flex flex-col">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 flex-1 flex flex-col">
+
                             {/* Section 1: Acquisition Costs */}
-                            <div className="space-y-6">
-                                <ToolSectionHeader
-                                    icon={Package}
-                                    title="Acquisition (Landed) Cost"
-                                />
-                                <div className="space-y-4 px-6 sm:px-8">
-                                    <CalculatorInput
-                                        label="Product Cost"
-                                        value={values.productCost}
-                                        onChange={(v) => handleInputChange('productCost', v)}
-                                        placeholder="15.00"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="Cost per unit from supplier"
-                                    />
-                                    <CalculatorInput
-                                        label="Inbound Shipping"
-                                        value={values.inboundShipping}
-                                        onChange={(v) => handleInputChange('inboundShipping', v)}
-                                        placeholder="2.50"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="Freight cost to get goods to you (per unit)"
-                                    />
-                                    <CalculatorInput
-                                        label="Duties & Taxes"
-                                        value={values.duties}
-                                        onChange={(v) => handleInputChange('duties', v)}
-                                        placeholder="1.25"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="Customs duties, tariffs, and taxes"
-                                    />
-                                    <CalculatorInput
-                                        label="Pkg. & Prep"
-                                        value={values.packaging}
-                                        onChange={(v) => handleInputChange('packaging', v)}
-                                        placeholder="0.75"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="Cost of packaging, polybags, labels, etc."
-                                    />
-                                </div>
-                            </div>
+                            <CalculatorInput
+                                label="Product Cost"
+                                value={values.productCost}
+                                onChange={(v) => handleInputChange('productCost', v)}
+                                placeholder="15.00"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="Cost per unit from supplier"
+                                groupingTitle="Acquisition (Landed) Cost"
+                                groupingIcon={Package}
+                                hideSeparator
+                            />
+                            <CalculatorInput
+                                label="Inbound Shipping"
+                                value={values.inboundShipping}
+                                onChange={(v) => handleInputChange('inboundShipping', v)}
+                                placeholder="2.50"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="Freight cost to get goods to you (per unit)"
+                            />
+                            <CalculatorInput
+                                label="Duties & Taxes"
+                                value={values.duties}
+                                onChange={(v) => handleInputChange('duties', v)}
+                                placeholder="1.25"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="Customs duties, tariffs, and taxes"
+                            />
+                            <CalculatorInput
+                                label="Pkg. & Prep"
+                                value={values.packaging}
+                                onChange={(v) => handleInputChange('packaging', v)}
+                                placeholder="0.75"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="Cost of packaging, polybags, labels, etc."
+                            />
 
                             {/* Section 2: Fulfillment & Sales */}
-                            <div className="space-y-6">
-                                <ToolSectionHeader
-                                    icon={Truck}
-                                    title="Fulfillment & Sales"
-                                />
-                                <div className="space-y-4 px-6 sm:px-8">
-                                    <CalculatorInput
-                                        label="Fulfillment Fee"
-                                        value={values.fulfillmentFee}
-                                        onChange={(v) => handleInputChange('fulfillmentFee', v)}
-                                        placeholder="3.50"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="Cost to pick and pack (e.g., FBA Fee)"
-                                    />
-                                    <CalculatorInput
-                                        label="Outbound Ship"
-                                        value={values.outboundShipping}
-                                        onChange={(v) => handleInputChange('outboundShipping', v)}
-                                        placeholder="4.00"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="Shipping cost to customer (if not included in price)"
-                                    />
-                                    <CalculatorInput
-                                        label="Est. Return Rate"
-                                        value={values.returnRate}
-                                        onChange={(v) => handleInputChange('returnRate', v)}
-                                        placeholder="5"
-                                        suffix="%"
-                                        tooltip="Percentage of sales expected to be returned"
-                                    />
-                                    <CalculatorInput
-                                        label="Target Sell Price"
-                                        value={values.sellPrice}
-                                        onChange={(v) => handleInputChange('sellPrice', v)}
-                                        placeholder="49.99"
-                                        prefix={selectedCurrency.symbol}
-                                        tooltip="The price you intend to sell the product for"
-                                    />
-                                </div>
-                            </div>
+                            <CalculatorInput
+                                label="Fulfillment Fee"
+                                value={values.fulfillmentFee}
+                                onChange={(v) => handleInputChange('fulfillmentFee', v)}
+                                placeholder="3.50"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="Cost to pick and pack (e.g., FBA Fee)"
+                                groupingTitle="Fulfillment & Sales"
+                                groupingIcon={Truck}
+                            />
+                            <CalculatorInput
+                                label="Outbound Ship"
+                                value={values.outboundShipping}
+                                onChange={(v) => handleInputChange('outboundShipping', v)}
+                                placeholder="4.00"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="Shipping cost to customer (if not included in price)"
+                            />
+                            <CalculatorInput
+                                label="Est. Return Rate"
+                                value={values.returnRate}
+                                onChange={(v) => handleInputChange('returnRate', v)}
+                                placeholder="5"
+                                suffix="%"
+                                tooltip="Percentage of sales expected to be returned"
+                            />
+                            <CalculatorInput
+                                label="Target Sell Price"
+                                value={values.sellPrice}
+                                onChange={(v) => handleInputChange('sellPrice', v)}
+                                placeholder="49.99"
+                                prefix={selectedCurrency.symbol}
+                                tooltip="The price you intend to sell the product for"
+                            />
+
                         </CardContent>
                     </Card>
                 </div>
@@ -242,4 +218,3 @@ export function COGSCalculator() {
         </div>
     )
 }
-
