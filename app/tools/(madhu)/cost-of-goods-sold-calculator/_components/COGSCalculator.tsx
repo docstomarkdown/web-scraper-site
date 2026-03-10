@@ -5,10 +5,12 @@ import {
     Package,
     Truck
 } from "lucide-react"
+import { cn } from "@/lib/utils"
 import {
     CalculatorCardHeader,
     CalculatorInput,
     ResultSummaryCard,
+    FadeIn
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { currencies } from "@/app/tools/_shared/components/CurrencyCombobox"
@@ -20,8 +22,7 @@ interface COGSState {
     packaging: string | number
     fulfillmentFee: string | number
     outboundShipping: string | number
-    returnRate: string | number
-    sellPrice: string | number
+    unitsSold: string | number
 }
 
 const DEFAULT_STATE: COGSState = {
@@ -31,8 +32,7 @@ const DEFAULT_STATE: COGSState = {
     packaging: "",
     fulfillmentFee: "",
     outboundShipping: "",
-    returnRate: "",
-    sellPrice: ""
+    unitsSold: ""
 }
 
 export function COGSCalculator() {
@@ -44,7 +44,15 @@ export function COGSCalculator() {
     }
 
     const hasInputs = useMemo(() => {
-        return Object.values(values).some(val => val !== "")
+        const mandatoryFields = [
+            values.productCost,
+            values.inboundShipping,
+            values.duties,
+            values.packaging,
+            values.fulfillmentFee,
+            values.outboundShipping
+        ]
+        return mandatoryFields.every(val => val !== "" && val !== null && val !== undefined)
     }, [values])
 
     const selectedCurrency = useMemo(() =>
@@ -58,25 +66,26 @@ export function COGSCalculator() {
         const pkg = Number(values.packaging) || 0
         const fulfillment = Number(values.fulfillmentFee) || 0
         const outbound = Number(values.outboundShipping) || 0
-        const rate = Number(values.returnRate) || 0
-        const price = Number(values.sellPrice) || 0
+        const units = Number(values.unitsSold) || 0
 
-        const landedCost = product + inbound + duties + pkg
-        const returnRiskCost = price * (rate / 100)
-        const trueCogs = landedCost + fulfillment + outbound + returnRiskCost
-        const grossProfit = price - trueCogs
-        const grossMargin = price > 0 ? (grossProfit / price) * 100 : 0
+        const cogsPerUnit = product + inbound + duties + pkg + fulfillment + outbound
 
-        return { landedCost, returnRiskCost, trueCogs, grossProfit, grossMargin }
+        // If units are not provided (or 0), we don't assume 1. We just pass 0 to hide or change the behavior
+        // But for display purposes, we might want Total COGS to show 0 or be hidden entirely when no units are input.
+        // Let's modify: if units is 0, we can either hide the secondary card, or explicitly show "0".
+        // Let's pass the raw total which is cogsPerUnit * units, and the UI can handle if it's 0.
+        const totalCogs = cogsPerUnit * units
+
+        return { cogsPerUnit, totalCogs, units }
     }, [values])
 
     const handleReset = () => setValues(DEFAULT_STATE)
 
     return (
-        <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-1">
+        <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7">
+                <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
                         <CalculatorCardHeader
                             title="Unit Economics"
@@ -95,7 +104,7 @@ export function COGSCalculator() {
                                 placeholder="15.00"
                                 prefix={selectedCurrency.symbol}
                                 tooltip="Cost per unit from supplier"
-                                groupingTitle="Acquisition (Landed) Cost"
+                                groupingTitle="Product & Import Costs"
                                 groupingIcon={Package}
                                 hideSeparator
                             />
@@ -116,7 +125,7 @@ export function COGSCalculator() {
                                 tooltip="Customs duties, tariffs, and taxes"
                             />
                             <CalculatorInput
-                                label="Pkg. & Prep"
+                                label="Packaging"
                                 value={values.packaging}
                                 onChange={(v) => handleInputChange('packaging', v)}
                                 placeholder="0.75"
@@ -136,28 +145,22 @@ export function COGSCalculator() {
                                 groupingIcon={Truck}
                             />
                             <CalculatorInput
-                                label="Outbound Ship"
+                                label="Outbound Shipping"
                                 value={values.outboundShipping}
                                 onChange={(v) => handleInputChange('outboundShipping', v)}
                                 placeholder="4.00"
                                 prefix={selectedCurrency.symbol}
                                 tooltip="Shipping cost to customer (if not included in price)"
                             />
+
                             <CalculatorInput
-                                label="Est. Return Rate"
-                                value={values.returnRate}
-                                onChange={(v) => handleInputChange('returnRate', v)}
-                                placeholder="5"
-                                suffix="%"
-                                tooltip="Percentage of sales expected to be returned"
-                            />
-                            <CalculatorInput
-                                label="Target Sell Price"
-                                value={values.sellPrice}
-                                onChange={(v) => handleInputChange('sellPrice', v)}
-                                placeholder="49.99"
-                                prefix={selectedCurrency.symbol}
-                                tooltip="The price you intend to sell the product for"
+                                label="Units Sold"
+                                isOptional={true}
+                                value={values.unitsSold}
+                                onChange={(v) => handleInputChange('unitsSold', v)}
+                                placeholder="100"
+                                tooltip="Number of units sold to calculate Total COGS."
+                                hideSeparator
                             />
 
                         </CardContent>
@@ -167,54 +170,38 @@ export function COGSCalculator() {
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 sticky top-6">
                     <ResultSummaryCard
-                        title="Profit Analysis"
+                        title="COGS Analysis"
                         isCalculated={hasInputs}
                         currency={currency}
                         primaryResult={{
-                            key: "trueCogs",
-                            label: "TRUE COGS",
-                            value: results.trueCogs,
+                            key: "cogsPerUnit",
+                            label: "COGS per Unit",
+                            value: results.cogsPerUnit,
                             isCurrency: true
                         }}
-                        secondaryResults={[
-                            {
-                                key: "landedCost",
-                                label: "Landed Cost",
-                                value: results.landedCost,
-                                isCurrency: true,
-                                tooltip: "Cost of product plus shipping, duties, and packaging."
-                            },
-                            {
-                                key: "returnRiskCost",
-                                label: "Return Cost",
-                                value: results.returnRiskCost,
-                                isCurrency: true,
-                                tooltip: "Expected cost from returns based on estimated return rate."
-                            },
-                            {
-                                key: "grossProfit",
-                                label: "Gross Profit",
-                                value: results.grossProfit,
-                                isCurrency: true,
-                                tooltip: "Total revenue minus all costs (COGS)."
-                            },
-                            {
-                                key: "grossMargin",
-                                label: "Gross Margin",
-                                value: results.grossMargin.toFixed(1),
-                                unit: "%",
-                                tooltip: "Profit as a percentage of the selling price."
-                            }
-                        ]}
-                        profitLossKey="grossProfit"
-                        dynamicMessages={{
-                            positive: `Profit margin is ${results.grossMargin.toFixed(1)}%. This is a healthy margin!`,
-                            negative: "Warning: Your costs exceed your selling price. You are losing money on every unit.",
-                            neutral: "Break-even point reached. Your price exactly covers all associated costs."
-                        }}
+                        description="A breakdown of your Cost of Goods Sold."
+                        secondaryResults={
+                            !hasInputs ? [
+                                {
+                                    key: "totalCogs_skeleton",
+                                    label: "Total COGS",
+                                    value: 0,
+                                    className: "sm:col-span-2"
+                                }
+                            ] : results.units > 0 ? [
+                                {
+                                    key: "totalCogs",
+                                    label: "Total COGS",
+                                    value: results.totalCogs,
+                                    isCurrency: true,
+                                    tooltip: "Total cost for all units based on Units Sold.",
+                                    className: "sm:col-span-2"
+                                }
+                            ] : []
+                        }
                     />
                 </div>
             </div>
-        </div>
+        </FadeIn>
     )
 }
