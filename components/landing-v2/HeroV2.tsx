@@ -32,7 +32,7 @@ const demoSteps = [
         id: 4,
         label: "Export Data",
         short: "Export",
-        description: "Download CSV, JSON, XLSX or Google Sheets.",
+        description: "Export to Google Sheets, Excel, JSON, or CSV.",
     },
 ];
 
@@ -98,7 +98,7 @@ export default function HeroV2() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="space-y-5 max-w-lg text-center lg:text-left flex-shrink-0 lg:w-[42%] lg:pl-8"
+                    className="max-w-lg text-center lg:text-left flex-shrink-0 lg:w-[42%] lg:pl-8 flex flex-col justify-center"
                 >
 
                     {/* Headline */}
@@ -110,16 +110,16 @@ export default function HeroV2() {
                     </h1>
 
                     {/* Subheadline */}
-                    <p className="text-base text-slate-500 leading-relaxed">
-                        Scrape any website visually. No coding required. Just point, click, and export to Google Sheets, JSON or CSV.
+                    <p className="text-lg text-slate-500 leading-relaxed mt-6">
+                        Scrape any website visually. No coding required. Just point, click, and export to Google Sheets, Excel, JSON or CSV.
                     </p>
 
                     {/* CTAs */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-8">
                         <Link
                             href={productConfig.product.ctaUrl}
                             target="_blank"
-                            className="w-full sm:w-auto group inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-7 py-3 text-base font-semibold text-white shadow-xl shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.03] active:scale-[0.98] gap-2"
+                            className="w-full sm:w-auto group inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-8 py-3.5 text-base font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98] gap-2"
                         >
                             <Chrome className="w-5 h-5" />
                             Install Web Scraper.do
@@ -127,21 +127,19 @@ export default function HeroV2() {
                         </Link>
                     </div>
 
-
-
                     {/* Trust */}
-                    <div className="flex flex-nowrap items-center justify-center lg:justify-start gap-4 text-sm text-slate-400 mt-5">
+                    <div className="flex flex-nowrap items-center justify-center lg:justify-start gap-4 text-sm text-slate-400 mt-6 pt-2">
                         <div className="flex items-center gap-1.5 shrink-0">
-                            <Database className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                            <span className="whitespace-nowrap">10M+ rows</span>
+                            <Database className="w-4 h-4 text-blue-400 shrink-0" />
+                            <span className="whitespace-nowrap font-medium text-slate-500">10M+ rows</span>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
-                            <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                            <span className="whitespace-nowrap">No code required</span>
+                            <Zap className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="whitespace-nowrap font-medium text-slate-500">No code required</span>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
-                            <CheckCircle className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                            <span className="whitespace-nowrap">Works on any website</span>
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="whitespace-nowrap font-medium text-slate-500">Works on any website</span>
                         </div>
                     </div>
                 </motion.div>
@@ -302,9 +300,9 @@ export default function HeroV2() {
                                                 </div>
                                                 {exportPulse && (
                                                     <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="flex gap-1.5 mt-2">
-                                                        {["CSV", "JSON", "Sheets"].map((fmt) => (
+                                                        {["Google Sheets", "Excel", "JSON", "CSV"].map((fmt, index) => (
                                                             <motion.div key={fmt} animate={{ scale: [1, 1.05, 1] }}
-                                                                transition={{ duration: 1.2, repeat: Infinity, delay: fmt === "CSV" ? 0 : fmt === "JSON" ? 0.3 : 0.6 }}
+                                                                transition={{ duration: 1.2, repeat: Infinity, delay: index * 0.25 }}
                                                                 className="flex-1 flex items-center justify-center gap-1 py-1.5 bg-blue-600 text-white text-[9px] font-bold rounded cursor-pointer hover:bg-blue-700 transition-colors">
                                                                 <Download className="w-2.5 h-2.5" />{fmt}
                                                             </motion.div>
@@ -421,7 +419,7 @@ export default function HeroV2() {
                         </div>
                     </motion.div>
                 </motion.div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 }

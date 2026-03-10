@@ -10,8 +10,11 @@ import { fadeUpVariant, staggerContainer } from "@/lib/framer-animations";
 const features = [
     {
         title: "Visual Point & Click",
-        description:
-            "Hover over any webpage element. The extension auto-detects product grids, tables, and lists — then click to lock your selection instantly.",
+        description: (
+            <>
+                Hover over any webpage element. The extension <strong>auto-detects product grids, tables, and lists</strong> — then click to lock your selection instantly.
+            </>
+        ),
         icon: MousePointer2,
         iconColor: "text-blue-600",
         iconBg: "bg-blue-50 border-blue-100/50",
@@ -23,8 +26,11 @@ const features = [
     },
     {
         title: "Auto-Pagination",
-        description:
-            "Capture the 'Next' button once and watch the scraper crawl every page automatically — handling infinite scroll, AJAX, and numbered pages.",
+        description: (
+            <>
+                Capture the 'Next' button once and watch the scraper crawl every page automatically — handling <strong>infinite scroll, AJAX, and numbered pages</strong>.
+            </>
+        ),
         icon: Layers,
         iconColor: "text-indigo-600",
         iconBg: "bg-indigo-50 border-indigo-100/50",
@@ -36,8 +42,11 @@ const features = [
     },
     {
         title: "Multi-Format Export",
-        description:
-            "Export as CSV, JSON, or XLSX. Or sync instantly to Google Sheets with one click via the built-in OAuth2 integration.",
+        description: (
+            <>
+                Export straight to <strong>Google Sheets, Excel (XLSX), JSON, or CSV</strong>. Includes a seamless one-click sync via <strong>built-in OAuth2 integration</strong>.
+            </>
+        ),
         icon: FileSpreadsheet,
         iconColor: "text-emerald-600",
         iconBg: "bg-emerald-50 border-emerald-100/50",
@@ -49,8 +58,11 @@ const features = [
     },
     {
         title: "Site-Specific Intelligence",
-        description:
-            "Built-in rule profiles for Amazon, Flipkart, eBay, and Zara. Automatically applies the best selectors and deduplication strategy per platform.",
+        description: (
+            <>
+                Built-in rule profiles for <strong>Amazon, Flipkart, eBay, and Zara</strong>. Automatically applies the best selectors and deduplication strategy per platform.
+            </>
+        ),
         icon: Globe,
         iconColor: "text-sky-600",
         iconBg: "bg-sky-50 border-sky-100/50",
@@ -148,7 +160,7 @@ export default function FeaturesV2() {
                                 <h3 className="relative z-10 text-xl font-bold text-slate-700 mb-3 group-hover:text-slate-900 transition-colors">
                                     {f.title}
                                 </h3>
-                                <p className="relative z-10 text-slate-500 leading-relaxed">
+                                <p className="relative z-10 text-slate-500 leading-relaxed [&>strong]:text-slate-500 [&>strong]:font-semibold">
                                     {f.description}
                                 </p>
 
