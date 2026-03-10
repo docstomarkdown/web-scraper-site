@@ -194,7 +194,7 @@ export default function EmptyStateTestPage() {
             <EditorialApproach />
 
             <div className="pt-20 text-center">
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Web Scraper Pro Design Lab</p>
+                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Web Scraper.do Design Lab</p>
             </div>
         </div>
     )

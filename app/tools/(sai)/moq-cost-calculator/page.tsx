@@ -6,7 +6,7 @@ import { MOQCalculator } from "./_components/MOQCalculator";
 import { MOQHowToUse } from "./_components/MOQHowToUse";
 import { MOQGuide } from "./_components/MOQGuide";
 export const metadata: Metadata = {
-    title: "Minimum Order Quantity (MOQ) Cost Calculator | Web Scraper Pro",
+    title: "Minimum Order Quantity (MOQ) Cost Calculator | Web Scraper.do",
     description:
         "Calculate the total investment required for Minimum Order Quantities (MOQ), effective cost per unit, and inventory risk.",
 };

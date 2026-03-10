@@ -5,7 +5,7 @@ import { EbayFeeHowToUse } from "./_components/EbayFeeHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'eBay Fee Calculator - Calculate Final Value Fees & Profit | Web Scraper Pro',
+    title: 'eBay Fee Calculator - Calculate Final Value Fees & Profit | Web Scraper.do',
     description: 'Calculate your exact eBay fees, including Final Value Fees, Ad Fees, and shipping costs. Determine your true net profit per item.',
 }
 export default function EbayFeeCalculatorPage() {

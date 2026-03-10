@@ -5,7 +5,7 @@ import { CouponROIHowToUse } from "./_components/CouponROIHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Coupon ROI Calculator - Calculate Campaign Profitability | Web Scraper Pro',
+    title: 'Coupon ROI Calculator - Calculate Campaign Profitability | Web Scraper.do',
     description: 'Free tool to calculate the return on investment of your coupon campaigns. Analyze break-even points, net profit, and true cost of discounting.',
 }
 export default function CouponROICalculatorPage() {

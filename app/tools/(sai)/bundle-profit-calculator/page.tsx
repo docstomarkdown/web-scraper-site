@@ -5,7 +5,7 @@ import { BundleGuide } from './_components/BundleGuide';
 import { FadeIn, ToolFAQ } from '@/app/tools/_shared/components';
 import { CTA } from '@/components/sections/CTA';
 export const metadata: Metadata = {
-    title: 'Bundle Profit Calculator | Web Scraper Pro',
+    title: 'Bundle Profit Calculator | Web Scraper.do',
     description: 'Calculate profit margins and ROI for product bundles. Optimize your e-commerce bundling strategy.',
 };
 const faqs = [

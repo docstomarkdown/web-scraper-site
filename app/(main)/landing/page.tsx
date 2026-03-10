@@ -7,7 +7,7 @@ import FAQ from "@/components/landing/FAQ";
 import { CTA } from "@/components/sections/CTA";
 
 export const metadata = {
-    title: "Landing (v1) — Web Scraper Pro",
+    title: "Landing (v1) — Web Scraper.do",
 };
 
 export default function LandingV1() {

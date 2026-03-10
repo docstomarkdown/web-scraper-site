@@ -8,8 +8,8 @@ import remarkGfm from 'remark-gfm';
 import { productConfig } from '@/config/product';
 
 const metadata: Metadata = {
-  title: 'Privacy Policy | Web Scraper Pro',
-  description: 'Learn how Web Scraper Pro collects, uses, and protects your data.',
+  title: 'Privacy Policy | Web Scraper.do',
+  description: 'Learn how Web Scraper.do collects, uses, and protects your data.',
   keywords: ['privacy policy', 'data protection', 'GDPR'],
 };
 

@@ -1,10 +1,10 @@
 # Who we are
 Our website address is: https://www.webscraper.pro.
 
-At Web Scraper Pro ("We", "Us", "Our"), we respect the client's ("You", "Your" or "User") privacy and protect it seriously. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us.
+At Web Scraper.do ("We", "Us", "Our"), we respect the client's ("You", "Your" or "User") privacy and protect it seriously. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us.
 
 ## Data Usage Policy
-Web Scraper Pro respects your privacy. We process data locally on your device where possible. Any data transfer to third-party services (such as cloud storage integrations) is done only at your explicit request and adheres to strict privacy standards.
+Web Scraper.do respects your privacy. We process data locally on your device where possible. Any data transfer to third-party services (such as cloud storage integrations) is done only at your explicit request and adheres to strict privacy standards.
 
 ## Application Permissions Overview
 We request specific permissions to enable the app's functionality:
@@ -14,7 +14,7 @@ We request specific permissions to enable the app's functionality:
 - **Cloud Integration**: To optionally upload scraped data to your configured cloud storage providers if you choose to connect them.
 
 ## What information do we collect?
-When you use our app, we collect your email to validate your Web Scraper Pro license on a per-user basis and track service usage for individual users.
+When you use our app, we collect your email to validate your Web Scraper.do license on a per-user basis and track service usage for individual users.
 
 ## How do we share your information?
 We do not share your information with any other third parties.

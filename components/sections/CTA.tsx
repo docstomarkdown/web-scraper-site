@@ -64,7 +64,7 @@ export function CTA({ withSectionWrapper = true }: CTAProps) {
                                         <Zap className="w-6 h-6 text-blue-100" />
                                     </div>
                                     <div className="flex flex-col items-start text-left flex-1 min-w-0">
-                                        <span className="font-bold text-lg tracking-tight truncate">Install Web Scraper Pro</span>
+                                        <span className="font-bold text-lg tracking-tight truncate">Install Web Scraper.do</span>
                                         <span className="text-xs text-blue-100/80 font-medium">Start finding winning products</span>
                                     </div>
                                     <div className="bg-white/10 p-2 rounded-xl group-hover:translate-x-1 transition-transform">

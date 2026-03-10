@@ -56,53 +56,11 @@ const features = [
         accent: "from-emerald-500 to-emerald-600",
         radial: "[background:radial-gradient(ellipse_at_top_right,theme(colors.emerald.50)_0%,transparent_65%)]",
     },
-    {
-        title: "Site-Specific Intelligence",
-        description: (
-            <>
-                Built-in rule profiles for <strong>Amazon, Flipkart, eBay, and Zara</strong>. Automatically applies the best selectors and deduplication strategy per platform.
-            </>
-        ),
-        icon: Globe,
-        iconColor: "text-sky-600",
-        iconBg: "bg-sky-50 border-sky-100/50",
-        iconHoverBg: "group-hover:bg-sky-600 group-hover:border-sky-600",
-        glow: "group-hover:shadow-sky-200/70",
-        ring: "group-hover:ring-sky-100",
-        accent: "from-sky-500 to-sky-600",
-        radial: "[background:radial-gradient(ellipse_at_top_right,theme(colors.sky.50)_0%,transparent_65%)]",
-    },
-    {
-        title: "Sponsored Item Filtering",
-        description:
-            "Automatically detects and removes sponsored, promoted, and ad-injected results so your data stays clean and relevant.",
-        icon: Filter,
-        iconColor: "text-violet-600",
-        iconBg: "bg-violet-50 border-violet-100/50",
-        iconHoverBg: "group-hover:bg-violet-600 group-hover:border-violet-600",
-        glow: "group-hover:shadow-violet-200/70",
-        ring: "group-hover:ring-violet-100",
-        accent: "from-violet-500 to-violet-600",
-        radial: "[background:radial-gradient(ellipse_at_top_right,theme(colors.violet.50)_0%,transparent_65%)]",
-    },
-    {
-        title: "Works Behind Login",
-        description:
-            "Runs inside your real browser session, so you can scrape authenticated pages, dashboards, and private listings invisible to cloud scrapers.",
-        icon: Shield,
-        iconColor: "text-rose-600",
-        iconBg: "bg-rose-50 border-rose-100/50",
-        iconHoverBg: "group-hover:bg-rose-600 group-hover:border-rose-600",
-        glow: "group-hover:shadow-rose-200/70",
-        ring: "group-hover:ring-rose-100",
-        accent: "from-rose-500 to-rose-600",
-        radial: "[background:radial-gradient(ellipse_at_top_right,theme(colors.rose.50)_0%,transparent_65%)]",
-    },
 ];
 
 export default function FeaturesV2() {
     return (
-        <section id="features-v2" className="py-20 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+        <section id="features-v2" className="pt-20 pb-12 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
 
             {/* Background decor */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">

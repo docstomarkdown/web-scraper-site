@@ -2,10 +2,10 @@
 We take steps to protect your personal information. We use industry-standard security measures to protect your personal information from unauthorized access, alteration, or destruction. We also follow generally accepted industry standards to maintain data accuracy and help ensure the appropriate use of your personal information.
 
 ## Age Restrictions
-We do not target children. Web Scraper Pro does not target its offerings toward and does not knowingly collect any personal information from, users under 13 years of age.
+We do not target children. Web Scraper.do does not target its offerings toward and does not knowingly collect any personal information from, users under 13 years of age.
 
 ## Business Transitions
-We will notify you if we go through a business transition. If Web Scraper Pro goes through a business transition, such as a merger, acquisition, or sale, your personal information may be transferred to the new owner. You will be notified via email of any such change in ownership or control of your personal information.
+We will notify you if we go through a business transition. If Web Scraper.do goes through a business transition, such as a merger, acquisition, or sale, your personal information may be transferred to the new owner. You will be notified via email of any such change in ownership or control of your personal information.
 
 ## Our Warranties and Disclaimers
 

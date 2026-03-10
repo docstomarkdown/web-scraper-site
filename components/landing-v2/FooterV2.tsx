@@ -123,17 +123,6 @@ export default function FooterV2() {
                 <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                     <p>© {year} {productConfig.product.logoText}. All rights reserved.</p>
 
-                    {/* Trust pills */}
-                    <div className="flex items-center gap-2 flex-wrap justify-center">
-                        {["Free Chrome Extension", "No Code Required", "Works on Any Website"].map((item) => (
-                            <span key={item}
-                                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-500 text-[11px]">
-                                <span className="w-1 h-1 rounded-full bg-blue-500 flex-shrink-0" />
-                                {item}
-                            </span>
-                        ))}
-                    </div>
-
                     <p className="text-slate-400">Made with ♥ for data people</p>
                 </div>
             </div>

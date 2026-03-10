@@ -5,7 +5,7 @@ import { SafetyStockHowToUse } from "./_components/SafetyStockHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Safety Stock Calculator | Web Scraper Pro',
+    title: 'Safety Stock Calculator | Web Scraper.do',
     description: 'Calculate the optimal safety stock to prevent stockouts. Handle demand and lead time variability with confidence.',
 }
 export default function SafetyStockCalculatorPage() {

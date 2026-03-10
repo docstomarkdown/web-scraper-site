@@ -5,7 +5,7 @@ import { COGSHowToUse } from "./_components/COGSHowToUse"
 import { COGSGuide } from "./_components/COGSGuide"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'COGS Calculator - Calculate Cost of Goods Sold & Fulfillment | Web Scraper Pro',
+    title: 'COGS Calculator - Calculate Cost of Goods Sold & Fulfillment | Web Scraper.do',
     description: 'Free Cost of Goods Sold (COGS) calculator for e-commerce. Calculate true product cost including manufacturing, freight, customs, packaging, and fulfillment fees.',
 }
 export default function COGSCalculatorPage() {

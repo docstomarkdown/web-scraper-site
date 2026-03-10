@@ -5,7 +5,7 @@ import { ABDurationHowToUse } from "./_components/ABDurationHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'A/B Test Duration Calculator | Web Scraper Pro',
+    title: 'A/B Test Duration Calculator | Web Scraper.do',
     description: 'Calculate how long to run your A/B test for statistical significance. Avoid common testing mistakes.',
 }
 export default function ABDurationCalculatorPage() {

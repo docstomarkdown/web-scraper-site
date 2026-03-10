@@ -5,7 +5,7 @@ import { AbandonmentHowToUse } from "./_components/AbandonmentHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Cart Abandonment Rate Calculator | Web Scraper Pro',
+    title: 'Cart Abandonment Rate Calculator | Web Scraper.do',
     description: 'Calculate your Cart Abandonment Rate to identify lost revenue opportunities and optimize your checkout flow.',
 }
 export default function CartAbandonmentCalculatorPage() {
