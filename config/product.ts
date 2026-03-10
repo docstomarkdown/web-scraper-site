@@ -88,17 +88,17 @@ export const pricing = {
 export const productConfig = {
   // Product details
   product: {
-    name: "Web Scraper Pro",
+    name: "Web Scraper.do",
     tagline: "Data Extraction Made Effortless",
     description: "Extract data from any website without code. Simple, powerful, and designed for everyone.",
     url: "https://www.webscraper.pro/",
-    ctaText: "Install Web Scraper Pro Free",
+    ctaText: "Install Web Scraper.do Free",
     ctaUrl:
       "#", // Placeholder
     target: "_blank",
     secondaryCtaText: "Watch How",
     secondaryCtaUrl: "",
-    logoText: "Web Scraper Pro",
+    logoText: "Web Scraper.do",
     image: "hero-image.png",
     version: "1.0.0",
     lastUpdated: "2026-02-02",
@@ -194,13 +194,13 @@ export const productConfig = {
 
   // How it works section
   howItWorks: {
-    title: "How Web Scraper Pro Works",
+    title: "How Web Scraper.do Works",
     description:
       "Start extracting data in three quick steps. No coding required.",
     steps: [
       {
         id: "install",
-        title: "Install Web Scraper Pro",
+        title: "Install Web Scraper.do",
         description:
           "Get the extension or app with a single click.",
         icon: "Download",
@@ -224,7 +224,7 @@ export const productConfig = {
 
   // Benefits section
   benefits: {
-    title: "Why Choose Web Scraper Pro?",
+    title: "Why Choose Web Scraper.do?",
     subtitle: "Everything you need to extract web data efficiently.",
     items: [
       {
@@ -270,7 +270,7 @@ export const productConfig = {
     testimonialList: [
       {
         quote:
-          "Web Scraper Pro has transformed how we gather market data. It's incredibly fast and easy to use.",
+          "Web Scraper.do has transformed how we gather market data. It's incredibly fast and easy to use.",
         author: "Sarah Johnson",
         position: "Market Analyst, TechCorp",
         avatar:
@@ -314,12 +314,12 @@ export const productConfig = {
   // FAQ section
   faq: {
     heading: "Questions",
-    subheading: "Find answers to common questions about Web Scraper Pro",
+    subheading: "Find answers to common questions about Web Scraper.do",
     questions: [
       {
         question: "How does it work?",
         answer:
-          "Install Web Scraper Pro, open the website you want to scrape, click to select elements, and export the data. It's that simple.",
+          "Install Web Scraper.do, open the website you want to scrape, click to select elements, and export the data. It's that simple.",
         category: "Getting Started",
       },
       {
@@ -331,7 +331,7 @@ export const productConfig = {
       {
         question: "Can I scrape dynamic websites?",
         answer:
-          "Yes, Web Scraper Pro handles dynamic content (JavaScript, AJAX) automatically.",
+          "Yes, Web Scraper.do handles dynamic content (JavaScript, AJAX) automatically.",
         category: "Features",
       },
       {
@@ -385,10 +385,10 @@ export const productConfig = {
 
   // CTA section
   cta: {
-    heading: "Get Started with Web Scraper Pro",
+    heading: "Get Started with Web Scraper.do",
     subheading:
       "Start extracting data from the web today. No coding required.",
-    ctaText: "Install Web Scraper Pro",
+    ctaText: "Install Web Scraper.do",
     ctaUrl:
       "#",
     videoUrl: "",
@@ -399,7 +399,7 @@ export const productConfig = {
   // Contact section
   contact: {
     heading: "Get in Touch",
-    subheading: "Have questions about Web Scraper Pro? We're here to help.",
+    subheading: "Have questions about Web Scraper.do? We're here to help.",
     email: "vikram@thinksolv.com",
     address:
       "Thinksolv Technologies Pvt Ltd, KCT Tech Park, Coimbatore, India.",
@@ -446,7 +446,7 @@ export const productConfig = {
 
   // Meta information for SEO
   meta: {
-    title: "Web Scraper Pro - No Code Data Extraction",
+    title: "Web Scraper.do - No Code Data Extraction",
     description:
       "Seamlessly extract data from any website without code. Streamline your data scraping workflow.",
     keywords: [

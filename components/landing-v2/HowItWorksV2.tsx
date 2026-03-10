@@ -9,25 +9,41 @@ import { fadeUpVariant, staggerContainer } from "@/lib/framer-animations";
 const steps = [
     {
         title: "Install Extension",
-        description: "Add our Chrome extension in seconds. No complex setup or local environment configuration needed.",
+        description: (
+            <>
+                Add our <strong>Chrome extension in seconds</strong>. No complex setup or local configuration is needed.
+            </>
+        ),
         icon: Download,
         lightColor: "bg-blue-100 text-blue-600",
     },
     {
         title: "Select Data Points",
-        description: "Navigate to any website and simply click on the text, images, or links you want to extract.",
+        description: (
+            <>
+                Navigate to any website and <strong>simply click</strong> on the text, images, or links to extract.
+            </>
+        ),
         icon: MousePointer,
         lightColor: "bg-indigo-100 text-indigo-600",
     },
     {
         title: "Auto-Paginate",
-        description: "Select the 'Next' button once. The scraper automatically handles pagination and infinite scrolls for you.",
+        description: (
+            <>
+                Select the 'Next' button once. We handle <strong>pagination and infinite scroll</strong> for you.
+            </>
+        ),
         icon: RefreshCcw,
         lightColor: "bg-violet-100 text-violet-600",
     },
     {
         title: "Export Instantly",
-        description: "Download your data as JSON, CSV, or sync it directly to Google Sheets.",
+        description: (
+            <>
+                Export your data to <strong>Google Sheets, Excel, JSON, or CSV</strong>.
+            </>
+        ),
         icon: FileJson,
         lightColor: "bg-emerald-100 text-emerald-600",
     },
@@ -73,7 +89,7 @@ export default function HowItWorksV2() {
                     whileInView="visible"
                     viewport={{ once: true, margin: "-100px" }}
                     variants={staggerContainer}
-                    className="relative grid md:grid-cols-4 gap-8"
+                    className="relative grid md:grid-cols-4 gap-12"
                 >
                     {/* Connecting Line (Desktop) */}
                     <motion.div
@@ -104,8 +120,9 @@ export default function HowItWorksV2() {
 
                                     {/* Text */}
                                     <h3 className="text-xl font-bold text-slate-700 mb-3 leading-snug">{step.title}</h3>
-                                    <p className="text-slate-500 text-sm leading-relaxed mb-3 px-2">{step.description}</p>
-
+                                    <p className="text-slate-500 leading-relaxed max-w-[260px] mx-auto [&>strong]:text-slate-500 [&>strong]:font-semibold">
+                                        {step.description}
+                                    </p>
                                     {/* Step Indicator (Copied exactly from original V1) */}
                                     {i < steps.length - 1 && (
                                         <div className="absolute top-8 -right-4 hidden lg:flex items-center justify-center w-8 h-8 rounded-full bg-white border-2 border-slate-100 text-slate-400 font-bold text-sm">

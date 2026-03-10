@@ -5,7 +5,7 @@ import { InfluencerHowToUse } from "./_components/InfluencerHowToUse"
 import { InfluencerGuide } from "./_components/InfluencerGuide"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: "Influencer Marketing ROI Calculator - Track Campaign Performance | Web Scraper Pro",
+    title: "Influencer Marketing ROI Calculator - Track Campaign Performance | Web Scraper.do",
     description: "Calculate the true return on investment for your influencer marketing campaigns. Track fees, gifting costs, and sales to measure campaign success.",
 }
 export default function InfluencerROICalculatorPage() {

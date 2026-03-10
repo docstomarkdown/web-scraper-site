@@ -5,7 +5,7 @@ import { AOVHowToUse } from "./_components/AOVHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Average Order Value (AOV) Calculator | Web Scraper Pro',
+    title: 'Average Order Value (AOV) Calculator | Web Scraper.do',
     description: 'Calculate your Average Order Value (AOV) to understand customer spending habits and improve your pricing strategy.',
 }
 export default function AOVCalculatorPage() {

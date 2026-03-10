@@ -5,7 +5,7 @@ import { MarginHowToUse } from "./_components/MarginHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Profit Margin Calculator - Calculate Gross Margin & Markup | Web Scraper Pro',
+    title: 'Profit Margin Calculator - Calculate Gross Margin & Markup | Web Scraper.do',
     description: 'Free profit margin calculator to instantly calculate gross margin, markup percentage, and profit per unit. Essential tool for retailers and dropshippers.',
 }
 export default function ProfitMarginCalculatorPage() {

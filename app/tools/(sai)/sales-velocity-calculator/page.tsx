@@ -5,7 +5,7 @@ import { SalesVelocityHowToUse } from "./_components/SalesVelocityHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Sales Velocity Calculator | Web Scraper Pro',
+    title: 'Sales Velocity Calculator | Web Scraper.do',
     description: 'Calculate your true sales velocity by adjusting for out-of-stock days. Improve inventory forecasting accuracy.',
 }
 export default function SalesVelocityCalculatorPage() {

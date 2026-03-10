@@ -1,24 +1,22 @@
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { InventoryTurnoverCalculator } from "./_components/InventoryTurnoverCalculator"
 import { InventoryTurnoverHowToUse } from "./_components/InventoryTurnoverHowToUse"
 import { InventoryTurnoverGuide } from "./_components/InventoryTurnoverGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
+
 export const metadata: Metadata = {
     title: "Inventory Turnover Calculator | Measure Inventory Efficiency",
     description: "Calculate your inventory turnover ratio and Days Sales in Inventory (DSI). Optimize your stock levels, improve cash flow, and analyze operational efficiency with our professional calculator.",
 }
+
 export default function InventoryTurnoverCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Inventory Turnover Ratio Calculator
-                        </h1>
-                    </FadeIn>
-                </div>
+                <ToolPageTitle
+                    title="Inventory Turnover Ratio Calculator"
+                />
                 <div className="mb-20">
                     <InventoryTurnoverCalculator />
                 </div>

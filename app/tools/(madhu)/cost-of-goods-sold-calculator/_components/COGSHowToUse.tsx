@@ -9,17 +9,17 @@ export function COGSHowToUse() {
             steps={[
                 {
                     title: "Enter Unit Costs",
-                    description: "Input the product cost, shipping, duties, and any packaging fees to calculate your total Landed Cost.",
+                    description: "Input your product cost, inbound shipping, duties, and packaging fees to determine the direct acquisition cost per unit.",
                     icon: Package
                 },
                 {
                     title: "Add Fulfillment Details",
-                    description: "Include your pick-and-pack fees, outbound shipping, and an estimated return rate buffer.",
+                    description: "Include the fulfillment fee (like pick-and-pack) and outbound shipping to calculate your complete COGS per unit.",
                     icon: Truck
                 },
                 {
-                    title: "Calculate Profit Margin",
-                    description: "Set your target selling price to see your Gross Profit and Margin after all costs are considered.",
+                    title: "Calculate Total COGS - Optional",
+                    description: "Enter the number of units sold to instantly calculate your Total Cost of Goods Sold across your entire inventory.",
                     icon: TrendingUp
                 }
             ]}

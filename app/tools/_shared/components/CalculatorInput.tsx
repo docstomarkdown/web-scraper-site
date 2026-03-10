@@ -170,11 +170,12 @@ export function CalculatorInput({
     return (
         <div
             className={cn(
-                "max-w-[520px] mx-auto w-full relative calculator-input-row",
-                // Updated today: Universal mt-3 today to eliminate gaps
+                "max-w-[520px] mx-auto w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
+                // With groupingTitle: keep left padding for tree-line/icon offset
+                // Without groupingTitle: remove left padding so label aligns flush
                 groupingTitle
-                    ? "[.calculator-input-row+&]:mt-3"
-                    : "[.calculator-input-row+&]:mt-3"
+                    ? "px-3 sm:px-5"
+                    : "pr-3 sm:pr-5 pl-0"
             )}
             ref={containerRef}
             data-has-title={!!groupingTitle}

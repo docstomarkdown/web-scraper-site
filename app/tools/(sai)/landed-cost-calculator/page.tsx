@@ -5,7 +5,7 @@ import { LandedCostHowToUse } from "./_components/LandedCostHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Landed Cost Calculator - Calculate True Import Cost Per Unit | Web Scraper Pro',
+    title: 'Landed Cost Calculator - Calculate True Import Cost Per Unit | Web Scraper.do',
     description: 'Free landed cost calculator to compute the true total cost of importing products. Includes product cost, shipping, customs duties, insurance, and fees. Essential for e-commerce importers.',
 }
 export default function LandedCostCalculatorPage() {

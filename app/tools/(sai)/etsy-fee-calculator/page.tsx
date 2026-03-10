@@ -5,7 +5,7 @@ import { EtsyFeeHowToUse } from "./_components/EtsyFeeHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Etsy Fee Calculator - Calculate Transaction & Listing Fees | Web Scraper Pro',
+    title: 'Etsy Fee Calculator - Calculate Transaction & Listing Fees | Web Scraper.do',
     description: 'Calculate your exact Etsy fees and net profit. Includes listing fees, transaction fees (6.5%), payment processing, and Offsite Ads calculations.',
 }
 export default function EtsyFeeCalculatorPage() {

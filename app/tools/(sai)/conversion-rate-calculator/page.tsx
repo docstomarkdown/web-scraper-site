@@ -5,7 +5,7 @@ import { ConversionHowToUse } from "./_components/ConversionHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Conversion Rate Calculator | Web Scraper Pro',
+    title: 'Conversion Rate Calculator | Web Scraper.do',
     description: 'Calculate your website or campaign conversion rate instantly. Understand how well your traffic is performing.',
 }
 export default function ConversionCalculatorPage() {

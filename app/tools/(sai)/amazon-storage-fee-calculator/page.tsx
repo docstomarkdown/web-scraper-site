@@ -5,7 +5,7 @@ import { StorageFeeHowToUse } from "./_components/StorageFeeHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Amazon Storage Fee Calculator | Web Scraper Pro',
+    title: 'Amazon Storage Fee Calculator | Web Scraper.do',
     description: 'Calculate your monthly Amazon FBA inventory storage fees. Plan for Q4 peak season rates and optimize your stock levels.',
 }
 export default function AmazonStorageFeeCalculatorPage() {

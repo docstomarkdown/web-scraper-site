@@ -5,7 +5,7 @@ import { GrossMarginHowToUse } from "./_components/GrossMarginHowToUse"
 import { GrossMarginGuide } from "./_components/GrossMarginGuide"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: "Gross Margin Calculator - Calculate Margin, Revenue & COGS | Web Scraper Pro",
+    title: "Gross Margin Calculator - Calculate Margin, Revenue & COGS | Web Scraper.do",
     description: "Free advanced Gross Margin Calculator. Calculate Gross Margin Percentage from Revenue and COGS. optimize pricing strategies and protect your bottom line.",
 }
 export default function GrossMarginCalculatorPage() {

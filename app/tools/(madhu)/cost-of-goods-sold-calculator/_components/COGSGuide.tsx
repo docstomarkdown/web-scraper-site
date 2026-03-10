@@ -4,30 +4,30 @@ import { AlertCircle, Scale, CreditCard, BookOpen } from "lucide-react"
 export function COGSGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About This Process"
+            title="The Hidden Costs of Sourcing & Fulfillment"
             icon={BookOpen}
             items={[
                 {
-                    title: "The 'Return Risk' Trap",
-                    description: "If you have a 10% return rate on a $50 item, you lose $5.00 per sale in revenue, plus shipping costs. Most calculators ignore this, leading to inflated profit estimates.",
+                    title: "The True Cost of Sourcing",
+                    description: "Your supplier might quote a product at $5, but inbound freight, customs duties, and taxes can easily push the real landed cost much higher.",
                     icon: AlertCircle,
-                    stat: "Hidden Cost",
-                    statLabel: "Profit Killer",
+                    stat: "+40%",
+                    statLabel: "Avg Markup",
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
                     statColor: "text-amber-600",
-                    tooltip: "Your margin isn't real until the return window closes."
+                    tooltip: "Freight and duties often add 30-50% to the base product cost."
                 },
                 {
-                    title: "Landed vs. Product Cost",
-                    description: "Your product cost is $5, but after shipping and taxes, it's $7. Pricing based on $5 guarantees you lose money on every sale.",
+                    title: "Packaging Adds Up Quickly",
+                    description: "Don't forget the cost of polybags, custom boxes, labels, and inserts. These seemingly small per-unit costs heavily impact margins at scale.",
                     icon: Scale,
-                    stat: "+40%",
-                    statLabel: "Avg Markup",
+                    stat: "Hidden",
+                    statLabel: "Extra Cost",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "Freight and duties often add 30-50% to the base product cost."
+                    tooltip: "A premium box can cost as much as $1 per unit depending on size."
                 },
                 {
                     title: "Fulfillment > Manufacturing",
@@ -43,4 +43,4 @@ export function COGSGuide() {
             ]}
         />
     )
-}
+}

@@ -5,7 +5,7 @@ import { NetProfitHowToUse } from "./_components/NetProfitHowToUse"
 import { NetProfitGuide } from "./_components/NetProfitGuide"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: "Net Profit Calculator - Calculate True Business Profit | Web Scraper Pro",
+    title: "Net Profit Calculator - Calculate True Business Profit | Web Scraper.do",
     description: "Calculate your net profit after expenses, ads, overhead, and taxes. Get a clear view of your business bottom line with our free calculator.",
 }
 export default function NetProfitCalculatorPage() {

@@ -24,7 +24,7 @@ const faqs = [
     },
     {
         question: "What export formats are available?",
-        answer: <><strong>CSV, JSON, and Excel (XLSX)</strong>. You can also sync directly to <strong>Google Sheets</strong> with one click via the built-in OAuth2 integration.</>,
+        answer: <><strong>Google Sheets, Excel (XLSX), JSON, or CSV</strong>. You can download the data directly or sync automatically to Google Sheets via our built-in one-click OAuth2 integration.</>,
     },
     {
         question: "Does it remove sponsored results?",
@@ -121,7 +121,7 @@ export default function FAQV2() {
                                         >
                                             {/* Padding layout: px-6(24px) + gap-4(16px) + w-10(40px) = 80px */}
                                             {/* md Layout: px-8(32px) + gap-5(20px) + w-10(40px) = 92px */}
-                                            <p className="pb-6 pl-[80px] md:pl-[92px] pr-6 md:pr-12 text-slate-500 leading-relaxed text-[15px] [&>strong]:text-slate-700 [&>strong]:font-semibold">
+                                            <p className="pb-6 pl-[80px] md:pl-[92px] pr-6 md:pr-12 text-slate-500 leading-relaxed text-[15px] [&>strong]:text-slate-500 [&>strong]:font-semibold">
                                                 {faq.answer}
                                             </p>
                                         </motion.div>

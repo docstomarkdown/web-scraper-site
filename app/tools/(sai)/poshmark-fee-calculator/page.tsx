@@ -5,7 +5,7 @@ import { PoshmarkFeeHowToUse } from "./_components/PoshmarkFeeHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Poshmark Fee Calculator - Calculate Seller Fees & Profit | Web Scraper Pro',
+    title: 'Poshmark Fee Calculator - Calculate Seller Fees & Profit | Web Scraper.do',
     description: 'Calculate your Poshmark seller fees and net earnings. Account for critical factors like the flat fee for items under $15 and shipping discounts.',
 }
 export default function PoshmarkFeeCalculatorPage() {

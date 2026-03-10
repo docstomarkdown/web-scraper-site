@@ -5,7 +5,7 @@ import { WholesalePriceGuide } from "./_components/WholesalePriceGuide"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Wholesale Price Calculator - Calculate Profitable Selling Prices | Web Scraper Pro',
+    title: 'Wholesale Price Calculator - Calculate Profitable Selling Prices | Web Scraper.do',
     description: 'Free wholesale price calculator. Determine the perfect wholesale selling price based on your costs and desired profit margin. Ensure profitability for your business.',
 }
 export default function WholesalePriceCalculatorPage() {

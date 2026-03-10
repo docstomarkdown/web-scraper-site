@@ -5,7 +5,7 @@ import { ReorderHowToUse } from "./_components/ReorderHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Inventory Reorder Point Calculator | Web Scraper Pro',
+    title: 'Inventory Reorder Point Calculator | Web Scraper.do',
     description: 'Calculate exactly when to reorder stock. Prevent stockouts and overstocking with our scientific Reorder Point calculator.',
 }
 export default function ReorderCalculatorPage() {

@@ -5,7 +5,7 @@ import { PODProfitHowToUse } from "./_components/PODProfitHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Print on Demand Profit Calculator - Calculate Margins & Fees | Web Scraper Pro',
+    title: 'Print on Demand Profit Calculator - Calculate Margins & Fees | Web Scraper.do',
     description: 'Calculate your true profit for Print on Demand (POD) products. Account for base costs, platform fees (Etsy/Shopify), and shipping to ensure profitability.',
 }
 export default function PODProfitCalculatorPage() {

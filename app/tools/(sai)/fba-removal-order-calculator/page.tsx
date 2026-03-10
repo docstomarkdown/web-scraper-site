@@ -4,7 +4,7 @@ import { FBARemovalHowToUse } from "./_components/FBARemovalHowToUse"
 import { FBARemovalGuide } from "./_components/FBARemovalGuide"
 import { CTA } from "@/components/sections/CTA"
 export const metadata = {
-    title: "FBA Removal Order Cost Calculator | Web Scraper Pro",
+    title: "FBA Removal Order Cost Calculator | Web Scraper.do",
     description: "Calculate Amazon FBA removal and disposal order fees for 2025. Estimate costs for standard and oversize items."
 }
 export default function Page() {

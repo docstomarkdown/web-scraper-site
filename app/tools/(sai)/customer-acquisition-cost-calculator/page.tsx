@@ -5,7 +5,7 @@ import { CACHowToUse } from "./_components/CACHowToUse"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'Customer Acquisition Cost (CAC) Calculator | Web Scraper Pro',
+    title: 'Customer Acquisition Cost (CAC) Calculator | Web Scraper.do',
     description: 'Calculate your Customer Acquisition Cost (CAC) instantly. Determine how much you spend to acquire a new customer and optimize your marketing budget.',
 }
 export default function CACCalculatorPage() {

@@ -5,7 +5,7 @@ import { COGSHowToUse } from "./_components/COGSHowToUse"
 import { COGSGuide } from "./_components/COGSGuide"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
-    title: 'COGS Calculator - Calculate Cost of Goods Sold & Fulfillment | Web Scraper Pro',
+    title: 'COGS Calculator - Calculate Cost of Goods Sold & Fulfillment | Web Scraper.do',
     description: 'Free Cost of Goods Sold (COGS) calculator for e-commerce. Calculate true product cost including manufacturing, freight, customs, packaging, and fulfillment fees.',
 }
 export default function COGSCalculatorPage() {
@@ -33,20 +33,20 @@ export default function COGSCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is 'Landed Cost'?",
-                                    answer: "Landed Cost is the total price of a product once it has arrived at your doorstep. It includes the original purchase price, freight, customs, duties, taxes, and insurance."
+                                    question: "What is Cost of Goods Sold (COGS)?",
+                                    answer: "Cost of Goods Sold (COGS) refers to the direct costs attributable to the production or acquisition of the goods sold by your company. This includes the product cost, shipping, duties, and packaging."
                                 },
                                 {
-                                    question: "Why include Return Rate in COGS?",
-                                    answer: "Returns are a cost of doing business. If 1 in 10 items is returned, you lose the shipping and fulfillment fees for that item. Including a 'Return Risk' buffer ensures your pricing covers these inevitable losses."
+                                    question: "Why include Fulfillment & Outbound Shipping?",
+                                    answer: "While fulfillment isn't always part of traditional manufacturing COGS, in e-commerce, it is a direct variable cost incurred to deliver a product to a customer. Knowing this total cost per unit is vital for pricing your products correctly."
                                 },
                                 {
-                                    question: "What is a good Gross Margin?",
-                                    answer: "For e-commerce, a Gross Margin above 30% is generally considered healthy. If it is below 20%, you may struggle to pay for ads and operating expenses."
+                                    question: "Are advertising costs (ROAS) included in COGS?",
+                                    answer: "No. This calculator is designed strictly to determine your direct per-unit variable costs. Advertising spend, software subscriptions, and general fixed overhead should remain separate from your base Cost of Goods Sold."
                                 },
                                 {
-                                    question: "Does this include Ad Spend (ROAS)?",
-                                    answer: "No. This calculator finds your 'Gross Profit' (Revenue - COGS). You pay for ads from your Gross Profit. Determining your 'Net Profit' after ads is a separate calculation."
+                                    question: "Do I need to enter 'Units Sold'?",
+                                    answer: "Entering your Units Sold is completely optional. If left blank, you will simply see your COGS per Unit. If you enter a number, the calculator will immediately show your Total COGS across that inventory batch."
                                 }
                             ]}
                         />
