@@ -170,7 +170,7 @@ export function CalculatorInput({
     return (
         <div
             className={cn(
-                "max-w-[520px] mx-auto w-full relative calculator-input-row",
+                "max-w-[520px] mx-auto w-full relative calculator-input-row px-3 sm:px-5 ",
                 // Updated today: Universal mt-3 today to eliminate gaps
                 groupingTitle
                     ? "[.calculator-input-row+&]:mt-3"

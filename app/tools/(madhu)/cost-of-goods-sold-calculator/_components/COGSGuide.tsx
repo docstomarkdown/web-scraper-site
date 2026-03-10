@@ -4,7 +4,7 @@ import { AlertCircle, Scale, CreditCard, BookOpen } from "lucide-react"
 export function COGSGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About This Process"
+            title="The Hidden Costs of Sourcing & Fulfillment"
             icon={BookOpen}
             items={[
                 {
