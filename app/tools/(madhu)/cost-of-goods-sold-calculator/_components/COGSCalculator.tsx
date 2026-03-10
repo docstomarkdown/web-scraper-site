@@ -199,6 +199,14 @@ export function COGSCalculator() {
                                 }
                             ] : []
                         }
+                        checklistItems={[
+                            { key: 'productCost', label: 'Product Cost', isComplete: values.productCost !== "" && values.productCost !== null && values.productCost !== undefined },
+                            { key: 'inboundShipping', label: 'Inbound Shipping', isComplete: values.inboundShipping !== "" && values.inboundShipping !== null && values.inboundShipping !== undefined },
+                            { key: 'duties', label: 'Duties & Taxes', isComplete: values.duties !== "" && values.duties !== null && values.duties !== undefined },
+                            { key: 'packaging', label: 'Packaging', isComplete: values.packaging !== "" && values.packaging !== null && values.packaging !== undefined },
+                            { key: 'fulfillmentFee', label: 'Fulfillment Fee', isComplete: values.fulfillmentFee !== "" && values.fulfillmentFee !== null && values.fulfillmentFee !== undefined },
+                            { key: 'outboundShipping', label: 'Outbound Shipping', isComplete: values.outboundShipping !== "" && values.outboundShipping !== null && values.outboundShipping !== undefined }
+                        ]}
                     />
                 </div>
             </div>

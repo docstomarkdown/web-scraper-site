@@ -10,6 +10,11 @@
 // it can calculate the value, the value should be calculated only when all the mandatory fields are filled. the optional input
 // should be shown to user in best premium ui way
 
+// by using the sahred component calculatecardheader,calculateinput,curencycombo,resultsummary , toolstep,toolguide,toolfaq,toolsectionheader,fadein  update the 
+// Net Profit Calculator
+
+// does the calculate input card follows the size of groping label ,dub label clur icon?
+
 "use client"
 import React from "react"
 import { HelpCircle, BookOpen, LucideIcon, Info, RefreshCw, Copy, Check, RotateCcw } from "lucide-react"

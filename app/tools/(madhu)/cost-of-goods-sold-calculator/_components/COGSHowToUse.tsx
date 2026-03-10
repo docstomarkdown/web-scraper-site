@@ -18,7 +18,7 @@ export function COGSHowToUse() {
                     icon: Truck
                 },
                 {
-                    title: "Calculate Total COGS (Optional)",
+                    title: "Calculate Total COGS - Optional",
                     description: "Enter the number of units sold to instantly calculate your Total Cost of Goods Sold across your entire inventory.",
                     icon: TrendingUp
                 }
