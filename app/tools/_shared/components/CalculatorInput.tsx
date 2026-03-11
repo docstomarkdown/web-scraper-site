@@ -61,7 +61,7 @@ export function CalculatorInput({
     const isEmpty = value === "" || value === null || value === undefined
     const isHighlighted = (highlight || isFirstInput) && isEmpty
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         const checkGroup = () => {
             if (!containerRef.current) return;
             const el = containerRef.current;
@@ -171,9 +171,9 @@ export function CalculatorInput({
         <div
             className={cn(
                 "max-w-[520px] mx-auto w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
-                // With groupingTitle: keep left padding for tree-line/icon offset
-                // Without groupingTitle: remove left padding so label aligns flush
-                groupingTitle
+                // With groupingTitle or if inside a group: keep left padding for tree-line/icon offset
+                // Without groupingTitle AND standalone: remove left padding so label aligns flush
+                (groupingTitle || isInLabeledGroup)
                     ? "px-3 sm:px-5"
                     : "pr-3 sm:pr-5 pl-0"
             )}

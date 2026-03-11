@@ -7,29 +7,29 @@ import {
     CheckCircle2,
     Package
 } from "lucide-react"
-import {
-    InputCardHeader,
-    ActionButtons
-} from "../../ToolTemplate"
-import { Counter, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import { ResultDateCard, CalculatorInput, CalculatorCardHeader, FadeIn } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 interface DOIState {
     currentStock: string | number
     salesVelocity: string | number
     velocityUnit: "daily" | "weekly" | "monthly"
     safetyStock: string | number
 }
+
 const DEFAULT_STATE: DOIState = {
     currentStock: "",
     salesVelocity: "",
     velocityUnit: "daily",
     safetyStock: ""
 }
+
 export function DaysOfInventoryCalculator() {
     const [values, setValues] = useState<DOIState>(DEFAULT_STATE)
+
     const handleInputChange = (field: keyof DOIState, value: string | number) => {
         if (field === "velocityUnit") {
             setValues(prev => ({ ...prev, [field]: value as any }))
@@ -37,11 +37,13 @@ export function DaysOfInventoryCalculator() {
         }
         setValues(prev => ({ ...prev, [field]: value === "" ? "" : value.toString() }))
     }
+
     const hasInputs = useMemo(() => {
         const stock = Number(values.currentStock) || 0
         const velocity = Number(values.salesVelocity) || 0
         return values.currentStock !== "" && values.salesVelocity !== "" && stock > 0 && velocity > 0
     }, [values])
+
     const results = useMemo(() => {
         const stock = Number(values.currentStock) || 0
         const velocity = Number(values.salesVelocity) || 0
@@ -73,170 +75,199 @@ export function DaysOfInventoryCalculator() {
             status
         }
     }, [values])
+
     const handleReset = () => setValues(DEFAULT_STATE)
-    const getStatusColor = (status: string) => {
+
+    const getStatusBadgeConfig = (status: string) => {
+        if (!hasInputs) return undefined
         switch (status) {
-            case "critical": return "text-red-500 bg-red-50 border-red-100"
-            case "warning": return "text-amber-500 bg-amber-50 border-amber-100"
-            case "healthy": return "text-blue-500 bg-blue-50 border-blue-100"
-            case "overstock": return "text-blue-500 bg-blue-50 border-blue-100"
-            default: return "text-slate-400 bg-slate-50 border-slate-100"
+            case "critical": return {
+                text: "Critical",
+                icon: <AlertCircle className="w-3.5 h-3.5 text-red-600" />,
+                bgClass: "bg-red-50",
+                textClass: "text-red-600",
+                borderClass: "border-red-200"
+            }
+            case "warning": return {
+                text: "Warning",
+                icon: <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />,
+                bgClass: "bg-amber-50",
+                textClass: "text-amber-600",
+                borderClass: "border-amber-200"
+            }
+            case "healthy": return {
+                text: "Healthy",
+                icon: <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />,
+                bgClass: "bg-emerald-50",
+                textClass: "text-emerald-600",
+                borderClass: "border-emerald-200"
+            }
+            case "overstock": return {
+                text: "Overstock",
+                icon: <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />,
+                bgClass: "bg-blue-50",
+                textClass: "text-blue-600",
+                borderClass: "border-blue-200"
+            }
+            default: return undefined
         }
     }
+
+    const formattedRunOutDate = results.runOutDate.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    })
+
     return (
-        <div className="max-w-6xl mx-auto">
+        <FadeIn className="max-w-6xl mx-auto" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
                 {/* Left Column: Smart Inputs */}
                 <div className="lg:col-span-7">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-[2.5rem]">
-                        <InputCardHeader
+                        <CalculatorCardHeader
                             title="Inventory Configuration"
-                            subtitle="Analyze your remaining stock runway."
-                            scrollId="how-to-use"
+                            description="Analyze your remaining stock runway."
+                            guideId="how-to-use"
                             onReset={handleReset}
                         />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             {/* Velocity Unit Tabs */}
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-1.5 mb-1 pl-1">
-                                    <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                        <Calendar className="w-4 h-4 text-slate-400" />
-                                        Velocity Period
-                                    </label>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors p-0.5 mt-0.5">
-                                                    <Info className="h-3.5 w-3.5" />
-                                                </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="max-w-[220px] text-xs bg-slate-900 text-white border-slate-800 p-3 rounded-lg">
-                                                <p className="font-semibold mb-1.5">Select your sales tracking period:</p>
-                                                <div className="text-slate-300 text-[11px] leading-relaxed space-y-1">
-                                                    <p><span className="text-blue-400 font-semibold">Daily</span> if you track sales every day</p>
-                                                    <p><span className="text-blue-400 font-semibold">Weekly</span> for weekly reports</p>
-                                                    <p><span className="text-blue-400 font-semibold">Monthly</span> for monthly data</p>
-                                                </div>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
+                            <div
+                                className={cn(
+                                    "max-w-[520px] mx-auto w-full relative calculator-input-row",
+                                    "px-3 sm:px-5"
+                                )}
+                                data-has-title="true"
+                            >
+                                <div className="relative w-full">
+                                    {/* Group Header */}
+                                    <div className="flex items-center gap-2 -ml-[33px] mb-2.5 relative h-7">
+                                        <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
+                                            <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                                        </div>
+                                        <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight">
+                                            Velocity Period
+                                        </span>
+                                        <TooltipProvider delayDuration={100}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <button type="button" tabIndex={-1} className="text-slate-400 hover:text-blue-600 transition-colors cursor-help shrink-0">
+                                                        <Info className="h-3.5 w-3.5" />
+                                                    </button>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" className="max-w-[220px] text-[13px] font-normal bg-slate-900 text-white border-slate-800 p-3 rounded-lg">
+                                                    <p className="font-semibold mb-1.5">Select your sales tracking period:</p>
+                                                    <div className="text-slate-300 text-[11px] leading-relaxed space-y-1">
+                                                        <p><span className="text-blue-400 font-semibold">Daily</span> if you track sales every day</p>
+                                                        <p><span className="text-blue-400 font-semibold">Weekly</span> for weekly reports</p>
+                                                        <p><span className="text-blue-400 font-semibold">Monthly</span> for monthly data</p>
+                                                    </div>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
+                                    <div className="w-full relative z-10">
+                                        <Tabs
+                                            value={values.velocityUnit}
+                                            onValueChange={(v) => handleInputChange('velocityUnit', v)}
+                                            className="w-full"
+                                        >
+                                            <TabsList className="grid w-full grid-cols-3 h-10 bg-slate-100/50 p-1 rounded-xl border border-slate-200/50">
+                                                <TabsTrigger
+                                                    value="daily"
+                                                    className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
+                                                >
+                                                    Daily
+                                                </TabsTrigger>
+                                                <TabsTrigger
+                                                    value="weekly"
+                                                    className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
+                                                >
+                                                    Weekly
+                                                </TabsTrigger>
+                                                <TabsTrigger
+                                                    value="monthly"
+                                                    className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
+                                                >
+                                                    Monthly
+                                                </TabsTrigger>
+                                            </TabsList>
+                                        </Tabs>
+                                    </div>
                                 </div>
-                                <Tabs
-                                    value={values.velocityUnit}
-                                    onValueChange={(v) => handleInputChange('velocityUnit', v)}
-                                    className="w-full"
-                                >
-                                    <TabsList className="grid w-full grid-cols-3 h-10 bg-slate-100/50 p-1 rounded-xl border border-slate-200/50">
-                                        <TabsTrigger
-                                            value="daily"
-                                            className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
-                                        >
-                                            Daily
-                                        </TabsTrigger>
-                                        <TabsTrigger
-                                            value="weekly"
-                                            className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
-                                        >
-                                            Weekly
-                                        </TabsTrigger>
-                                        <TabsTrigger
-                                            value="monthly"
-                                            className="rounded-xl font-bold data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all"
-                                        >
-                                            Monthly
-                                        </TabsTrigger>
-                                    </TabsList>
-                                </Tabs>
                             </div>
+                            {/* ── Inputs Section ── */}
                             <div className="space-y-3">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Package className="w-4 h-4 text-slate-400" />
-                                    Stock & Sales Details
-                                </label>
-                                <div className="space-y-3">
-                                    <CalculatorInput
-                                        label="Current Stock on Hand"
-                                        value={values.currentStock}
-                                        onChange={(v) => handleInputChange('currentStock', v)}
-                                        placeholder="5000"
-                                        tooltip="The total number of units physically available in your warehouse today."
-                                    />
-                                    <CalculatorInput
-                                        label={`Sales Speed (Units per ${values.velocityUnit.replace('ly', '')})`}
-                                        value={values.salesVelocity}
-                                        onChange={(v) => handleInputChange('salesVelocity', v)}
-                                        placeholder="150"
-                                        tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
-                                    />
-                                    <CalculatorInput
-                                        label="Safety Stock Buffer"
-                                        value={values.safetyStock}
-                                        onChange={(v) => handleInputChange('safetyStock', v)}
-                                        placeholder="0"
-                                        tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
-                                    />
-                                </div>
+                                <CalculatorInput
+                                    hideSeparator={true}
+                                    label="Total Current Stock"
+                                    value={values.currentStock}
+                                    onChange={(v) => handleInputChange('currentStock', v)}
+                                    placeholder="5000"
+                                    tooltip="The total number of units physically available in your warehouse today."
+                                    groupingTitle="Stock & Sales Details"
+                                    groupingIcon={Package}
+                                />
+                                <CalculatorInput
+                                    label={`Average Sales Speed (Units per ${values.velocityUnit.replace('ly', '')})`}
+                                    value={values.salesVelocity}
+                                    onChange={(v) => handleInputChange('salesVelocity', v)}
+                                    placeholder="150"
+                                    tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
+                                />
+                                <CalculatorInput
+                                    label="Safety Buffer Units"
+                                    value={values.safetyStock}
+                                    onChange={(v) => handleInputChange('safetyStock', v)}
+                                    placeholder="0"
+                                    tooltip="Units you wish to keep as emergency backup (will be excluded from 'Useable Days')."
+                                    isOptional={true}
+                                />
                             </div>
-
                         </CardContent>
                     </Card>
                 </div>
+
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 space-y-3 flex flex-col">
-                    <ResultFeedbackCard
-                        title="TOTAL INVENTORY RUNWAY"
-                        titleLabel="Days Remaining"
-                        className="flex-shrink-0"
-                        mainValue={
-                            <div className="flex flex-col">
-                                <div className="flex items-baseline gap-2">
-                                    <Counter value={results.daysRemaining} />
-                                    <span className="text-2xl font-medium opacity-50">Days</span>
-                                </div>
-                                {hasInputs && (
-                                    <div className={`flex items-center gap-2 mt-4 px-3 py-1.5 rounded-xl border w-fit font-bold text-xs uppercase tracking-wider ${getStatusColor(results.status)}`}>
-                                        {results.status === "critical" ? (
-                                            <AlertCircle className="w-3.5 h-3.5" />
-                                        ) : (
-                                            <CheckCircle2 className="w-3.5 h-3.5" />
-                                        )}
-                                        {results.status} Stock Level
-                                    </div>
-                                )}
-                            </div>
-                        }
-                    >
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/30">
-                                    <Calendar className="w-5 h-5 text-blue-400" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Est. Stock-Out Date</p>
-                                    <p className={cn(
-                                        "text-base font-bold truncate transition-colors",
-                                        hasInputs ? "text-white" : "text-slate-600"
-                                    )}>
-                                        {hasInputs ? results.runOutDate.toLocaleDateString('en-US', {
-                                            weekday: 'long',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            year: 'numeric'
-                                        }) : "Waiting for inputs..."}
-                                    </p>
-                                </div>
-                            </div>
-                            {/* Useable Days vs Buffer */}
-                            <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
-                                <p className="text-slate-400 text-sm font-semibold mb-1">Net Useable Runway</p>
-                                <p className="text-sm font-medium text-slate-200 leading-relaxed">
-                                    You have <span className="text-blue-400 font-bold">{hasInputs ? results.useableDays : 0} days</span> of stock remaining before hitting your <span className="text-slate-400">safety buffer</span>.
+                    <ResultDateCard
+                        title="Days of Inventory Remaining"
+                        primaryResult={{
+                            value: results.daysRemaining,
+                            unit: "Days",
+                            label: "Days of Inventory Remaining",
+                        }}
+                        dateSection={{
+                            icon: <Calendar className="w-5 h-5 text-blue-500" />,
+                            label: "Expected Stock-Out Date",
+                            value: formattedRunOutDate,
+                            emptyText: "Waiting for inputs...",
+                        }}
+                        infoCard={{
+                            title: "Actionable Stock Runway",
+                            children: (
+                                <p className="text-sm font-medium text-slate-600 leading-relaxed">
+                                    You have{" "}
+                                    <span className="text-blue-500 font-bold">
+                                        {hasInputs ? results.useableDays : 0} days
+                                    </span>{" "}
+                                    of stock remaining before hitting your safety buffer
                                 </p>
-                            </div>
-                        </div>
-                    </ResultFeedbackCard>
+                            ),
+                        }}
+                        isCalculated={hasInputs}
+                        emptyResultLabel="Days of Inventory"
+                        className="flex-shrink-0"
+                        customBadge={getStatusBadgeConfig(results.status)}
+                        checklistItems={[
+                            { label: 'Total Current Stock', isComplete: values.currentStock !== "" && Number(values.currentStock) > 0 },
+                            { label: 'Avg. Sales Speed', isComplete: values.salesVelocity !== "" && Number(values.salesVelocity) > 0 }
+                        ]}
+                    />
                 </div>
             </div>
-        </div>
+        </FadeIn>
     )
 }
