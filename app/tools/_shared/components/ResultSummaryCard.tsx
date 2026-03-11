@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Info, CheckCircle2, Circle, ArrowLeft, Percent, Check, Activity } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import { currencies } from "./CurrencyCombobox"
 interface SecondaryResult {
     key: string
     label: string
@@ -82,6 +83,21 @@ export function ResultSummaryCard({
     const formatValueWithUnit = (value: string | number, unit?: string, isCurrency?: boolean) => {
         const numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]+/g, "")) : value
         if (isCurrency && currency && !isNaN(numValue)) {
+            // Priority: Use the symbol from our established currencies list
+            const found = currencies.find(c => c.code === currency)
+            if (found) {
+                const formatter = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+                return (
+                    <span className="flex items-baseline">
+                        <span className="mr-1 opacity-90">{found.symbol}</span>
+                        {formatter.format(numValue)}
+                    </span>
+                )
+            }
+
             try {
                 const formatter = new Intl.NumberFormat('en-US', {
                     style: 'currency',
@@ -97,7 +113,6 @@ export function ResultSummaryCard({
                     </span>
                 )
             } catch {
-                // Fallback without narrowSymbol
                 try {
                     const formatter = new Intl.NumberFormat('en-US', {
                         style: 'currency',

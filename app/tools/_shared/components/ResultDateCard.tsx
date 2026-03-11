@@ -356,7 +356,7 @@ export function ResultDateCard({
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">
                                         {dateSection.label}
                                     </p>
-                                    <p className="text-base font-bold text-slate-700 truncate">
+                                    <p className="text-base font-bold text-slate-600 truncate">
                                         {isCalculated ? dateSection.value : (dateSection.emptyText ?? "Waiting for inputs…")}
                                     </p>
                                 </div>

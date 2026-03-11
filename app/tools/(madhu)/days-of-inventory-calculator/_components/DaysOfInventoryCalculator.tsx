@@ -211,11 +211,12 @@ export function DaysOfInventoryCalculator() {
                                     groupingIcon={Package}
                                 />
                                 <CalculatorInput
-                                    label={`Average Sales Speed (Units per ${values.velocityUnit.replace('ly', '')})`}
+                                    label={`Average Sales Speed (Units per ${values.velocityUnit === "daily" ? "day" : values.velocityUnit === "weekly" ? "week" : "month"})`}
+                                    labelClassName="whitespace-nowrap"
                                     value={values.salesVelocity}
                                     onChange={(v) => handleInputChange('salesVelocity', v)}
                                     placeholder="150"
-                                    tooltip={`Average number of units sold every ${values.velocityUnit.replace('ly', '')}.`}
+                                    tooltip={`Average number of units sold every ${values.velocityUnit === "daily" ? "day" : values.velocityUnit === "weekly" ? "week" : "month"}.`}
                                 />
                                 <CalculatorInput
                                     label="Safety Buffer Units"

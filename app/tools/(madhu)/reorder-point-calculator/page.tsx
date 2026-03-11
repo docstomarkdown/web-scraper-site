@@ -1,4 +1,4 @@
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { ReorderPointCalculator } from "./_components/ReorderPointCalculator"
 import { ReorderPointHowToUse } from "./_components/ReorderPointHowToUse"
 import { ReorderPointGuide } from "./_components/ReorderPointGuide"
@@ -12,12 +12,12 @@ export default function ReorderPointCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Reorder Point Calculator
-                        </h1>
-                    </FadeIn>
+                <div className="mb-12">
+                    <ToolPageTitle
+                        title="Reorder Point Calculator"
+                        direction="up"
+                        duration={0.6}
+                    />
                 </div>
                 <div className="mb-20">
                     <ReorderPointCalculator />
