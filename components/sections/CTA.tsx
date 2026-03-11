@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ShoppingBag, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -24,24 +25,26 @@ export function CTA({ withSectionWrapper = true }: CTAProps) {
                 <div className="py-12 px-10 md:py-16 md:px-14 flex flex-col lg:flex-row items-center justify-between gap-10">
                     {/* Left Content */}
                     <div className="flex-1 text-center lg:text-left">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-bold uppercase tracking-[0.1em] mb-6 shadow-sm shadow-blue-100/50">
-                            <TrendingUp className="w-3.5 h-3.5" />
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50/50 border border-blue-100 text-blue-600 text-[10px] font-bold uppercase tracking-[0.1em] mb-6 shadow-sm shadow-blue-50/50">
+                            <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
                             <span>Analyze • Optimize • Scale</span>
                         </div>
 
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-600 mb-4 tracking-tight">
                             Ready to find winning products?
                         </h2>
 
-                        <p className="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        <p className="text-lg text-slate-500 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
                             Scrape websites or analyze Shopify stores to discover profitable products faster.
                         </p>
 
                         {/* Chrome Badge - Left Aligned on Desktop */}
                         <div className="mt-10 flex justify-center lg:justify-start">
-                            <img
+                            <Image
                                 src="/Chromeweb store badge.png"
                                 alt="Chrome Web Store"
+                                width={206}
+                                height={64}
                                 className="h-[64px] w-auto contrast-[1.1] saturate-[1.1] drop-shadow-sm hover:scale-105 transition-transform duration-300 cursor-pointer"
                             />
                         </div>
@@ -61,7 +64,7 @@ export function CTA({ withSectionWrapper = true }: CTAProps) {
                                         <Zap className="w-6 h-6 text-blue-100" />
                                     </div>
                                     <div className="flex flex-col items-start text-left flex-1 min-w-0">
-                                        <span className="font-bold text-lg tracking-tight truncate">Install Web Scraper Pro</span>
+                                        <span className="font-bold text-lg tracking-tight truncate">Install Web Scraper.do</span>
                                         <span className="text-xs text-blue-100/80 font-medium">Start finding winning products</span>
                                     </div>
                                     <div className="bg-white/10 p-2 rounded-xl group-hover:translate-x-1 transition-transform">
@@ -84,7 +87,7 @@ export function CTA({ withSectionWrapper = true }: CTAProps) {
                                         <ShoppingBag className="w-6 h-6 text-slate-600 group-hover:text-blue-600" />
                                     </div>
                                     <div className="flex flex-col items-start text-left flex-1 min-w-0">
-                                        <span className="font-bold text-lg tracking-tight text-slate-900 truncate">Explore Shopify Spy</span>
+                                        <span className="font-bold text-lg tracking-tight text-slate-600 truncate">Explore Shopify Spy</span>
                                         <span className="text-xs text-slate-500 font-medium">Discover winning Shopify stores</span>
                                     </div>
                                     <div className="bg-slate-50 p-2 rounded-xl group-hover:bg-slate-100 transition-colors">

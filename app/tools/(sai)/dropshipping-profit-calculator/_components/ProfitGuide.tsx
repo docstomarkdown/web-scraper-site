@@ -1,8 +1,6 @@
 "use client"
-
 import { BookOpen, AlertTriangle, CircleDollarSign, Calculator, Info } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
 const DrawingTrendingDown = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +17,6 @@ const DrawingTrendingDown = () => (
         <polyline points="17 18 23 18 23 12" />
     </svg>
 )
-
 const insights = [
     {
         icon: DrawingTrendingDown,
@@ -29,11 +26,7 @@ const insights = [
         title: "The Margin Illusion",
         stat: "30–40%",
         statLabel: "Profit lost to hidden costs",
-        points: [
-            "Gross margin looks great on paper",
-            "Shipping & ads cut profits by 30–40%",
-            "Always calculate NET, not gross"
-        ]
+        description: "Gross margins can be misleading. Hidden costs like shipping variances, transaction fees, and taxes often eat up 30-40% of your expected profit. Always calculate your NET profit to see the real picture."
     },
     {
         icon: AlertTriangle,
@@ -43,12 +36,8 @@ const insights = [
         title: "The RTO Problem",
         stat: "2×",
         statLabel: "Shipping cost per return",
-        points: [
-            "Each return = forward + return shipping",
-            "Plus wasted ad spend on that order",
-            "COD markets: 15–30% RTO is common"
-        ],
-        tooltip: "RTO (Return to Origin): When a customer doesn't accept the package and it's sent back to you. You lose the money spent on shipping and ads."
+        description: "Returns are a double hit: you pay for shipping both ways, plus you lose your ad spend. In Cash on Delivery (COD) markets, RTO rates can hit 15-30%, making this a critical factor to track.",
+        tooltip: "RTO (Return to Origin): When a customer rejects a delivery. You pay for shipping to them AND back to you, plus the ad money is wasted."
     },
     {
         icon: CircleDollarSign,
@@ -58,30 +47,21 @@ const insights = [
         title: "ROAS Reality Check",
         stat: "4×+",
         statLabel: "Target ROAS (not 3.5×)",
-        points: [
-            "3.5× ROAS ignores product costs & RTOs",
-            "You may keep only 15% of revenue",
-            "Factor RTO rate into every calculation"
-        ],
-        tooltip: "ROAS (Return on Ad Spend): How much money you make for every $1 spent on ads. For example, 4X means you made $4 from $1 of ads."
+        description: "A 3.5× ROAS might look good, but after deducting product and shipping costs, your actual profit could be thin. Aim for higher ROAS to cover all operational expenses and returns.",
+        tooltip: "ROAS (Return on Ad Spend): Revenue earned for every $1 spent on ads. A high ROAS doesn't always guarantee profit if your margins are low."
     },
     {
         icon: Calculator,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-500",
-        statColor: "text-emerald-600",
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-500",
+        statColor: "text-blue-600",
         title: "Break-Even CPA",
         stat: "Know It",
         statLabel: "Your max cost per acquisition",
-        points: [
-            "Sale price − all costs = max CPA",
-            "Lower CPA = more scaling headroom",
-            "Know your limit before spending on ads"
-        ],
-        tooltip: "CPA (Cost Per Acquisition): The average amount you spend on ads to get just one order."
+        description: "This is your profitability line in the sand. It's the maximum you can spend to acquire a customer without losing money. Keep your actual CPA below this number to stay profitable.",
+        tooltip: "CPA (Cost Per Acquisition): The average cost to get one paying customer. If your CPA is lower than your break-even point, you make money."
     }
 ]
-
 export function ProfitGuide() {
     return (
         <section id="profit-guide">
@@ -91,7 +71,6 @@ export function ProfitGuide() {
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900">The Hidden Truth About Dropshipping Profitability</h2>
             </div>
-
             <div className="space-y-6">
                 {insights.map((insight, index) => {
                     const Icon = insight.icon
@@ -125,18 +104,10 @@ export function ProfitGuide() {
                                             )}
                                         </div>
                                     </div>
-                                    <ul className="space-y-2">
-                                        {insight.points.map((point, i) => (
-                                            <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600 leading-tight">
-                                                <span className={`${insight.iconColor} mt-1.5 flex-shrink-0 opacity-60`}>
-                                                    <svg width="5" height="5" viewBox="0 0 6 6" fill="currentColor"><circle cx="3" cy="3" r="3" /></svg>
-                                                </span>
-                                                <span>{point}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        {insight.description}
+                                    </p>
                                 </div>
-
                                 {/* Right: Takeaway Stat Panel (Neutral Background) */}
                                 <div className="flex md:flex-col items-center justify-center gap-1.5 p-6 md:w-48 bg-slate-50/50 border-b md:border-b-0 md:border-l border-slate-100 order-1 md:order-2">
                                     <div className={`text-3xl font-bold ${insight.statColor} tracking-tight`}>{insight.stat}</div>
@@ -154,4 +125,4 @@ export function ProfitGuide() {
             </div>
         </section>
     )
-}
+}

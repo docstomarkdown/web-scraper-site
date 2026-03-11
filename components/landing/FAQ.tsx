@@ -12,7 +12,7 @@ import { fadeUpVariant } from "@/lib/framer-animations";
 
 const faqs = [
     {
-        question: "Do I need any coding skills to use Web Scraper Pro?",
+        question: "Do I need any coding skills to use Web Scraper.do?",
         answer: "Not at all. Our visual editor allows you to simply point and click on the elements you want to extract. We handle the complex selectors and code generation in the background."
     },
     {

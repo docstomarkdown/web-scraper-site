@@ -1,0 +1,635 @@
+"use client"
+import React, { useState, useEffect, useRef, useCallback } from "react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import {
+    Copy,
+    RefreshCw,
+    Barcode as BarcodeIcon,
+    HelpCircle,
+    Calculator,
+    Info,
+    CheckCircle2,
+    XCircle,
+    ArrowRightLeft,
+    ClipboardCheck,
+    Download,
+    AlertTriangle,
+    FileUp
+} from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { cn } from "@/lib/utils"
+import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
+import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
+import bwipjs from 'bwip-js'
+import Barcode from 'react-barcode'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+type BarcodeFormat = "UPC-A" | "EAN-13" | "GTIN-14" | "Unknown"
+interface ConversionResult {
+    gtin12: string
+    gtin13: string
+    gtin14: string
+}
+interface ValidationStatus {
+    isValid: boolean
+    message: string | React.ReactNode
+    format: BarcodeFormat
+    expectedCheckDigit?: number
+    foundCheckDigit?: number
+    correctedCode?: string
+    calculationSteps?: { step: number; description: string; value: string }[]
+}
+interface BarcodeConfig {
+    title: string
+    standard: string
+    usage: string
+    bwipId: string
+    formatLabel: string
+}
+const BARCODE_CONFIGS: Record<string, BarcodeConfig> = {
+    "UPC-A": {
+        title: "Generated UPC-A Barcode",
+        standard: "GS1 UPC-A (GTIN-12)",
+        usage: "North American Retail (POS)",
+        bwipId: "upca",
+        formatLabel: "UPC-A (GTIN-12)"
+    },
+    "EAN-13": {
+        title: "Generated EAN-13 Barcode",
+        standard: "GS1 EAN-13 (GTIN-13)",
+        usage: "Global Retail (POS)",
+        bwipId: "ean13",
+        formatLabel: "EAN-13 (GTIN-13)"
+    },
+    "GTIN-14": {
+        title: "Generated ITF-14 Carton Barcode",
+        standard: "GS1 ITF-14 (GTIN-14)",
+        usage: "Carton & Logistics (Non-POS)",
+        bwipId: "itf14",
+        formatLabel: "GTIN-14 (ITF-14)"
+    }
+}
+export function Converter() {
+    const { toast } = useToast()
+    const [inputCode, setInputCode] = useState("")
+    const [status, setStatus] = useState<ValidationStatus>({ isValid: false, message: "Awaiting input...", format: "Unknown" })
+    const [results, setResults] = useState<ConversionResult | null>(null)
+    const [isCopied, setIsCopied] = useState(false)
+    const [isMounted, setIsMounted] = useState(false)
+    const [canvasError, setCanvasError] = useState(false)
+    const canvasRef = useRef<HTMLCanvasElement>(null)
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+    const calculateCheckDigitDetailed = (code: string) => {
+        const digits = code.split('').map(Number)
+        let sum = 0
+        const reversed = [...digits].reverse()
+        const steps: { step: number; description: string; value: string }[] = []
+        let weightingStr = ""
+        reversed.forEach((digit, i) => {
+            const weight = (i % 2 === 0) ? 3 : 1
+            const product = digit * weight
+            sum += product
+            weightingStr += `${digit}×${weight}${i < reversed.length - 1 ? " + " : ""}`
+        })
+        steps.push({ step: 1, description: "Reverse & Apply Weights (3, 1, 3...)", value: weightingStr })
+        steps.push({ step: 2, description: "Calculate Sum of Weighted Products", value: `Total Sum = ${sum}` })
+        const nextTen = Math.ceil(sum / 10) * 10
+        const checkDigitValue = (nextTen - sum) % 10
+        steps.push({ step: 3, description: "Find Next Multiple of 10", value: `${nextTen} - ${sum} = ${checkDigitValue}` })
+        steps.push({ step: 4, description: "Resulting Check Digit", value: `Final Digit: ${checkDigitValue}` })
+        return { checkDigit: checkDigitValue, steps }
+    }
+    const validateAndConvert = useCallback((code: string) => {
+        const clean = code.replace(/[\s-]/g, "")
+        if (!clean) {
+            setStatus({ isValid: false, message: "", format: "Unknown" })
+            setResults(null)
+            return
+        }
+        if (!/^\d+$/.test(clean)) {
+            setStatus({ isValid: false, message: "Please enter numbers only (spaces and dashes are allowed)", format: "Unknown" })
+            setResults(null)
+            return
+        }
+        // Strict length validation for GTIN-12, 13, 14
+        if (![12, 13, 14].includes(clean.length)) {
+            const lengthError = (
+                <div className="space-y-1 mt-1">
+                    <p>Invalid length: {clean.length} digits entered.</p>
+                    <p className="font-semibold text-xs opacity-90 mt-2">GTIN must contain exactly:</p>
+                    <ul className="list-disc list-inside space-y-0.5 text-[11px] opacity-80 pl-1">
+                        <li>12 digits (UPC-A)</li>
+                        <li>13 digits (EAN-13)</li>
+                        <li>14 digits (GTIN-14)</li>
+                    </ul>
+                </div>
+            )
+            setStatus({ isValid: false, message: lengthError, format: "Unknown" })
+            setResults(null)
+            return
+        }
+        const data = clean.slice(0, -1)
+        const providedCD = parseInt(clean.slice(-1))
+        const { checkDigit: expectedCD, steps } = calculateCheckDigitDetailed(data)
+        // Determine detected format
+        let format: BarcodeFormat = "Unknown"
+        if (clean.length === 12) format = "UPC-A"
+        else if (clean.length === 13) format = "EAN-13"
+        else if (clean.length === 14) format = "GTIN-14"
+        if (providedCD !== expectedCD) {
+            const corrected = data + expectedCD
+            setStatus({
+                isValid: false,
+                message: `Invalid check digit.`,
+                format: format,
+                expectedCheckDigit: expectedCD,
+                foundCheckDigit: providedCD,
+                correctedCode: corrected,
+                calculationSteps: steps
+            })
+            setResults(null)
+            return
+        }
+        setStatus({
+            isValid: true,
+            message: "Valid Format",
+            format,
+            calculationSteps: steps
+        })
+        // Generate conversions (all padded to 14, then sliced)
+        const base14 = clean.padStart(14, "0")
+        setResults({
+            gtin12: base14.slice(-12),
+            gtin13: base14.slice(-13),
+            gtin14: base14,
+        })
+    }, [])
+    useEffect(() => {
+        validateAndConvert(inputCode)
+    }, [inputCode, validateAndConvert])
+    // Render Barcode Effect
+    useEffect(() => {
+        if (!status.isValid || !canvasRef.current || !results) return
+        const config = BARCODE_CONFIGS[status.format]
+        if (!config) return
+        try {
+            setCanvasError(false)
+            // Determine text to encode based on detected format (NOT converted result)
+            let textToEncode = ""
+            if (status.format === "UPC-A") textToEncode = results.gtin12
+            else if (status.format === "EAN-13") textToEncode = results.gtin13
+            else if (status.format === "GTIN-14") textToEncode = results.gtin14
+            let options: any = {
+                bcid: config.bwipId,       // Barcode type
+                text: textToEncode,        // Text to encode
+                scale: 3,                  // 3x scaling factor
+                height: 12,                // Bar height, in millimeters
+                includetext: true,         // Show human-readable text
+                textxalign: 'center',      // Always good to allow this
+                textsize: 13,
+            }
+            // Specific options for ITF-14
+            if (status.format === "GTIN-14") {
+                options = {
+                    ...options,
+                    includecheck: true,
+                    includecheckintext: true,
+                    guardwhitespace: true,
+                    borderwidth: 4, // create a thick border for bearer bars
+                    bordertop: 10,
+                    borderbottom: 10,
+                    borderleft: 10, // Full box
+                    borderright: 10,
+                }
+            }
+            bwipjs.toCanvas(canvasRef.current, options)
+        } catch (e) {
+            console.error(e)
+            setCanvasError(true)
+        }
+    }, [status, results])
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value
+        // Basic filtering to allow digits, spaces and dashes
+        if (/^[\d\s-]*$/.test(val)) {
+            setInputCode(val)
+        }
+    }
+    // useBarcodeScanner Hook
+    const { handleFileUpload } = useBarcodeScanner({
+        onScan: (decodedText) => {
+            setInputCode(decodedText)
+            // No need to call validateAndConvert here if it's triggered by inputCode change effect
+        }
+    })
+    const copyToClipboard = (text: string, label: string) => {
+        navigator.clipboard.writeText(text)
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+    }
+    const clearAll = () => {
+        setInputCode("")
+    }
+    const scrollToGuide = () => {
+        const element = document.getElementById('how-to-use');
+        if (element) {
+            const offset = 100;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    };
+    const downloadBarcode = (format: 'png' | 'svg') => {
+        // Implementation similar to previous step, using bwipjs for client side generation
+        if (format === 'png' && canvasRef.current) {
+            const dataUrl = canvasRef.current.toDataURL("image/png")
+            const link = document.createElement('a')
+            link.download = `barcode-${status.format}-${inputCode}.png`
+            link.href = dataUrl
+            link.click()
+        } else if (format === 'svg') {
+            try {
+                const config = BARCODE_CONFIGS[status.format]
+                let textToEncode = ""
+                if (status.format === "UPC-A") textToEncode = results!.gtin12
+                else if (status.format === "EAN-13") textToEncode = results!.gtin13
+                else if (status.format === "GTIN-14") textToEncode = results!.gtin14
+                let options: any = {
+                    bcid: config.bwipId,
+                    text: textToEncode,
+                    scale: 3,
+                    height: 12,
+                    includetext: true,
+                    textxalign: 'center',
+                    textsize: 13,
+                }
+                if (status.format === "GTIN-14") {
+                    options = {
+                        ...options,
+                        includecheck: true,
+                        includecheckintext: true,
+                        guardwhitespace: true,
+                        borderwidth: 4,
+                        bordertop: 10,
+                        borderbottom: 10,
+                        borderleft: 10,
+                        borderright: 10,
+                    }
+                }
+                // @ts-ignore
+                const svg = bwipjs.toSVG(options)
+                const blob = new Blob([svg], { type: "image/svg+xml" })
+                const url = URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.download = `barcode-${status.format}-${inputCode}.svg`
+                link.href = url
+                link.click()
+                URL.revokeObjectURL(url)
+            } catch (e) {
+                toast({
+                    variant: "destructive",
+                    title: "Download Failed",
+                    description: "Could not generate SVG."
+                })
+            }
+        }
+    }
+    return (
+        <FadeIn className="w-full max-w-6xl mx-auto py-8" duration={0.6}>
+            {/* Hidden file input for upload */}
+            <input
+                type="file"
+                id="gtin-barcode-upload"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                    // Create placeholder if missing (same fix as UPC tool)
+                    if (!document.getElementById("file-reader-placeholder-hook")) {
+                        const div = document.createElement("div");
+                        div.id = "file-reader-placeholder-hook";
+                        div.style.display = "none";
+                        document.body.appendChild(div);
+                    }
+                    handleFileUpload(e);
+                }}
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                {/* LEFT: Inputs */}
+                <div className="lg:col-span-6">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
+                        <InputCardHeader
+                            title="Converter Inputs"
+                            subtitle="Enter your barcode number or upload an image below."
+                            onHelpClick={scrollToGuide}
+                            onReset={clearAll}
+                        />
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
+                            <div className="space-y-3">
+                                <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
+                                <CalculatorInput
+                                    label="Barcode Number"
+                                    value={inputCode}
+                                    onChange={(v) => {
+                                        if (/^[\d\s-]*$/.test(v)) {
+                                            setInputCode(v)
+                                        }
+                                    }}
+                                    placeholder="Ex:036000291452"
+                                    tooltip="Enter EAN / UPC (8, 12, or 13 digits) to convert to GTIN formats."
+                                    type="text"
+                                />
+                                {/* Scan Controls */}
+                                <div className="pt-2">
+                                    <Button
+                                        variant="secondary"
+                                        className="h-10 w-full text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
+                                        onClick={() => document.getElementById('gtin-barcode-upload')?.click()}
+                                    >
+                                        <div className="flex items-center">
+                                            <FileUp className="w-4 h-4 mr-2 text-blue-500" />
+                                            Upload Image
+                                        </div>
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {/* Status Card */}
+                            {inputCode && (
+                                <div
+                                    id="status-message"
+                                    className={`p-4 rounded-xl border flex flex-col gap-3 transition-colors ${status.isValid
+                                        ? 'bg-emerald-50/50 border-emerald-100'
+                                        : 'bg-rose-50/50 border-rose-100'
+                                        }`}
+                                >
+                                    <div className="flex items-start gap-3">
+                                        <div className={`mt-1 ${status.isValid ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                            {status.isValid ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                                        </div>
+                                        <div className="w-full">
+                                            <div className="flex items-center justify-between w-full">
+                                                <p className={`text-sm font-black uppercase tracking-tight ${status.isValid ? 'text-emerald-700' : 'text-rose-700'}`}>
+                                                    {status.isValid
+                                                        ? "Valid GTIN"
+                                                        : status.correctedCode
+                                                            ? "Check Digit Invalid"
+                                                            : "Invalid GTIN"
+                                                    }
+                                                </p>
+                                                {status.calculationSteps && status.calculationSteps.length > 0 && (
+                                                    <Dialog>
+                                                        <TooltipProvider delayDuration={0}>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <DialogTrigger asChild>
+                                                                        <button className={cn(
+                                                                            "flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all border shadow-sm",
+                                                                            status.isValid
+                                                                                ? "bg-emerald-100/50 border-emerald-200 text-emerald-700 hover:bg-emerald-200/50"
+                                                                                : "bg-rose-100/50 border-rose-200 text-rose-700 hover:bg-rose-200/50"
+                                                                        )}>
+                                                                            <Calculator className="w-3 h-3" />
+                                                                            View Logic
+                                                                        </button>
+                                                                    </DialogTrigger>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent side="top" className="bg-slate-900 border-slate-800 text-white text-[10px]">
+                                                                    Step-by-step breakdown
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                        <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
+                                                            <DialogHeader>
+                                                                <DialogTitle className="flex items-center gap-2 text-slate-900">
+                                                                    <Calculator className="w-5 h-5 text-blue-500" />
+                                                                    Check Digit Calculation
+                                                                </DialogTitle>
+                                                                <DialogDescription className="text-slate-500">
+                                                                    Breakdown for code: <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{inputCode}</span>
+                                                                </DialogDescription>
+                                                            </DialogHeader>
+                                                            <div className="space-y-3 py-4">
+                                                                <div className="space-y-3 relative">
+                                                                    <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", status.isValid ? "bg-emerald-100" : "bg-rose-100")} />
+                                                                    {status.calculationSteps.map((step, idx) => (
+                                                                        <div key={idx} className="flex gap-4 relative">
+                                                                            <div className={cn(
+                                                                                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10",
+                                                                                status.isValid
+                                                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                                                                                    : "bg-rose-50 border-rose-200 text-rose-600"
+                                                                            )}>
+                                                                                {step.step}
+                                                                            </div>
+                                                                            <div className="space-y-1">
+                                                                                <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                                <div className={cn(
+                                                                                    "font-mono text-[10px] px-2.5 py-1 rounded w-fit border",
+                                                                                    status.isValid
+                                                                                        ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
+                                                                                        : "text-rose-700 bg-rose-50/50 border-rose-100"
+                                                                                )}>
+                                                                                    {step.value}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                                <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                                                    <p className="text-xs text-blue-700 font-bold">Standard Modulo 10</p>
+                                                                    <p className="text-[10px] text-blue-600 mt-1">
+                                                                        Used for GTIN barcodes (UPC, EAN) to detect common errors.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                )}
+                                            </div>
+                                            {/* Valid State Details */}
+                                            {status.isValid && (
+                                                <div className="space-y-1 mt-1">
+                                                    <p className="text-emerald-600 text-xs font-medium">
+                                                        Detected Type: {status.format === "UPC-A" ? "GTIN-12" : status.format === "EAN-13" ? "GTIN-13" : "GTIN-14"}
+                                                    </p>
+                                                    <p className="text-emerald-600/80 text-xs">
+                                                        Barcode Format: {status.format === "GTIN-14" ? "ITF-14" : status.format}
+                                                    </p>
+                                                </div>
+                                            )}
+                                            {/* Invalid Check Digit Details - Use Corrected Code Button */}
+                                            {!status.isValid && status.correctedCode && (
+                                                <div className="space-y-3 mt-2">
+                                                    <p className="text-xs text-rose-600 leading-relaxed font-medium">
+                                                        The check digit (last number) is incorrect. Based on the GS1 algorithm, it should be <span className="font-bold underline text-rose-700">{status.expectedCheckDigit}</span>, but you entered <span className="font-bold">{status.foundCheckDigit}</span>.
+                                                    </p>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="h-9 text-[11px] font-bold bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:text-rose-700 w-full shadow-sm"
+                                                        onClick={() => setInputCode(status.correctedCode!)}
+                                                    >
+                                                        <RefreshCw className="w-3 h-3 mr-1.5" /> Use Corrected Code: {status.correctedCode}
+                                                    </Button>
+                                                </div>
+                                            )}
+                                            {/* General Error Message */}
+                                            {!status.isValid && !status.correctedCode && (
+                                                <div className="text-xs text-rose-600 mt-1">
+                                                    {status.message}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+                {/* RIGHT: Results */}
+                <div className="lg:col-span-6">
+                    <div className="space-y-3 flex flex-col h-full">
+                        {/* Summary Visualization Card */}
+                        <ResultFeedbackCard
+                            variant="default"
+                            title={inputCode && !status.isValid ? 'Validation Status' : 'Conversion Map'}
+                            titleLabel={!inputCode ? "Ready" : status.isValid ? "Valid" : "Invalid"}
+                            labelClassName={!inputCode ? "text-slate-400 bg-slate-600/50 border border-slate-500/50" : status.isValid ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30" : "text-rose-400 bg-rose-500/20 border border-rose-500/30"}
+                            // If invalid, show large text here. If valid, show nothing in mainValue and use children.
+                            mainValue={inputCode && !status.isValid ? (
+                                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                    <div className="flex items-baseline gap-3">
+                                        <span className="text-3xl sm:text-4xl font-bold tracking-tight text-white break-all">
+                                            {inputCode}
+                                        </span>
+                                    </div>
+                                </div>
+                            ) : undefined}
+                        >
+                            {/* Validation Analysis or Results List */}
+                            <div className="space-y-3">
+                                <ResultRow
+                                    label="GTIN-14"
+                                    value={results?.gtin14 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
+                                    onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
+                                    disabled={!results}
+                                    tooltip="Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                />
+                                <ResultRow
+                                    label="GTIN-13 (EAN)"
+                                    value={results?.gtin13 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
+                                    onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
+                                    disabled={!results}
+                                    tooltip="Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
+                                />
+                                <ResultRow
+                                    label="GTIN-12 (UPC)"
+                                    value={results?.gtin12 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
+                                    onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
+                                    disabled={!results}
+                                    tooltip="Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
+                                />
+                            </div>
+                        </ResultFeedbackCard>
+                        {/* Barcode Preview */}
+                        <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">
+                            {results && status.isValid && isMounted ? (
+                                <div className="flex flex-col items-center w-full animate-in fade-in zoom-in-95 duration-200 fill-mode-forwards">
+                                    <h3 className="text-base font-bold text-slate-900 mb-2">{BARCODE_CONFIGS[status.format].title}</h3>
+                                    <div className="p-4 bg-white rounded-lg border border-slate-100 shadow-sm w-full flex justify-center overflow-hidden mb-4">
+                                        <canvas ref={canvasRef} className="max-w-full h-[80px] sm:h-[100px] w-auto" />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="relative w-full flex flex-col items-center justify-center py-6 group">
+                                    {/* Ghost Barcode & Animation */}
+                                    {isMounted && (
+                                        <>
+                                            <div className="scale-110 sm:scale-125 origin-center opacity-10 grayscale">
+                                                <Barcode
+                                                    value="000000000000"
+                                                    format="UPC"
+                                                    width={2}
+                                                    height={80}
+                                                    fontSize={18}
+                                                    background="transparent"
+                                                    lineColor="#64748b"
+                                                />
+                                            </div>
+                                            {/* Scanning Laser Animation (Visible when no input) */}
+                                            {!inputCode && (
+                                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                                    <div className="w-[200px] h-[120px] relative">
+                                                        <div className="absolute top-0 left-0 w-full h-[2px] bg-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.5)] animate-[scan_3s_ease-in-out_infinite]" />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                    {/* Center Text */}
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2">
+                                        <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-100 shadow-sm flex flex-col items-center">
+                                            <BarcodeIcon className="w-8 h-8 text-slate-300 mb-1" />
+                                            <p className="text-sm font-semibold text-slate-500">
+                                                {!inputCode ? "Awaiting Input..." : "Invalid Format"}
+                                            </p>
+                                            <p className="text-[10px] text-slate-400">
+                                                {!inputCode ? "Enter a barcode to preview" : "Check code length and structure"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <style jsx global>{`
+                                        @keyframes scan {
+                                            0%, 100% { top: 10%; opacity: 0.2; }
+                                            50% { top: 90%; opacity: 1; }
+                                        }
+                                    `}</style>
+                                </div>
+                            )}
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        </FadeIn >
+    )
+}
+function ResultRow({ label, value, onCopy, disabled, tooltip }: { label: string, value: string, onCopy: () => void, disabled: boolean, tooltip?: string }) {
+    return (
+        <div className="flex items-center justify-between group py-1">
+            <div className="space-y-0.5 w-full">
+                <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="flex items-center gap-1.5 cursor-help group/label">
+                                <p className="text-base font-bold text-slate-400 uppercase tracking-widest transition-colors group-hover/label:text-slate-300">{label}</p>
+                                {tooltip && <Info className="w-3.5 h-3.5 text-blue-300 opacity-80 group-hover/label:opacity-100 group-hover/label:text-blue-200 transition-all" />}
+                            </div>
+                        </TooltipTrigger>
+                        {tooltip && (
+                            <TooltipContent side="right" className="text-xs bg-slate-900 text-white border-slate-800 max-w-xs">
+                                {tooltip}
+                            </TooltipContent>
+                        )}
+                    </Tooltip>
+                </TooltipProvider>
+                <p className={cn("tracking-tight transition-all duration-300", value === "Awaiting Data" || value === "Invalid Input" ? "text-lg sm:text-xl italic font-medium text-white/40" : "text-xl sm:text-2xl font-bold text-white")}>{value}</p>
+            </div>
+        </div>
+    )
+}
