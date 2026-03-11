@@ -1,5 +1,6 @@
 "use client"
 import * as React from "react"
+import { currencies } from "./CurrencyCombobox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, TooltipArrow } from "@/components/ui/tooltip"
@@ -7,7 +8,8 @@ import { Info, LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export interface CalculatorInputProps {
-    label: string
+    label: React.ReactNode
+    labelClassName?: string
     value: number | string | ""
     onChange: (value: any) => void
     min?: number
@@ -31,6 +33,7 @@ export interface CalculatorInputProps {
 
 export function CalculatorInput({
     label,
+    labelClassName,
     value,
     onChange,
     min = 0,
@@ -144,6 +147,12 @@ export function CalculatorInput({
     }
 
     const getCurrencyInfo = React.useCallback((code: string) => {
+        // Try looking up in our custom currencies list first (consistent with the combo box)
+        const found = currencies.find(c => c.code === code)
+        if (found) {
+            return { symbol: found.symbol, isSuffix: false }
+        }
+
         const tryFormat = (display: 'narrowSymbol' | 'symbol') => {
             try {
                 const formatter = new Intl.NumberFormat('en-US', {
@@ -170,12 +179,10 @@ export function CalculatorInput({
     return (
         <div
             className={cn(
-                "max-w-[520px] mx-auto w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
-                // With groupingTitle or if inside a group: keep left padding for tree-line/icon offset
-                // Without groupingTitle AND standalone: remove left padding so label aligns flush
+                "w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
                 (groupingTitle || isInLabeledGroup)
-                    ? "px-3 sm:px-5"
-                    : "pr-3 sm:pr-5 pl-0"
+                    ? "max-w-[520px] mx-auto px-3 sm:px-5"
+                    : "max-w-none ml-0 pr-3 sm:pr-5 pl-0"
             )}
             ref={containerRef}
             data-has-title={!!groupingTitle}
@@ -220,7 +227,10 @@ export function CalculatorInput({
                     <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
                         <Label
                             htmlFor={inputId}
-                            className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1"
+                            className={cn(
+                                "text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1",
+                                labelClassName
+                            )}
                         >
                             {label}
                             {isOptional && (

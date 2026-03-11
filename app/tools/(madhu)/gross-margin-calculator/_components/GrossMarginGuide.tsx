@@ -1,40 +1,41 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { AlertTriangle, Wallet, TrendingUp, BookOpen } from "lucide-react"
+import { AlertTriangle, Wallet, TrendingUp, Lightbulb } from "lucide-react"
+
 export function GrossMarginGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About Gross Margin Profitability"
-            icon={BookOpen}
+            title="About the Gross Margin Calculator"
+            icon={Lightbulb}
             items={[
                 {
-                    title: "Margin is NOT Markup",
-                    description: "This is the #1 mistake. Markup is % added to Cost. Margin is % of Revenue. If you buy for $50 and markup 50% to sell at $75, your Margin is only 33% ($25/$75).",
+                    title: "Protect Your Business Profits",
+                    description: "This tool helps you see the actual percentage of revenue you keep after product costs. Knowing your margin ensures you aren't accidentally selling items at a loss or pricing your hard work too cheaply.",
                     icon: AlertTriangle,
-                    stat: "33% vs 50%",
-                    statLabel: "Margin vs Markup",
+                    stat: "Vital Metric",
+                    statLabel: "Profit Health",
                     iconBg: "bg-red-100",
                     iconColor: "text-red-600",
                     statColor: "text-red-600",
-                    tooltip: "Confusing these two can lead to underpricing by 17% or more."
+                    tooltip: "Your gross margin is the first line of defense in your business finances."
                 },
                 {
-                    title: "The Operating Expense Gap",
-                    description: "Gross Margin is not your take-home pay. It must be high enough to cover all Operating Expenses (OpEx) like rent, marketing, and salaries before you see Net Profit.",
+                    title: "Smart Pricing Strategy",
+                    description: "Use the built-in modes to work backward. Tell the calculator what margin you want to hit, and it will tell you exactly what price to charge or how much you can afford to spend on manufacturing.",
                     icon: Wallet,
-                    stat: "Gross > OpEx",
-                    statLabel: "Profit Formula",
+                    stat: "Flexible",
+                    statLabel: "3-in-1 Tool",
                     iconBg: "bg-amber-100",
                     iconColor: "text-amber-600",
                     statColor: "text-amber-600",
-                    tooltip: "If Gross Margin < OpEx, you are losing money operationally."
+                    tooltip: "Switch between finding your margin, setting a target price, or creating a cost budget."
                 },
                 {
-                    title: "Volume vs. Margin",
-                    description: "A lower margin product with high velocity (volume) often generates more total cash profit than a high-margin product that rarely sells. Balance is key.",
+                    title: "Actionable Revenue Insights",
+                    description: "Visualise your store's performance with the revenue breakdown bar. It clearly shows how much of your money goes to costs versus how much stays with you as gross profit from every sale.",
                     icon: TrendingUp,
-                    stat: "Cash Flow",
-                    statLabel: "King of Business",
+                    stat: "Visual",
+                    statLabel: "Breakdown Bar",
                     iconBg: "bg-emerald-100",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600"
@@ -42,4 +43,4 @@ export function GrossMarginGuide() {
             ]}
         />
     )
-}
+}

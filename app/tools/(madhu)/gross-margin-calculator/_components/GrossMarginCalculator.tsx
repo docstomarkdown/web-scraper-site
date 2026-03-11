@@ -1,44 +1,43 @@
 "use client"
-import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { HelpCircle, Info, TrendingUp, DollarSign, Percent, ArrowRightLeft, Target, Wallet, BarChart3, RefreshCw, RotateCcw } from "lucide-react"
-import { InputCardHeader } from "../../ToolTemplate"
-import { CalculatorInput, ResultFeedbackCard, Counter, CurrencyCombobox, FadeIn } from "@/app/tools/_shared/components"
+import React, { useState } from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Percent, Target, Wallet } from "lucide-react"
+import {
+    CalculatorInput,
+    ResultSummaryCard,
+    FadeIn,
+    CalculatorCardHeader,
+} from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
+import { GrossMarginRevenueBreakdown } from "./GrossMarginRevenueBreakdown"
+
 export function GrossMarginCalculator() {
-    // Calculator Mode State
-    // "margin": Calculate Margin % & Profit (Given Revenue, COGS)
-    // "revenue": Calculate Revenue Needed (Given COGS, Target Margin)
-    // "cogs": Calculate COGS Limit (Given Revenue, Target Margin)
     const [mode, setMode] = useState<"margin" | "revenue" | "cogs">("margin")
     const [currency, setCurrency] = useState("USD")
-    // Inputs (stored as strings to allow empty states)
     const [revenue, setRevenue] = useState<number | "">("")
     const [cogs, setCogs] = useState<number | "">("")
     const [targetMargin, setTargetMargin] = useState<number | "">("")
+
     const val = (v: number | "") => (v === "" ? 0 : v)
-    const currencySymbols: Record<string, string> = {
-        USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
-        AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
-        RUB: '₽', ZAR: 'R', SEK: 'kr', NOK: 'kr', DKK: 'kr', PLN: 'zł', THB: '฿',
-        IDR: 'Rp', MYR: 'RM', PHP: '₱', VND: '₫', TRY: '₺', SAR: '﷼', NZD: 'NZ$',
-        EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
-    }
-    const symbol = currencySymbols[currency] || "$"
+
     const handleReset = () => {
         setRevenue("")
         setCogs("")
         setTargetMargin("")
     }
-    // Calculations based on Mode
+
+    const handleModeChange = (newMode: "margin" | "revenue" | "cogs") => {
+        setMode(newMode)
+        handleReset()
+    }
+
+    // ── Derived values ──────────────────────────────────────────
     let derivedMargin = 0
     let derivedProfit = 0
     let derivedRevenue = 0
     let derivedCogs = 0
     let derivedMarkup = 0
-    // Mode Logic
+
     if (mode === "margin") {
         const r = val(revenue)
         const c = val(cogs)
@@ -50,244 +49,194 @@ export function GrossMarginCalculator() {
     } else if (mode === "revenue") {
         const c = val(cogs)
         const m = val(targetMargin)
-        // Revenue = COGS / (1 - Margin%)
-        // Margin% is 0-100
-        const marginDecimal = m / 100
-        if (marginDecimal < 1) {
-            derivedRevenue = c / (1 - marginDecimal)
+        const dec = m / 100
+        if (dec < 1) {
+            derivedRevenue = c / (1 - dec)
             derivedCogs = c
             derivedProfit = derivedRevenue - c
             derivedMargin = m
             derivedMarkup = c > 0 ? (derivedProfit / c) * 100 : 0
         }
-    } else if (mode === "cogs") {
+    } else {
         const r = val(revenue)
         const m = val(targetMargin)
-        // COGS = Revenue * (1 - Margin%)
-        const marginDecimal = m / 100
+        const dec = m / 100
         derivedRevenue = r
-        derivedCogs = r * (1 - marginDecimal)
+        derivedCogs = r * (1 - dec)
         derivedProfit = r - derivedCogs
         derivedMargin = m
         derivedMarkup = derivedCogs > 0 ? (derivedProfit / derivedCogs) * 100 : 0
     }
-    const formatCurrency = (val: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: currency,
-            maximumFractionDigits: 2
-        }).format(val)
-    }
+
+    // ── isCalculated ────────────────────────────────────────────
+    const isCalculated =
+        mode === "margin"
+            ? revenue !== "" && cogs !== "" && val(revenue) > 0 && val(cogs) > 0
+            : mode === "revenue"
+                ? cogs !== "" && targetMargin !== "" && val(cogs) > 0 && val(targetMargin) > 0
+                : revenue !== "" && targetMargin !== "" && val(revenue) > 0 && val(targetMargin) > 0
+
+    // ── ResultSummaryCard props (dynamic per mode) ───────────────
+    const resultTitle =
+        mode === "margin" ? "Gross Margin" : mode === "revenue" ? "Required Revenue" : "Max COGS Limit"
+
+    const primaryResult =
+        mode === "margin"
+            ? { value: parseFloat(derivedMargin.toFixed(2)), unit: "%", label: "Your Gross Margin", key: "margin" }
+            : mode === "revenue"
+                ? { value: derivedRevenue, isCurrency: true as const, label: "Minimum Selling Price", key: "revenue" }
+                : { value: derivedCogs, isCurrency: true as const, label: "Maximum Allowable Cost", key: "cogs" }
+
+    const secondaryResults =
+        mode === "margin"
+            ? [
+                {
+                    key: "profit",
+                    label: "Gross Profit",
+                    value: derivedProfit,
+                    isCurrency: true as const,
+                    tooltip: "Actual cash profit after subtracting COGS from Revenue.",
+                },
+                {
+                    key: "markup",
+                    label: "Markup %",
+                    value: parseFloat(derivedMarkup.toFixed(2)),
+                    unit: "%",
+                    tooltip: "The % added on top of cost to reach the selling price — always higher than the equivalent margin.",
+                },
+            ]
+            : mode === "revenue"
+                ? [
+                    {
+                        key: "profit",
+                        label: "Gross Profit",
+                        value: derivedProfit,
+                        isCurrency: true as const,
+                        tooltip: "Profit earned at this selling price.",
+                    },
+                    {
+                        key: "margin",
+                        label: "Target Margin",
+                        value: parseFloat(derivedMargin.toFixed(2)),
+                        unit: "%",
+                        tooltip: "The gross margin % you set as your target.",
+                    },
+                ]
+                : [
+                    {
+                        key: "profit",
+                        label: "Gross Profit",
+                        value: derivedProfit,
+                        isCurrency: true as const,
+                        tooltip: "Profit earned if COGS stays at or below this limit.",
+                    },
+                    {
+                        key: "markup",
+                        label: "Markup %",
+                        value: parseFloat(derivedMarkup.toFixed(2)),
+                        unit: "%",
+                        tooltip: "Equivalent markup at your target margin.",
+                    },
+                ]
+
+    const checklistItems =
+        mode === "margin"
+            ? [
+                { label: "Total Revenue", isComplete: revenue !== "" && val(revenue) > 0 },
+                { label: "Cost of Goods Sold", isComplete: cogs !== "" && val(cogs) > 0 },
+            ]
+            : mode === "revenue"
+                ? [
+                    { label: "Cost of Goods Sold", isComplete: cogs !== "" && val(cogs) > 0 },
+                    { label: "Target Gross Margin", isComplete: targetMargin !== "" && val(targetMargin) > 0 },
+                ]
+                : [
+                    { label: "Target Revenue", isComplete: revenue !== "" && val(revenue) > 0 },
+                    { label: "Target Gross Margin", isComplete: targetMargin !== "" && val(targetMargin) > 0 },
+                ]
+
+    const description =
+        mode === "margin"
+            ? "Your profit kept from each dollar of revenue."
+            : mode === "revenue"
+                ? "Minimum price to charge to hit your target margin."
+                : "Spend no more than this on COGS to protect your margin."
+
+    const emptyResultLabel =
+        mode === "margin" ? "Gross Margin %" : mode === "revenue" ? "Required Revenue" : "Max COGS"
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Left Column: Inputs & Mode Selection */}
+                {/* Left: Inputs */}
                 <div className="lg:col-span-7 space-y-3">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
-                        <div className="flex flex-row items-center justify-between border-b border-slate-100 pr-6">
-                            <InputCardHeader
-                                title="Configurations"
-                                subtitle="Set your parameters to calculate margin."
-                                icon={BarChart3}
-                                scrollId="how-to-use"
-                                onReset={handleReset}
-                            />
-                            <div className="flex items-center gap-3">
-                                <div className="w-[140px]">
-                                    <CurrencyCombobox value={currency} onValueChange={setCurrency} />
-                                </div>
-                            </div>
-                        </div>
+                        <CalculatorCardHeader
+                            title="Margin Calculator"
+                            description="Choose a mode and enter your values to calculate instantly."
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                            onReset={handleReset}
+                            guideId="how-to-use"
+                            tooltip="See step-by-step instructions below"
+                        />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8">
-                            {/* Calculation Mode Selector - Enhanced Design */}
+                            {/* Mode Selector */}
                             <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200/60">
-                                <ModeButton
-                                    active={mode === "margin"}
-                                    onClick={() => { setMode("margin"); handleReset(); }}
-                                    icon={Percent}
-                                    label="Find Margin"
-                                />
-                                <ModeButton
-                                    active={mode === "revenue"}
-                                    onClick={() => { setMode("revenue"); handleReset(); }}
-                                    icon={Target}
-                                    label="Find Revenue"
-                                />
-                                <ModeButton
-                                    active={mode === "cogs"}
-                                    onClick={() => { setMode("cogs"); handleReset(); }}
-                                    icon={Wallet}
-                                    label="Find COGS Cost"
-                                />
+                                <ModeButton active={mode === "margin"} onClick={() => handleModeChange("margin")} icon={Percent} label="Find Margin" />
+                                <ModeButton active={mode === "revenue"} onClick={() => handleModeChange("revenue")} icon={Target} label="Find Revenue" />
+                                <ModeButton active={mode === "cogs"} onClick={() => handleModeChange("cogs")} icon={Wallet} label="Find COGS" />
                             </div>
-                            {/* Dynamic Inputs based on Mode */}
+                            {/* Dynamic Inputs */}
                             <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                 {mode === "margin" && (
                                     <>
-                                        <CalculatorInput
-                                            label={`Total Revenue (${symbol})`}
-                                            value={revenue}
-                                            onChange={setRevenue}
-                                            placeholder="10000.00"
-                                            tooltip="The total sales revenue before any deductions."
-                                        />
-                                        <CalculatorInput
-                                            label={`Cost of Goods Sold (COGS) (${symbol})`}
-                                            value={cogs}
-                                            onChange={setCogs}
-                                            placeholder="6000.00"
-                                            tooltip="The direct costs attributable to the production of the goods sold."
-                                        />
+                                        <CalculatorInput label="Total Revenue" value={revenue} onChange={setRevenue} placeholder="10000.00" tooltip="The total sales revenue before any deductions." currency={currency} />
+                                        <CalculatorInput label="Cost of Goods Sold (COGS)" value={cogs} onChange={setCogs} placeholder="6000.00" tooltip="Direct cost to produce or acquire the goods sold." currency={currency} />
                                     </>
                                 )}
                                 {mode === "revenue" && (
                                     <>
-                                        <CalculatorInput
-                                            label={`Cost of Goods Sold (COGS) (${symbol})`}
-                                            value={cogs}
-                                            onChange={setCogs}
-                                            placeholder="6000.00"
-                                            tooltip="Your cost to produce or acquire the goods."
-                                        />
-                                        <CalculatorInput
-                                            label="Target Gross Margin (%)"
-                                            value={targetMargin}
-                                            onChange={setTargetMargin}
-                                            placeholder="40.0"
-                                            max={99.99}
-                                            tooltip="The gross margin percentage you want to achieve."
-                                        />
+                                        <CalculatorInput label="Cost of Goods Sold (COGS)" value={cogs} onChange={setCogs} placeholder="6000.00" tooltip="Your cost to produce or acquire the product." currency={currency} />
+                                        <CalculatorInput label="Target Gross Margin (%)" value={targetMargin} onChange={setTargetMargin} placeholder="40.0" max={99.99} tooltip="The gross margin percentage you want to achieve." suffix="%" />
                                     </>
                                 )}
                                 {mode === "cogs" && (
                                     <>
-                                        <CalculatorInput
-                                            label={`Target Revenue (${symbol})`}
-                                            value={revenue}
-                                            onChange={setRevenue}
-                                            placeholder="10000.00"
-                                            tooltip="The sales revenue you expect or aim for."
-                                        />
-                                        <CalculatorInput
-                                            label="Target Gross Margin (%)"
-                                            value={targetMargin}
-                                            onChange={setTargetMargin}
-                                            placeholder="40.0"
-                                            max={99.99}
-                                            tooltip="The gross margin percentage you need to maintain."
-                                        />
+                                        <CalculatorInput label="Target Revenue" value={revenue} onChange={setRevenue} placeholder="10000.00" tooltip="The sales revenue you expect or aim for." currency={currency} />
+                                        <CalculatorInput label="Target Gross Margin (%)" value={targetMargin} onChange={setTargetMargin} placeholder="40.0" max={99.99} tooltip="The gross margin percentage you need to maintain." suffix="%" />
                                     </>
                                 )}
                             </div>
-
                         </CardContent>
                     </Card>
                 </div>
-                {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-32 animate-in fade-in slide-in-from-right-4 duration-700 delay-100">
-                    {/* Primary Result Card */}
-                    <ResultFeedbackCard
-                        title={mode === "margin" ? "GROSS MARGIN" : (mode === "revenue" ? "REQUIRED REVENUE" : "MAX COGS LIMIT")}
-                        titleLabel="Live calculation"
-                        mainValue={
-                            <div className="flex flex-col">
-                                <div className="flex items-baseline gap-2">
-                                    {mode === "margin"
-                                        ? <Counter value={derivedMargin} formatter={(v) => `${v.toFixed(2)}%`} />
-                                        : <Counter value={mode === "revenue" ? derivedRevenue : derivedCogs} formatter={formatCurrency} key={currency} />
-                                    }
-                                    <span className="text-2xl font-medium opacity-50">
-                                        {mode === "margin" ? "" : ""}
-                                    </span>
-                                </div>
-                                <p className="text-slate-400 text-sm font-bold mt-2">
-                                    {mode === "margin" ? "Profit margin percentage" : (mode === "revenue" ? "Revenue needed" : "Maximum allowable cost")}
-                                </p>
-                            </div>
-                        }
-                    >
-                        <div className="space-y-3">
-                            {/* Secondary Metrics Grid */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">Gross Profit</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Info className="h-3 w-3 text-slate-400 hover:text-white cursor-pointer" />
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    This is your actual profit in dollars after paying for the product.
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-xl font-bold text-blue-400">
-                                        <Counter value={derivedProfit} formatter={formatCurrency} key={currency} />
-                                    </p>
-                                </div>
-                                <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-left">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                        <p className="text-xs font-bold text-slate-300">Markup</p>
-                                        <TooltipProvider delayDuration={100}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Info className="h-3 w-3 text-slate-400 hover:text-white cursor-pointer" />
-                                                </TooltipTrigger>
-                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                    The percentage amount you increased the cost by to reach the selling price.
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-                                    <p className="text-xl font-bold text-blue-400">
-                                        <Counter value={derivedMarkup} formatter={(v) => `${v.toFixed(2)}%`} />
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </ResultFeedbackCard>
-                    {/* Visual Breakdown Bar */}
-                    <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-5">
-                        <h4 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <BarChart3 className="w-4 h-4 text-blue-500" />
-                            Revenue Breakdown
-                        </h4>
-                        <div className="relative w-full h-8 bg-slate-100 rounded-full overflow-hidden flex">
-                            {/* COGS Part */}
-                            <div
-                                style={{ width: `${Math.min(Math.max((derivedCogs / derivedRevenue) * 100, 0), 100)}%` }}
-                                className="h-full bg-slate-400 flex items-center justify-center text-[10px] font-bold text-white transition-all duration-500"
-                            >
-                                {derivedRevenue > 0 && (derivedCogs / derivedRevenue) > 0.1 && "COGS"}
-                            </div>
-                            {/* Profit Part */}
-                            <div
-                                style={{ width: `${Math.min(Math.max((derivedProfit / derivedRevenue) * 100, 0), 100)}%` }}
-                                className="h-full bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white transition-all duration-500"
-                            >
-                                {derivedRevenue > 0 && (derivedProfit / derivedRevenue) > 0.1 && "PROFIT"}
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-start gap-4 mt-2 text-xs text-slate-500 font-medium px-1">
-                            <div className="flex items-center gap-1.5">
-                                <div className="w-2 h-2 rounded-full bg-slate-400"></div>
-                                Cost: {derivedRevenue > 0 ? ((derivedCogs / derivedRevenue) * 100).toFixed(1) : 0}%
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                Profit: {derivedRevenue > 0 ? ((derivedProfit / derivedRevenue) * 100).toFixed(1) : 0}%
-                            </div>
-                        </div>
-                    </Card>
+
+                {/* Right: Results */}
+                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-32">
+                    <ResultSummaryCard
+                        title={resultTitle}
+                        primaryResult={primaryResult}
+                        secondaryResults={secondaryResults}
+                        currency={currency}
+                        isCalculated={isCalculated}
+                        description={description}
+                        emptyResultLabel={emptyResultLabel}
+                        checklistItems={checklistItems}
+                    />
+                    {/* Revenue Breakdown — standalone component */}
+                    <GrossMarginRevenueBreakdown
+                        derivedRevenue={derivedRevenue}
+                        derivedCogs={derivedCogs}
+                        derivedProfit={derivedProfit}
+                    />
                 </div>
             </div>
-        </FadeIn >
+        </FadeIn>
     )
 }
-// Sub-component for Mode Buttons
-function ModeButton({ active, onClick, icon: Icon, label }: { active: boolean, onClick: () => void, icon: any, label: string }) {
+
+function ModeButton({ active, onClick, icon: Icon, label }: { active: boolean; onClick: () => void; icon: any; label: string }) {
     return (
         <button
             onClick={onClick}

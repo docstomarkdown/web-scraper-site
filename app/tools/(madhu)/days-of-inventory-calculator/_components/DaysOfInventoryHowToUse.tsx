@@ -12,7 +12,7 @@ export function DaysOfInventoryHowToUse() {
                     icon: Package
                 },
                 {
-                    title: "Average Sales Speed",
+                    title: "Sales Speed",
                     description: "Input how many units you typically sell per day, week, or month.",
                     icon: TrendingUp
                 },
