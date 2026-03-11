@@ -6,10 +6,9 @@ import { ArrowRight, Chrome, BarChart3, TrendingUp, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { productConfig } from "@/config/product";
 
-export default function CTAV2() {
+export default function CTA() {
     return (
         <section className="py-20 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
-            {/* Background decorations */}
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-blue-100/50 rounded-full blur-[100px]" />
@@ -23,33 +22,24 @@ export default function CTAV2() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.7 }}
                 >
-                    {/* Split panel card */}
                     <div className="rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 overflow-hidden">
                         <div className="grid md:grid-cols-2">
-
-                            {/* ── Left panel ── */}
                             <div className="p-10 lg:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-slate-100">
-
-                                {/* Badge */}
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50/80 border border-blue-100 text-blue-600 text-[10px] font-bold uppercase tracking-[0.1em] mb-6 w-fit shadow-sm">
                                     <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
                                     <span>Analyze • Optimize • Scale</span>
                                 </div>
 
-                                {/* Headline */}
                                 <h2 className="text-3xl md:text-4xl font-bold text-slate-800 tracking-tight leading-[1.15] mb-5">
                                     Start extracting data
                                     <br />
-                                    <span className="text-blue-600">
-                                        today
-                                    </span>
+                                    <span className="text-blue-600">today</span>
                                 </h2>
 
                                 <p className="text-base text-slate-500 leading-relaxed mb-6">
                                     Join thousands of data professionals who use Web Scraper to collect the data they need — without writing a single line of code.
                                 </p>
 
-                                {/* Chrome Web Store badge */}
                                 <div className="inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 shadow-sm w-fit">
                                     <Chrome className="w-5 h-5 text-blue-500 shrink-0" />
                                     <div>
@@ -59,10 +49,7 @@ export default function CTAV2() {
                                 </div>
                             </div>
 
-                            {/* ── Right panel ── */}
                             <div className="p-10 lg:p-12 flex flex-col justify-center gap-4 bg-white">
-
-                                {/* Primary card */}
                                 <Link
                                     href={productConfig.product.ctaUrl}
                                     target="_blank"
@@ -80,7 +67,6 @@ export default function CTAV2() {
                                     <ArrowRight className="w-5 h-5 text-blue-200 group-hover:translate-x-1 group-hover:text-white transition-transform shrink-0" />
                                 </Link>
 
-                                {/* Secondary card */}
                                 <Link
                                     href="/pricing"
                                     className="group flex items-center justify-between gap-4 px-6 py-5 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm text-slate-700 transition-all"
@@ -97,7 +83,6 @@ export default function CTAV2() {
                                     <ArrowRight className="w-5 h-5 text-slate-300 group-hover:translate-x-1 group-hover:text-slate-500 transition-transform shrink-0" />
                                 </Link>
 
-                                {/* Feature checklist */}
                                 <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-3">
                                     {[
                                         "Free Chrome Extension",

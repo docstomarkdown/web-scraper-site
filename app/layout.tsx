@@ -1,7 +1,6 @@
 import './globals.css'
 import Script from 'next/script'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import { ThemeProvider } from '@/components/theme-provider'
 import { siteConfig } from '@/config/site'
@@ -10,12 +9,6 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import Header from '@/components/layout/header'
 import Footer from '@/components/layout/footer'
 import { ReCaptchaProvider } from '@/components/recaptcha-provider'
-
-const fontSans = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-})
 
 const fontHeading = localFont({
   src: '../public/fonts/CalSans-SemiBold.woff2',
@@ -86,6 +79,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
         {/* Force light theme before any rendering */}
         <script
           dangerouslySetInnerHTML={{
@@ -130,7 +129,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${fontSans.variable} ${fontHeading.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${fontHeading.variable} font-sans antialiased overflow-x-hidden`}
       >
         <ThemeProvider>
           <ReCaptchaProvider>

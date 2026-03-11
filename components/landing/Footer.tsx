@@ -11,17 +11,13 @@ const popularTools = [
     { title: "Net Profit Calculator", href: "/tools/net-profit-calculator" },
 ];
 
-export default function FooterV2() {
+export default function Footer() {
     const year = new Date().getFullYear();
 
     return (
         <footer className="bg-slate-50 text-slate-500 border-t border-slate-200">
-
-            {/* ── Main grid ── */}
             <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 pb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-12">
-
-                    {/* Brand — 4 cols */}
                     <div className="lg:col-span-4 space-y-5">
                         <Link href="/" className="inline-flex items-center gap-2.5 group">
                             <Icons.logo className="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity" />
@@ -34,7 +30,6 @@ export default function FooterV2() {
                             Extract data from any website visually. Point, click, and export — no code required. Works on Amazon, Flipkart, eBay, and every site you visit.
                         </p>
 
-                        {/* Social links */}
                         <div className="flex gap-2">
                             {siteConfig.links.twitter && (
                                 <Link href={siteConfig.links.twitter} target="_blank" aria-label="Twitter"
@@ -56,14 +51,12 @@ export default function FooterV2() {
                             )}
                         </div>
 
-                        {/* Chrome badge */}
                         <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 shadow-sm">
                             <Chrome className="w-4 h-4 text-blue-500" />
                             <span className="text-xs text-slate-600 font-medium">Available on Chrome Web Store</span>
                         </div>
                     </div>
 
-                    {/* Product — 2 cols */}
                     <div className="lg:col-span-2">
                         <h3 className="text-xs font-semibold text-slate-800 uppercase tracking-widest mb-5">Product</h3>
                         <ul className="space-y-3">
@@ -78,7 +71,6 @@ export default function FooterV2() {
                         </ul>
                     </div>
 
-                    {/* Free Tools — 3 cols */}
                     <div className="lg:col-span-3">
                         <h3 className="text-xs font-semibold text-slate-800 uppercase tracking-widest mb-5">Free Tools</h3>
                         <ul className="space-y-3">
@@ -100,7 +92,6 @@ export default function FooterV2() {
                         </ul>
                     </div>
 
-                    {/* Legal — 2 cols */}
                     <div className="lg:col-span-2">
                         <h3 className="text-xs font-semibold text-slate-800 uppercase tracking-widest mb-5">Legal</h3>
                         <ul className="space-y-3">
@@ -116,13 +107,9 @@ export default function FooterV2() {
                     </div>
                 </div>
 
-                {/* ── Divider ── */}
                 <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-
-                {/* ── Bottom bar ── */}
                 <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                     <p>© {year} {productConfig.product.logoText}. All rights reserved.</p>
-
                     <p className="text-slate-400">Made with ♥ for data people</p>
                 </div>
             </div>

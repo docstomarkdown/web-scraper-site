@@ -322,7 +322,7 @@ export const navigationConfig = {
     product: [
       {
         title: "Features",
-        href: "/#features-section",
+        href: "/#features-v2",
       },
       {
         title: "Pricing",
@@ -330,7 +330,7 @@ export const navigationConfig = {
       },
       {
         title: "FAQ",
-        href: "/#faq",
+        href: "/#faq-v2",
       },
       {
         title: "Blog",

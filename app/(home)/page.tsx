@@ -1,11 +1,11 @@
 import React from "react";
-import HeroV2 from "@/components/landing-v2/HeroV2";
-import FeaturesV2 from "@/components/landing-v2/FeaturesV2";
-import UseCasesV2 from "@/components/landing-v2/UseCasesV2";
-import HowItWorksV2 from "@/components/landing-v2/HowItWorksV2";
-import FAQV2 from "@/components/landing-v2/FAQV2";
-import CTAV2 from "@/components/landing-v2/CTAV2";
-import FooterV2 from "@/components/landing-v2/FooterV2";
+import Hero from "@/components/landing/Hero";
+import Features from "@/components/landing/Features";
+import UseCases from "@/components/landing/UseCases";
+import HowItWorks from "@/components/landing/HowItWorks";
+import FAQ from "@/components/landing/FAQ";
+import CTA from "@/components/landing/CTA";
+import Footer from "@/components/landing/Footer";
 
 export const metadata = {
     title: "Web Scraper.do — Extract Data from Any Website",
@@ -17,14 +17,14 @@ export default function Home() {
     return (
         <div className="min-h-screen flex flex-col bg-white">
             <main className="flex-1">
-                <HeroV2 />
-                <FeaturesV2 />
-                <UseCasesV2 />
-                <HowItWorksV2 />
-                <FAQV2 />
-                <CTAV2 />
+                <Hero />
+                <Features />
+                <UseCases />
+                <HowItWorks />
+                <FAQ />
+                <CTA />
             </main>
-            <FooterV2 />
+            <Footer />
         </div>
     );
 }
