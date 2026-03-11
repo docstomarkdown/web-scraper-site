@@ -4,36 +4,36 @@ import { ShieldCheck, Activity, Timer, BookOpen } from "lucide-react"
 export function DaysOfInventoryGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About This Process"
+            title="Understanding Your Inventory Runway"
             icon={BookOpen}
             items={[
                 {
-                    title: "The Safety Stock Illusion",
-                    description: "Many businesses confuse 'safety stock' with 'buffer stock.' Safety stock is a statistical calculation based on demand variability and lead time uncertainty—not just an arbitrary number you feel comfortable with.",
+                    title: "What is Safety Stock?",
+                    description: "Safety stock acts as an emergency buffer against unexpected shipping delays or sudden spikes in demand. It ensures you never run completely out of product unexpectedly.",
                     icon: ShieldCheck,
-                    stat: "2.5x",
-                    statLabel: "Standard Deviation",
+                    stat: "Buffer",
+                    statLabel: "Emergency Units",
                     iconBg: "bg-purple-50",
                     iconColor: "text-purple-600",
                     statColor: "text-purple-600",
-                    tooltip: "Proper safety stock should cover 2-3 standard deviations of demand variability during lead time."
+                    tooltip: "Your baseline stock kept purely for emergencies."
                 },
                 {
-                    title: "The Timeframe Trap",
-                    description: "Using monthly velocity data can mask critical daily or weekly fluctuations. A product averaging 300 units/month might sell 5/day for 3 weeks, then 50/day during week 4—leading to hidden stockouts.",
+                    title: "Choosing the Right Timeframe",
+                    description: "While monthly data provides a good high-level overview, tracking your average sales speed on a daily or weekly basis captures sudden fluctuations earlier and more accurately.",
                     icon: Activity,
-                    stat: "73%",
-                    statLabel: "Forecast Error",
+                    stat: "Daily",
+                    statLabel: "Best Precision",
                     iconBg: "bg-orange-50",
                     iconColor: "text-orange-600",
                     statColor: "text-orange-600"
                 },
                 {
-                    title: "The Lead Time Blindspot",
-                    description: "Your runway calculation tells you when stock hits zero—but you need to reorder when stock equals your safety buffer PLUS lead time demand. Waiting too long means guaranteed stockouts.",
+                    title: "Timing Your Reorders",
+                    description: "Your Actionable Stock Runway tells you exactly how many days of inventory you have left before hitting your safety buffer. Aim to reorder right before this number hits zero!",
                     icon: Timer,
-                    stat: "Runway - Lead Time",
-                    statLabel: "Reorder Trigger",
+                    stat: "Actionable",
+                    statLabel: "Remaining Days",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600"
@@ -41,4 +41,4 @@ export function DaysOfInventoryGuide() {
             ]}
         />
     )
-}
+}
