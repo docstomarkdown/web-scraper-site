@@ -1,8 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { ActionButtons, InputCardHeader, MadhuSubHeader, Counter } from "../../ToolTemplate"
-import { CalculatorInput } from "@/app/tools/_shared/components"
-import { ContainerLoadResultCard as ResultFeedbackCard } from "./ContainerLoadResultCard"
+import { ActionButtons, Counter } from "../../ToolTemplate"
+import { CalculatorInput, CalculatorCardHeader, ResultSummaryCard, FadeIn, ToolSectionHeader as MadhuSubHeader } from "@/app/tools/_shared/components"
 import { useToast } from "@/hooks/use-toast"
 import {
     Box,
@@ -10,10 +9,12 @@ import {
     Package,
     Layers,
     XCircle,
+    Info
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 const CONTAINERS = {
     "custom": {
         name: "Custom Container",
@@ -276,180 +277,244 @@ export function ContainerLoadCalculator() {
     return (
         <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start justify-center">
-                <div className="lg:col-span-7 space-y-3">
-                    <Card className="border-slate-200 shadow-sm relative overflow-hidden bg-white">
-                        <InputCardHeader
-                            title="Configuration inputs"
-                            subtitle="Enter box details, pallet type, and stack limits."
-                            onHelpClick={scrollToGuide}
+                <div className="lg:col-span-12 xl:col-span-7 space-y-6">
+                    <Card className="border-slate-200 shadow-sm relative overflow-visible bg-white rounded-3xl">
+                        <CalculatorCardHeader
+                            title="Container Configuration"
+                            description="Specify your container dimensions, load type, and cargo details to optimize space utilization."
                             onReset={clearAll}
                         />
-                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-3 flex-1 flex flex-col">
-                            <div className="space-y-3">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                                        Select container
-                                    </label>
-                                    <div className="w-full sm:w-[300px]">
-                                        <Select value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as keyof typeof CONTAINERS)}>
-                                            <SelectTrigger className="h-11 border-slate-200 bg-white transition-all hover:border-blue-400 px-3 w-full">
-                                                <div className="flex items-center justify-center gap-2.5 w-full min-w-0 pr-1">
-                                                    <Container className="w-4 h-4 text-blue-500 shrink-0" />
-                                                    <span className="font-bold text-sm text-blue-600 truncate leading-tight">
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 pl-10 md:pl-12 flex flex-col gap-8">
+                            {/* Shared container for alignment - both sections use same left edge */}
+                            <div className="max-w-[520px] mx-auto px-3 sm:px-5 space-y-0">
+                                {/* ── Container Setup Group ── */}
+                                <div className="space-y-0 relative calculator-input-row" data-has-title="true">
+                                    {/* Vertical connector line - aligned with icon left edge (matches Cargo Dimensions) */}
+                                    <div className="absolute left-[-33px] top-[14px] bottom-6 w-[1.5px] bg-blue-200/70 z-0" />
+
+                                    {/* Group Header */}
+                                    <div className="flex items-center gap-2 -ml-[33px] mb-0.5 relative h-7">
+                                        <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
+                                            <Container className="w-3.5 h-3.5 text-blue-600" />
+                                        </div>
+                                        <span className="text-[16px] font-bold text-slate-600 tracking-tight z-10">Container Setup</span>
+                                    </div>
+
+                                    {/* Row: Select Container */}
+                                    <div className="relative flex items-center gap-3 w-full z-10 py-3">
+                                        <span className="text-[14.5px] font-medium text-slate-600/90 flex-1">Select Container</span>
+                                        <div className="w-full sm:w-[300px] max-w-[176px]">
+                                            <Select value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as keyof typeof CONTAINERS)}>
+                                                <SelectTrigger className="h-11 border-2 border-slate-200 bg-white transition-all hover:border-blue-300 hover:shadow-md px-3 w-full rounded-xl font-semibold text-slate-600">
+                                                    <span className="font-bold text-sm text-blue-600 truncate">
                                                         {CONTAINERS[selectedContainer]?.name}
                                                     </span>
-                                                </div>
-                                            </SelectTrigger>
-                                            <SelectContent className="max-h-[400px]">
-                                                {Object.entries(CONTAINERS).map(([key, data]) => (
-                                                    <SelectItem key={key} value={key} className="py-2.5 focus:bg-blue-50">
-                                                        <div className="flex flex-col text-left">
-                                                            <span className="font-bold text-sm text-slate-700">{data.name}</span>
-                                                            {key === "custom" ? (
-                                                                <span className="text-[10px] text-slate-400 font-medium">User defined dimensions</span>
-                                                            ) : (
-                                                                <span className="text-[10px] text-slate-500 font-medium">
-                                                                    Weight: {data.maxWeight.toLocaleString()} kg | L: {(data.length / 1000).toFixed(1)}m × W: {(data.width / 1000).toFixed(2)}m
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                                </SelectTrigger>
+                                                <SelectContent className="max-h-[400px]">
+                                                    {Object.entries(CONTAINERS).map(([key, data]) => (
+                                                        <SelectItem key={key} value={key} className="py-2.5 focus:bg-blue-50">
+                                                            <div className="flex flex-col text-left">
+                                                                <span className="font-bold text-sm text-slate-700">{data.name}</span>
+                                                                {key === "custom" ? (
+                                                                    <span className="text-[10px] text-slate-400 font-medium">User defined dimensions</span>
+                                                                ) : (
+                                                                    <span className="text-[10px] text-slate-500 font-medium">
+                                                                        Wt: {data.maxWeight.toLocaleString()} kg · {(data.length / 1000).toFixed(1)}m × {(data.width / 1000).toFixed(2)}m
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                     </div>
-                                </div>
-                                {selectedContainer === "custom" && (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-                                        <CalculatorInput label="Int. Length" value={customCLength} onChange={setCustomCLength} placeholder={unitSystem === "metric" ? "580" : "232"} suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                        <CalculatorInput label="Int. Width" value={customCWidth} onChange={setCustomCWidth} placeholder={unitSystem === "metric" ? "230" : "92"} suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                        <CalculatorInput label="Int. Height" value={customCHeight} onChange={setCustomCHeight} placeholder={unitSystem === "metric" ? "230" : "92"} suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                        <CalculatorInput label="Max Weight" value={customCWeight} onChange={setCustomCWeight} placeholder={unitSystem === "metric" ? "28000" : "61000"} suffix={unitSystem === "metric" ? "kg" : "lb"} />
-                                    </div>
-                                )}
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                                        Loading type
-                                    </label>
-                                    <Tabs
-                                        value={loadType}
-                                        onValueChange={(v) => setLoadType(v as any)}
-                                        className="w-full sm:w-[300px]"
-                                    >
-                                        <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
-                                            <TabsTrigger value="loose" className="flex items-center justify-center py-1.5 text-xs font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all">
-                                                <Box className="w-3.5 h-3.5 mr-2" />
-                                                Loose Box
-                                            </TabsTrigger>
-                                            <TabsTrigger value="pallet" className="flex items-center justify-center py-1.5 text-xs font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all">
-                                                <Package className="w-3.5 h-3.5 mr-2" />
-                                                Pallet
-                                            </TabsTrigger>
-                                        </TabsList>
-                                    </Tabs>
-                                </div>
-                            </div>
-                            <div className="space-y-3">
-                                <div className="space-y-3 max-w-2xl">
-                                    <div className="flex items-center justify-between min-h-[36px]">
-                                        <MadhuSubHeader title="Box details" icon={Box} className="mb-0" />
-                                        <Tabs value={unitSystem} onValueChange={(v) => setUnitSystem(v as any)} className="w-[160px]">
+
+                                    {selectedContainer === "custom" && (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-blue-50/30 p-4 rounded-2xl border border-blue-100/50 mb-3">
+                                            <CalculatorInput label="Int. Length" value={customCLength} onChange={setCustomCLength} placeholder={unitSystem === "metric" ? "580" : "232"} suffix={unitSystem === "metric" ? "cm" : "in"} hideSeparator />
+                                            <CalculatorInput label="Int. Width" value={customCWidth} onChange={setCustomCWidth} placeholder={unitSystem === "metric" ? "230" : "92"} suffix={unitSystem === "metric" ? "cm" : "in"} hideSeparator />
+                                            <CalculatorInput label="Int. Height" value={customCHeight} onChange={setCustomCHeight} placeholder={unitSystem === "metric" ? "230" : "92"} suffix={unitSystem === "metric" ? "cm" : "in"} hideSeparator />
+                                            <CalculatorInput label="Max Weight" value={customCWeight} onChange={setCustomCWeight} placeholder={unitSystem === "metric" ? "28000" : "61000"} suffix={unitSystem === "metric" ? "kg" : "lb"} hideSeparator />
+                                        </div>
+                                    )}
+
+                                    {/* Sub-row: Loading Type */}
+                                    <div className="relative flex items-center gap-3 w-full z-10 py-3">
+                                        <span className="text-[14.5px] font-medium text-slate-600/90 flex-1">Loading Type</span>
+                                        <Tabs value={loadType} onValueChange={(v) => setLoadType(v as any)} className="max-w-[176px] w-full">
                                             <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
-                                                <TabsTrigger value="metric" className="py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all uppercase tracking-tighter">CM / KG</TabsTrigger>
-                                                <TabsTrigger value="imperial" className="py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm transition-all uppercase tracking-tighter">IN / LB</TabsTrigger>
+                                                <TabsTrigger value="loose" className="flex items-center justify-center py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">
+                                                    <Box className="w-3 h-3 mr-1" />
+                                                    Loose
+                                                </TabsTrigger>
+                                                <TabsTrigger value="pallet" className="flex items-center justify-center py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">
+                                                    <Layers className="w-3 h-3 mr-1" />
+                                                    Pallets
+                                                </TabsTrigger>
                                             </TabsList>
                                         </Tabs>
                                     </div>
-                                    <div className="flex flex-col gap-4">
-                                        <CalculatorInput label="Length" value={length} onChange={setLength} placeholder="40" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                        <CalculatorInput label="Width" value={width} onChange={setWidth} placeholder="30" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                        <CalculatorInput label="Height" value={height} onChange={setHeight} placeholder="25" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                        <CalculatorInput label="Weight (Unit)" value={weight} onChange={setWeight} placeholder="5" suffix={unitSystem === "metric" ? "kg" : "lb"} />
-                                    </div>
                                 </div>
-                                {loadType === "pallet" && (
-                                    <>
-                                        <div id="pallet-details" className="space-y-3 max-w-2xl animate-in fade-in slide-in-from-top-4 duration-500">
-                                            <MadhuSubHeader title="Pallet details" icon={Layers} className="mb-0" />
-                                            <div className="flex flex-col gap-4">
-                                                <CalculatorInput label="Pallet length" value={palletLength} onChange={setPalletLength} placeholder="120" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                                <CalculatorInput label="Pallet width" value={palletWidth} onChange={setPalletWidth} placeholder="80" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                                <CalculatorInput label="Base height" value={palletHeight} onChange={setPalletHeight} placeholder="15" tooltip="Height of empty pallet only" suffix={unitSystem === "metric" ? "cm" : "in"} />
-                                                <CalculatorInput label="Pallet weight" value={palletWeight} onChange={setPalletWeight} placeholder="20" tooltip="Weight of empty pallet" suffix={unitSystem === "metric" ? "kg" : "lb"} />
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
 
+                                {/* Detailed Specs Group - same container for vertical alignment */}
+                                <div className="space-y-1 mt-4">
+
+                                <CalculatorInput
+                                    label="Box Length"
+                                    value={length}
+                                    onChange={setLength}
+                                    placeholder="40"
+                                    suffix={unitSystem === "metric" ? "cm" : "in"}
+                                    groupingTitle="Cargo Dimensions"
+                                    groupingIcon={Box}
+                                    rowAction={
+                                        <Tabs value={unitSystem} onValueChange={(v) => setUnitSystem(v as any)} className="w-[140px]">
+                                            <TabsList className="grid w-full grid-cols-2 h-7 p-0.5 bg-slate-100/60 border border-slate-200/50 rounded-lg">
+                                                <TabsTrigger value="metric" className="py-0.5 text-[9px] font-black rounded-md data-[state=active]:bg-white data-[state=active]:text-blue-600 uppercase tracking-tight">CM / KG</TabsTrigger>
+                                                <TabsTrigger value="imperial" className="py-0.5 text-[9px] font-black rounded-md data-[state=active]:bg-white data-[state=active]:text-blue-600 uppercase tracking-tight">IN / LB</TabsTrigger>
+                                            </TabsList>
+                                        </Tabs>
+                                    }
+                                />
+                                <CalculatorInput
+                                    label="Box Width"
+                                    value={width}
+                                    onChange={setWidth}
+                                    placeholder="30"
+                                    suffix={unitSystem === "metric" ? "cm" : "in"}
+                                />
+                                <CalculatorInput
+                                    label="Box Height"
+                                    value={height}
+                                    onChange={setHeight}
+                                    placeholder="25"
+                                    suffix={unitSystem === "metric" ? "cm" : "in"}
+                                />
+                                <CalculatorInput
+                                    label="Unit Weight"
+                                    value={weight}
+                                    onChange={setWeight}
+                                    placeholder="5"
+                                    suffix={unitSystem === "metric" ? "kg" : "lb"}
+                                />
+
+                                {loadType === "pallet" && (
+                                    <div className="pt-6 animate-in fade-in slide-in-from-top-4 duration-500">
+                                        <CalculatorInput
+                                            label="Pallet Length"
+                                            value={palletLength}
+                                            onChange={setPalletLength}
+                                            placeholder="120"
+                                            suffix={unitSystem === "metric" ? "cm" : "in"}
+                                            groupingTitle="Pallet Specifications"
+                                            groupingIcon={Layers}
+                                        />
+                                        <CalculatorInput
+                                            label="Pallet Width"
+                                            value={palletWidth}
+                                            onChange={setPalletWidth}
+                                            placeholder="80"
+                                            suffix={unitSystem === "metric" ? "cm" : "in"}
+                                        />
+                                        <CalculatorInput
+                                            label="Base Height"
+                                            value={palletHeight}
+                                            onChange={setPalletHeight}
+                                            placeholder="15"
+                                            tooltip="Standard pallet base height (usually 15cm / 6in)"
+                                            suffix={unitSystem === "metric" ? "cm" : "in"}
+                                        />
+                                        <CalculatorInput
+                                            label="Empty Weight"
+                                            value={palletWeight}
+                                            onChange={setPalletWeight}
+                                            placeholder="25"
+                                            tooltip="Weight of the wooden or plastic pallet itself"
+                                            suffix={unitSystem === "metric" ? "kg" : "lb"}
+                                        />
+                                    </div>
+                                )}
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
-                <div className="lg:col-span-4 space-y-3">
-                    <div className="space-y-3 animate-in fade-in duration-500">
-                        <ResultFeedbackCard
-                            variant="default"
-                            title="Capacity Estimate"
-                            titleLabel={result ? CONTAINERS[selectedContainer as keyof typeof CONTAINERS].name : "Ready"}
-                            mainValue={
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-extrabold tracking-tight">
-                                        {result ? result.units.toLocaleString() : "0"}
-                                    </span>
-                                    <span className="text-2xl text-slate-400 font-medium">units</span>
-                                </div>
-                            }
-                            secondaryMetrics={[
+
+                <div className="lg:col-span-12 xl:col-span-5 space-y-6">
+                    <div className="space-y-6">
+                        <ResultSummaryCard
+                            title="Loading Efficiency"
+                            isCalculated={!!result}
+                            primaryResult={{
+                                value: result ? result.units.toLocaleString() : "0",
+                                label: "Total box capacity",
+                                unit: "units"
+                            }}
+                            secondaryResults={[
                                 {
-                                    label: "Total Weight",
-                                    value: result ? `${Math.round(result.totalWeight).toLocaleString()} kg` : "0 kg",
-                                    color: result?.limitReason === "Weight Limit" ? "text-amber-500" : "text-blue-400",
-                                    tooltip: "Combined gross weight of all boxes and pallets. Must not exceed the container's max payload capacity."
+                                    key: "weight",
+                                    label: "Gross Payload",
+                                    value: result ? Math.round(result.totalWeight).toLocaleString() : "0",
+                                    unit: "kg",
+                                    tooltip: "The total gross weight of all boxes and pallets. Ensure this doesn't exceed the container's official safety rating.",
+                                    className: result?.limitReason === "Weight Limit" ? "text-amber-600 bg-amber-50/50 border-amber-100" : ""
                                 },
                                 {
-                                    label: "Volume Usage",
-                                    value: result ? `${result.totalVolume.toFixed(2)} m³` : "0.00 m³",
-                                    color: "text-blue-400",
-                                    tooltip: "The physical space occupied by your cargo in cubic meters. Based on carton exterior dimensions."
-                                }
+                                    key: "volume",
+                                    label: "Cubic Volume",
+                                    value: result ? result.totalVolume.toFixed(2) : "0.00",
+                                    unit: "m³",
+                                    tooltip: "Space occupied in cubic meters based on exterior carton dimensions."
+                                },
+                                ...(loadType === "pallet" ? [
+                                    {
+                                        key: "pallets",
+                                        label: "Pallet Count",
+                                        value: result ? result.palletsCount : 0,
+                                        tooltip: "Total number of pallet units that fit on the container floor."
+                                    },
+                                    {
+                                        key: "boxes_per_pallet",
+                                        label: "Inner Yield",
+                                        value: result ? result.boxesPerPallet : 0,
+                                        tooltip: "Total boxes stacked on each individual pallet."
+                                    },
+                                    {
+                                        key: "layers",
+                                        label: "Stack Layers",
+                                        value: result ? result.layers : 0,
+                                        tooltip: "Vertical stacking levels permitted based on container interior height."
+                                    }
+                                ] : [])
                             ]}
+                            emptyResultLabel="Capacity"
+                            dynamicMessages={{
+                                positive: "Optimization successful! Your cargo configuration maximizes container space usage.",
+                                negative: "Warning: Load exceeds container limits. Adjust dimensions or loading type.",
+                                neutral: "Ready to calculate your optimal container load configuration."
+                            }}
                         />
-                        {loadType === "pallet" && (
-                            <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                                <ResultFeedbackCard
-                                    variant="compact"
-                                    title="Total pallets"
-                                    mainValue={<Counter value={result ? result.palletsCount : 0} />}
-                                    tooltip="Total number of pallets planned for the container payload."
-                                />
-                                <ResultFeedbackCard
-                                    variant="compact"
-                                    title="Boxes / pallet"
-                                    mainValue={<Counter value={result ? result.boxesPerPallet : 0} />}
-                                    tooltip="Quantity of boxes stacked on a single pallet unit."
-                                />
-                                <ResultFeedbackCard
-                                    variant="compact"
-                                    title="Layers high"
-                                    mainValue={<Counter value={result ? result.layers : 0} />}
-                                    tooltip="Number of vertical stacking levels on each pallet."
-                                />
-                            </div>
-                        )}
+
                         {result && result.units === 0 ? (
-                            <div className="flex flex-col items-center justify-center p-6 bg-red-50 rounded-2xl border border-dashed border-red-200 text-center animate-in fade-in zoom-in-95">
-                                <XCircle className="w-10 h-10 mb-2 text-red-500" />
-                                <h4 className="text-sm font-bold text-red-600 mb-1">Items do not fit</h4>
-                                <p className="text-xs text-red-500/80 leading-relaxed px-4">
-                                    {result.noFit
-                                        ? "Your box dimensions are larger than the available container space. Please check your measurements."
-                                        : "The weight of a single unit exceeds the container's maximum capacity."}
-                                </p>
-                            </div>
+                            <FadeIn direction="up" duration={0.4}>
+                                <div className="flex flex-col items-center justify-center p-8 bg-red-50/50 rounded-3xl border border-dashed border-red-200 text-center backdrop-blur-sm">
+                                    <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 mb-4 shadow-sm">
+                                        <XCircle className="w-6 h-6" />
+                                    </div>
+                                    <h4 className="text-[17px] font-bold text-red-600 mb-2 tracking-tight">Cargo Does Not Fit</h4>
+                                    <p className="text-[13.5px] text-red-500/80 leading-relaxed max-w-[280px]">
+                                        {result.noFit
+                                            ? "Your carton or pallet dimensions are larger than the container's interior entry height or width. Check measurements."
+                                            : "The weight of your cargo exceeds the allowed payload capacity for this container type."}
+                                    </p>
+                                </div>
+                            </FadeIn>
                         ) : null}
                     </div>
                 </div>
+
             </div>
-        </div >
+        </div>
     )
 }

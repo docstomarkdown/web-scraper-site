@@ -150,7 +150,6 @@ export function InfluencerROICalculator() {
                 </div>
                 <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-3">
                     <ResultSummaryCard
-                        title="ROI (Return on Investment)"
                         currency={currency}
                         primaryResult={{
                             value: roi.toFixed(2),
