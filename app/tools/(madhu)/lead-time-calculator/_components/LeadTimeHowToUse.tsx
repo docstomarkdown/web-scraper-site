@@ -4,24 +4,24 @@ import { Factory, Ship, ShieldCheck } from "lucide-react"
 export function LeadTimeHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Calculator"
+            title="How to Calculate Your Lead Time"
             steps={[
                 {
-                    title: "Order Date",
-                    description: "Specify exactly when the purchase order was submitted to the supplier.",
+                    title: "Manufacturing Time",
+                    description: "Enter the number of days your supplier takes for production and processing.",
                     icon: Factory
                 },
                 {
-                    title: "Delivery Date",
-                    description: "Enter the specific date the goods actually arrived at your warehouse.",
+                    title: "Transit & Buffer",
+                    description: "Input estimated shipping days and an optional buffer for potential delays.",
                     icon: Ship
                 },
                 {
-                    title: "Calculate Time",
-                    description: "Instantly check your total exact lead time in days for solid forecasting.",
+                    title: "Delivery Forecast",
+                    description: "Fill the mandatory fields to see your total lead time and estimated arrival date.",
                     icon: ShieldCheck
                 }
             ]}
         />
     )
-}
+}

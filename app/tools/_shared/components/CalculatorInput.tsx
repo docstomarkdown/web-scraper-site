@@ -29,6 +29,8 @@ export interface CalculatorInputProps {
     benchmarkBadge?: boolean
     hideSeparator?: boolean
     isOptional?: boolean
+    groupingAction?: React.ReactNode
+    rowAction?: React.ReactNode
 }
 
 export function CalculatorInput({
@@ -52,7 +54,9 @@ export function CalculatorInput({
     highlight = false,
     benchmarkBadge = false,
     hideSeparator = false,
-    isOptional = false
+    isOptional = false,
+    groupingAction,
+    rowAction
 }: CalculatorInputProps) {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
@@ -196,7 +200,7 @@ export function CalculatorInput({
                 {/* Dynamic Connecting Line Fragment: Ensures a solid vertical path ONLY for labeled groups */}
                 {isInLabeledGroup && (
                     <div
-                        className="absolute left-[-19.5px] w-[1.5px] bg-blue-200/70 z-0"
+                        className="absolute left-[-33px] w-[1.5px] bg-blue-200/70 z-0"
                         style={{
                             top: groupingTitle ? '14px' : '-50px',
                             bottom: isLastInGroup ? '10px' : '-50px',
@@ -210,9 +214,14 @@ export function CalculatorInput({
                                 <GroupIcon className="w-3.5 h-3.5 text-blue-600" />
                             </div>
                         )}
-                        <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight">
+                        <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight flex-1">
                             {groupingTitle}
                         </span>
+                        {groupingAction && (
+                            <div className="z-10 ml-auto">
+                                {groupingAction}
+                            </div>
+                        )}
                         {benchmarkBadge && (
                             <>
                                 <span className="text-slate-300 text-sm z-10 select-none">·</span>
@@ -256,7 +265,7 @@ export function CalculatorInput({
                             </Tooltip>
                         )}
                     </div>
-                    <div className="relative group flex-shrink-0">
+                    <div className="relative group flex-shrink-0 flex items-center gap-3">
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div className="relative">
@@ -306,6 +315,7 @@ export function CalculatorInput({
                                 </TooltipContent>
                             )}
                         </Tooltip>
+                        {rowAction && <div className="flex-shrink-0">{rowAction}</div>}
                     </div>
                 </div>
             </div>
