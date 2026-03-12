@@ -6,9 +6,8 @@ export const siteConfig = {
   url: "https://www.webscraper.pro/",
   ogImage: "https://webscraper.pro/og.jpg",
   links: {
-    twitter: "https://twitter.com/webscraperpro",
-    youtube: "https://www.youtube.com/@webscraperpro",
-    linkedin: "https://linkedin.com/company/webscraperpro",
+    twitter: "https://x.com/vikramaruchamy",
+    linkedin: "https://www.linkedin.com/in/vikramaruchamy/",
   },
   keywords: [
     "Web Scraper",
@@ -301,17 +300,9 @@ export const navigationConfig = {
     },
     */
     {
-      title: "Pricing",
-      href: "/pricing",
-    },
-    {
       title: "Docs",
       href: "https://docs.webscraper.pro",
       external: true,
-    },
-    {
-      title: "Blog",
-      href: "/blog",
     },
     {
       title: "Contact",
@@ -322,19 +313,11 @@ export const navigationConfig = {
     product: [
       {
         title: "Features",
-        href: "/#features-v2",
-      },
-      {
-        title: "Pricing",
-        href: "/pricing",
+        href: "/#features",
       },
       {
         title: "FAQ",
-        href: "/#faq-v2",
-      },
-      {
-        title: "Blog",
-        href: "/blog",
+        href: "/#faq",
       },
       {
         title: "Contact",

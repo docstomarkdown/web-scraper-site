@@ -87,7 +87,8 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    /* Global corner radius token used by Tailwind rounded-sm/md/lg/xl/2xl/3xl */
+    --radius: 0.625rem;
     --font-sans: 'Google Sans', 'Inter', sans-serif;
     --font-heading: 'CalSans', sans-serif;
     --text-strong: 222 47% 14%;

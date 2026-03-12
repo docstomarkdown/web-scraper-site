@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Chrome, MousePointer2, Table2, FileSpreadsheet, Star, FileJson2, FileText, RefreshCw } from "lucide-react";
+import { ArrowRight, Chrome, MousePointer2, Table2, FileSpreadsheet, Star, FileJson2, FileText, RefreshCw, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { productConfig } from "@/config/product";
 
@@ -10,8 +10,8 @@ export default function Hero() {
     return (
         <section className="w-full bg-white min-h-[calc(100vh-64px)] pt-36 pb-20 px-6 md:px-12 relative overflow-hidden">
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-24 left-1/4 w-[440px] h-[440px] bg-[#2772ED]/10 rounded-full blur-[120px]" />
-                <div className="absolute -bottom-20 right-1/4 w-[360px] h-[360px] bg-[#2772ED]/8 rounded-full blur-[110px]" />
+                <div className="absolute -top-24 left-1/4 w-[440px] h-[440px] bg-[#2772ED]/6 rounded-full blur-[130px]" />
+                <div className="absolute -bottom-20 right-1/4 w-[360px] h-[360px] bg-[#2772ED]/5 rounded-full blur-[120px]" />
             </div>
 
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto gap-12 lg:gap-16 w-full">
@@ -21,8 +21,11 @@ export default function Hero() {
                     transition={{ duration: 0.6 }}
                     className="max-w-2xl text-center lg:text-left lg:w-[48%]"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#2772ED]/20 bg-[#2772ED]/5 text-[#2772ED] text-xs font-semibold tracking-wide uppercase mb-6">
-                        Web Scraper.do
+                    <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full border border-[#2772ED]/25 bg-[#2772ED]/6 text-[#1f5ec2] text-sm font-medium tracking-[0.01em] mb-6">
+                        <span className="w-5 h-5 rounded-full bg-[#2772ED]/12 text-[#1f5ec2] flex items-center justify-center">
+                            <ShieldCheck className="w-3 h-3" />
+                        </span>
+                        <span className="leading-none">Web Scraper by WebScraper.do</span>
                     </div>
 
                     <h1 className="text-4xl sm:text-5xl lg:text-[3.3rem] font-bold tracking-tight text-slate-600 leading-[1.08]">
@@ -40,7 +43,7 @@ export default function Hero() {
                             className="w-full sm:w-auto group inline-flex items-center justify-center rounded-xl bg-[#2772ED] hover:bg-[#1f5ec2] px-8 py-3.5 text-base font-semibold text-white transition-all hover:translate-y-[-1px] active:scale-[0.98] gap-2 shadow-lg shadow-[#2772ED]/25"
                         >
                             <Chrome className="w-5 h-5" />
-                            Install Web Scraper.do
+                            Install from Chrome Web Store
                             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
@@ -118,7 +121,7 @@ export default function Hero() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-5 bg-gradient-to-br from-[#2772ED]/10 to-white">
+                                <div className="p-5 bg-gradient-to-br from-[#2772ED]/6 to-white">
                                     <div className="flex items-center justify-between mb-3">
                                         <p className="text-sm font-semibold text-[#2772ED]">After Extraction</p>
                                         <span className="text-[11px] font-semibold text-[#2772ED]">Structured</span>
@@ -194,7 +197,7 @@ export default function Hero() {
                                 </div>
                             </div>
                         </div>
-                        <div className="absolute -z-10 -inset-3 bg-gradient-to-r from-[#2772ED]/10 to-transparent rounded-3xl blur-2xl" />
+                        <div className="absolute -z-10 -inset-3 bg-gradient-to-r from-[#2772ED]/6 to-transparent rounded-3xl blur-2xl" />
                     </div>
                 </motion.div>
             </div>

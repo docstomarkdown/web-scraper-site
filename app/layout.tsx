@@ -52,6 +52,8 @@ export const metadata: Metadata = {
     creator: '@webscraperpro',
     site: '@webscraperpro',
   },
+  // SEO SAFETY LOCK: This product must remain non-indexable by default.
+  // Do not remove or relax noindex/nofollow unless the project owner explicitly asks for it.
   robots: {
     index: false,
     follow: false,

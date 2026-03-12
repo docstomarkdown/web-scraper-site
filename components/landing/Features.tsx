@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { MousePointer2, Layers, FileSpreadsheet, Zap } from "lucide-react";
+import { List, ImageIcon, Tags, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeUpVariant, staggerContainer } from "@/lib/framer-animations";
 
 const features = [
     {
-        title: "Visual Point & Click",
-        description: <>Hover over any webpage element. The extension <strong>auto-detects product grids, tables, and lists</strong> — then click to lock your selection instantly.</>,
-        icon: MousePointer2,
+        title: "List Extraction",
+        description: <>Extract complete product or result lists with fields aligned into clean rows for structured output.</>,
+        icon: List,
         iconColor: "text-blue-600",
         iconBg: "bg-blue-50 border-blue-100/50",
         iconHoverBg: "group-hover:bg-blue-600 group-hover:border-blue-600",
@@ -19,9 +19,9 @@ const features = [
         radial: "[background:radial-gradient(ellipse_at_top_right,theme(colors.blue.50)_0%,transparent_65%)]",
     },
     {
-        title: "Auto-Pagination",
-        description: <>Capture the 'Next' button once and watch the scraper crawl every page automatically — handling <strong>infinite scroll, AJAX, and numbered pages</strong>.</>,
-        icon: Layers,
+        title: "Images Extraction",
+        description: <>Capture product images directly from listings and detail pages, then download them as part of your export workflow.</>,
+        icon: ImageIcon,
         iconColor: "text-indigo-600",
         iconBg: "bg-indigo-50 border-indigo-100/50",
         iconHoverBg: "group-hover:bg-indigo-600 group-hover:border-indigo-600",
@@ -31,9 +31,9 @@ const features = [
         radial: "[background:radial-gradient(ellipse_at_top_right,theme(colors.indigo.50)_0%,transparent_65%)]",
     },
     {
-        title: "Multi-Format Export",
-        description: <>Export straight to <strong>Google Sheets, Excel (XLSX), JSON, or CSV</strong>. Includes a seamless one-click sync via <strong>built-in OAuth2 integration</strong>.</>,
-        icon: FileSpreadsheet,
+        title: "Property Extraction",
+        description: <>Extract key attributes such as title, brand, price, rating, seller, and other structured properties from product pages.</>,
+        icon: Tags,
         iconColor: "text-emerald-600",
         iconBg: "bg-emerald-50 border-emerald-100/50",
         iconHoverBg: "group-hover:bg-emerald-600 group-hover:border-emerald-600",
@@ -46,7 +46,7 @@ const features = [
 
 export default function Features() {
     return (
-        <section id="features-v2" className="pt-20 pb-12 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+        <section id="features" className="pt-20 pb-12 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-50/60 rounded-full blur-[100px]" />
@@ -57,13 +57,13 @@ export default function Features() {
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant} className="text-center max-w-4xl mx-auto mb-20">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-6">
                         <Zap className="w-4 h-4" />
-                        <span>Packed with powerful features</span>
+                        <span>Core workflow</span>
                     </div>
                     <h2 className="text-4xl md:text-5xl font-bold text-slate-700 mb-6 tracking-tight">
-                        Everything you need for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">data extraction</span>
+                        Extract exactly what you need from <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">any product page</span>
                     </h2>
                     <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
-                        A complete web scraping toolkit that runs inside Chrome. No infrastructure, no proxies, no code — just results.
+                        Three extraction modes for ecommerce workflows: lists, images, and product properties.
                     </p>
                 </motion.div>
 

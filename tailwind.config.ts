@@ -21,6 +21,11 @@ const config: Config = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       borderRadius: {
+        // Site-wide radius scale. Keep this centralized for visual consistency.
+        // Update only here instead of scattering one-off rounded values in components.
+        xl: 'calc(var(--radius) + 2px)',
+        '2xl': 'calc(var(--radius) + 6px)',
+        '3xl': 'calc(var(--radius) + 10px)',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',

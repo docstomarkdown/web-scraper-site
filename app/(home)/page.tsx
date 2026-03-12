@@ -1,8 +1,6 @@
 import React from "react";
 import Hero from "@/components/landing/Hero";
 import Features from "@/components/landing/Features";
-import UseCases from "@/components/landing/UseCases";
-import HowItWorks from "@/components/landing/HowItWorks";
 import FAQ from "@/components/landing/FAQ";
 import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
@@ -19,8 +17,6 @@ export default function Home() {
             <main className="flex-1">
                 <Hero />
                 <Features />
-                <UseCases />
-                <HowItWorks />
                 <FAQ />
                 <CTA />
             </main>
