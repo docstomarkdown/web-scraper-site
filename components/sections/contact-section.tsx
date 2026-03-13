@@ -146,7 +146,7 @@ export default function ContactSection() {
           variants={fadeUpVariant}
           className="text-center mb-7"
         >
-          <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">
+          <h2 className="text-4xl font-bold text-slate-700 mb-4 tracking-tight">
             Contact Web Scraper
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed">
