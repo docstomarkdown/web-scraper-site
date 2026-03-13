@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         "online tools"
     ],
     openGraph: {
-        title: "All Tools - Free Business Tools | Web Scraper.pro",
+        title: "All Tools - Free Business Tools | Web Scraper",
         description: "Explore our collection of 20+ free business tools. From GST invoice generators to inventory management, streamline your workflow.",
         type: "website",
     },

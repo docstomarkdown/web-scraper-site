@@ -1,6 +1,6 @@
 // Site configuration
 export const siteConfig = {
-  name: "Web Scraper.pro - Extract Data without Code",
+  name: "Web Scraper",
   description: "Extract data from any website without code. Simple, powerful, and designed for everyone.",
   metaDescription: "Extract data from any website without code with Web Scraper.pro. Save time and streamline your workflow with automated data extraction.",
   url: "https://www.webscraper.pro/",

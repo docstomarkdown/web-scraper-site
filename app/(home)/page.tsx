@@ -6,7 +6,7 @@ import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
 
 export const metadata = {
-    title: "Web Scraper.pro — Extract Data from Any Website",
+    title: "Web Scraper",
     description:
         "Extract data from any website without code. Point, click, and export to CSV, JSON, or Google Sheets using the Web Scraper Chrome extension.",
 };
