@@ -7,7 +7,6 @@ import {
     FadeIn
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
     USD: "$",
@@ -133,37 +132,15 @@ export function InventoryTurnoverCalculator() {
                                         tooltip="The value of your inventory at the very end of the measurement period."
                                         prefix={currencySymbol}
                                     />
-                                    <div className="space-y-2">
-                                        <div className="flex gap-1.5 justify-end w-full">
-                                            {[
-                                                { label: "30D", value: "30" },
-                                                { label: "90D", value: "90" },
-                                                { label: "365D", value: "365" }
-                                            ].map((preset) => (
-                                                <button
-                                                    key={preset.value}
-                                                    onClick={() => handleInputChange('periodInDays', preset.value)}
-                                                    className={cn(
-                                                        "px-2 py-0.5 rounded-md text-[10px] font-bold transition-all border",
-                                                        values.periodInDays === preset.value
-                                                            ? "bg-transparent text-blue-600 border-blue-600"
-                                                            : "bg-slate-50 text-slate-500 border-slate-200 hover:border-blue-400 hover:text-blue-600"
-                                                    )}
-                                                >
-                                                    {preset.label}
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <CalculatorInput
-                                            label="Analysis Period"
-                                            value={values.periodInDays}
-                                            onChange={(v) => handleInputChange('periodInDays', v)}
-                                            placeholder="365"
-                                            tooltip="Length of time to analyze. Standard: 365 days (annual), 90 days (quarterly), or 30 days (monthly). Defaults to 365 if left blank."
-                                            isOptional={true}
-                                            hint="Defaults to 365 days (annual)"
-                                        />
-                                    </div>
+                                    <CalculatorInput
+                                        label="Analysis Period"
+                                        value={values.periodInDays}
+                                        onChange={(v) => handleInputChange('periodInDays', v)}
+                                        placeholder="365"
+                                        tooltip="Length of time to analyze. Standard: 365 days (annual), 90 days (quarterly), or 30 days (monthly). Defaults to 365 if left blank."
+                                        isOptional={true}
+                                        hint="Defaults to 365 days (annual)"
+                                    />
                                 </div>
                             </CardContent>
                         </Card>

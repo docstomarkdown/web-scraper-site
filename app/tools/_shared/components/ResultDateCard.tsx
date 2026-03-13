@@ -56,7 +56,7 @@ export function ResultDateCard({
     infoCard,
     currency,
     showLiveBadge = true,
-    liveBadgeText = "LIVE",
+    liveBadgeText = "Live",
     isCalculated = false,
     emptyMessage,
     emptyResultLabel,
@@ -133,7 +133,7 @@ export function ResultDateCard({
             icon: customBadge.icon,
         }
         : {
-            text: liveBadgeText || "LIVE",
+            text: liveBadgeText || "Live",
             bg: "bg-emerald-100/50",
             textCol: "text-emerald-700",
             icon: undefined,

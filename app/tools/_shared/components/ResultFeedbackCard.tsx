@@ -2,6 +2,7 @@
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { LucideIcon } from "lucide-react"
 interface SecondaryMetric {
     label: string
     value: React.ReactNode
@@ -10,6 +11,7 @@ interface SecondaryMetric {
 }
 interface ResultFeedbackCardProps {
     title: React.ReactNode
+    titleIcon?: LucideIcon
     titleLabel?: string | React.ReactNode // e.g. "High Performance"
     labelClassName?: string // e.g. "text-blue-400"
     mainValue?: React.ReactNode
@@ -26,6 +28,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Info } from "lucide-react"
 export function ResultFeedbackCard({
     title,
+    titleIcon: TitleIcon,
     titleLabel,
     labelClassName,
     mainValue,
@@ -93,6 +96,17 @@ export function ResultFeedbackCard({
                     variant === "compact" ? "text-slate-500" : "text-slate-300/80"
                 )}>
                     <div className="flex items-center gap-2">
+                        {TitleIcon && (
+                            <div className={cn(
+                                "flex-shrink-0 w-4 h-4 rounded flex items-center justify-center",
+                                variant === "compact" ? "bg-blue-50" : "bg-white/10"
+                            )}>
+                                <TitleIcon className={cn(
+                                    "h-2.5 w-2.5",
+                                    variant === "compact" ? "text-blue-600" : "text-white"
+                                )} />
+                            </div>
+                        )}
                         <span>{title}</span>
                         {tooltip && (
                             <TooltipProvider delayDuration={100}>
@@ -197,4 +211,4 @@ export function ResultFeedbackCard({
             </div>
         </Card>
     )
-}
+}

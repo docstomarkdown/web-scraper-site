@@ -1,11 +1,9 @@
 "use client"
-import React, { useState, useEffect, useMemo } from "react"
-import { RefreshCw, AlertTriangle, Truck, Copy, HelpCircle, Package, Ruler, Layers } from "lucide-react"
+import React, { useState, useMemo } from "react"
+import { Package, Layers } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useToast } from "@/hooks/use-toast"
-import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
 import { Card, CardContent } from "@/components/ui/card"
-import { ResultFeedbackCard, Counter, CalculatorInput } from "@/app/tools/_shared/components"
+import { ResultSummaryCard, CalculatorInput, CalculatorCardHeader } from "@/app/tools/_shared/components"
 type DimensionUnit = "in" | "ft" | "cm" | "m"
 interface DimensionInputs {
     length: string
@@ -14,14 +12,13 @@ interface DimensionInputs {
     quantity: string
 }
 export function CubicFeetCalculator() {
-    const { toast } = useToast()
     const [inputs, setInputs] = useState<DimensionInputs>({
         length: "",
         width: "",
         height: "",
         quantity: ""
     })
-    const [unit, setUnit] = useState<DimensionUnit>("in")
+    const [unit, setUnit] = useState<DimensionUnit>("ft")
     const handleInputChange = (field: keyof DimensionInputs, value: string) => {
         setInputs(prev => ({ ...prev, [field]: value }))
     }
@@ -54,143 +51,98 @@ export function CubicFeetCalculator() {
             cm: totalVolumeInches * 16.3871
         }
     }, [inputs, unit])
-    const logisticsImpact = useMemo(() => {
-        if (!inputs.length || !inputs.width || !inputs.height) return null
-        const cft = results.cft
-        const cbm = results.cbm
-        let tierName = ""
-        let tierRule = ""
-        let costRange = ""
-        let status = ""
-        let statusColor = ""
-        let alert = null
-        if (cft <= 2) {
-            tierName = "Small Parcel"
-            tierRule = "Fits standard courier limits"
-            costRange = "$15 – $45"
-            status = "Standard Shipping"
-            statusColor = "text-blue-500 bg-blue-50 border-blue-100"
-        } else if (cft <= 15) {
-            tierName = "Oversized Parcel"
-            tierRule = "Likely triggers 'Oversize' surcharges"
-            costRange = "$60 – $150"
-            status = "Surcharge Risk"
-            statusColor = "text-amber-500 bg-amber-50 border-amber-100"
-            alert = "Dimensional weight surcharges usually apply after 1 cu ft."
-        } else if (cft <= 50) {
-            tierName = "LTL / Pallet"
-            tierRule = "Better sent via Less-Than-Truckload"
-            costRange = "$150 – $400"
-            status = "Freight Required"
-            statusColor = "text-orange-500 bg-orange-50 border-orange-100"
-        } else {
-            tierName = "Commercial Freight"
-            tierRule = "Requires dedicated freight solution"
-            costRange = "$500+"
-            status = "High Volume"
-            statusColor = "text-red-600 bg-red-50 border-red-100"
-            if (cbm > 1) {
-                alert = "You are over 1 CBM. Consider sea freight for better rates."
-            }
-        }
-        const storageCost = cft * 0.87
-        const formattedStorage = cft === 0 ? "$0.00" : `$${storageCost.toFixed(2)} / mo`
-        return { tierName, tierRule, costRange, status, statusColor, alert, storageCost: formattedStorage }
-    }, [results.cft, results.cbm, inputs])
-    const formatCompact = (val: number, decimals = 3) => {
-        const absVal = Math.abs(val)
-        if (absVal < 100000) return val.toLocaleString(undefined, { maximumFractionDigits: decimals })
-        return new Intl.NumberFormat('en-US', {
-            notation: "compact",
-            maximumFractionDigits: 2
-        }).format(val)
+    const formatNumber = (val: number, decimals = 2) => {
+        return val.toLocaleString('en-US', { 
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals 
+        })
     }
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            const offset = 120
-            const elementPosition = element.getBoundingClientRect().top + window.scrollY
-            const offsetPosition = elementPosition - offset
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            })
-        }
-    }
+    const isCalculated = !!(inputs.length && inputs.width && inputs.height)
+    const checklistItems = [
+        { label: "Enter Length", isComplete: !!inputs.length },
+        { label: "Enter Width", isComplete: !!inputs.width },
+        { label: "Enter Height", isComplete: !!inputs.height }
+    ]
     return (
         <div className="p-8 sm:p-12 max-w-6xl mx-auto">
             <div className="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-7 h-full">
                     <Card className="border-slate-200 shadow-sm relative overflow-hidden bg-white h-full flex flex-col">
-                        <InputCardHeader
+                        <CalculatorCardHeader
                             title="Calculator Inputs"
-                            subtitle="Enter dimensions to calculate total volume."
-                            onHelpClick={scrollToGuide}
+                            description="Enter dimensions to calculate total volume."
+                            guideId="how-to-use"
+                            tooltip="How to use this calculator"
                             onReset={() => setInputs({ length: "", width: "", height: "", quantity: "" })}
                         />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
-                            {/* Unit Switcher */}
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <label className="text-base font-semibold text-slate-700 whitespace-nowrap">Select unit</label>
-                                    </div>
-                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-[200px] h-11">
-                                        {(["in", "ft", "cm", "m"] as DimensionUnit[]).map((u) => (
-                                            <button
-                                                key={u}
-                                                onClick={() => setUnit(u)}
-                                                className={cn(
-                                                    "flex-1 rounded-md text-xs font-bold transition-all uppercase flex items-center justify-center",
-                                                    unit === u
-                                                        ? "bg-white text-blue-600 shadow-sm border border-blue-200"
-                                                        : "text-slate-500 hover:text-slate-900"
-                                                )}
-                                            >
-                                                {u}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="space-y-3">
-                                <MadhuSubHeader
-                                    title={`Dimensions (${unit === 'in' ? 'Inches' : unit === 'ft' ? 'Feet' : unit === 'cm' ? 'Centimeters' : 'Meters'})`}
-                                    icon={Package}
-                                    className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400"
-                                />
+                            {/* All Inputs in Groups */}
+                            <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                {/* Dimensions — with Measurement system toggle as groupingAction */}
                                 <div className="space-y-3">
                                     <CalculatorInput
+                                        hideSeparator={true}
                                         label="Length"
                                         value={inputs.length}
                                         onChange={(v) => handleInputChange('length', v.toString())}
-                                        placeholder="12"
+                                        placeholder="12.00"
                                         suffix={unit}
+                                        type="number"
+                                        tooltip="Enter the length dimension of your item (typically the longest side, front-to-back measurement)"
+                                        groupingTitle="Dimensions"
+                                        groupingIcon={Package}
+                                        groupingAction={
+                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans ml-4 w-36 sm:w-44">
+                                                {(["ft", "in", "cm", "m"] as DimensionUnit[]).map((u) => (
+                                                    <button
+                                                        key={u}
+                                                        onClick={() => setUnit(u)}
+                                                        className={cn(
+                                                            "px-3 h-full rounded-md text-[10px] font-bold transition-all uppercase flex-1 flex items-center justify-center",
+                                                            unit === u
+                                                                ? "bg-white text-blue-600 shadow-sm border border-blue-200"
+                                                                : "text-slate-500 hover:text-slate-900"
+                                                        )}
+                                                    >
+                                                        {u}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        }
                                     />
                                     <CalculatorInput
                                         label="Width"
                                         value={inputs.width}
                                         onChange={(v) => handleInputChange('width', v.toString())}
-                                        placeholder="10"
+                                        placeholder="10.00"
                                         suffix={unit}
+                                        type="number"
+                                        tooltip="Enter the width dimension of your item (perpendicular to length, typically left-to-right measurement)"
                                     />
                                     <CalculatorInput
                                         label="Height"
                                         value={inputs.height}
                                         onChange={(v) => handleInputChange('height', v.toString())}
-                                        placeholder="8"
+                                        placeholder="8.00"
                                         suffix={unit}
+                                        type="number"
+                                        tooltip="Enter the height dimension of your item (vertical measurement, typically bottom-to-top)"
                                     />
-                                    <div className="pt-2">
-                                        <MadhuSubHeader title="Total Quantity" icon={Layers} className="mb-2 [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-slate-700 [&_svg]:text-slate-400" />
-                                        <CalculatorInput
-                                            label="Number of Units"
-                                            value={inputs.quantity}
-                                            onChange={(v) => handleInputChange('quantity', v.toString())}
-                                            placeholder="1"
-                                        />
-                                    </div>
+                                </div>
+                                {/* Total Quantity */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        label="Number of Units"
+                                        value={inputs.quantity}
+                                        onChange={(v) => handleInputChange('quantity', v.toString())}
+                                        placeholder="1"
+                                        type="number"
+                                        groupingTitle="Total Quantity"
+                                        groupingIcon={Layers}
+                                        tooltip="Enter the number of identical items to calculate total volume. Leave as 1 for a single item, or enter multiple units to get combined volume."
+                                        isOptional
+                                    />
                                 </div>
                             </div>
 
@@ -200,144 +152,35 @@ export function CubicFeetCalculator() {
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 flex flex-col space-y-3 h-full">
                     {/* Primary Result Card */}
-                    <ResultFeedbackCard
-                        title="TOTAL VOLUME"
-                        titleLabel="Live Calculation"
-                        mainValue={
-                            <div className="flex flex-col">
-                                <div className="flex items-baseline flex-wrap gap-x-2">
-                                    <Counter
-                                        value={results.cft}
-                                        formatter={(val) => formatCompact(val, 3)}
-                                        className={cn(
-                                            results.cft > 1000000 ? "text-3xl" : "text-4xl"
-                                        )}
-                                    />
-                                    <span className="text-lg font-medium text-blue-400">CFT</span>
-                                </div>
-                                <p className="text-xs font-medium tracking-wider text-slate-500 mt-1">Cubic feet</p>
-                            </div>
-                        }
-                    >
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                            <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5 flex flex-col justify-center min-h-[85px]">
-                                <p className="text-xs font-bold text-slate-300 mb-1">Cubic meters</p>
-                                <div className="flex items-baseline flex-wrap gap-x-1">
-                                    <p className={cn(
-                                        "text-lg sm:text-xl font-bold text-blue-400 leading-tight",
-                                        results.cbm > 1000000 && "text-base sm:text-lg"
-                                    )}>
-                                        <Counter
-                                            value={results.cbm}
-                                            formatter={(val) => formatCompact(val, 4)}
-                                        />
-                                    </p>
-                                    <span className="text-[10px] font-normal text-blue-400 uppercase">CBM</span>
-                                </div>
-                            </div>
-                            <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5 text-left flex flex-col justify-center min-h-[85px]">
-                                <p className="text-xs font-bold text-slate-300 mb-1">Cubic inches</p>
-                                <div className="flex items-baseline flex-wrap gap-x-1">
-                                    <p className={cn(
-                                        "text-lg sm:text-xl font-bold text-blue-400 leading-tight",
-                                        results.inches > 1000000 && "text-base sm:text-lg"
-                                    )}>
-                                        <Counter
-                                            value={results.inches}
-                                            formatter={(val) => formatCompact(val, 0)}
-                                        />
-                                    </p>
-                                    <span className="text-[10px] font-normal text-blue-400 uppercase">IN³</span>
-                                </div>
-                            </div>
-                        </div>
-                    </ResultFeedbackCard>
-                    {/* Logistics Analysis Card */}
-                    <div className="space-y-2 flex-1 flex flex-col">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
-                                <Truck className="w-4 h-4" />
-                            </div>
-                            <h3 className="text-lg font-bold text-slate-900 font-sans">Freight & Logistics Analysis</h3>
-                        </div>
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-3 relative overflow-hidden group flex-1 flex flex-col">
-                            {logisticsImpact ? (
-                                <>
-                                    {/* 1. Calculated Tier Section */}
-                                    <div className="space-y-3 pt-2">
-                                        <div className="space-y-1">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs sm:text-[13px] font-medium text-slate-400 tracking-wide">Calculated tier</span>
-                                                <div className={cn("px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider opacity-90", logisticsImpact.statusColor)}>
-                                                    {logisticsImpact.status}
-                                                </div>
-                                            </div>
-                                            <h4 className="text-base font-bold text-slate-900 tracking-tight leading-none pt-1">
-                                                {logisticsImpact.tierName}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                    <div className="flex-1 flex flex-col space-y-3">
-                                        {/* 2. Costs Row */}
-                                        <div className="grid grid-cols-2 gap-x-6 pb-1">
-                                            <div className="space-y-1">
-                                                <span className="text-xs font-medium text-slate-400 block">Estimated freight</span>
-                                                <div className="text-sm sm:text-base font-bold text-slate-800 tracking-tight leading-tight">
-                                                    {logisticsImpact.costRange}
-                                                </div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                <span className="text-xs font-medium text-slate-400 block">Estimated storage</span>
-                                                <div className="text-sm sm:text-base font-bold text-slate-800 tracking-tight leading-tight">
-                                                    {logisticsImpact.storageCost}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {logisticsImpact.alert && (
-                                            <div className="mt-auto pt-2">
-                                                <div className="flex gap-3 bg-amber-50 p-3 rounded-xl border border-amber-100 text-amber-800 text-sm font-semibold items-center">
-                                                    <AlertTriangle className="w-5 h-5 flex-shrink-0 text-amber-600" />
-                                                    <p className="leading-snug">{logisticsImpact.alert}</p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    {/* Ghost Content Background */}
-                                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]" />
-                                    <div className="relative z-0 space-y-8 blur-[1px] opacity-[0.08] select-none pointer-events-none">
-                                        <div className="space-y-3">
-                                            <div className="h-3 w-16 bg-slate-400 rounded-full" />
-                                            <div className="h-7 w-40 bg-slate-500 rounded-lg" />
-                                            <div className="h-4 w-56 bg-slate-300 rounded-md" />
-                                        </div>
-                                        <div className="h-px bg-slate-200 w-full" />
-                                        <div className="space-y-3">
-                                            <div className="h-3 w-28 bg-slate-400 rounded-full" />
-                                            <div className="h-9 w-32 bg-slate-500 rounded-lg" />
-                                            <div className="h-3 w-44 bg-slate-300 rounded-md" />
-                                        </div>
-                                    </div>
-                                    {/* Floating Insight Card */}
-                                    <div className="absolute inset-0 flex items-center justify-center p-6 bg-white/20 backdrop-blur-[0.5px]">
-                                        <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
-                                            <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-500 mx-auto shadow-inner">
-                                                <Truck className="w-7 h-7 animate-pulse" />
-                                            </div>
-                                            <div className="space-y-1.5">
-                                                <h4 className="text-base font-bold text-slate-900 tracking-tight">Unlock Insights</h4>
-                                                <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                                                    Enter dimensions to see <strong>logistics tiers</strong>, estimated costs & storage fees.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
+                    <ResultSummaryCard
+                        title="Total Volume"
+                        primaryResult={{
+                            value: formatNumber(results.cft, 2),
+                            unit: "CFT",
+                            label: "Cubic Feet",
+                            key: "cft"
+                        }}
+                        secondaryResults={[
+                            {
+                                key: "cbm",
+                                label: "Cubic meters",
+                                value: formatNumber(results.cbm, 4),
+                                unit: "CBM",
+                                tooltip: "Cubic meters - standard unit for international freight"
+                            },
+                            {
+                                key: "inches",
+                                label: "Cubic inches",
+                                value: formatNumber(results.inches, 2),
+                                unit: "IN³",
+                                tooltip: "Total volume in cubic inches"
+                            }
+                        ]}
+                        isCalculated={isCalculated}
+                        checklistItems={checklistItems}
+                        emptyResultLabel="Total Volume"
+                        description={isCalculated ? "Your calculated volume based on the dimensions provided." : undefined}
+                    />
                 </div>
             </div>
         </div>

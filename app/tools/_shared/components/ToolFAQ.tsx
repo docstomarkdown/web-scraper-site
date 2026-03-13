@@ -55,7 +55,7 @@ export function ToolFAQ({ title = "Frequently Asked Questions", icon = MessagesS
                                 {/* Answer indented to align with question text */}
                                 <div className="pl-[calc(1.75rem+14px)] border-t border-blue-100/60 pt-3.5 mt-0.5">
                                     <p
-                                        className="text-[13.5px] text-slate-500 leading-relaxed font-medium [&_strong]:font-bold [&_strong]:text-slate-600 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-blue-600"
+                                        className="text-[13.5px] text-slate-500 leading-relaxed font-medium [&_strong]:font-semibold [&_strong]:text-slate-600 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
                                         dangerouslySetInnerHTML={{ __html: faq.answer }}
                                     />
                                 </div>

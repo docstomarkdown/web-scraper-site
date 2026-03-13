@@ -72,7 +72,7 @@ export function ProfitAllocation({
                 </h4>
                 {netProfit < 0 && (
                     <span className="text-[10px] font-black bg-red-50 text-red-600 px-2 py-0.5 rounded-full animate-pulse">
-                        NEGATIVE MARGIN
+                        Negative Margin
                     </span>
                 )}
             </div>

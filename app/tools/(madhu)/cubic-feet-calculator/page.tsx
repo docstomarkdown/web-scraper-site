@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { CubicFeetCalculator } from "./_components/CubicFeetCalculator"
 import { CubicFeetHowToUse } from "./_components/CubicFeetHowToUse"
 import { CubicFeetGuide } from "./_components/CubicFeetGuide"
@@ -12,13 +12,7 @@ export default function CubicFeetCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Cubic Feet Calculator
-                        </h1>
-                    </FadeIn>
-                </div>
+                <ToolPageTitle title="Cubic Feet Calculator" />
                 <div className="mb-20">
                     <CubicFeetCalculator />
                 </div>
@@ -33,24 +27,28 @@ export default function CubicFeetCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How do I calculate cubic feet?",
-                                    answer: "Simply multiply the Length × Width × Height (in inches) and divide the result by 1,728. Our tool automates this and supports multiple units like Centimeters and Meters."
+                                    question: "What units can I use to enter dimensions?",
+                                    answer: "You can use <strong>4 different units</strong>: Feet (ft) - the default, Inches (in), Centimeters (cm), or Meters (m). Simply select your preferred unit from the tabs above the input fields. The calculator automatically converts everything and displays results in Cubic Feet, Cubic Meters, and Cubic Inches."
                                 },
                                 {
-                                    question: "What is CBM in freight?",
-                                    answer: "CBM stands for 'Cubic Meter'. It is the standard unit of measurement for international sea freight. 1 CBM is equivalent to 35.315 cubic feet."
+                                    question: "How does the quantity feature work?",
+                                    answer: "The <strong>Number of Units</strong> field (optional) lets you calculate total volume for multiple identical items. Enter dimensions once, then specify how many units you have. The calculator multiplies the single-item volume by your quantity to give you the total volume for all items combined."
                                 },
                                 {
-                                    question: "Why should I use CFT for Amazon FBA?",
-                                    answer: "Amazon calculates their monthly storage fees, removal fees, and disposal fees based on the cubic volume of your products measured in cubic feet. Accurate CFT calculation helps in profit forecasting."
+                                    question: "Why do results show full numbers instead of abbreviations?",
+                                    answer: "We display <strong>complete numbers with comma formatting</strong> (e.g., 3,350,000.00 instead of 3.35M) so all users can understand the exact values without needing to decode abbreviations. This prevents confusion and ensures transparency in volume calculations."
                                 },
                                 {
-                                    question: "How does dimensional weight affect my costs?",
-                                    answer: "Dimensional (DIM) weight is a pricing technique used by carriers. If the cubic size of your package is large relative to its actual weight, you will be billed based on the space it occupies rather than its actual pounds."
+                                    question: "What's the difference between CFT, CBM, and Cubic Inches?",
+                                    answer: "<strong>Cubic Feet (CFT)</strong> is the primary result and standard for US warehouses and Amazon FBA. <strong>Cubic Meters (CBM)</strong> is used for international sea freight. <strong>Cubic Inches</strong> is useful for precise measurements. Our calculator shows all three simultaneously so you have the exact values needed for any shipping or storage scenario."
                                 },
                                 {
-                                    question: "What is the standard size of a pallet in cubic feet?",
-                                    answer: "A standard US pallet (48\" x 40\") stacked to a height of 48 inches is approximately 53.33 cubic feet."
+                                    question: "Do I need to enter all fields to get results?",
+                                    answer: "You need to enter <strong>Length, Width, and Height</strong> to see volume results. The Quantity field is optional - if left empty, it defaults to 1 unit. Results update in real-time as you type, so you'll see calculations instantly once all three dimensions are entered."
+                                },
+                                {
+                                    question: "How accurate are the calculations?",
+                                    answer: "Our calculator provides <strong>precise decimal calculations</strong> - up to 4 decimal places for Cubic Meters and 2 decimal places for Cubic Feet and Cubic Inches. This level of precision is essential for accurate freight quotes and storage fee calculations, preventing costly billing errors."
                                 }
                             ]}
                         />

@@ -1,28 +1,19 @@
 "use client"
 import React, { useState, useEffect, useRef, useCallback } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
-    Copy,
     RefreshCw,
     Barcode as BarcodeIcon,
-    HelpCircle,
     Calculator,
     Info,
     CheckCircle2,
     XCircle,
-    ArrowRightLeft,
-    ClipboardCheck,
-    Download,
-    AlertTriangle,
     FileUp
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
-import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
-import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, ResultSummaryCard, FadeIn } from "@/app/tools/_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import bwipjs from 'bwip-js'
 import Barcode from 'react-barcode'
@@ -85,7 +76,6 @@ export function Converter() {
     const [inputCode, setInputCode] = useState("")
     const [status, setStatus] = useState<ValidationStatus>({ isValid: false, message: "Awaiting input...", format: "Unknown" })
     const [results, setResults] = useState<ConversionResult | null>(null)
-    const [isCopied, setIsCopied] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
     const [canvasError, setCanvasError] = useState(false)
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -235,11 +225,6 @@ export function Converter() {
             // No need to call validateAndConvert here if it's triggered by inputCode change effect
         }
     })
-    const copyToClipboard = (text: string, label: string) => {
-        navigator.clipboard.writeText(text)
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
-    }
     const clearAll = () => {
         setInputCode("")
     }
@@ -333,15 +318,15 @@ export function Converter() {
                 {/* LEFT: Inputs */}
                 <div className="lg:col-span-6">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
-                        <InputCardHeader
-                            title="Converter Inputs"
-                            subtitle="Enter your barcode number or upload an image below."
-                            onHelpClick={scrollToGuide}
+                        <CalculatorCardHeader
+                            title="GTIN Converter"
+                            description="Enter your barcode number or upload an image below to convert between GTIN formats."
+                            guideId="how-to-use"
+                            tooltip="How to use this converter"
                             onReset={clearAll}
                         />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-3">
-                                <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                 <CalculatorInput
                                     label="Barcode Number"
                                     value={inputCode}
@@ -505,48 +490,127 @@ export function Converter() {
                 {/* RIGHT: Results */}
                 <div className="lg:col-span-6">
                     <div className="space-y-3 flex flex-col h-full">
-                        {/* Summary Visualization Card */}
-                        <ResultFeedbackCard
-                            variant="default"
-                            title={inputCode && !status.isValid ? 'Validation Status' : 'Conversion Map'}
-                            titleLabel={!inputCode ? "Ready" : status.isValid ? "Valid" : "Invalid"}
-                            labelClassName={!inputCode ? "text-slate-400 bg-slate-600/50 border border-slate-500/50" : status.isValid ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30" : "text-rose-400 bg-rose-500/20 border border-rose-500/30"}
-                            // If invalid, show large text here. If valid, show nothing in mainValue and use children.
-                            mainValue={inputCode && !status.isValid ? (
-                                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                                    <div className="flex items-baseline gap-3">
-                                        <span className="text-3xl sm:text-4xl font-bold tracking-tight text-white break-all">
-                                            {inputCode}
-                                        </span>
-                                    </div>
-                                </div>
-                            ) : undefined}
-                        >
-                            {/* Validation Analysis or Results List */}
-                            <div className="space-y-3">
-                                <ResultRow
-                                    label="GTIN-14"
-                                    value={results?.gtin14 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
-                                    onCopy={() => results && copyToClipboard(results.gtin14, "GTIN-14")}
-                                    disabled={!results}
-                                    tooltip="Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
-                                />
-                                <ResultRow
-                                    label="GTIN-13 (EAN)"
-                                    value={results?.gtin13 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
-                                    onCopy={() => results && copyToClipboard(results.gtin13, "GTIN-13")}
-                                    disabled={!results}
-                                    tooltip="Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
-                                />
-                                <ResultRow
-                                    label="GTIN-12 (UPC)"
-                                    value={results?.gtin12 || (inputCode && !status.isValid ? "Invalid Input" : "Awaiting Data")}
-                                    onCopy={() => results && copyToClipboard(results.gtin12, "GTIN-12")}
-                                    disabled={!results}
-                                    tooltip="Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
-                                />
-                            </div>
-                        </ResultFeedbackCard>
+                        {/* GTIN Conversion Results */}
+                        <ResultSummaryCard
+                            title="GTIN Conversion Results"
+                            primaryResult={{
+                                value: status.isValid && results
+                                    ? (status.format === "UPC-A" 
+                                        ? results.gtin13  // UPC input → EAN primary
+                                        : status.format === "EAN-13"
+                                        ? results.gtin12  // EAN input → UPC primary
+                                        : results.gtin13) // GTIN-14 input → EAN primary
+                                    : inputCode && !status.isValid
+                                        ? inputCode
+                                        : "Awaiting Input",
+                                label: status.isValid
+                                    ? (status.format === "UPC-A"
+                                        ? "GTIN-13 (EAN)"
+                                        : status.format === "EAN-13"
+                                        ? "GTIN-12 (UPC)"
+                                        : "GTIN-13 (EAN)")
+                                    : inputCode && !status.isValid
+                                        ? "Invalid GTIN"
+                                        : "Ready",
+                                key: status.format === "UPC-A" ? "gtin13" : status.format === "EAN-13" ? "gtin12" : "gtin13"
+                            }}
+                            secondaryResults={
+                                status.isValid && results
+                                    ? [
+                                        // Validation status for badge (hidden but used for profitLossKey)
+                                        {
+                                            key: "validationStatus",
+                                            label: "Status",
+                                            value: 1, // Positive for valid (green badge)
+                                            tooltip: "Validation status",
+                                            className: "hidden"
+                                        },
+                                        ...(status.format === "UPC-A"
+                                            ? [
+                                                // UPC input → Secondary: GTIN-14, GTIN-12
+                                                {
+                                                    key: "gtin14",
+                                                    label: "GTIN-14",
+                                                    value: results.gtin14,
+                                                    tooltip: "Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                                },
+                                                {
+                                                    key: "gtin12",
+                                                    label: "GTIN-12 (UPC)",
+                                                    value: results.gtin12,
+                                                    tooltip: "Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
+                                                }
+                                            ]
+                                            : status.format === "EAN-13"
+                                            ? [
+                                                // EAN input → Secondary: GTIN-14, GTIN-13
+                                                {
+                                                    key: "gtin14",
+                                                    label: "GTIN-14",
+                                                    value: results.gtin14,
+                                                    tooltip: "Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                                },
+                                                {
+                                                    key: "gtin13",
+                                                    label: "GTIN-13 (EAN)",
+                                                    value: results.gtin13,
+                                                    tooltip: "Global standard for individual product identification, required for international marketplaces. European Article Number (EAN)"
+                                                }
+                                            ]
+                                            : [
+                                                // GTIN-14 input → Secondary: GTIN-14, GTIN-12
+                                                {
+                                                    key: "gtin14",
+                                                    label: "GTIN-14",
+                                                    value: results.gtin14,
+                                                    tooltip: "Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                                },
+                                                {
+                                                    key: "gtin12",
+                                                    label: "GTIN-12 (UPC)",
+                                                    value: results.gtin12,
+                                                    tooltip: "Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
+                                                }
+                                            ])
+                                    ]
+                                    : inputCode && !status.isValid
+                                    ? [
+                                        // Invalid status for badge (negative for red badge)
+                                        {
+                                            key: "validationStatus",
+                                            label: "Status",
+                                            value: -1, // Negative for invalid (red badge)
+                                            tooltip: "Validation status",
+                                            className: "hidden"
+                                        },
+                                        {
+                                            key: "gtin14",
+                                            label: "GTIN-14",
+                                            value: "Invalid",
+                                            tooltip: "Used for shipping cases and outer packaging containing multiple units of the same product. Global Trade Item Number (GTIN)"
+                                        },
+                                        {
+                                            key: "gtin12",
+                                            label: "GTIN-12 (UPC)",
+                                            value: "Invalid",
+                                            tooltip: "Standard product barcode for North America (US and Canada retail). Universal Product Code (UPC)"
+                                        }
+                                    ]
+                                    : []
+                            }
+                            profitLossKey="validationStatus"
+                            validationBadgeText={{ valid: "Valid", invalid: "Invalid" }}
+                            isCalculated={!!inputCode && status.isValid}
+                            checklistItems={[
+                                { label: "Enter Barcode", isComplete: !!inputCode }
+                            ]}
+                            emptyResultLabel="GTIN Conversion"
+                            description={status.isValid && results
+                                ? `Successfully converted ${status.format} barcode to all GTIN formats.`
+                                : inputCode && !status.isValid
+                                    ? "Please check the barcode format and try again."
+                                    : "Enter a barcode to see conversion results."}
+                        />
                         {/* Barcode Preview */}
                         <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">
                             {results && status.isValid && isMounted ? (
@@ -607,29 +671,5 @@ export function Converter() {
                 </div>
             </div>
         </FadeIn >
-    )
-}
-function ResultRow({ label, value, onCopy, disabled, tooltip }: { label: string, value: string, onCopy: () => void, disabled: boolean, tooltip?: string }) {
-    return (
-        <div className="flex items-center justify-between group py-1">
-            <div className="space-y-0.5 w-full">
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <div className="flex items-center gap-1.5 cursor-help group/label">
-                                <p className="text-base font-bold text-slate-400 uppercase tracking-widest transition-colors group-hover/label:text-slate-300">{label}</p>
-                                {tooltip && <Info className="w-3.5 h-3.5 text-blue-300 opacity-80 group-hover/label:opacity-100 group-hover/label:text-blue-200 transition-all" />}
-                            </div>
-                        </TooltipTrigger>
-                        {tooltip && (
-                            <TooltipContent side="right" className="text-xs bg-slate-900 text-white border-slate-800 max-w-xs">
-                                {tooltip}
-                            </TooltipContent>
-                        )}
-                    </Tooltip>
-                </TooltipProvider>
-                <p className={cn("tracking-tight transition-all duration-300", value === "Awaiting Data" || value === "Invalid Input" ? "text-lg sm:text-xl italic font-medium text-white/40" : "text-xl sm:text-2xl font-bold text-white")}>{value}</p>
-            </div>
-        </div>
     )
 }

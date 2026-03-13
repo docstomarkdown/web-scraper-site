@@ -200,7 +200,7 @@ export function CalculatorInput({
                 {/* Dynamic Connecting Line Fragment: Ensures a solid vertical path ONLY for labeled groups */}
                 {isInLabeledGroup && (
                     <div
-                        className="absolute left-[-33px] w-[1.5px] bg-blue-200/70 z-0"
+                        className="absolute left-[-19px] w-[1.5px] bg-blue-200/70 z-0"
                         style={{
                             top: groupingTitle ? '14px' : '-50px',
                             bottom: isLastInGroup ? '10px' : '-50px',

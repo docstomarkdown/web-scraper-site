@@ -1,25 +1,17 @@
 "use client"
 import React, { useState, useEffect, useCallback } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
-    Copy,
-    RefreshCw,
-    XCircle,
-    ShieldCheck,
-    ArrowRight,
     Barcode as BarcodeIcon,
-    HelpCircle,
     Calculator,
     ChevronDown,
-    ChevronUp
+    FileUp,
+    Info
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
-import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
-import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, ResultSummaryCard, FadeIn } from "@/app/tools/_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Barcode from 'react-barcode'
@@ -179,11 +171,6 @@ export function Validator() {
     const clearAll = () => {
         setInputCode("")
         setResult(null)
-        setResult(null) // redundant set
-        toast({
-            title: "Reset",
-            description: "Input cleared.",
-        })
     }
     // useBarcodeScanner Hook
     const { handleFileUpload } = useBarcodeScanner({
@@ -227,15 +214,15 @@ export function Validator() {
                 <div className="lg:col-span-6">
                     <FadeIn delay={0.2} direction="right">
                         <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white">
-                            <InputCardHeader
-                                title="Validator Inputs"
-                                subtitle="Enter your barcode number or upload an image below."
-                                onHelpClick={scrollToGuide}
+                            <CalculatorCardHeader
+                                title="UPC/EAN Validator"
+                                description="Enter your barcode number or upload an image below to validate."
+                                guideId="how-to-use"
+                                tooltip="How to use this validator"
                                 onReset={clearAll}
                             />
                             <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                                 <div className="space-y-3">
-                                    <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
                                     <CalculatorInput
                                         label="Barcode Number"
                                         value={inputCode}
@@ -256,22 +243,7 @@ export function Validator() {
                                             onClick={() => document.getElementById('barcode-upload')?.click()}
                                         >
                                             <div className="flex items-center">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className="w-4 h-4 mr-2 text-blue-500"
-                                                >
-                                                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                                                    <circle cx="9" cy="9" r="2" />
-                                                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                                                </svg>
+                                                <FileUp className="w-4 h-4 mr-2 text-blue-500" />
                                                 Upload Image
                                             </div>
                                         </Button>
@@ -286,110 +258,148 @@ export function Validator() {
                 <div className="lg:col-span-6">
                     <FadeIn delay={0.4} direction="left" className="h-full">
                         <div className="space-y-3">
-                            {/* Blue Result Card (Always Visible) */}
-                            <ResultFeedbackCard
-                                variant="default"
-                                title="Validation Status"
-                                titleLabel={!inputCode ? "Ready" : result?.isValid ? "Valid" : "Invalid"}
-                                labelClassName={!inputCode ? "text-slate-400 bg-slate-600/50 border border-slate-500/50" : result?.isValid ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30" : "text-rose-400 bg-rose-500/20 border border-rose-500/30"}
-                                valueColor="text-white"
-                                mainValue={
-                                    <div className="flex items-baseline gap-3">
-                                        <span className={cn(inputCode ? "text-white font-bold" : "text-white/30 italic font-medium text-2xl sm:text-3xl")}>
-                                            {inputCode || "Awaiting Data"}
-                                        </span>
-                                    </div>
-                                }
-                            >
-                                <div className="space-y-3 mt-2">
-                                    <Row
-                                        label={
-                                            <div className="flex items-center gap-1.5">
-                                                <span>Check Digit</span>
-                                                <Dialog>
+                            {/* Validation Results */}
+                            <ResultSummaryCard
+                                title="Validation Results"
+                                primaryResult={{
+                                    value: inputCode || "Awaiting Input",
+                                    label: !inputCode
+                                        ? "Ready"
+                                        : result?.isValid
+                                            ? `Valid ${result.format}`
+                                            : `Invalid ${result?.format || "Format"}`,
+                                    key: "barcode"
+                                }}
+                                secondaryResults={[
+                                    // Validation status for badge (hidden but used for profitLossKey)
+                                    ...(result
+                                        ? [{
+                                            key: "validationStatus",
+                                            label: "Status",
+                                            value: result.isValid ? 1 : -1, // Positive for valid (green), negative for invalid (red)
+                                            tooltip: "Validation status",
+                                            className: "hidden"
+                                        }]
+                                        : []),
+                                    {
+                                        key: "checkDigit",
+                                        label: "Check Digit",
+                                        value: result?.checkDigit || "—",
+                                        tooltip: "The last digit of the barcode used for validation"
+                                    },
+                                    ...(result && !result.isValid && result.expectedCheckDigit !== "-"
+                                        ? [{
+                                            key: "expectedCheckDigit",
+                                            label: "Expected Check Digit",
+                                            value: result.expectedCheckDigit,
+                                            tooltip: "The correct check digit calculated using Modulo 10 algorithm"
+                                        }]
+                                        : []),
+                                    {
+                                        key: "analysis",
+                                        label: "Analysis",
+                                        value: result?.message || "Waiting for input...",
+                                        tooltip: "Validation status and details"
+                                    }
+                                ]}
+                                profitLossKey="validationStatus"
+                                validationBadgeText={{ valid: "Valid", invalid: "Invalid" }}
+                                isCalculated={!!inputCode}
+                                checklistItems={[
+                                    { label: "Enter Barcode", isComplete: !!inputCode }
+                                ]}
+                                emptyResultLabel="Validation Status"
+                                description={result?.isValid
+                                    ? `The barcode is valid and matches ${result.format} standard. Check digit is correct.`
+                                    : result && !result.isValid
+                                        ? result.details.join(". ")
+                                        : "Enter a barcode to validate its format and check digit."}
+                            />
+                            {/* Calculation Dialog Button - Tool-specific customization */}
+                            {result && result.calculationSteps.length > 0 && (
+                                <Card className="bg-white border border-slate-200 shadow-sm p-4">
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                className="w-full h-10 text-xs font-medium justify-between"
+                                            >
+                                                <span className="flex items-center gap-2">
+                                                    <Calculator className="w-4 h-4 text-blue-500" />
+                                                    View Calculation Breakdown
                                                     <TooltipProvider delayDuration={0}>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <DialogTrigger asChild>
-                                                                    <button className="text-slate-400 hover:text-slate-200 transition-all p-0.5" aria-label="See calculation">
-                                                                        <HelpCircle className="w-3.5 h-3.5" />
-                                                                    </button>
-                                                                </DialogTrigger>
+                                                                <span
+                                                                    onClick={(e) => e.stopPropagation()}
+                                                                    className="flex-shrink-0 text-slate-400 hover:text-blue-600 transition-colors cursor-help"
+                                                                    aria-label="Calculation breakdown info"
+                                                                >
+                                                                    <Info className="w-3.5 h-3.5" />
+                                                                </span>
                                                             </TooltipTrigger>
                                                             <TooltipContent side="top" className="bg-slate-900 border-slate-800 text-white text-xs">
-                                                                How calculation done
+                                                                Step-by-step check digit calculation
                                                             </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
-                                                    <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
-                                                        <DialogHeader>
-                                                            <DialogTitle className="flex items-center gap-2 text-slate-900">
-                                                                <Calculator className="w-5 h-5 text-blue-500" />
-                                                                Calculation Breakdown
-                                                            </DialogTitle>
-                                                            <DialogDescription className="text-slate-500">
-                                                                {inputCode
-                                                                    ? <>Step-by-step verification regarding <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{inputCode}</span></>
-                                                                    : "Enter a barcode to see the step-by-step validation logic."
-                                                                }
-                                                            </DialogDescription>
-                                                        </DialogHeader>
-                                                        <div className="space-y-3 py-4">
-                                                            {result && result.calculationSteps.length > 0 ? (
-                                                                <div className="space-y-3 relative">
-                                                                    <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")} />
-                                                                    {result.calculationSteps.map((step, idx) => (
-                                                                        <div key={idx} className="flex gap-4 relative">
-                                                                            <div className={cn(
-                                                                                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10 transition-colors",
-                                                                                result.isValid
-                                                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
-                                                                                    : "bg-rose-50 border-rose-200 text-rose-600"
-                                                                            )}>
-                                                                                {step.step}
-                                                                            </div>
-                                                                            <div className="space-y-1">
-                                                                                <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
-                                                                                <div className={cn(
-                                                                                    "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
-                                                                                    result.isValid
-                                                                                        ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
-                                                                                        : "text-rose-700 bg-rose-50/50 border-rose-100"
-                                                                                )}>
-                                                                                    {step.value}
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
+                                                </span>
+                                                <ChevronDown className="w-4 h-4 text-slate-400" />
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
+                                            <DialogHeader>
+                                                <DialogTitle className="flex items-center gap-2 text-slate-900">
+                                                    <Calculator className="w-5 h-5 text-blue-500" />
+                                                    Calculation Breakdown
+                                                </DialogTitle>
+                                                <DialogDescription className="text-slate-500">
+                                                    {inputCode
+                                                        ? <>Step-by-step verification regarding <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{inputCode}</span></>
+                                                        : "Enter a barcode to see the step-by-step validation logic."
+                                                    }
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <div className="space-y-3 py-4">
+                                                <div className="space-y-3 relative">
+                                                    <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")} />
+                                                    {result.calculationSteps.map((step, idx) => (
+                                                        <div key={idx} className="flex gap-4 relative">
+                                                            <div className={cn(
+                                                                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10 transition-colors",
+                                                                result.isValid
+                                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                                                                    : "bg-rose-50 border-rose-200 text-rose-600"
+                                                            )}>
+                                                                {step.step}
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                <div className={cn(
+                                                                    "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
+                                                                    result.isValid
+                                                                        ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
+                                                                        : "text-rose-700 bg-rose-50/50 border-rose-100"
+                                                                )}>
+                                                                    {step.value}
                                                                 </div>
-                                                            ) : (
-                                                                <div className="py-8 text-center text-slate-400">
-                                                                    <Calculator className="w-12 h-12 mx-auto mb-3 opacity-10" />
-                                                                    <p className="text-sm">Waiting for valid barcode input...</p>
-                                                                </div>
-                                                            )}
-                                                            <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                                                                <p className="text-xs text-blue-700 font-medium">
-                                                                    Note: Standard Modulo 10 Algorithm
-                                                                </p>
-                                                                <p className="text-[10px] text-blue-600 mt-1">
-                                                                    This calculation is used universally for GTIN barcodes (UPC, EAN) to detect common data entry errors.
-                                                                </p>
                                                             </div>
                                                         </div>
-                                                    </DialogContent>
-                                                </Dialog>
+                                                    ))}
+                                                </div>
+                                                <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                                    <p className="text-xs text-blue-700 font-medium">
+                                                        Note: Standard Modulo 10 Algorithm
+                                                    </p>
+                                                    <p className="text-[10px] text-blue-600 mt-1">
+                                                        This calculation is used universally for GTIN barcodes (UPC, EAN) to detect common data entry errors.
+                                                    </p>
+                                                </div>
                                             </div>
-                                        }
-                                        value={result?.checkDigit || "-"}
-                                        className="text-slate-300"
-                                    />
-                                    {result && !result.isValid && result.expectedCheckDigit !== "-" && (
-                                        <Row label="Expected Check Digit" value={result.expectedCheckDigit} className="text-rose-400 font-bold" />
-                                    )}
-                                    <Row label="Analysis" value={result?.message || "Waiting for input..."} className={cn("transition-colors duration-300", !result ? "text-blue-400" : result.isValid ? "text-emerald-400 font-bold" : "text-rose-400 font-bold")} />
-                                </div>
-                            </ResultFeedbackCard>
+                                        </DialogContent>
+                                    </Dialog>
+                                </Card>
+                            )}
                             {/* Barcode Preview */}
                             <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">
                                 {result && result.isValid && isMounted ? (
@@ -462,15 +472,5 @@ export function Validator() {
                 </div>
             </div>
         </FadeIn >
-    )
-}
-function Row({ label, value, className }: { label: React.ReactNode, value: React.ReactNode, className?: string }) {
-    return (
-        <div className={`flex justify-between items-center text-sm ${className}`}>
-            <span>{label}</span>
-            <span className="font-medium tracking-wide">
-                {value}
-            </span>
-        </div>
     )
 }

@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { DollarSign, Package, ShoppingCart, TrendingUp } from "lucide-react"
+import { DollarSign, Package, TrendingUp } from "lucide-react"
 export function InfluencerHowToUse() {
     return (
         <ToolSteps
@@ -8,17 +8,17 @@ export function InfluencerHowToUse() {
             steps={[
                 {
                     title: "Campaign Costs",
-                    description: "Start by entering your <strong>Influencer Fee</strong>. You can also optionally include any extra paid <strong>Ad Spend</strong> used to boost the campaign.",
+                    description: "Input your <strong>Influencer Fee</strong> and optional <strong>Ad Spend</strong>. See your <strong>Total Cost</strong> breakdown instantly.",
                     icon: DollarSign
                 },
                 {
-                    title: "Sales Metrics",
-                    description: "Input your <strong>Average Selling Price</strong> and the <strong>Total Orders</strong> driven by the influencer to instantly generate your Gross ROI.",
-                    icon: ShoppingCart
+                    title: "Add Sales Data",
+                    description: "Enter <strong>Average Selling Price</strong> and <strong>Total Orders</strong>. View your <strong>Total Revenue</strong> and <strong>ROI</strong> percentage.",
+                    icon: TrendingUp
                 },
                 {
                     title: "Product Costs",
-                    description: "For the most precise final ROI, input your <strong>Product Cost per Item</strong> and <strong>Shipping</strong>. This transforms your primary result from a Gross Estimate into your <strong>True Net Profit</strong>.",
+                    description: "Add <strong>Product Cost</strong> and <strong>Shipping</strong> for accurate <strong>Net Profit</strong> and <strong>Profit per Order</strong> calculations.",
                     icon: Package
                 }
             ]}

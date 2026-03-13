@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Ruler, Maximize, Target, Warehouse } from "lucide-react"
+import { Ruler, Maximize, Target } from "lucide-react"
 export function CubicFeetHowToUse() {
     return (
         <ToolSteps
@@ -8,7 +8,7 @@ export function CubicFeetHowToUse() {
             steps={[
                 {
                     title: "Measure Item",
-                    description: "Enter length, width, and height using inches, feet, or centimeters.",
+                    description: "Enter length, width, and height using inches, feet, centimeters, or meters.",
                     icon: Ruler
                 },
                 {
@@ -18,10 +18,10 @@ export function CubicFeetHowToUse() {
                 },
                 {
                     title: "Get Volume",
-                    description: "Instantly calculate total cubic feet and equivalent storage capacity.",
+                    description: "Instantly calculate and display the total cubic feet, cubic meters (CBM), and cubic inches.",
                     icon: Target
                 }
             ]}
         />
     )
-}
+}
