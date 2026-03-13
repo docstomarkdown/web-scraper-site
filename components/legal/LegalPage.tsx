@@ -30,7 +30,7 @@ const headings = {
 
 const subheadings = {
     privacy: "Your privacy matters. Here's how we handle your data with care and transparency.",
-    terms: "Clear and fair terms that govern how you use Web Scraper.do.",
+    terms: "Clear and fair terms that govern how you use Web Scraper Pro.",
 };
 
 const badges = {

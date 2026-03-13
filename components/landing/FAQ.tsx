@@ -29,7 +29,7 @@ export default function FAQ() {
                         Frequently Asked <span className="text-blue-600">Questions</span>
                     </h2>
                     <p className="text-slate-500 text-lg leading-relaxed">
-                        Quick answers to the most common questions about Web Scraper.
+                        Quick answers to the most common questions about Web Scraper Pro.
                     </p>
                 </motion.div>
 

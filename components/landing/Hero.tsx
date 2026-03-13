@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Chrome, MousePointer2, Table2, FileSpreadsheet, Star, FileJson2, FileText, RefreshCw, ShieldCheck } from "lucide-react";
+import { ArrowRight, Chrome, MousePointer2, Table2, FileSpreadsheet, Star, FileJson2, FileText, RefreshCw, ShieldCheck, List, ShoppingBag, Image } from "lucide-react";
 import { motion } from "framer-motion";
 import { productConfig } from "@/config/product";
 
@@ -21,22 +21,31 @@ export default function Hero() {
                     transition={{ duration: 0.6 }}
                     className="max-w-2xl text-center lg:text-left lg:w-[48%]"
                 >
-                    <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full border border-[#2772ED]/25 bg-[#2772ED]/6 text-[#1f5ec2] text-sm font-medium tracking-[0.01em] mb-6">
-                        <span className="w-5 h-5 rounded-full bg-[#2772ED]/12 text-[#1f5ec2] flex items-center justify-center">
-                            <ShieldCheck className="w-3 h-3" />
+                    <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full border border-[#2772ED]/30 bg-[#2772ED]/8 text-[#1f5ec2] text-sm font-medium tracking-[0.01em] mb-6">
+                        <span className="w-6 h-6 rounded-full bg-[#2772ED]/20 text-[#1f5ec2] flex items-center justify-center">
+                            <ShieldCheck className="w-4 h-4" />
                         </span>
-                        <span className="leading-none">Web Scraper by WebScraper.do</span>
+                        <span className="leading-none">Scrape data like a pro</span>
                     </div>
 
-                    <h1 className="text-4xl sm:text-5xl lg:text-[3.3rem] font-bold tracking-tight text-slate-600 leading-[1.08]">
-                        Turn product pages into structured data.
+                    <h1 className="text-4xl sm:text-[2.45rem] lg:text-[2.6rem] xl:text-[2.85rem] font-bold tracking-tight text-slate-600 leading-[1.08]">
+                        <span className="sm:whitespace-nowrap">Extract web data in minutes,</span>
+                        <br />
+                        <span className="sm:whitespace-nowrap">not hours.</span>
                     </h1>
 
                     <p className="text-lg text-slate-600 leading-relaxed mt-5 max-w-xl mx-auto lg:mx-0">
-                        Select data and export in one click.
+                        Point and click to scrape product data, lists, and images, then export to Google Sheets, Excel, CSV, or JSON.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-8">
+                    <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-dashed border-slate-300/70 bg-slate-50/70 px-3.5 py-1.5 text-[13px] text-slate-600">
+                        <span className="inline-flex">
+                            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                        </span>
+                        <span>Trusted by marketers, researchers, and ecommerce teams.</span>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-5">
                         <Link
                             href={productConfig.product.ctaUrl}
                             target="_blank"
@@ -59,7 +68,13 @@ export default function Hero() {
                     <div className="relative w-full max-w-2xl mx-auto mt-4">
                         <div className="relative rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 overflow-hidden">
                             <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white border border-[#2772ED]/30 ring-4 ring-white shadow-[0_0_0_4px_rgba(39,114,237,0.10)] items-center justify-center">
-                                <ArrowRight className="w-4 h-4 text-[#2772ED]" />
+                                <motion.span
+                                    className="inline-flex"
+                                    animate={{ x: [0, 3, 0] }}
+                                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    <ArrowRight className="w-4 h-4 text-[#2772ED]" />
+                                </motion.span>
                             </div>
                             <div className="grid md:grid-cols-2">
                                 <div className="p-5 border-b md:border-b-0 md:border-r border-slate-200 bg-gradient-to-b from-slate-50/70 to-white">
@@ -94,8 +109,14 @@ export default function Hero() {
                                                     review: "4.9 (2,180)",
                                                     seller: "Prime Brands",
                                                 },
-                                            ].map((item) => (
-                                                <div key={item.title} className="flex gap-3 border border-slate-100 rounded-md p-2.5">
+                                            ].map((item, idx) => (
+                                                <motion.div
+                                                    key={item.title}
+                                                    className="flex gap-3 border border-slate-100 rounded-md p-2.5"
+                                                    initial={{ opacity: 0, y: 6 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.35, delay: 0.2 + idx * 0.08, ease: "easeOut" }}
+                                                >
                                                     <div className="w-14 h-14 rounded-md border border-slate-300 flex-shrink-0 bg-gradient-to-br from-blue-50 to-slate-100 relative overflow-hidden shadow-sm">
                                                         <div className="absolute inset-x-1.5 top-1.5 h-8 rounded bg-white border border-slate-200" />
                                                         <div className="absolute inset-x-3 top-3.5 h-3 rounded-full bg-[#2772ED]/25" />
@@ -116,7 +137,7 @@ export default function Hero() {
                                                         </div>
                                                         <p className="text-[11px] text-slate-500 mt-0.5">Sold by: {item.seller}</p>
                                                     </div>
-                                                </div>
+                                                </motion.div>
                                             ))}
                                         </div>
                                     </div>
@@ -132,33 +153,39 @@ export default function Hero() {
                                             <span className="text-[10px] font-medium text-slate-400">Sample</span>
                                         </div>
                                         <div className="h-0.5 bg-[#2772ED]/25" />
-                                        <div
-                                            className="grid text-[10px] font-semibold text-slate-500 bg-slate-50 border-b border-slate-200"
-                                            style={{ gridTemplateColumns: "2.3fr 1.2fr 1fr 0.9fr 1.4fr" }}
-                                        >
-                                            <div className="px-3 py-2 border-r border-slate-200">Title</div>
-                                            <div className="px-3 py-2 border-r border-slate-200">Brand</div>
-                                            <div className="px-3 py-2 border-r border-slate-200">Price</div>
-                                            <div className="px-3 py-2 border-r border-slate-200">Rating</div>
-                                            <div className="px-3 py-2">Seller</div>
-                                        </div>
-                                        {[
-                                            ["Running Shoes Pro X", "FastStride", "$129.99", "4.8", "ProSport Deals"],
-                                            ["Trail Runner Lite", "UrbanPace", "$89.50", "4.6", "TrendKart"],
-                                            ["Sport Sneaker Max", "Velocity", "$149.00", "4.9", "Prime Brands"],
-                                        ].map((item) => (
-                                            <div
-                                                key={item[0]}
-                                                className="grid text-[11px] border-b last:border-b-0 border-slate-100"
-                                                style={{ gridTemplateColumns: "2.3fr 1.2fr 1fr 0.9fr 1.4fr" }}
-                                            >
-                                                <div className="px-3 py-2 text-slate-700 truncate border-r border-slate-100">{item[0]}</div>
-                                                <div className="px-3 py-2 text-slate-700 truncate border-r border-slate-100">{item[1]}</div>
-                                                <div className="px-3 py-2 text-slate-700 whitespace-nowrap border-r border-slate-100">{item[2]}</div>
-                                                <div className="px-3 py-2 text-slate-700 whitespace-nowrap border-r border-slate-100">{item[3]}</div>
-                                                <div className="px-3 py-2 text-slate-700 truncate">{item[4]}</div>
-                                            </div>
-                                        ))}
+                                        <table className="w-full table-fixed border-collapse">
+                                            <colgroup>
+                                                <col style={{ width: "52%" }} />
+                                                <col style={{ width: "28%" }} />
+                                                <col style={{ width: "20%" }} />
+                                            </colgroup>
+                                            <thead>
+                                                <tr className="text-[10px] font-semibold text-slate-500 bg-slate-50 border-b border-slate-200">
+                                                    <th className="px-3 py-2 border-r border-slate-200 text-left font-semibold">Title</th>
+                                                    <th className="px-3 py-2 border-r border-slate-200 text-left font-semibold">Brand</th>
+                                                    <th className="px-3 py-2 text-left font-semibold">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {[
+                                                    ["Running Shoes Pro X", "FastStride", "$129.99"],
+                                                    ["Trail Runner Lite", "UrbanPace", "$89.50"],
+                                                    ["Sport Sneaker Max", "Velocity", "$149.00"],
+                                                ].map((item, idx) => (
+                                                    <motion.tr
+                                                        key={item[0]}
+                                                        className="text-[11px] border-b last:border-b-0 border-slate-100"
+                                                        initial={{ opacity: 0, y: 6 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ duration: 0.35, delay: 0.35 + idx * 0.08, ease: "easeOut" }}
+                                                    >
+                                                        <td className="px-3 py-2 text-slate-700 truncate border-r border-slate-100">{item[0]}</td>
+                                                        <td className="px-3 py-2 text-slate-700 truncate border-r border-slate-100">{item[1]}</td>
+                                                        <td className="px-3 py-2 text-slate-700 whitespace-nowrap">{item[2]}</td>
+                                                    </motion.tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <div className="mt-7 rounded-lg border border-slate-200 bg-white overflow-hidden">
                                         <div className="flex items-center justify-between px-3 py-2 border-b border-slate-200 bg-slate-50">
@@ -175,9 +202,11 @@ export default function Hero() {
                                             ].map((fmt) => {
                                                 const Icon = fmt.icon;
                                                 return (
-                                                    <div
+                                                    <motion.div
                                                         key={fmt.label}
-                                                        className="rounded-md border border-slate-200 bg-white px-2 py-2 flex items-center gap-1.5 min-w-0"
+                                                        className="rounded-md border border-slate-200 bg-white px-2 py-2 flex items-center gap-1.5 min-w-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-200/70"
+                                                        whileHover={{ scale: 1.02 }}
+                                                        transition={{ type: "spring", stiffness: 260, damping: 20 }}
                                                     >
                                                         <span className="w-6 h-6 rounded-md bg-[#2772ED]/10 text-[#2772ED] flex items-center justify-center shrink-0">
                                                             <Icon className="w-3 h-3" />
@@ -185,7 +214,7 @@ export default function Hero() {
                                                         <div className="min-w-0">
                                                             <p className="text-[10px] font-semibold text-slate-700 leading-tight whitespace-nowrap">{fmt.label}</p>
                                                         </div>
-                                                    </div>
+                                                    </motion.div>
                                                 );
                                             })}
                                         </div>
@@ -208,14 +237,17 @@ export default function Hero() {
                 transition={{ duration: 0.6, delay: 0.25 }}
                 className="relative z-10 max-w-7xl mx-auto mt-8"
             >
+                <p className="text-sm text-slate-600 text-center mb-4">
+                    Works on ecommerce sites, directories, listings, and more.
+                </p>
                 <div className="rounded-2xl border border-slate-200/80 bg-white/70 backdrop-blur-sm px-5 py-5 md:px-6 md:py-6 cursor-default select-none">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
                         {[
                             { icon: MousePointer2, title: "Point & Select", desc: "Pick elements visually" },
                             { icon: RefreshCw, title: "Pagination Support", desc: "Handle next-page flows" },
-                            { icon: Table2, title: "Scrape Lists", desc: "Capture listing results" },
-                            { icon: Table2, title: "Product Pages", desc: "Extract detail fields" },
-                            { icon: Table2, title: "Images & Details", desc: "Collect media and specs" },
+                            { icon: List, title: "Scrape Lists", desc: "Capture listing results" },
+                            { icon: ShoppingBag, title: "Detail Pages", desc: "Extract structured fields" },
+                            { icon: Image, title: "Images & Details", desc: "Collect media and specs" },
                         ].map((item) => {
                             const Icon = item.icon;
                             return (

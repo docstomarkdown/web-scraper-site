@@ -21,7 +21,7 @@ export default function Footer() {
                         <Link href="/" className="inline-flex items-center gap-2.5 group">
                             <Icons.logo className="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity" />
                             <span className="text-lg font-bold text-slate-800 tracking-tight">
-                                Web Scraper Do
+                                Web Scraper Pro
                             </span>
                         </Link>
 
@@ -103,7 +103,7 @@ export default function Footer() {
 
                 <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
                 <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
-                    <p>© {year} Web Scraper Do. All rights reserved.</p>
+                    <p>© {year} Web Scraper Pro. All rights reserved.</p>
                     <p className="text-slate-400">
                         Built thoughtfully by{" "}
                         <Link

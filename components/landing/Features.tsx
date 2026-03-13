@@ -32,7 +32,7 @@ const features = [
     },
     {
         title: "Property Extraction",
-        description: <>Extract key attributes such as title, brand, price, rating, seller, and other structured properties from product pages.</>,
+        description: <>Extract key attributes such as title, brand, price, rating, and other structured properties from detail pages and listings.</>,
         icon: Tags,
         iconColor: "text-emerald-600",
         iconBg: "bg-emerald-50 border-emerald-100/50",
@@ -60,10 +60,12 @@ export default function Features() {
                         <span>Core workflow</span>
                     </div>
                     <h2 className="text-4xl md:text-5xl font-bold text-slate-700 mb-6 tracking-tight">
-                        Extract exactly what you need from <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">any product page</span>
+                        Extract exactly what you need
+                        <br />
+                        from <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">any web page</span>
                     </h2>
                     <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
-                        Three extraction modes for ecommerce workflows: lists, images, and product properties.
+                        Three extraction modes for ecommerce workflows: lists, images, and structured properties.
                     </p>
                 </motion.div>
 

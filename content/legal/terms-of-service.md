@@ -1,10 +1,10 @@
 ## Agreement to Terms
 
-By accessing or using Web Scraper.do, a product of **Thinksolv Technologies Pvt Ltd**, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services. These terms apply to all users of the Web Scraper.do browser extension, website, and any related services.
+By accessing or using Web Scraper Pro, a product of **Thinksolv Technologies Pvt Ltd**, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services. These terms apply to all users of the Web Scraper Pro browser extension, website, and any related services.
 
 ## Description of Service
 
-Web Scraper.do is a no-code browser extension that enables users to extract structured data from websites. The service includes:
+Web Scraper Pro is a no-code browser extension that enables users to extract structured data from websites. The service includes:
 
 - A browser extension for point-and-click data selection and extraction.
 - Data export capabilities in CSV, JSON, and Excel formats.
@@ -20,7 +20,7 @@ Web Scraper.do is a no-code browser extension that enables users to extract stru
 
 ## Acceptable Use
 
-You agree to use Web Scraper.do responsibly and in compliance with all applicable laws. The following activities are expressly prohibited:
+You agree to use Web Scraper Pro responsibly and in compliance with all applicable laws. The following activities are expressly prohibited:
 
 - Scraping websites in violation of their terms of service or applicable laws.
 - Using the service to collect personal data without proper legal basis or consent.
@@ -28,11 +28,11 @@ You agree to use Web Scraper.do responsibly and in compliance with all applicabl
 - Reverse engineering, decompiling, or attempting to extract the source code of our extension.
 - Using the service for any unlawful, fraudulent, or malicious purpose.
 
-You are solely responsible for ensuring that your use of Web Scraper.do complies with the terms and conditions of the websites you scrape and all applicable regulations.
+You are solely responsible for ensuring that your use of Web Scraper Pro complies with the terms and conditions of the websites you scrape and all applicable regulations.
 
 ## Intellectual Property
 
-All rights, title, and interest in Web Scraper.do — including the extension, website, branding, documentation, and underlying technology — are owned by Thinksolv Technologies Pvt Ltd. You are granted a limited, non-exclusive, non-transferable license to use the service in accordance with your subscription plan.
+All rights, title, and interest in Web Scraper Pro — including the extension, website, branding, documentation, and underlying technology — are owned by Thinksolv Technologies Pvt Ltd. You are granted a limited, non-exclusive, non-transferable license to use the service in accordance with your subscription plan.
 
 Content you extract using the service remains your responsibility. We make no claims of ownership over data you scrape or export.
 
@@ -53,14 +53,14 @@ Content you extract using the service remains your responsibility. We make no cl
 
 To the maximum extent permitted by applicable law:
 
-- Web Scraper.do is provided on an **"as is"** and **"as available"** basis without warranties of any kind, whether express or implied.
+- Web Scraper Pro is provided on an **"as is"** and **"as available"** basis without warranties of any kind, whether express or implied.
 - We do not warrant that the service will meet your specific requirements, be uninterrupted, secure, or error-free.
 - We shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of data, revenue, or business opportunities, arising from your use of the service.
 - Our total liability for any claim related to the service shall not exceed the amount you paid for the service in the twelve months preceding the claim.
 
 ## Data and Privacy
 
-Your use of Web Scraper.do is also governed by our [Privacy Policy](/privacy-policy). By using the service, you acknowledge that you have read and understood our data practices. Key points:
+Your use of Web Scraper Pro is also governed by our [Privacy Policy](/privacy-policy). By using the service, you acknowledge that you have read and understood our data practices. Key points:
 
 - We do not access, store, or transmit the data you scrape.
 - Scraped data is processed locally in your browser.

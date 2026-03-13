@@ -31,20 +31,18 @@ export default function CTA() {
                             Start extracting structured data in minutes.
                         </h2>
                         <p className="text-base text-slate-500 leading-relaxed mt-4 max-w-2xl mx-auto">
-                            Built for product lists, product pages, images, and properties.
+                            Built for lists, detail pages, images, and structured properties.
                         </p>
 
                         <div className="mt-8 flex justify-center">
                             <Link
                                 href={productConfig.product.ctaUrl}
                                 target="_blank"
-                                className="group inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl bg-[#3C78DB] hover:bg-[#336dcf] text-white font-semibold shadow-md shadow-[#3C78DB]/18 transition-all"
+                                className="group inline-flex items-center justify-center rounded-xl bg-[#2772ED] hover:bg-[#1f5ec2] px-8 py-3.5 text-base font-semibold text-white transition-all hover:translate-y-[-1px] active:scale-[0.98] gap-2 shadow-lg shadow-[#2772ED]/25"
                             >
-                                <span className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
-                                    <Chrome className="w-5 h-5 text-white" />
-                                </span>
-                                <span>Install from Chrome Web Store</span>
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                <Chrome className="w-5 h-5" />
+                                Install from Chrome Web Store
+                                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
                     </div>
