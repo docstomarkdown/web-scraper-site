@@ -122,6 +122,10 @@ export function LeadTimeCalculator() {
                     <ResultDateCard
                         title="TOTAL LEAD TIME"
                         isCalculated={hasInputs}
+                        checklistItems={[
+                            { label: "Enter Supplier Time", isComplete: values.supplier !== "" },
+                            { label: "Enter Shipping Time", isComplete: values.shipping !== "" }
+                        ]}
                         primaryResult={{
                             label: "Total Lead Time",
                             value: totals.totalFormatted,

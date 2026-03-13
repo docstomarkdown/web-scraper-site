@@ -1,27 +1,27 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { RefreshCw, ClipboardList, Calculator } from "lucide-react"
+import { Ruler, ArrowRight, Eye } from "lucide-react"
 export function DimensionConverterHowToUse() {
     return (
         <ToolSteps
             title="How to Use This Converter"
             steps={[
                 {
-                    title: "Input Value",
-                    description: "Enter the exact numeric length, width, or height you need to switch.",
-                    icon: RefreshCw
+                    title: "Select Unit",
+                    description: "Choose your input unit (Inches or Centimeters) using the toggle tabs above the dimension fields.",
+                    icon: Ruler
                 },
                 {
-                    title: "Select Units",
-                    description: "Choose the initial unit and the target measurement unit standard.",
-                    icon: ClipboardList
+                    title: "Enter Dimensions",
+                    description: "Input the Length, Width, and Height of your item in the selected unit. All three fields are required for conversion.",
+                    icon: ArrowRight
                 },
                 {
-                    title: "Get Conversion",
-                    description: "Instantly copy the precisely converted dimensions for your specs.",
-                    icon: Calculator
+                    title: "View Results",
+                    description: "Instantly see converted dimensions displayed in the Results Panel. Length, Width, and Height are converted from your input unit to the opposite unit (IN ↔ CM).",
+                    icon: Eye
                 }
             ]}
         />
     )
-}
+}

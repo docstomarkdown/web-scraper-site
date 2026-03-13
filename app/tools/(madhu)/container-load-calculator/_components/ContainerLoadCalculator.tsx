@@ -286,11 +286,11 @@ export function ContainerLoadCalculator() {
                         />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 pl-10 md:pl-12 flex flex-col gap-8">
                             {/* Shared container for alignment - both sections use same left edge */}
-                            <div className="max-w-[520px] mx-auto px-3 sm:px-5 space-y-0">
+                            <div className="max-w-[520px] mx-auto px-3 sm:px-5 space-y-6">
                                 {/* ── Container Setup Group ── */}
-                                <div className="space-y-0 relative calculator-input-row" data-has-title="true">
-                                    {/* Vertical connector line - aligned with icon left edge (matches Cargo Dimensions) */}
-                                    <div className="absolute left-[-33px] top-[14px] bottom-6 w-[1.5px] bg-blue-200/70 z-0" />
+                                <div className="space-y-3 relative calculator-input-row" data-has-title="true">
+                                    {/* Dynamic Connecting Line Fragment: Ensures a solid vertical path ONLY for labeled groups */}
+                                    <div className="absolute left-[-19px] w-[1.5px] bg-blue-200/70 z-0" style={{ top: '14px', bottom: '0px' }} />
 
                                     {/* Group Header */}
                                     <div className="flex items-center gap-2 -ml-[33px] mb-0.5 relative h-7">
@@ -301,32 +301,38 @@ export function ContainerLoadCalculator() {
                                     </div>
 
                                     {/* Row: Select Container */}
-                                    <div className="relative flex items-center gap-3 w-full z-10 py-3">
-                                        <span className="text-[14.5px] font-medium text-slate-600/90 flex-1">Select Container</span>
-                                        <div className="w-full sm:w-[300px] max-w-[176px]">
-                                            <Select value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as keyof typeof CONTAINERS)}>
-                                                <SelectTrigger className="h-11 border-2 border-slate-200 bg-white transition-all hover:border-blue-300 hover:shadow-md px-3 w-full rounded-xl font-semibold text-slate-600">
-                                                    <span className="font-bold text-sm text-blue-600 truncate">
-                                                        {CONTAINERS[selectedContainer]?.name}
-                                                    </span>
-                                                </SelectTrigger>
-                                                <SelectContent className="max-h-[400px]">
-                                                    {Object.entries(CONTAINERS).map(([key, data]) => (
-                                                        <SelectItem key={key} value={key} className="py-2.5 focus:bg-blue-50">
-                                                            <div className="flex flex-col text-left">
-                                                                <span className="font-bold text-sm text-slate-700">{data.name}</span>
-                                                                {key === "custom" ? (
-                                                                    <span className="text-[10px] text-slate-400 font-medium">User defined dimensions</span>
-                                                                ) : (
-                                                                    <span className="text-[10px] text-slate-500 font-medium">
-                                                                        Wt: {data.maxWeight.toLocaleString()} kg · {(data.length / 1000).toFixed(1)}m × {(data.width / 1000).toFixed(2)}m
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                    <div className="relative w-full">
+                                        <div className="flex items-center gap-3 w-full relative z-10 py-3">
+                                            <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
+                                                <span className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1">Select Container</span>
+                                            </div>
+                                            <div className="relative group flex-shrink-0 flex items-center gap-3">
+                                                <div className="w-full sm:w-[300px] max-w-[176px]">
+                                                    <Select value={selectedContainer} onValueChange={(v) => setSelectedContainer(v as keyof typeof CONTAINERS)}>
+                                                        <SelectTrigger className="h-11 border-2 border-slate-200 bg-white transition-all hover:border-blue-300 hover:shadow-md px-3 w-full rounded-xl font-semibold text-slate-600">
+                                                            <span className="font-bold text-sm text-blue-600 truncate">
+                                                                {CONTAINERS[selectedContainer]?.name}
+                                                            </span>
+                                                        </SelectTrigger>
+                                                        <SelectContent className="max-h-[400px]">
+                                                            {Object.entries(CONTAINERS).map(([key, data]) => (
+                                                                <SelectItem key={key} value={key} className="py-2.5 focus:bg-blue-50">
+                                                                    <div className="flex flex-col text-left">
+                                                                        <span className="font-bold text-sm text-slate-700">{data.name}</span>
+                                                                        {key === "custom" ? (
+                                                                            <span className="text-[10px] text-slate-400 font-medium">User defined dimensions</span>
+                                                                        ) : (
+                                                                            <span className="text-[10px] text-slate-500 font-medium">
+                                                                                Wt: {data.maxWeight.toLocaleString()} kg · {(data.length / 1000).toFixed(1)}m × {(data.width / 1000).toFixed(2)}m
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -340,25 +346,31 @@ export function ContainerLoadCalculator() {
                                     )}
 
                                     {/* Sub-row: Loading Type */}
-                                    <div className="relative flex items-center gap-3 w-full z-10 py-3">
-                                        <span className="text-[14.5px] font-medium text-slate-600/90 flex-1">Loading Type</span>
-                                        <Tabs value={loadType} onValueChange={(v) => setLoadType(v as any)} className="max-w-[176px] w-full">
-                                            <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
-                                                <TabsTrigger value="loose" className="flex items-center justify-center py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">
-                                                    <Box className="w-3 h-3 mr-1" />
-                                                    Loose
-                                                </TabsTrigger>
-                                                <TabsTrigger value="pallet" className="flex items-center justify-center py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">
-                                                    <Layers className="w-3 h-3 mr-1" />
-                                                    Pallets
-                                                </TabsTrigger>
-                                            </TabsList>
-                                        </Tabs>
+                                    <div className="relative w-full">
+                                        <div className="flex items-center gap-3 w-full relative z-10 py-3">
+                                            <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
+                                                <span className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1">Loading Type</span>
+                                            </div>
+                                            <div className="relative group flex-shrink-0 flex items-center gap-3">
+                                                <Tabs value={loadType} onValueChange={(v) => setLoadType(v as any)} className="max-w-[176px] w-full">
+                                                    <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-slate-100/60 border border-slate-200/50 rounded-xl">
+                                                        <TabsTrigger value="loose" className="flex items-center justify-center py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">
+                                                            <Box className="w-3 h-3 mr-1" />
+                                                            Loose
+                                                        </TabsTrigger>
+                                                        <TabsTrigger value="pallet" className="flex items-center justify-center py-1.5 text-[10px] font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">
+                                                            <Layers className="w-3 h-3 mr-1" />
+                                                            Pallets
+                                                        </TabsTrigger>
+                                                    </TabsList>
+                                                </Tabs>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Detailed Specs Group - same container for vertical alignment */}
-                                <div className="space-y-1 mt-4">
+                                <div className="space-y-3">
 
                                 <CalculatorInput
                                     label="Box Length"

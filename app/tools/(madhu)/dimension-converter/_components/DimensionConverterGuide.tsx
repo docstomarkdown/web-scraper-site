@@ -1,43 +1,57 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { TrendingUp, AlertTriangle, CircleDollarSign, BookOpen } from "lucide-react"
+import { Ruler, RefreshCw, Globe, Calculator, BookOpen } from "lucide-react"
 export function DimensionConverterGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About Converted Dimensions Profitability"
+            title="About Dimension Converter"
             icon={BookOpen}
             items={[
                 {
-                    title: "The DIM Weight Trap",
-                    description: "Converts cubic volume specifically for air freight and courier billing. Formula: (L × W × H) in inches / 139 is the standard US divisor. Large boxes are often billed at double their real weight due to volume.",
-                    icon: TrendingUp,
-                    iconBg: "bg-rose-50",
-                    iconColor: "text-rose-500",
-                    stat: "139 Factor",
-                    statLabel: "Volumetric Weight Divisor",
-                    statColor: "text-rose-600"
-                },
-                {
-                    title: "Oversized Surcharges",
-                    description: "Length + Girth (2W + 2H) exceeding 130 inches alerts carriers for extra fees. A single centimeter error can push a box into 'Oversized' pricing tiers. Stay under the threshold by optimizing your packaging dimensions.",
-                    icon: AlertTriangle,
-                    iconBg: "bg-amber-50",
-                    iconColor: "text-amber-500",
-                    stat: "130 Inch",
-                    statLabel: "Girth Limit Threshold",
-                    statColor: "text-amber-600"
-                },
-                {
-                    title: "Precise Warehousing",
-                    description: "Warehousing centers charge by precise cubic centimeters or inches. Accurate unit conversion prevents overpaying for shelf space. Small height savings directly correlate to reduced annual overhead.",
-                    icon: CircleDollarSign,
+                    title: "Bidirectional Unit Conversion",
+                    description: "Convert dimensions seamlessly between Inches (IN) and Centimeters (CM). Enter measurements in either unit and instantly see the converted values. Perfect for international shipping, product specifications, and design work where unit precision matters.",
+                    icon: RefreshCw,
                     iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    stat: "4X Peak",
-                    statLabel: "Holiday Storage Surcharges",
-                    statColor: "text-blue-600"
+                    iconColor: "text-blue-600",
+                    stat: "2 Units",
+                    statLabel: "IN ↔ CM",
+                    statColor: "text-blue-700",
+                    tooltip: "Convert between Inches and Centimeters with precision"
+                },
+                {
+                    title: "Three-Dimension Conversion",
+                    description: "Enter Length, Width, and Height simultaneously. The converter processes all three dimensions at once, showing converted values for each axis. Results update in real-time as you type, making it easy to verify measurements across different unit systems.",
+                    icon: Ruler,
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
+                    stat: "3 Axes",
+                    statLabel: "L × W × H",
+                    statColor: "text-emerald-700",
+                    tooltip: "Convert Length, Width, and Height dimensions together"
+                },
+                {
+                    title: "International Standards Support",
+                    description: "Essential for e-commerce sellers, manufacturers, and logistics professionals working with global markets. US-based sellers often need CM conversions for international listings, while international sellers need IN conversions for US marketplaces. This tool bridges the gap instantly.",
+                    icon: Globe,
+                    iconBg: "bg-purple-50",
+                    iconColor: "text-purple-600",
+                    stat: "Worldwide",
+                    statLabel: "Compatible",
+                    statColor: "text-purple-700",
+                    tooltip: "Perfect for international e-commerce and shipping"
+                },
+                {
+                    title: "Precise Conversion Formula",
+                    description: "Uses the standard conversion factor: 1 inch = 2.54 centimeters. All calculations maintain decimal precision, ensuring accurate conversions for product dimensions, packaging specifications, and shipping requirements. Results display with appropriate decimal places for clarity.",
+                    icon: Calculator,
+                    iconBg: "bg-amber-50",
+                    iconColor: "text-amber-600",
+                    stat: "2.54",
+                    statLabel: "IN to CM factor",
+                    statColor: "text-amber-700",
+                    tooltip: "Accurate conversion using standard 1 inch = 2.54 cm formula"
                 }
             ]}
         />
     )
-}
+}

@@ -2,7 +2,7 @@
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info, CheckCircle2, Circle, ArrowLeft, Percent, Check, Activity } from "lucide-react"
+import { Info, CheckCircle2, Circle, ArrowLeft, Percent, Activity, ClipboardPenLine, TextCursorInput, MousePointerClick } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { currencies } from "./CurrencyCombobox"
@@ -35,6 +35,7 @@ interface ResultSummaryCardProps {
     liveBadgeText?: string
     isCalculated?: boolean
     profitLossKey?: string
+    validationBadgeText?: { valid: string; invalid: string }
     description?: string
     emptyMessage?: string
     emptyResultLabel?: string
@@ -53,9 +54,10 @@ export function ResultSummaryCard({
     secondaryResults,
     currency,
     showLiveBadge = true,
-    liveBadgeText = "LIVE",
+    liveBadgeText = "Live",
     isCalculated = false,
     profitLossKey,
+    validationBadgeText,
     description,
     emptyMessage,
     emptyResultLabel,
@@ -182,7 +184,7 @@ export function ResultSummaryCard({
         if (profitLossKey) {
             if (numericProfitLoss > 0) {
                 return {
-                    text: "Profit",
+                    text: validationBadgeText?.valid || "Profit",
                     bg: "bg-emerald-100/80",
                     dot: "bg-emerald-500",
                     textCol: "text-emerald-700 font-bold"
@@ -190,7 +192,7 @@ export function ResultSummaryCard({
             }
             if (numericProfitLoss < 0) {
                 return {
-                    text: "Loss",
+                    text: validationBadgeText?.invalid || "Loss",
                     bg: "bg-red-100/80",
                     dot: "bg-red-500",
                     textCol: "text-red-700 font-bold"
@@ -198,7 +200,7 @@ export function ResultSummaryCard({
             }
         }
         return {
-            text: liveBadgeText || "LIVE",
+            text: liveBadgeText || "Live",
             bg: "bg-emerald-100/50",
             dot: "bg-emerald-500",
             textCol: "text-emerald-700"
@@ -250,7 +252,8 @@ export function ResultSummaryCard({
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
             <Card className={cn(
-                "relative overflow-hidden border border-slate-200/60 bg-white shadow-sm rounded-2xl",
+                "relative overflow-hidden border border-slate-200/60 shadow-sm rounded-2xl",
+                "bg-[#F5F8FD]",
                 className
             )}>
                 {/* ── Static Header ── */}
@@ -300,7 +303,6 @@ export function ResultSummaryCard({
                                         "border-slate-200/50"
                                     )}
                                 >
-                                    <Check className="w-3.5 h-3.5" />
                                     {badge.text}
                                 </motion.div>
                             )
@@ -326,18 +328,21 @@ export function ResultSummaryCard({
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: 0.55, ease: "easeOut" }}
-                                        className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 max-w-[220px] pointer-events-auto"
+                                        className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 max-w-[240px] pointer-events-auto"
                                     >
                                         <div className="relative flex items-center justify-center">
-                                            <span className="absolute w-10 h-10 rounded-full bg-blue-400/20 animate-ping" style={{ animationDuration: "2.4s" }} />
-                                            <div className="relative w-9 h-9 rounded-full bg-blue-600/10 border border-blue-200/60 flex items-center justify-center text-blue-500">
-                                                <Activity className="w-4 h-4" />
+                                            <span className="absolute w-11 h-11 rounded-xl bg-blue-400/15 animate-ping" style={{ animationDuration: "2.8s" }} />
+                                            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200/60 flex items-center justify-center text-blue-500 shadow-sm">
+                                                <ClipboardPenLine className="w-[18px] h-[18px]" />
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-center gap-1.5">
-                                            <p className="text-[12.5px] text-slate-500 font-semibold leading-snug text-center">
-                                                Complete the inputs to generate your
-                                            </p>
+                                            <div className="flex items-center gap-1.5 text-blue-500/70">
+                                                <ArrowLeft className="w-3 h-3" />
+                                                <p className="text-[12.5px] text-slate-500 font-semibold leading-snug text-center">
+                                                    Fill in the inputs to see your
+                                                </p>
+                                            </div>
                                             <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-600/10 border border-blue-200/60 text-[11px] font-black text-blue-700 tracking-wide">
                                                 {emptyLabel}
                                             </span>
@@ -358,7 +363,10 @@ export function ResultSummaryCard({
                                     <div className="h-px w-full bg-slate-200/40 my-4" />
                                     <div className={cn(
                                         "grid gap-2",
-                                        secondaryResults.length <= 3 ? `grid-cols-${secondaryResults.length || 2}` : "grid-cols-2"
+                                        secondaryResults.length === 1 && "grid-cols-1",
+                                        secondaryResults.length === 2 && "grid-cols-2",
+                                        secondaryResults.length === 3 && "grid-cols-2",
+                                        secondaryResults.length >= 4 && "grid-cols-2"
                                     )}>
                                         {secondaryResults.map((result, idx) => (
                                             <div
@@ -432,9 +440,9 @@ export function ResultSummaryCard({
                                     <div className={cn(
                                         "grid gap-2",
                                         secondaryResults.length === 1 && "grid-cols-1",
-                                        secondaryResults.length === 2 && "grid-cols-2",
-                                        secondaryResults.length === 3 && "grid-cols-3",
-                                        secondaryResults.length >= 4 && "grid-cols-2"
+                                        secondaryResults.length === 2 && "grid-cols-2", // 2 results: 2 columns covering full width
+                                        secondaryResults.length === 3 && "grid-cols-2", // 3 results: 2 columns (2 in first row, 1 in second row)
+                                        secondaryResults.length >= 4 && "grid-cols-2" // 4+ results: 2 columns (2 rows with 2 columns each)
                                     )}>
                                         {secondaryResults.map((result, idx) => (
                                             <motion.div

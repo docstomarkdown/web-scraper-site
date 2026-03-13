@@ -6,7 +6,7 @@ import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
 export const metadata: Metadata = {
     title: "Lead Time Calculator - Production to Delivery Estimator",
-    description: "Calculate total inventory lead time including production, shipping, customs, and buffers. Plan your restock cycles with precision.",
+    description: "Calculate total inventory lead time including production, shipping, customs, and buffers.",
 }
 export default function LeadTimeCalculatorPage() {
     return (

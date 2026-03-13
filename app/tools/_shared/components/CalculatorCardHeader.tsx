@@ -1,12 +1,13 @@
 "use client"
 import React from "react"
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { HelpCircle, RotateCw } from "lucide-react"
+import { HelpCircle, RotateCw, LucideIcon } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CurrencyCombobox } from "./CurrencyCombobox"
 
 interface CalculatorCardHeaderProps {
     title?: string
+    titleIcon?: LucideIcon
     description: string
     guideId?: string
     currency?: string
@@ -17,6 +18,7 @@ interface CalculatorCardHeaderProps {
 
 export function CalculatorCardHeader({
     title,
+    titleIcon: TitleIcon,
     description,
     guideId = "how-to-use",
     currency,
@@ -40,6 +42,11 @@ export function CalculatorCardHeader({
                 {/* Title + description */}
                 <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-center gap-2">
+                        {TitleIcon && (
+                            <div className="flex-shrink-0 w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center">
+                                <TitleIcon className="h-3.5 w-3.5 text-blue-600" />
+                            </div>
+                        )}
                         <CardTitle className="text-xl font-bold text-blue-600 tracking-tight leading-none">
                             {title}
                         </CardTitle>
@@ -72,21 +79,14 @@ export function CalculatorCardHeader({
                         </div>
                     )}
                     {onReset && (
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    type="button"
-                                    onClick={onReset}
-                                    className="group flex items-center justify-center h-9 w-9 text-slate-400 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-md rounded-xl transition-all duration-250 active:scale-90"
-                                    aria-label="Reset Calculator"
-                                >
-                                    <RotateCw className="h-3.5 w-3.5" />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="text-xs bg-slate-900 text-white border-slate-800">
-                                Reset
-                            </TooltipContent>
-                        </Tooltip>
+                        <button
+                            type="button"
+                            onClick={onReset}
+                            className="group flex items-center justify-center h-9 w-9 text-slate-400 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-md rounded-xl transition-all duration-250 active:scale-90"
+                            aria-label="Reset Calculator"
+                        >
+                            <RotateCw className="h-3.5 w-3.5" />
+                        </button>
                     )}
                 </div>
             </div>

@@ -5,7 +5,7 @@ import { ReorderPointGuide } from "./_components/ReorderPointGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
 export const metadata: Metadata = {
-    title: "Reorder Point Calculator - Inventory Restock Estimator",
+    title: "Reorder Point Calculator - Inventory Reorder Estimator",
     description: "Calculate your optimal reorder point based on lead time, sales velocity, and safety stock. Never run out of stock or overstock again.",
 }
 export default function ReorderPointCalculatorPage() {
@@ -32,10 +32,6 @@ export default function ReorderPointCalculatorPage() {
                     <FadeIn delay={0.4}>
                         <ToolFAQ
                             faqs={[
-                                {
-                                    question: "What exactly does the 'Restock Journey' show?",
-                                    answer: "The Restock Journey visualizes the critical window between placing an order and receiving it. It highlights exactly where your 'Reorder Point' sits in that timeline to help you visualize the inventory drawdown."
-                                },
                                 {
                                     question: "How do I calculate the best Safety Stock?",
                                     answer: "A standard approach is: (Max Daily Sales × Max Lead Time) - (Average Daily Sales × Average Lead Time). For simpler setups, many sellers just keep 20% of their lead time demand as safety stock."

@@ -1,55 +1,57 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { DollarSign, Package, AlertCircle, Truck, BookOpen } from "lucide-react"
+import { Ruler, Globe, Calculator, Zap, BookOpen } from "lucide-react"
 export function CubicFeetGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About Storage & Freight Costs"
+            title="Why Accurate Volume Calculation Matters"
             icon={BookOpen}
             items={[
                 {
-                    title: "The Amazon FBA 'Air Tax'",
-                    description: "Monthly storage fees are calculated per cubic foot. A 1/2 inch error in dimension measurements across 1,000 units can cost you hundreds in 'ghost' storage fees every month.",
-                    icon: DollarSign,
-                    stat: "$0.87+",
-                    statLabel: "Avg. cost per cu. ft.",
+                    title: "Universal Unit Support",
+                    description: "Our calculator supports 4 measurement units - Feet (default), Inches, Centimeters, and Meters. Simply select your preferred unit and enter dimensions - no manual conversions needed. Perfect for international shipping where different regions use different measurement systems.",
+                    icon: Globe,
+                    stat: "4 Units",
+                    statLabel: "Supported formats",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-600",
+                    statColor: "text-blue-700",
+                    tooltip: "Feet (ft), Inches (in), Centimeters (cm), and Meters (m) are all supported with automatic conversion."
+                },
+                {
+                    title: "Real-Time Multi-Unit Results",
+                    description: "Get instant results in three volume formats simultaneously: Cubic Feet (CFT) as the primary result, with Cubic Meters (CBM) and Cubic Inches as secondary results",
+                    icon: Calculator,
+                    stat: "3 Formats",
+                    statLabel: "Simultaneous results",
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
+                    statColor: "text-emerald-700",
+                    tooltip: "Results update instantly as you type, showing CFT, CBM, and cubic inches with full precision."
+                },
+                {
+                    title: "Quantity Multiplier Feature",
+                    description: "Calculate volume for multiple identical items at once. Enter dimensions once, specify quantity, and get total volume instantly. Essential for bulk shipping, warehouse planning, and inventory management. Saves time when calculating pallet loads or container capacity.",
+                    icon: Zap,
+                    stat: "Bulk Calc",
+                    statLabel: "Quantity support",
+                    iconBg: "bg-purple-50",
+                    iconColor: "text-purple-600",
+                    statColor: "text-purple-700",
+                    tooltip: "Multiply volume calculations by entering the number of identical units."
+                },
+                {
+                    title: "Precision Matters for Cost",
+                    description: "Even small measurement errors compound when calculating volume. A 0.5 inch mistake across 1,000 units can result in hundreds of dollars in incorrect storage fees or shipping costs. Our calculator ensures accuracy down to decimal precision.",
+                    icon: Ruler,
+                    stat: "0.5\" Error",
+                    statLabel: "Can cost $100s",
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
                     statColor: "text-amber-700",
-                    tooltip: "Based on 2024-2025 standard-size non-peak storage rates."
-                },
-                {
-                    title: "The CBM to CFT Trap",
-                    description: "Freight forwarders often quote in CBM, but US warehouses bill in CFT. 1 Cubic Meter equals 35.315 Cubic Feet. Rounding down on this conversion is a common billing error.",
-                    icon: Package,
-                    stat: "35.315",
-                    statLabel: "CFT per Cubic Meter",
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-600",
-                    statColor: "text-blue-700"
-                },
-                {
-                    title: "The DIM Weight Penalty",
-                    description: "If your cubic volume is high but weight is low, carriers charge you for 'space' instead of mass. (L*W*H / 139) is the volume you pay for, even if the box is empty.",
-                    icon: AlertCircle,
-                    stat: "166 / 139",
-                    statLabel: "Common DIM Divisors",
-                    iconBg: "bg-red-50",
-                    iconColor: "text-red-600",
-                    statColor: "text-red-700",
-                    tooltip: "139 for international/express, 166 for domestic ground in many regions."
-                },
-                {
-                    title: "Pallet Efficiency",
-                    description: "A standard US pallet (48\"x40\") has a footprint of 13.33 sq ft. Maximizing 'vertical' cubic feet without exceeding height limits is the key to LTL savings.",
-                    icon: Truck,
-                    stat: "20-30%",
-                    statLabel: "Lost 'dead' space",
-                    iconBg: "bg-slate-50",
-                    iconColor: "text-slate-600",
-                    statColor: "text-slate-700"
+                    tooltip: "Accurate measurements prevent costly billing errors in storage and freight calculations."
                 }
             ]}
         />
     )
-}
+}

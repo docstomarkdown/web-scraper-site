@@ -11,7 +11,6 @@ import { FadeIn, Counter, ResultSummaryCard, CalculatorInput, CalculatorCardHead
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent } from "@/components/ui/card"
-import { RestockJourney } from "./RestockJourney"
 interface ROPState {
     salesVelocity: number | ""
     leadTime: number | ""
@@ -56,7 +55,7 @@ export function ReorderPointCalculator() {
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden flex flex-col rounded-3xl h-fit">
                         <CalculatorCardHeader
                             title="Calculator Inputs"
-                            description="Configure your inventory restock triggers."
+                            description="Configure your inventory reorder point calculation."
                             onReset={handleReset}
                         />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
@@ -93,9 +92,13 @@ export function ReorderPointCalculator() {
                         title="REORDER POINT"
                         description="Place your next order when inventory drops to this amount."
                         isCalculated={hasInputs}
+                        checklistItems={[
+                            { label: "Enter Daily Sales", isComplete: values.salesVelocity !== "" },
+                            { label: "Enter Delivery Time", isComplete: values.leadTime !== "" }
+                        ]}
                         primaryResult={{
                             value: results.reorderPoint,
-                            label: "Units to trigger restock",
+                            label: "Units to trigger reorder",
                             unit: "Units"
                         }}
                         secondaryResults={[
@@ -114,14 +117,8 @@ export function ReorderPointCalculator() {
                                 unit: "Units"
                             }] : [])
                         ]}
-                        emptyMessage="Awaiting Data"
-                        emptyResultLabel="Units to trigger restock"
-                    />
-                    {/* Timeline Analysis - Premium Minimalist Style */}
-                    <RestockJourney
-                        hasInputs={hasInputs}
-                        reorderPoint={results.reorderPoint}
-                        leadTime={values.leadTime}
+                        emptyMessage="Reorder Point"
+                        emptyResultLabel="Reorder Point"
                     />
                 </div>
             </div>
