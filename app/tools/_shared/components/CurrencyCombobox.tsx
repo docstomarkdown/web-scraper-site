@@ -183,6 +183,7 @@ interface CurrencyComboboxProps {
 }
 export function CurrencyCombobox({ value, onValueChange, className }: CurrencyComboboxProps) {
     const [open, setOpen] = React.useState(false);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
     const selectedCurrency = currencies.find((c) => c.code === value);
     const filterCurrency = (value: string, search: string) => {
         if (!search) return 1;
@@ -201,15 +202,23 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
         if (normalizedValue.includes(normalizedSearch)) return 0.7;
         return 0;
     };
+    const handleOpenChange = (newOpen: boolean) => {
+        setOpen(newOpen);
+        if (!newOpen && buttonRef.current) {
+            // Blur button when popover closes to remove focus styles
+            buttonRef.current.blur();
+        }
+    };
     return (
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={handleOpenChange}>
             <PopoverTrigger asChild>
                 <Button
+                    ref={buttonRef}
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        'w-full flex items-center gap-2 h-10 text-sm font-bold border border-slate-200 bg-white shadow-sm px-3 transition-all rounded-xl hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
+                        'w-full flex items-center gap-2 h-10 text-sm font-bold border border-slate-200 bg-white shadow-sm px-3 transition-all duration-200 rounded-xl hover:shadow-md hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5',
                         !value && 'text-muted-foreground',
                         className
                     )}
@@ -247,6 +256,9 @@ export function CurrencyCombobox({ value, onValueChange, className }: CurrencyCo
                                     onSelect={() => {
                                         onValueChange(currency.code);
                                         setOpen(false);
+                                        if (buttonRef.current) {
+                                            buttonRef.current.blur();
+                                        }
                                     }}
                                 >
                                     <div className="flex items-center gap-2">

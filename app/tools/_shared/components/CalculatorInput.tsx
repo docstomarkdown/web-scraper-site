@@ -207,31 +207,41 @@ export function CalculatorInput({
                         }}
                     />
                 )}
-                {groupingTitle && (
-                    <div className="flex items-center gap-2 -ml-[33px] mb-3 relative">
-                        {GroupIcon && (
-                            <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
-                                <GroupIcon className="w-3.5 h-3.5 text-blue-600" />
-                            </div>
-                        )}
-                        <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight flex-1">
-                            {groupingTitle}
-                        </span>
-                        {groupingAction && (
-                            <div className="z-10 ml-auto">
-                                {groupingAction}
-                            </div>
-                        )}
-                        {benchmarkBadge && (
-                            <>
-                                <span className="text-slate-300 text-sm z-10 select-none">·</span>
-                                <span className="text-[11px] text-blue-400 italic z-10 whitespace-nowrap">
-                                    Industry benchmarks pre-filled
-                                </span>
-                            </>
-                        )}
-                    </div>
-                )}
+                {groupingTitle && (() => {
+                    // Parse groupingTitle to separate main title from (Optional)
+                    const optionalMatch = groupingTitle.match(/^(.+?)\s*\((Optional|optional)\)$/i);
+                    const mainTitle = optionalMatch ? optionalMatch[1].trim() : groupingTitle;
+                    const hasOptional = !!optionalMatch;
+                    
+                    return (
+                        <div className="flex items-center gap-2 -ml-[33px] mb-3 relative">
+                            {GroupIcon && (
+                                <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
+                                    <GroupIcon className="w-3.5 h-3.5 text-blue-600" />
+                                </div>
+                            )}
+                            <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight flex-1">
+                                {mainTitle}
+                                {hasOptional && (
+                                    <span className="ml-1.5 text-[11px] font-normal italic text-slate-400">(optional)</span>
+                                )}
+                            </span>
+                            {groupingAction && (
+                                <div className="z-10 ml-auto">
+                                    {groupingAction}
+                                </div>
+                            )}
+                            {benchmarkBadge && (
+                                <>
+                                    <span className="text-slate-300 text-sm z-10 select-none">·</span>
+                                    <span className="text-[11px] text-blue-400 italic z-10 whitespace-nowrap">
+                                        Industry benchmarks pre-filled
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    );
+                })()}
                 <div className="flex items-center gap-3 w-full relative z-10">
                     <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
                         <Label

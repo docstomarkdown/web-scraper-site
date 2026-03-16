@@ -1,7 +1,6 @@
 "use client"
-import { MessagesSquare, ChevronRight, LucideIcon } from "lucide-react"
+import { MessagesSquare, ChevronRight, MessageCircleQuestion, LucideIcon } from "lucide-react"
 import { ToolSectionHeader } from "./ToolSectionHeader"
-import { cn } from "@/lib/utils"
 import {
     Accordion,
     AccordionContent,
@@ -34,11 +33,12 @@ export function ToolFAQ({ title = "Frequently Asked Questions", icon = MessagesS
                         >
                             <AccordionTrigger className="w-full px-5 py-4 hover:no-underline gap-4 [&>svg]:hidden hover:bg-slate-50/60 data-[state=open]:bg-blue-50/40 transition-all duration-300 rounded-2xl">
                                 <div className="flex items-center gap-3.5 text-left flex-1 min-w-0">
-                                    {/* Q badge */}
-                                    <div className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-lg bg-blue-50 border border-blue-100/80 group-data-[state=open]:bg-blue-600 group-data-[state=open]:border-blue-600 transition-all duration-300">
-                                        <span className="text-[10px] font-black text-blue-600 group-data-[state=open]:text-white leading-none transition-colors duration-300">
-                                            Q{index + 1}
+                                    {/* Numbered badge → question icon when open */}
+                                    <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 border border-slate-200/60 group-data-[state=open]:bg-gradient-to-br group-data-[state=open]:from-blue-500 group-data-[state=open]:to-blue-600 group-data-[state=open]:border-transparent group-data-[state=open]:shadow-md group-data-[state=open]:shadow-blue-500/25 transition-all duration-300">
+                                        <span className="text-[11px] font-black text-slate-400 leading-none group-data-[state=open]:hidden">
+                                            {String(index + 1).padStart(2, '0')}
                                         </span>
+                                        <MessageCircleQuestion className="w-4 h-4 text-white hidden group-data-[state=open]:block" />
                                     </div>
                                     {/* Question text */}
                                     <h3 className="text-[14.5px] font-semibold text-slate-700 group-data-[state=open]:text-blue-700 transition-colors duration-300 leading-snug flex-1 min-w-0">
@@ -52,8 +52,7 @@ export function ToolFAQ({ title = "Frequently Asked Questions", icon = MessagesS
                             </AccordionTrigger>
 
                             <AccordionContent className="px-5 pb-5 pt-0">
-                                {/* Answer indented to align with question text */}
-                                <div className="pl-[calc(1.75rem+14px)] border-t border-blue-100/60 pt-3.5 mt-0.5">
+                                <div className="ml-[calc(2rem+14px)] border-t border-blue-100/60 pt-3.5 mt-0.5">
                                     <p
                                         className="text-[13.5px] text-slate-500 leading-relaxed font-medium [&_strong]:font-semibold [&_strong]:text-slate-600 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
                                         dangerouslySetInnerHTML={{ __html: faq.answer }}
