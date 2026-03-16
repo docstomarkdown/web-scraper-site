@@ -28,7 +28,7 @@ export default function DimensionConverterPage() {
                             faqs={[
                                 {
                                     question: "What units does this converter support?",
-                                    answer: "The Dimension Converter supports <b>Inches (IN)</b> and <b>Centimeters (CM)</b>. Select your input unit using the toggle tabs, then enter Length, Width, and Height. The tool automatically converts all three dimensions to the opposite unit."
+                                    answer: "The Dimension Converter supports <b>Inches (in)</b> and <b>Centimeters (cm)</b>. Select your input unit using the toggle tabs, then enter Length, Width, and Height. The tool automatically converts all three dimensions to the opposite unit."
                                 },
                                 {
                                     question: "How does the conversion work?",

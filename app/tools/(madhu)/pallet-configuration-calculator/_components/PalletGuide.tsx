@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { Package, RotateCcw, Layers, TrendingUp, AlertTriangle, Truck } from "lucide-react"
+import { Package, RotateCcw, SlidersHorizontal, Maximize, AlertTriangle, Truck } from "lucide-react"
 export function PalletGuide() {
     return (
         <ToolGuide
@@ -24,14 +24,14 @@ export function PalletGuide() {
                 {
                     title: "Understanding Configuration Presets",
                     description: "Standard LTL (72\" / 2,500 lb) is ideal for general freight. Amazon FBA (72\" / 1,500 lb) ensures warehouse compliance. Max Volume (96\" / 3,000 lb) maximizes full truckload efficiency. Double Stack (48\" / 1,200 lb) allows two pallets stacked vertically in a trailer. Choose the preset that matches your shipping method.",
-                    icon: Layers,
+                    icon: SlidersHorizontal,
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600"
                 },
                 {
                     title: "Space Efficiency Explained",
                     description: "This percentage shows how much of the pallet's surface area is covered by boxes. 90%+ is excellent, 80-89% is good, below 80% suggests trying a different pallet size or box orientation. The calculator also shows overhang (unused edge space) and unused height to help you optimize further.",
-                    icon: TrendingUp,
+                    icon: Maximize,
                     iconBg: "bg-green-50",
                     iconColor: "text-green-600"
                 },

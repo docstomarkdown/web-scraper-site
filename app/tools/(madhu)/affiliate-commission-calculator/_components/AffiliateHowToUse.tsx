@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { MousePointerClick, ShoppingCart, DollarSign } from "lucide-react"
+import { MousePointerClick, ShoppingCart, Handshake } from "lucide-react"
 export function AffiliateHowToUse() {
     return (
         <ToolSteps
@@ -19,7 +19,7 @@ export function AffiliateHowToUse() {
                 {
                     title: "Analyze Your Results",
                     description: "Instantly view your total <strong>Affiliate Payout</strong>, along with breakdowns for <strong>Revenue</strong>, <strong>Estimated Sales</strong>, and <strong>Net Profit</strong>.",
-                    icon: DollarSign
+                    icon: Handshake
                 }
             ]}
         />

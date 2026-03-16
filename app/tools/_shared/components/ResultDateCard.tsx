@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { Card } from "@/components/ui/card"
-import { Activity, Calendar, Check } from "lucide-react"
+import { Activity, Calendar, Check, ClipboardPenLine, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import type { ChecklistItem } from "./ResultSummaryCard"
@@ -227,19 +227,25 @@ export function ResultDateCard({
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: 0.55, ease: "easeOut" }}
-                                        className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 max-w-[220px] pointer-events-auto"
+                                        className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 w-fit max-w-[320px] pointer-events-auto"
                                     >
                                         <div className="relative flex items-center justify-center">
-                                            <span className="absolute w-10 h-10 rounded-full bg-blue-400/20 animate-ping" style={{ animationDuration: "2.4s" }} />
-                                            <div className="relative w-9 h-9 rounded-full bg-blue-600/10 border border-blue-200/60 flex items-center justify-center text-blue-500">
-                                                <Activity className="w-4 h-4" />
+                                            <span className="absolute w-11 h-11 rounded-xl bg-blue-400/15 animate-ping" style={{ animationDuration: "2.8s" }} />
+                                            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200/60 flex items-center justify-center text-blue-500 shadow-sm">
+                                                <ClipboardPenLine className="w-[18px] h-[18px]" />
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-center gap-1.5">
-                                            <p className="text-[12.5px] text-slate-500 font-semibold leading-snug text-center">
-                                                Complete the inputs to generate your
-                                            </p>
-                                            <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-600/10 border border-blue-200/60 text-[11px] font-black text-blue-700 tracking-wide">
+                                            <div className="flex items-center gap-3 text-blue-500/70">
+                                                <svg className="w-5 h-3 shrink-0" viewBox="0 0 40 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M9 19l-7-7 7-7" />
+                                                    <path d="M2 12h36" />
+                                                </svg>
+                                                <p className="text-[12.5px] text-slate-500 font-semibold leading-snug whitespace-nowrap z-10">
+                                                    Complete the inputs to generate your
+                                                </p>
+                                            </div>
+                                            <span className="inline-flex items-center px-3 py-1 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100/80 text-[11.5px] font-extrabold text-blue-600/90 tracking-wide shadow-sm shadow-blue-100/50">
                                                 {emptyLabel}
                                             </span>
                                         </div>
@@ -337,7 +343,7 @@ export function ResultDateCard({
                                             <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.08em] leading-none mb-1.5 group-hover:text-slate-500 transition-colors">
                                                 {dateSection.label}
                                             </p>
-                                            <p className="text-[16px] font-extrabold text-slate-600 tracking-tight truncate">
+                                            <p className="text-[16px] font-extrabold text-slate-500 tracking-tight truncate">
                                                 {isCalculated ? dateSection.value : (dateSection.emptyText ?? "Waiting for inputs…")}
                                             </p>
                                         </div>
@@ -358,7 +364,7 @@ export function ResultDateCard({
                                             {infoCard.title}
                                         </p>
                                     )}
-                                    <div className="text-sm font-medium text-slate-600 leading-relaxed">
+                                    <div className="text-sm font-medium text-slate-500 leading-relaxed">
                                         {infoCard.children}
                                     </div>
                                 </motion.div>

@@ -33,8 +33,8 @@ export default function GrossMarginCalculatorPage() {
                                     answer: "Yes. Switch to 'Find Revenue' mode, enter your production cost (COGS), and your target margin. The calculator will tell you the exact minimum price you need to charge to hit that profit goal."
                                 },
                                 {
-                                    question: "What's the difference between Gross Margin and Markup?",
-                                    answer: "Markup is based on cost (how much you add on top), while Margin is based on selling price (how much of the price you keep). A 50% markup only gives you a 33.3% margin. This tool handles the math so you don't get them confused."
+                                    question: "What is a healthy Gross Margin for a business?",
+                                    answer: "While it varies by industry, a <strong>Gross Margin of 30% to 50%</strong> is often considered healthy for many businesses. This provides enough room to cover overhead, marketing, and taxes while still leaving a net profit at the bottom line."
                                 },
                                 {
                                     question: "What should I include in my COGS?",

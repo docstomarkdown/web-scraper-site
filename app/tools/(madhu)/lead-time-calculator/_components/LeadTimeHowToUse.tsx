@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Factory, Ship, ShieldCheck } from "lucide-react"
+import { Factory, Truck, CalendarCheck } from "lucide-react"
 export function LeadTimeHowToUse() {
     return (
         <ToolSteps
@@ -14,12 +14,12 @@ export function LeadTimeHowToUse() {
                 {
                     title: "Transit & Buffer",
                     description: "Input estimated shipping days and an optional buffer for potential delays.",
-                    icon: Ship
+                    icon: Truck
                 },
                 {
                     title: "Delivery Forecast",
-                    description: "Fill the mandatory fields to see your total lead time and estimated arrival date.",
-                    icon: ShieldCheck
+                    description: "Fill in the production and shipping details to see your total lead time and estimated arrival date.",
+                    icon: CalendarCheck
                 }
             ]}
         />

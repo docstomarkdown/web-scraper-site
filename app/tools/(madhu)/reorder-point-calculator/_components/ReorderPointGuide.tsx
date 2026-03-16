@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { AlertCircle, Timer, Warehouse, BookOpen } from "lucide-react"
+import { LineChart, Hourglass, Coins, BookOpen } from "lucide-react"
 export function ReorderPointGuide() {
     return (
         <ToolGuide
@@ -8,30 +8,30 @@ export function ReorderPointGuide() {
             icon={BookOpen}
             items={[
                 {
-                    title: "Maintaining Search Rankings",
-                    description: "Staying in stock ensures you don't lose your hard-earned search rankings on marketplaces like Amazon. Consistent availability is key to visibility.",
-                    icon: AlertCircle,
-                    stat: "Higher",
-                    statLabel: "Search Visibility",
+                    title: "Protect Your Store's Ranking",
+                    description: "Staying in stock is the best way to keep your search ranking high. If you run out, your store could drop in search results, making it harder for customers to find you.",
+                    icon: LineChart,
+                    stat: "Essential",
+                    statLabel: "Consistency",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "Consistent stock levels prevent ranking drops."
+                    tooltip: "Consistent availability prevents ranking drops."
                 },
                 {
-                    title: "Accounting for Buffer Time",
-                    description: "Don't forget to include administrative time along with your supplier's lead time. Processing invoices and arranging freight often adds a few extra days.",
-                    icon: Timer,
-                    stat: "+3 Days",
-                    statLabel: "Average Buffer",
+                    title: "Don't Forget Processing Time",
+                    description: "When calculating lead time, add 2-3 extra days for 'admin time'—like paying the invoice and getting the warehouse ready to receive the goods.",
+                    icon: Hourglass,
+                    stat: "+2 Days",
+                    statLabel: "Admin Buffer",
                     iconBg: "bg-purple-50",
                     iconColor: "text-purple-600",
                     statColor: "text-purple-600"
                 },
                 {
-                    title: "Optimizing Your Capital",
-                    description: "Calculating an accurate reorder point prevents excess inventory buildup, freeing up your cash flow for marketing and launching new products.",
-                    icon: Warehouse,
+                    title: "Use Cash More Wisely",
+                    description: "By knowing exactly when to reorder, you won't buy products too early. This keeps your cash free for other things, like marketing or new product launches.",
+                    icon: Coins,
                     stat: "Better",
                     statLabel: "Cash Flow",
                     iconBg: "bg-emerald-50",

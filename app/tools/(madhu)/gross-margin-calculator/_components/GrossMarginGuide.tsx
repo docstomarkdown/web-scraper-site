@@ -1,44 +1,45 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { AlertTriangle, Wallet, TrendingUp, Lightbulb } from "lucide-react"
+import { ShieldCheck, Target, BarChart3, Lightbulb } from "lucide-react"
 
 export function GrossMarginGuide() {
     return (
         <ToolGuide
-            title="About the Gross Margin Calculator"
+            title="Professional Margin Management"
             icon={Lightbulb}
             items={[
                 {
-                    title: "Protect Your Business Profits",
-                    description: "This tool helps you see the actual percentage of revenue you keep after product costs. Knowing your margin ensures you aren't accidentally selling items at a loss or pricing your hard work too cheaply.",
-                    icon: AlertTriangle,
-                    stat: "Vital Metric",
+                    title: "Defending Your Bottom Line",
+                    description: "Your gross margin is the most accurate pulse check for your business. It tells you exactly how many cents of every dollar you keep to cover your operating expenses and profit.",
+                    icon: ShieldCheck,
+                    stat: "Critical",
                     statLabel: "Profit Health",
-                    iconBg: "bg-red-100",
+                    iconBg: "bg-red-50",
                     iconColor: "text-red-600",
-                    statColor: "text-red-600",
-                    tooltip: "Your gross margin is the first line of defense in your business finances."
+                    statColor: "text-red-700",
+                    tooltip: "Tracking margins allows you to see if your product costs are rising faster than your prices."
                 },
                 {
-                    title: "Smart Pricing Strategy",
-                    description: "Use the built-in modes to work backward. Tell the calculator what margin you want to hit, and it will tell you exactly what price to charge or how much you can afford to spend on manufacturing.",
-                    icon: Wallet,
-                    stat: "Flexible",
-                    statLabel: "3-in-1 Tool",
-                    iconBg: "bg-amber-100",
+                    title: "Reverse Pricing Strategy",
+                    description: "Don't guess your prices. Use the <strong>Find Revenue</strong> mode to tell the tool your required margin, and it will give you the exact price point needed to hit your financial goals.",
+                    icon: Target,
+                    stat: "3-in-1",
+                    statLabel: "Tool Versatility",
+                    iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
-                    statColor: "text-amber-600",
-                    tooltip: "Switch between finding your margin, setting a target price, or creating a cost budget."
+                    statColor: "text-amber-700",
+                    tooltip: "Switch instantly between calculating margin, required price, or manufacturing cost limits."
                 },
                 {
-                    title: "Actionable Revenue Insights",
-                    description: "Visualise your store's performance with the revenue breakdown bar. It clearly shows how much of your money goes to costs versus how much stays with you as gross profit from every sale.",
-                    icon: TrendingUp,
-                    stat: "Visual",
-                    statLabel: "Breakdown Bar",
-                    iconBg: "bg-emerald-100",
+                    title: "Precision Cost Mapping",
+                    description: "Use the <strong>Find COGS</strong> mode when your market price is fixed. This tells you the absolute maximum you can afford to pay for manufacturing while protecting your target margin.",
+                    icon: BarChart3,
+                    stat: "Budgeting",
+                    statLabel: "Cost Control",
+                    iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-600",
-                    statColor: "text-emerald-600"
+                    statColor: "text-emerald-700",
+                    tooltip: "Visualizing your revenue breakdown helps you see exactly where your capital is being allocated."
                 }
             ]}
         />

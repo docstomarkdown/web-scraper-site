@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Box, Layers, Truck } from "lucide-react"
+import { Box, Settings2, Grid3x3 } from "lucide-react"
 export function PalletHowToUse() {
     return (
         <ToolSteps
@@ -14,12 +14,12 @@ export function PalletHowToUse() {
                 {
                     title: "Configure Pallet Settings",
                     description: "Select Standard US, Euro, or custom pallet size. Then choose a preset configuration or set max height and weight limits.",
-                    icon: Layers
+                    icon: Settings2
                 },
                 {
                     title: "View Optimal Configuration",
                     description: "See the best box orientation, total units per pallet, layers, and 3D visualization instantly.",
-                    icon: Truck
+                    icon: Grid3x3
                 }
             ]}
         />

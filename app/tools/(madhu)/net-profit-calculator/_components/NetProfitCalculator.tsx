@@ -124,7 +124,7 @@ export function NetProfitCalculator() {
                                         groupingIcon={Calculator}
                                     />
                                     <CalculatorInput
-                                        label={`Ad Spend (Marketing)`}
+                                        label={`Ad Spend`}
                                         value={adSpend}
                                         onChange={setAdSpend}
                                         placeholder="5000.00"
@@ -140,7 +140,7 @@ export function NetProfitCalculator() {
                                         isOptional={true}
                                     />
                                     <CalculatorInput
-                                        label={`Estimated Tax Rate (%)`}
+                                        label={`Estimated Tax Rate`}
                                         value={taxRate}
                                         onChange={setTaxRate}
                                         placeholder="Avg: 20"

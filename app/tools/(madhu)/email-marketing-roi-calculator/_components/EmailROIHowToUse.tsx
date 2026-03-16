@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Users, BarChart3, DollarSign, TrendingUp } from "lucide-react"
+import { Users, MousePointerClick, DollarSign, TrendingUp } from "lucide-react"
 
 export function EmailROIHowToUse() {
     return (
@@ -15,7 +15,7 @@ export function EmailROIHowToUse() {
                 {
                     title: "Engagement Metrics",
                     description: "Input your <strong>Open Rate</strong> and <strong>Email CTR</strong> to calculate the traffic generated from your list.",
-                    icon: BarChart3
+                    icon: MousePointerClick
                 },
                 {
                     title: "Sales & Valuation",

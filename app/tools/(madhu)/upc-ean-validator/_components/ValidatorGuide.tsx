@@ -1,5 +1,5 @@
 "use client"
-import { BookOpen, Calculator, AlertTriangle, ShieldCheck, CheckCircle2 } from "lucide-react"
+import { BookOpen, Hash, Bug, Store, Tags } from "lucide-react"
 import { ToolGuide } from "@/app/tools/_shared/components"
 
 export function ValidatorGuide() {
@@ -9,7 +9,7 @@ export function ValidatorGuide() {
             icon={BookOpen}
             items={[
                 {
-                    icon: Calculator,
+                    icon: Hash,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
                     statColor: "text-blue-600",
@@ -19,7 +19,7 @@ export function ValidatorGuide() {
                     description: "The last digit of every UPC/EAN barcode is a calculated checksum using the Modulo 10 algorithm. This digit validates the integrity of all previous digits. If incorrect, the barcode won't scan at point-of-sale terminals."
                 },
                 {
-                    icon: ShieldCheck,
+                    icon: Store,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-500",
                     statColor: "text-emerald-600",
@@ -29,7 +29,7 @@ export function ValidatorGuide() {
                     description: "Invalid barcodes cause scanning failures at checkout, inventory errors, and listing rejections on e-commerce platforms. Our validator catches errors before they become costly problems."
                 },
                 {
-                    icon: AlertTriangle,
+                    icon: Bug,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
                     statColor: "text-amber-600",
@@ -39,7 +39,7 @@ export function ValidatorGuide() {
                     description: "Most barcode errors fall into two categories: length errors (wrong number of digits) or check digit errors (last digit doesn't match the calculated value). Our tool identifies both and shows the correct check digit."
                 },
                 {
-                    icon: CheckCircle2,
+                    icon: Tags,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
                     statColor: "text-blue-600",

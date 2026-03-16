@@ -31,16 +31,20 @@ export default function InventoryTurnoverCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is a healthy turnover ratio for e-commerce?",
-                                    answer: "For most mature e-commerce brands, a ratio between <b>4 and 8</b> is ideal. High-volume categories like apparel or food may aim for 12+, while luxury goods often sit around 2-3."
+                                    question: "What does the Inventory Turnover Ratio actually tell me?",
+                                    answer: "It measures how many times your business has sold and replaced its inventory during a specific period. A higher ratio generally means you're selling goods quickly and managing your stock efficiently without overstocking."
                                 },
                                 {
-                                    question: "How does DSI (Days Sales in Inventory) affect cash flow?",
-                                    answer: "DSI represents how long your cash is 'trapped' in stock. Reducing DSI from 60 to 45 days can free up 25% of your inventory capital for marketing or new product development."
+                                    question: "Is a higher turnover ratio always better?",
+                                    answer: "Usually, yes, but there's a limit. An extremely high ratio might mean you're keeping too little stock, which can lead to 'stockouts' (running out of items) and losing potential sales because you can't meet demand."
                                 },
                                 {
-                                    question: "Should I include shipping costs in my COGS?",
-                                    answer: "Yes. For the most accurate efficiency rating, use <b>Landed COGS</b> (Product Cost + Freight + Customs) rather than just the wholesale price."
+                                    question: "What is the difference between Turnover Ratio and DSI?",
+                                    answer: "They are two sides of the same coin. The <b>Turnover Ratio</b> tells you how <i>many times</i> you sold your stock, while <b>DSI (Days Sales in Inventory)</b> tells you exactly <i>how many days</i> on average it takes to turn your stock into a sale."
+                                },
+                                {
+                                    question: "How can I improve a low turnover ratio?",
+                                    answer: "You can improve it by better forecasting demand to avoid over-ordering, running promotions to clear slow-moving items, or reviewing your product line to remove items that aren't selling well."
                                 }
                             ]}
                         />

@@ -1,25 +1,25 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { DollarSign, Package, TrendingUp } from "lucide-react"
+import { Wallet, Box, ShoppingCart } from "lucide-react"
 export function InfluencerHowToUse() {
     return (
         <ToolSteps
-            title="How to Calculate Your ROI"
+            title="How to Calculate Campaign Success"
             steps={[
                 {
                     title: "Campaign Costs",
-                    description: "Input your <strong>Influencer Fee</strong> and optional <strong>Ad Spend</strong>. See your <strong>Total Cost</strong> breakdown instantly.",
-                    icon: DollarSign
+                    description: "Enter the fixed <strong>Influencer Fee</strong> and any optional <strong>Ad Spend</strong> used to boost the campaign reach.",
+                    icon: Wallet
                 },
                 {
-                    title: "Add Sales Data",
-                    description: "Enter <strong>Average Selling Price</strong> and <strong>Total Orders</strong>. View your <strong>Total Revenue</strong> and <strong>ROI</strong> percentage.",
-                    icon: TrendingUp
+                    title: "Unit Profitability",
+                    description: "Add your <strong>Product Cost</strong> and <strong>Shipping</strong> to calculate a true net profit rather than just a gross revenue estimate.",
+                    icon: Box
                 },
                 {
-                    title: "Product Costs",
-                    description: "Add <strong>Product Cost</strong> and <strong>Shipping</strong> for accurate <strong>Net Profit</strong> and <strong>Profit per Order</strong> calculations.",
-                    icon: Package
+                    title: "Sales Results",
+                    description: "Input your <strong>Selling Price</strong> and <strong>Total Orders</strong> to instantly see your <strong>ROI</strong> and <strong>Profit per Order</strong>.",
+                    icon: ShoppingCart
                 }
             ]}
         />

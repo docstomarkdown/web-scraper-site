@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Package, Layers } from "lucide-react"
+import { Box, Layers } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { ResultSummaryCard, CalculatorInput, CalculatorCardHeader } from "@/app/tools/_shared/components"
@@ -91,7 +91,7 @@ export function CubicFeetCalculator() {
                                         type="number"
                                         tooltip="Enter the length dimension of your item (typically the longest side, front-to-back measurement)"
                                         groupingTitle="Dimensions"
-                                        groupingIcon={Package}
+                                        groupingIcon={Box}
                                         groupingAction={
                                             <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans ml-4 w-36 sm:w-44">
                                                 {(["ft", "in", "cm", "m"] as DimensionUnit[]).map((u) => (
@@ -99,7 +99,7 @@ export function CubicFeetCalculator() {
                                                         key={u}
                                                         onClick={() => setUnit(u)}
                                                         className={cn(
-                                                            "px-3 h-full rounded-md text-[10px] font-bold transition-all uppercase flex-1 flex items-center justify-center",
+                                                            "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
                                                             unit === u
                                                                 ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                 : "text-slate-500 hover:text-slate-900"
@@ -156,7 +156,7 @@ export function CubicFeetCalculator() {
                         title="Total Volume"
                         primaryResult={{
                             value: formatNumber(results.cft, 2),
-                            unit: "CFT",
+                            unit: "ft³",
                             label: "Cubic Feet",
                             key: "cft"
                         }}
@@ -165,14 +165,14 @@ export function CubicFeetCalculator() {
                                 key: "cbm",
                                 label: "Cubic meters",
                                 value: formatNumber(results.cbm, 4),
-                                unit: "CBM",
+                                unit: "m³",
                                 tooltip: "Cubic meters - standard unit for international freight"
                             },
                             {
                                 key: "inches",
                                 label: "Cubic inches",
                                 value: formatNumber(results.inches, 2),
-                                unit: "IN³",
+                                unit: "in³",
                                 tooltip: "Total volume in cubic inches"
                             }
                         ]}

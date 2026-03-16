@@ -1,52 +1,52 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components"
-import { Activity, AlertCircle, Calendar, Warehouse, BookOpen } from "lucide-react"
+import { Hourglass, Gauge, CalendarDays, Warehouse, BookOpen } from "lucide-react"
 export function InventoryTurnoverGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About Inventory Optimization"
+            title="How This Tool Optimizes Your Inventory"
             icon={BookOpen}
             items={[
                 {
-                    title: "The 90-Day Liquidity Wall",
-                    description: "In e-commerce, stock that doesn't move within 90 days often requires aggressive discounting to recover capital, destroying margins.",
-                    icon: Activity,
-                    stat: "90 Days",
-                    statLabel: "The Danger Zone",
-                    iconBg: "bg-orange-50",
-                    iconColor: "text-orange-600",
-                    statColor: "text-orange-600",
-                    tooltip: "Any index over 90 DSI is usually considered inefficient for high-growth brands."
+                    title: "Measure Your Sales Speed",
+                    description: "This calculator helps you understand how quickly your products are moving. By tracking your turnover ratio, you can see if you're selling as fast as you're buying.",
+                    icon: Gauge,
+                    stat: "Analyze",
+                    statLabel: "Sales Flow",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-600",
+                    statColor: "text-blue-600",
+                    tooltip: "The ratio shows how many times your stock 'turns over' in a year."
                 },
                 {
-                    title: "Velocity vs. Availability",
-                    description: "A turnover ratio above 12x looks efficient but often hides frequent stock-outs. Don't starve your growth for 'perfect' ratios.",
-                    icon: AlertCircle,
-                    stat: "4-8x",
-                    statLabel: "Target Range",
+                    title: "Calculate Cash-to-Cash Time",
+                    description: "Find out exactly how many days your cash is tied up in physical stock. The 'Days Sales in Inventory' (DSI) result tells you when you can expect that inventory to turn back into cash.",
+                    icon: Hourglass,
+                    stat: "DSI",
+                    statLabel: "Cash Cycle",
+                    iconBg: "bg-orange-50",
+                    iconColor: "text-orange-600",
+                    statColor: "text-orange-600"
+                },
+                {
+                    title: "Avoid Overstock Costs",
+                    description: "Use this tool to identify if you have too much capital sitting in the warehouse. Reducing overstock saves you on storage fees and prevents items from becoming outdated.",
+                    icon: Warehouse,
+                    stat: "Save",
+                    statLabel: "Storage Cap",
                     iconBg: "bg-red-50",
                     iconColor: "text-red-600",
                     statColor: "text-red-600"
                 },
                 {
-                    title: "The Seasonal Distortion",
-                    description: "Calculating annual turnover during peak season (Q4) gives a false positive. Always compare Q4 ratios against Q4 of the previous year.",
-                    icon: Calendar,
-                    stat: "Q4",
-                    statLabel: "Skew Risk",
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-600",
-                    statColor: "text-blue-600"
-                },
-                {
-                    title: "Storage Cost Multiplier",
-                    description: "Low turnover metrics (under 4x) don't just trap cash—they actively consume it through long-term storage fees, especially with 3PLs.",
-                    icon: Warehouse,
-                    stat: "+15%",
-                    statLabel: "Cost Increase",
-                    iconBg: "bg-amber-50",
-                    iconColor: "text-amber-600",
-                    statColor: "text-amber-600"
+                    title: "Simplify Stock Planning",
+                    description: "By knowing your turnover patterns, you can make smarter decisions on when to reorder and how much to buy, ensuring you always have enough for customers without over-buying.",
+                    icon: CalendarDays,
+                    stat: "Smart",
+                    statLabel: "Planning",
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
+                    statColor: "text-emerald-600"
                 }
             ]}
         />

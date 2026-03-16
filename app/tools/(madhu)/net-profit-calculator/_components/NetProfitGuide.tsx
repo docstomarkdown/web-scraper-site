@@ -1,44 +1,44 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { TrendingUp, DollarSign, Calculator, BookOpen } from "lucide-react"
+import { Activity, CreditCard, Landmark, BookOpen } from "lucide-react"
 export function NetProfitGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About This Process"
+            title="Strategies for Sustainable Profit"
             icon={BookOpen}
             items={[
                 {
-                    title: "Revenue is Vanity",
-                    description: "High revenue figures look great on social media, but they tell you nothing about business health. A $1M business with $990k in costs is far more fragile than a $100k business with $30k in net profit.",
-                    icon: TrendingUp,
+                    title: "The Vanity of Revenue",
+                    description: "High revenue looks great on paper but tells you nothing about stability. A $1M business with a 1% margin is riskier than a $100k business with a 30% Net Profit. Focus on your bottom line, not just the top.",
+                    icon: Activity,
                     stat: "10-20%",
-                    statLabel: "Average Net Margin",
-                    iconBg: "bg-emerald-100",
-                    iconColor: "text-emerald-600",
-                    statColor: "text-emerald-600",
-                    tooltip: "The typical benchmark for a healthy, sustainable e-commerce brand."
+                    statLabel: "Target Margin",
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-600",
+                    statColor: "text-blue-700",
+                    tooltip: "A 15% net margin is generally considered the benchmark for a healthy, profitable e-commerce brand."
                 },
                 {
-                    title: "The Overhead Creep",
-                    description: "Small monthly subscriptions and 'miscellaneous' expenses can quietly eat 5-10% of your margins. If you aren't tracking overhead, you aren't tracking the bottom line.",
-                    icon: DollarSign,
+                    title: "Eliminating Overhead Creep",
+                    description: "Small subscriptions and 'miscellaneous' fees can quietly consume 5-10% of your total revenue. Regular audits of your recurring expenses are the fastest way to instantly boost your net profit.",
+                    icon: CreditCard,
                     stat: "-12%",
-                    statLabel: "Margin Leakage",
-                    iconBg: "bg-amber-100",
+                    statLabel: "Average Leakage",
+                    iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
-                    statColor: "text-amber-600",
-                    tooltip: "Typical percentage of profit lost to untracked subscriptions and processing fees."
+                    statColor: "text-amber-700",
+                    tooltip: "Business owners often underestimate their overhead by 25% or more before doing a formal calculation."
                 },
                 {
-                    title: "The Silent Tax Trap",
-                    description: "Many owners confuse 'Cash in Bank' with 'Profit.' Always set aside your estimated tax amount immediately, or you'll find yourself in a cash flow crisis during tax season.",
-                    icon: Calculator,
+                    title: "Navigating the Tax Trap",
+                    description: "Cash in the bank is not the same as Profit. Always allocate your tax percentage immediately to avoid a cash flow crisis. This tool helps you see your 'True Take-Home' after the government takes its share.",
+                    icon: Landmark,
                     stat: "25%+",
                     statLabel: "Tax Allocation",
-                    iconBg: "bg-red-100",
+                    iconBg: "bg-red-50",
                     iconColor: "text-red-600",
-                    statColor: "text-red-600",
-                    tooltip: "Recommended percentage of operating profit to set aside for business taxes."
+                    statColor: "text-red-700",
+                    tooltip: "Setting aside 25-30% of your operating profit for taxes ensures you never have to scramble during tax season."
                 }
             ]}
         />

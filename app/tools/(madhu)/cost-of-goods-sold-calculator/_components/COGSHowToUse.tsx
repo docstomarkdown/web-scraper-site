@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Package, Truck, RotateCcw, TrendingUp } from "lucide-react"
+import { Package, Truck, Layers } from "lucide-react"
 
 export function COGSHowToUse() {
     return (
@@ -13,14 +13,14 @@ export function COGSHowToUse() {
                     icon: Package
                 },
                 {
-                    title: "Add Fulfillment Details",
+                    title: "Fulfillment Details",
                     description: "Include the fulfillment fee (like pick-and-pack) and outbound shipping to calculate your complete COGS per unit.",
                     icon: Truck
                 },
                 {
-                    title: "Calculate Total COGS - Optional",
+                    title: "Total COGS",
                     description: "Enter the number of units sold to instantly calculate your Total Cost of Goods Sold across your entire inventory.",
-                    icon: TrendingUp
+                    icon: Layers
                 }
             ]}
         />
