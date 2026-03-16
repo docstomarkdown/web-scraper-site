@@ -1,6 +1,6 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Package, TrendingUp, Calendar } from "lucide-react"
+import { Package, CircleGauge, Calendar } from "lucide-react"
 export function DaysOfInventoryHowToUse() {
     return (
         <ToolSteps
@@ -14,7 +14,7 @@ export function DaysOfInventoryHowToUse() {
                 {
                     title: "Sales Speed",
                     description: "Input how many units you typically sell per day, week, or month.",
-                    icon: TrendingUp
+                    icon: CircleGauge
                 },
                 {
                     title: "View Your Runway",

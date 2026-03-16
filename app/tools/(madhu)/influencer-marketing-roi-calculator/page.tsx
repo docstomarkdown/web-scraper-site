@@ -27,20 +27,20 @@ export default function InfluencerROICalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "Why are some fields mandatory and others optional?",
-                                    answer: "To calculate a basic marketing ROI, you only need three core numbers: <strong>Influencer Fee</strong>, <strong>Selling Price</strong>, and <strong>Number of Orders</strong>. We made secondary costs (like <strong>Ad Spend</strong>, <strong>Product Cost</strong>, and <strong>Shipping</strong>) optional so you can get a quick estimate in seconds, while still offering the flexibility to calculate a deeper <strong>Net Profit ROI</strong> if you know those numbers."
+                                    question: "What is the difference between ROAS and ROI in this tool?",
+                                    answer: "<strong>ROAS</strong> (Return on Ad Spend) measures the gross revenue generated specifically from your marketing costs. If you only provide the <strong>Fee</strong> and <strong>Price</strong>, we show your ROAS. However, once you add <strong>Product</strong> and <strong>Shipping</strong> costs, the tool calculates your <strong>Net ROI</strong>, which shows your true back-pocket profit after all expenses are covered."
                                 },
                                 {
-                                    question: "What happens if I leave the optional 'Product Cost' or 'Shipping' fields blank?",
-                                    answer: "If you leave the optional fields empty, the calculator simply treats them as $0. This means your final ROI will reflect a <strong>Gross Return on Ad Spend (ROAS)</strong> rather than a <strong>True Net Profit</strong>. It's perfectly fine to do this if you are just evaluating the marketing efficiency of the influencer."
+                                    question: "How should I account for 'gifted' products instead of a fee?",
+                                    answer: "If you didn't pay a cash fee but sent a free product instead, you should enter the <strong>Product Cost (COGS)</strong> of that gift into the <strong>Influencer Fee</strong> field. This ensures your ROI calculation accounts for the actual capital you invested in that partnership."
                                 },
                                 {
-                                    question: "What is a good ROI % for an influencer campaign?",
-                                    answer: "A healthy direct-response campaign typically targets a <strong>ROI of 100% or higher</strong>, meaning you earn back at least double what you spent on the campaign. For pure brand awareness, breaking even (0% ROI) is often acceptable if the campaign builds long-term audience trust and search volume."
+                                    question: "What is a 'Good' ROI for Influencer Marketing?",
+                                    answer: "For direct-response sales, an ROI of <strong>100% (2x return)</strong> is a strong benchmark. However, influencer campaigns often provide 'hidden' value through <strong>UGC</strong> and <strong>Brand Awareness</strong>. If a campaign results in a 0% ROI (Break Even) but gives you high-quality video content for your future ads, it is often considered a successful investment."
                                 },
                                 {
-                                    question: "How is 'Total Cost' calculated if I fill out all the fields?",
-                                    answer: "The calculator adds your fixed upfront costs (<strong>Influencer Fee + Ad Spend</strong>) to your variable fulfillment costs. It multiplies your (<strong>Product Cost + Shipping Cost</strong>) by the <strong>Total Orders</strong>, and then adds that figure to your campaign spend to give you a highly accurate <strong>True Total Cost</strong>."
+                                    question: "Why is tracking 'Profit per Order' useful?",
+                                    answer: "While total ROI is great for high-level reporting, <strong>Profit per Order</strong> tells you if your unit economics are healthy. If your influencer drives 1,000 sales but your profit per order is only $1, your margins might be too thin to sustain scaling. This metric helps you decide which products are best suited for influencer promotions."
                                 }
                             ]}
                         />

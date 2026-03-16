@@ -208,7 +208,7 @@ export function CalculatorInput({
                     />
                 )}
                 {groupingTitle && (
-                    <div className="flex items-center gap-2 -ml-[33px] mb-0.5 relative h-7">
+                    <div className="flex items-center gap-2 -ml-[33px] mb-3 relative">
                         {GroupIcon && (
                             <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
                                 <GroupIcon className="w-3.5 h-3.5 text-blue-600" />

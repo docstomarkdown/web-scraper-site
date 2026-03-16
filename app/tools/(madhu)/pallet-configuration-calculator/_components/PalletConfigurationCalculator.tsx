@@ -253,7 +253,8 @@ export function PalletConfigurationCalculator() {
                                 <div className="space-y-3">
                                     <CalculatorInput
                                         hideSeparator={true}
-                                        label={`Length (${unit})`}
+                                        label="Length"
+                                        suffix={unit}
                                         value={boxDimensions.length}
                                         onChange={(val) => handleBoxChange('length', val.toString())}
                                         placeholder="12.00"
@@ -268,7 +269,7 @@ export function PalletConfigurationCalculator() {
                                                         key={u}
                                                         onClick={() => setUnit(u)}
                                                         className={cn(
-                                                            "px-3 h-full rounded-md text-[10px] font-bold transition-all uppercase",
+                                                            "px-3 h-full rounded-md text-[11px] font-bold transition-all",
                                                             unit === u
                                                                 ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                 : "text-slate-500 hover:text-slate-900"
@@ -281,7 +282,8 @@ export function PalletConfigurationCalculator() {
                                         }
                                     />
                                     <CalculatorInput
-                                        label={`Width (${unit})`}
+                                        label="Width"
+                                        suffix={unit}
                                         value={boxDimensions.width}
                                         onChange={(val) => handleBoxChange('width', val.toString())}
                                         placeholder="8.00"
@@ -289,7 +291,8 @@ export function PalletConfigurationCalculator() {
                                         tooltip="Width of the box in the selected unit"
                                     />
                                     <CalculatorInput
-                                        label={`Height (${unit})`}
+                                        label="Height"
+                                        suffix={unit}
                                         value={boxDimensions.height}
                                         onChange={(val) => handleBoxChange('height', val.toString())}
                                         placeholder="6.00"
@@ -297,7 +300,8 @@ export function PalletConfigurationCalculator() {
                                         tooltip="Height of the box in the selected unit"
                                     />
                                     <CalculatorInput
-                                        label="Weight (lb)"
+                                        label="Weight"
+                                        suffix="lb"
                                         value={boxDimensions.weight}
                                         onChange={(val) => handleBoxChange('weight', val.toString())}
                                         placeholder="10.00"
@@ -335,13 +339,13 @@ export function PalletConfigurationCalculator() {
                                                     </Label>
                                                 </div>
                                                 <div className="flex-shrink-0">
-                                                    <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 h-11 font-sans w-36 sm:w-44">
+                                                    <div className="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans w-36 sm:w-44">
                                                         {(['standard-us', 'euro', 'custom'] as const).map((t) => (
                                                             <button
                                                                 key={t}
                                                                 onClick={() => setPalletType(t)}
                                                                 className={cn(
-                                                                    "flex-1 h-full rounded-lg text-[10px] font-bold transition-all uppercase whitespace-nowrap",
+                                                                    "flex-1 h-full rounded-md text-[10px] font-bold transition-all uppercase whitespace-nowrap",
                                                                     palletType === t
                                                                         ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                         : "text-slate-500 hover:text-slate-900"
@@ -374,20 +378,22 @@ export function PalletConfigurationCalculator() {
                                     {palletType === 'custom' && (
                                         <>
                                             <CalculatorInput
-                                                label="Pallet length (in)"
+                                                label="Pallet length"
+                                                suffix={unit}
                                                 value={customPallet.length}
                                                 onChange={(val) => handleCustomPalletChange('length', val.toString())}
                                                 placeholder="48.00"
                                                 type="number"
-                                                tooltip="Length of the custom pallet in inches"
+                                                tooltip="Length of the custom pallet in the selected unit"
                                             />
                                             <CalculatorInput
-                                                label="Pallet width (in)"
+                                                label="Pallet width"
+                                                suffix={unit}
                                                 value={customPallet.width}
                                                 onChange={(val) => handleCustomPalletChange('width', val.toString())}
                                                 placeholder="40.00"
                                                 type="number"
-                                                tooltip="Width of the custom pallet in inches"
+                                                tooltip="Width of the custom pallet in the selected unit"
                                             />
                                         </>
                                     )}
@@ -454,8 +460,8 @@ export function PalletConfigurationCalculator() {
                                                                     {selectedPreset === "double-stack" && <Layers className="w-4 h-4 text-blue-500 shrink-0" />}
                                                                     {selectedPreset === "custom" && <RefreshCw className="w-4 h-4 text-slate-400 shrink-0" />}
                                                                     <span className={cn(
-                                                                        "truncate text-center text-[16px]",
-                                                                        selectedPreset !== "custom" ? "text-blue-600 font-bold" : "text-slate-700"
+                                                                        "truncate text-center text-[15px]",
+                                                                        selectedPreset !== "custom" ? "text-blue-600 font-semibold" : "text-slate-700 font-semibold"
                                                                     )}>
                                                                         {selectedPreset === "standard" && "Standard LTL"}
                                                                         {selectedPreset === "amazon" && "Amazon FBA"}
@@ -520,7 +526,8 @@ export function PalletConfigurationCalculator() {
                                     </div>
                                     
                                     <CalculatorInput
-                                        label="Max height (in)"
+                                        label="Max height"
+                                        suffix={unit}
                                         value={stackLimits.maxHeight}
                                         onChange={(val) => {
                                             handleStackLimitChange('maxHeight', val.toString())
@@ -528,10 +535,11 @@ export function PalletConfigurationCalculator() {
                                         }}
                                         placeholder="72.00"
                                         type="number"
-                                        tooltip="Maximum allowed height for the loaded pallet in inches"
+                                        tooltip="Maximum allowed height for the loaded pallet in the selected unit"
                                     />
                                     <CalculatorInput
-                                        label="Weight limit (lb)"
+                                        label="Weight limit"
+                                        suffix="lb"
                                         value={stackLimits.weightLimit}
                                         onChange={(val) => {
                                             handleStackLimitChange('weightLimit', val.toString())
@@ -611,8 +619,16 @@ export function PalletConfigurationCalculator() {
                     />
                     {/* Visual Layout Card */}
                     <ResultFeedbackCard
-                        title="Pallet Layout"
-                        titleIcon={Grid3x3}
+                        title={
+                            <div className="flex items-center gap-2 -ml-1 h-7">
+                                <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
+                                    <Grid3x3 className="w-3.5 h-3.5 text-blue-600" />
+                                </div>
+                                <span className="text-[15px] font-semibold text-slate-500 uppercase z-10 tracking-tight">
+                                    Pallet Layout
+                                </span>
+                            </div>
+                        }
                         variant="compact"
                         mainValue={null}
                     >
@@ -640,10 +656,15 @@ export function PalletConfigurationCalculator() {
                                             />
                                             {/* Ghost Overlay for Dummy State */}
                                             {isDummy && (
-                                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
-                                                    <div className="bg-white/90 px-3 py-1.5 rounded-full shadow-sm border border-slate-200 text-[11px] font-bold text-slate-500 flex items-center gap-2">
-                                                        <Grid3x3 className="w-3.5 h-3.5" />
-                                                        Enter dimensions to update
+                                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/40 backdrop-blur-[1px]">
+                                                    <div className="bg-white px-5 py-3 rounded-2xl shadow-[0_8px_30px_rgba(59,130,246,0.08)] border border-blue-50 text-[13px] font-semibold flex flex-col items-center gap-2 group/badge transition-all duration-300 hover:scale-105">
+                                                        <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-1 border border-blue-100/50 shadow-sm">
+                                                            <Box className="w-5 h-5 animate-pulse" />
+                                                        </div>
+                                                        <div className="flex flex-col items-center">
+                                                            <span className="text-slate-400 text-[11px] font-bold uppercase tracking-wider mb-0.5">Ready to design</span>
+                                                            <span className="text-slate-600">Enter box dimensions to preview</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}

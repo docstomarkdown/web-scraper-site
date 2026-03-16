@@ -33,16 +33,16 @@ export default function ReorderPointCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How do I calculate the best Safety Stock?",
-                                    answer: "A standard approach is: (Max Daily Sales × Max Lead Time) - (Average Daily Sales × Average Lead Time). For simpler setups, many sellers just keep 20% of their lead time demand as safety stock."
+                                    question: "How do I decide on the right Safety Stock?",
+                                    answer: "A simple rule of thumb is to keep enough stock for 20% of your lead time. For example, if it takes 30 days to get new stock, keep an extra 6 days worth of sales as your 'emergency buffer'."
                                 },
                                 {
-                                    question: "Should I change my ROP for Q4 or Holidays?",
-                                    answer: "Absolutely. During peak seasons, your 'Daily Sales Velocity' can triple. You should recalculate your ROP at least 45 days before a major sales event like Black Friday."
+                                    question: "Should I change my reorder point for busy holiday seasons?",
+                                    answer: "Yes, definitely. When you expect higher sales (like during Black Friday or Christmas), your daily sales will go up. You should update your calculator numbers at least a month before the rush begins."
                                 },
                                 {
-                                    question: "What if my lead time varies every shipment?",
-                                    answer: "Always use the 'Worst Case' lead time in your calculation. If shipping usually takes 20 days but sometimes 30, use 30. It's cheaper to hold 10 extra days of stock than to go out of stock."
+                                    question: "What if my supplier is often late?",
+                                    answer: "If your supplier says delivery takes 20 days but it often takes 25, always use 25 in your calculation. It is much better (and cheaper) to have a little extra stock than to run out and lose sales."
                                 }
                             ]}
                         />

@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components"
-import { Target, Search, AlertCircle, BookOpen, TrendingUp } from "lucide-react"
+import { MousePointerClick, Handshake, ShoppingCart, BookOpen, TrendingUp } from "lucide-react"
 export function AffiliateGuide() {
     return (
         <ToolGuide
@@ -10,7 +10,7 @@ export function AffiliateGuide() {
                 {
                     title: "Start With 3 Core Metrics",
                     description: "You only need three inputs to get a complete payout estimate: <strong>Affiliate Clicks</strong>, <strong>Average Order Value</strong>, and <strong>Commission Rate</strong>. By starting here, you establish your <strong>baseline revenue</strong> and your <strong>total commission liability</strong> instantly.",
-                    icon: Target,
+                    icon: MousePointerClick,
                     stat: "Instant",
                     statLabel: "Payout Estimate",
                     iconBg: "bg-emerald-50",
@@ -21,7 +21,7 @@ export function AffiliateGuide() {
                 {
                     title: "Test Different Commission Scenarios",
                     description: "Since <strong>Commission Rate</strong> is a mandatory input with no default, we recommend testing a few different structures. See how a change from <strong>10%</strong> to <strong>15%</strong> immediately inflates your payout overhead vs your expected total revenue.",
-                    icon: Search,
+                    icon: Handshake,
                     stat: "Compare",
                     statLabel: "Scenarios",
                     iconBg: "bg-blue-50",
@@ -31,7 +31,7 @@ export function AffiliateGuide() {
                 {
                     title: "Understand Product Cost Impact",
                     description: "The optional <strong>Product Cost</strong> field is your key to calculating <strong>Net Profit</strong>. Without it, you only see top-line revenue and affiliate costs. Adding your cost margin instantly reveals if your program is actually financially sustainable.",
-                    icon: AlertCircle,
+                    icon: ShoppingCart,
                     stat: "Margins",
                     statLabel: "Matter",
                     iconBg: "bg-orange-50",

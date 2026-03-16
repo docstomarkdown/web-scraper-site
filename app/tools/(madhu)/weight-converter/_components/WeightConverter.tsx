@@ -121,7 +121,7 @@ export function WeightConverter() {
                                                             key={u}
                                                             onClick={() => setInputUnit(u)}
                                                             className={cn(
-                                                                "px-3 h-full rounded-md text-[10px] font-bold transition-all uppercase flex-1 flex items-center justify-center",
+                                                                "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
                                                                 inputUnit === u
                                                                     ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                     : "text-slate-500 hover:text-slate-900"
@@ -184,7 +184,7 @@ export function WeightConverter() {
                                                                 onClick={() => setTargetUnit(u)}
                                                                 disabled={inputUnit === u}
                                                                 className={cn(
-                                                                    "px-3 h-full rounded-md text-[10px] font-bold transition-all uppercase flex-1 flex items-center justify-center",
+                                                                    "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
                                                                     targetUnit === u
                                                                         ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                         : "text-slate-500 hover:text-slate-900",
@@ -211,7 +211,7 @@ export function WeightConverter() {
                         title="Conversion Result"
                         primaryResult={{
                             value: formatCompact(conversions[targetUnit]),
-                            unit: targetUnit.toUpperCase(),
+                            unit: targetUnit === 'lbs' ? 'lb' : targetUnit,
                             label: "Target Conversion",
                             key: "target"
                         }}
@@ -219,7 +219,7 @@ export function WeightConverter() {
                             key: unit,
                             label: unit === 'lbs' ? 'Pounds' : unit === 'oz' ? 'Ounces' : unit === 'kg' ? 'Kilograms' : 'Grams',
                             value: formatCompact(conversions[unit]),
-                            unit: unit.toUpperCase(),
+                            unit: unit === 'lbs' ? 'lb' : unit,
                             tooltip: `Weight in ${unit === 'lbs' ? 'pounds' : unit === 'oz' ? 'ounces' : unit === 'kg' ? 'kilograms' : 'grams'}`
                         }))}
                         isCalculated={!!inputValue}

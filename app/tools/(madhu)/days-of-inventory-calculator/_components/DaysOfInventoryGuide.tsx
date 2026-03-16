@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { ShieldCheck, Activity, Timer, BookOpen } from "lucide-react"
+import { ShieldCheck, Clock, Bell, BookOpen } from "lucide-react"
 export function DaysOfInventoryGuide() {
     return (
         <ToolGuide
@@ -21,7 +21,7 @@ export function DaysOfInventoryGuide() {
                 {
                     title: "Choosing the Right Timeframe",
                     description: "While monthly data provides a good high-level overview, tracking your average sales speed on a daily or weekly basis captures sudden fluctuations earlier and more accurately.",
-                    icon: Activity,
+                    icon: Clock,
                     stat: "Daily",
                     statLabel: "Best Precision",
                     iconBg: "bg-orange-50",
@@ -31,7 +31,7 @@ export function DaysOfInventoryGuide() {
                 {
                     title: "Timing Your Reorders",
                     description: "Your Actionable Stock Runway tells you exactly how many days of inventory you have left before hitting your safety buffer. Aim to reorder right before this number hits zero!",
-                    icon: Timer,
+                    icon: Bell,
                     stat: "Actionable",
                     statLabel: "Remaining Days",
                     iconBg: "bg-blue-50",

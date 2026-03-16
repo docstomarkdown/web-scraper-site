@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { DollarSign, Activity, AlertCircle, Lightbulb } from "lucide-react"
+import { Wallet, Scale, PiggyBank, Lightbulb } from "lucide-react"
 
 export function EOQGuide() {
     return (
@@ -11,7 +11,7 @@ export function EOQGuide() {
                 {
                     title: "Optimise Your Inventory Spend",
                     description: "This tool calculates your mathematical 'sweet spot' for ordering. It prevents you from tying up too much cash in excess stock while ensuring you don't overspend on shipping and admin fees by ordering too often.",
-                    icon: DollarSign,
+                    icon: Wallet,
                     stat: "Cost Saving",
                     statLabel: "Goal",
                     iconBg: "bg-blue-50",
@@ -22,7 +22,7 @@ export function EOQGuide() {
                 {
                     title: "Find Your Perfect Cost Balance",
                     description: "Efficiency happens when your annual storage costs perfectly match your annual ordering costs. This calculator finds that exact equilibrium point so you never have to guess your order size again.",
-                    icon: Activity,
+                    icon: Scale,
                     stat: "1 : 1",
                     statLabel: "Optimal Ratio",
                     iconBg: "bg-orange-50",
@@ -32,7 +32,7 @@ export function EOQGuide() {
                 {
                     title: "Protect Your Cash Flow",
                     description: "Overordering fills your warehouse, but it also drains your bank account. Use this tool to release frozen capital and reinvest it into growing your business instead of letting it sit on a warehouse shelf.",
-                    icon: AlertCircle,
+                    icon: PiggyBank,
                     stat: "Efficiency",
                     statLabel: "Cash Flow",
                     iconBg: "bg-red-50",

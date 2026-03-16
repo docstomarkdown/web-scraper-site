@@ -28,19 +28,19 @@ export default function NetProfitCalculatorPage() {
                             faqs={[
                                 {
                                     question: "What is the difference between Gross Profit and Net Profit?",
-                                    answer: "Gross Profit is only your Revenue minus COGS. <strong>Net Profit</strong> is what remains after subtracting EVERYTHING else—ads, rent, software, payroll, and taxes. It is your true take-home pay."
+                                    answer: "<strong>Gross Profit</strong> is only your Revenue minus COGS (what it costs to make the product). <strong>Net Profit</strong> is the 'True Bottom Line'—it's what remains after subtracting EVERYTHING else, including ads, rent, software, payroll, and taxes. It is your actual take-home pay."
                                 },
                                 {
-                                    question: "Should I include owner's salary in overhead?",
-                                    answer: "Absolutely. If you don't pay yourself a fair market wage in your calculations, your profit is artificially inflated. You are calculating the profit of the business, not your total compensation."
+                                    question: "Should I include my own salary in the overhead costs?",
+                                    answer: "Yes, you should. If you don't account for a fair market wage for yourself, your business profit is artificially inflated. Tracking your salary as an expense helps you see if the business is truly profitable as an independent entity."
                                 },
                                 {
-                                    question: "What does a negative ROI imply?",
-                                    answer: "A negative ROI means you are losing money on every dollar you spend to run the business. This usually points to high COGS, inefficient ad spend, or a price point that is simply too low."
+                                    question: "What is a 'Healthy' net profit margin for e-commerce?",
+                                    answer: "While it varies by industry, a <strong>Net Profit Margin of 10% to 20%</strong> is generally considered healthy for established e-commerce brands. Brands focus on high-volume, low-margin goods might operate at 5%, while luxury goods can often reach 30% or higher."
                                 },
                                 {
-                                    question: "How should I use the Income & Expense Breakdown chart?",
-                                    answer: "The chart helps you visualize the 'Slices of the Pie.' If 'Ads' or 'COGS' is taking up more than 50% of your total revenue, those are your primary targets for optimization and cost reduction."
+                                    question: "Why does the tool subtract taxes from the net profit?",
+                                    answer: "Many business owners make the mistake of spending 'Operational Profit' before taxes are paid. By subtracting your estimated tax rate, this tool gives you a realistic view of the actual cash you can safely withdraw or reinvest back into the business."
                                 }
                             ]}
                         />

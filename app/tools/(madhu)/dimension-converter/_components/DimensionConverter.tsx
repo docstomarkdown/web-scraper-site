@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Package, ArrowRight, Activity, ClipboardPenLine, ArrowLeft } from "lucide-react"
+import { Ruler, Package, ArrowRight, Activity, ClipboardPenLine, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion, AnimatePresence } from "framer-motion"
@@ -131,7 +131,7 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.55, ease: "easeOut" }}
-                                    className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 max-w-[240px] pointer-events-auto"
+                                    className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 w-fit max-w-[320px] pointer-events-auto"
                                 >
                                     <div className="relative flex items-center justify-center">
                                         <span className="absolute w-11 h-11 rounded-xl bg-blue-400/15 animate-ping" style={{ animationDuration: "2.8s" }} />
@@ -140,14 +140,17 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <div className="flex items-center gap-1.5 text-blue-500/70">
-                                            <ArrowLeft className="w-3 h-3" />
-                                            <p className="text-[12.5px] text-slate-500 font-semibold leading-snug text-center">
+                                        <div className="flex items-center gap-3 text-blue-500/70">
+                                            <svg className="w-5 h-3 shrink-0" viewBox="0 0 40 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M9 19l-7-7 7-7" />
+                                                <path d="M2 12h36" />
+                                            </svg>
+                                            <p className="text-[12.5px] text-slate-500 font-semibold leading-snug whitespace-nowrap z-10">
                                                 Fill in the inputs to see your
                                             </p>
                                         </div>
-                                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-600/10 border border-blue-200/60 text-[11px] font-black text-blue-700 tracking-wide">
-                                            L × W × H
+                                        <span className="inline-flex items-center px-3 py-1 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100/80 text-[11.5px] font-extrabold text-blue-600/90 tracking-wide shadow-sm shadow-blue-100/50">
+                                            Converted Dimensions
                                         </span>
                                     </div>
                                 </motion.div>
@@ -303,21 +306,21 @@ export function DimensionConverterContent() {
                                         min={0}
                                         tooltip="Enter the longest dimension of your item (typically the front-to-back measurement)"
                                         groupingTitle="Dimensions"
-                                        groupingIcon={Package}
+                                        groupingIcon={Ruler}
                                         groupingAction={
-                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans ml-6 w-36 sm:w-44">
+                                            <div className="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans ml-4">
                                                 {(["in", "cm"] as Unit[]).map((u) => (
                                                     <button
                                                         key={u}
                                                         onClick={() => setUnit(u)}
                                                         className={cn(
-                                                            "px-3 h-full rounded-md text-[10px] font-bold transition-all uppercase flex-1 flex items-center justify-center",
+                                                            "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
                                                             unit === u
                                                                 ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                 : "text-slate-500 hover:text-slate-900"
                                                         )}
                                                     >
-                                                        {u.toUpperCase()}
+                                                        {u}
                                                     </button>
                                                 ))}
                                             </div>

@@ -36,7 +36,6 @@ export function GrossMarginCalculator() {
     let derivedProfit = 0
     let derivedRevenue = 0
     let derivedCogs = 0
-    let derivedMarkup = 0
 
     if (mode === "margin") {
         const r = val(revenue)
@@ -45,7 +44,6 @@ export function GrossMarginCalculator() {
         derivedCogs = c
         derivedProfit = r - c
         derivedMargin = r > 0 ? (derivedProfit / r) * 100 : 0
-        derivedMarkup = c > 0 ? (derivedProfit / c) * 100 : 0
     } else if (mode === "revenue") {
         const c = val(cogs)
         const m = val(targetMargin)
@@ -55,7 +53,6 @@ export function GrossMarginCalculator() {
             derivedCogs = c
             derivedProfit = derivedRevenue - c
             derivedMargin = m
-            derivedMarkup = c > 0 ? (derivedProfit / c) * 100 : 0
         }
     } else {
         const r = val(revenue)
@@ -65,7 +62,6 @@ export function GrossMarginCalculator() {
         derivedCogs = r * (1 - dec)
         derivedProfit = r - derivedCogs
         derivedMargin = m
-        derivedMarkup = derivedCogs > 0 ? (derivedProfit / derivedCogs) * 100 : 0
     }
 
     // ── isCalculated ────────────────────────────────────────────
@@ -97,13 +93,6 @@ export function GrossMarginCalculator() {
                     isCurrency: true as const,
                     tooltip: "Actual cash profit after subtracting COGS from Revenue.",
                 },
-                {
-                    key: "markup",
-                    label: "Markup %",
-                    value: parseFloat(derivedMarkup.toFixed(2)),
-                    unit: "%",
-                    tooltip: "The % added on top of cost to reach the selling price — always higher than the equivalent margin.",
-                },
             ]
             : mode === "revenue"
                 ? [
@@ -131,11 +120,11 @@ export function GrossMarginCalculator() {
                         tooltip: "Profit earned if COGS stays at or below this limit.",
                     },
                     {
-                        key: "markup",
-                        label: "Markup %",
-                        value: parseFloat(derivedMarkup.toFixed(2)),
+                        key: "margin",
+                        label: "Target Margin",
+                        value: parseFloat(derivedMargin.toFixed(2)),
                         unit: "%",
-                        tooltip: "Equivalent markup at your target margin.",
+                        tooltip: "The target gross margin you are calculating for.",
                     },
                 ]
 

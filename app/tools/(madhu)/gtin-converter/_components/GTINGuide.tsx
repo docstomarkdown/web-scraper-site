@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { ArrowRightLeft, Globe2, Shield, Calculator, BookOpen } from "lucide-react"
+import { Globe, MapPin, ShieldCheck, Boxes, BookOpen } from "lucide-react"
 export function GTINGuide() {
     return (
         <ToolGuide
@@ -10,7 +10,7 @@ export function GTINGuide() {
                 {
                     title: "UPC to EAN Conversion",
                     description: "When you enter a 12-digit UPC-A (GTIN-12), our converter automatically shows GTIN-13 (EAN) as the primary result. This is because UPC and EAN are mathematically equivalent—a UPC is simply an EAN with a leading zero.",
-                    icon: ArrowRightLeft,
+                    icon: Globe,
                     stat: "UPC→EAN",
                     statLabel: "Primary Conversion",
                     iconBg: "bg-blue-50",
@@ -20,7 +20,7 @@ export function GTINGuide() {
                 {
                     title: "EAN to UPC Conversion",
                     description: "When you enter a 13-digit EAN-13 (GTIN-13), the tool shows GTIN-12 (UPC) as the primary result. This conversion removes the leading zero to create the North American UPC format, essential for US and Canadian retail.",
-                    icon: Globe2,
+                    icon: MapPin,
                     stat: "EAN→UPC",
                     statLabel: "Reverse Conversion",
                     iconBg: "bg-blue-50",
@@ -30,7 +30,7 @@ export function GTINGuide() {
                 {
                     title: "Complete GTIN Format Coverage",
                     description: "Our converter generates all three GTIN formats simultaneously: GTIN-12 (UPC), GTIN-13 (EAN), and GTIN-14 (for cartons). All formats are calculated with correct check digits using the official GS1 Modulo 10 algorithm.",
-                    icon: Calculator,
+                    icon: Boxes,
                     stat: "3 Formats",
                     statLabel: "All GTIN Types",
                     iconBg: "bg-emerald-50",
@@ -40,7 +40,7 @@ export function GTINGuide() {
                 {
                     title: "Validation Before Conversion",
                     description: "Before converting, the tool validates your input barcode using the GS1 check digit algorithm. Invalid codes are flagged immediately, preventing errors in your product listings and inventory systems.",
-                    icon: Shield,
+                    icon: ShieldCheck,
                     stat: "GS1",
                     statLabel: "Validated",
                     iconBg: "bg-rose-50",

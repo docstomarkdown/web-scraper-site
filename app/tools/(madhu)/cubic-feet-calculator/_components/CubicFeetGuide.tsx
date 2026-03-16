@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { Ruler, Globe, Calculator, Zap, BookOpen } from "lucide-react"
+import { Box, Layers, Activity, TrendingUp, BookOpen } from "lucide-react"
 export function CubicFeetGuide() {
     return (
         <ToolGuide
@@ -10,7 +10,7 @@ export function CubicFeetGuide() {
                 {
                     title: "Universal Unit Support",
                     description: "Our calculator supports 4 measurement units - Feet (default), Inches, Centimeters, and Meters. Simply select your preferred unit and enter dimensions - no manual conversions needed. Perfect for international shipping where different regions use different measurement systems.",
-                    icon: Globe,
+                    icon: Box,
                     stat: "4 Units",
                     statLabel: "Supported formats",
                     iconBg: "bg-blue-50",
@@ -21,7 +21,7 @@ export function CubicFeetGuide() {
                 {
                     title: "Real-Time Multi-Unit Results",
                     description: "Get instant results in three volume formats simultaneously: Cubic Feet (CFT) as the primary result, with Cubic Meters (CBM) and Cubic Inches as secondary results",
-                    icon: Calculator,
+                    icon: Activity,
                     stat: "3 Formats",
                     statLabel: "Simultaneous results",
                     iconBg: "bg-emerald-50",
@@ -32,7 +32,7 @@ export function CubicFeetGuide() {
                 {
                     title: "Quantity Multiplier Feature",
                     description: "Calculate volume for multiple identical items at once. Enter dimensions once, specify quantity, and get total volume instantly. Essential for bulk shipping, warehouse planning, and inventory management. Saves time when calculating pallet loads or container capacity.",
-                    icon: Zap,
+                    icon: Layers,
                     stat: "Bulk Calc",
                     statLabel: "Quantity support",
                     iconBg: "bg-purple-50",
@@ -43,7 +43,7 @@ export function CubicFeetGuide() {
                 {
                     title: "Precision Matters for Cost",
                     description: "Even small measurement errors compound when calculating volume. A 0.5 inch mistake across 1,000 units can result in hundreds of dollars in incorrect storage fees or shipping costs. Our calculator ensures accuracy down to decimal precision.",
-                    icon: Ruler,
+                    icon: TrendingUp,
                     stat: "0.5\" Error",
                     statLabel: "Can cost $100s",
                     iconBg: "bg-amber-50",

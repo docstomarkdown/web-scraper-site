@@ -33,8 +33,8 @@ export default function LeadTimeCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "Which fields are mandatory for calculation?",
-                                    answer: "You only need to provide 'Supplier Time' and 'Shipping Time' to see a result. The 'Safety Buffer' is optional but highly recommended to account for unpredictable delays."
+                                    question: "Why does my actual lead time often differ from what my supplier promises?",
+                                    answer: "Suppliers often give you the 'best-case' production time. Real lead time includes your own order processing time, shipping transit, customs clearance, and local delivery. We recommend tracking your last 3 shipments to find your true average."
                                 },
                                 {
                                     question: "What should I include in 'Supplier Time'?",
@@ -47,6 +47,10 @@ export default function LeadTimeCalculatorPage() {
                                 {
                                     question: "Does this account for national holidays?",
                                     answer: "This calculator uses total calendar days. When planning, you should manually increase your 'Safety Buffer' if your timeline overlaps with major events like Chinese New Year or peak holiday seasons."
+                                },
+                                {
+                                    question: "How can I reduce my lead time?",
+                                    answer: "Common strategies include sourcing from local suppliers to reduce transit time, consolidating shipments, automating order processing, and choosing faster shipping modes like air freight over ocean freight for urgent stock."
                                 }
                             ]}
                         />

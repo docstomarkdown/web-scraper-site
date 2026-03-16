@@ -5,21 +5,21 @@ import { SlidersHorizontal, Calculator, BarChart3 } from "lucide-react"
 export function GrossMarginHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Calculator"
+            title="Optimizing Your Profit Margins"
             steps={[
                 {
-                    title: "Choose a Mode",
-                    description: "Pick Find Margin to check profitability, Find Revenue to set a target price, or Find COGS to stick to a maximum spend limit.",
+                    title: "Strategic Mode Selection",
+                    description: "Select <strong>Find Margin</strong> to analyze current deals, or use <strong>Find Revenue</strong> to calculate your ideal selling price.",
                     icon: SlidersHorizontal
                 },
                 {
-                    title: "Enter Your Numbers",
-                    description: "Fill in the active fields. Results update live as you type. Use the dropdown to set your local currency.",
+                    title: "Cost & Revenue Input",
+                    description: "Enter your <strong>COGS</strong> and <strong>Total Revenue</strong>. Our precision engine handles the multi-mode math instantly.",
                     icon: Calculator
                 },
                 {
-                    title: "Read & Act",
-                    description: "Check your Gross Margin, Gross Profit, and the Revenue Breakdown bar to price your products with absolute confidence.",
+                    title: "Performance Analysis",
+                    description: "Review your <strong>Gross Profit</strong> and <strong>Margin %</strong>. Use these insights to negotiate better supply costs or adjust prices.",
                     icon: BarChart3
                 }
             ]}

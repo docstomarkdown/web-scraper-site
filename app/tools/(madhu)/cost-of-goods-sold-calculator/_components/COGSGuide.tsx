@@ -1,44 +1,44 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { AlertCircle, Scale, CreditCard, BookOpen } from "lucide-react"
+import { Globe, Box, Warehouse, BookOpen } from "lucide-react"
 export function COGSGuide() {
     return (
         <ToolGuide
-            title="The Hidden Costs of Sourcing & Fulfillment"
+            title="Mastering Your Cost of Goods Sold"
             icon={BookOpen}
             items={[
                 {
-                    title: "The True Cost of Sourcing",
-                    description: "Your supplier might quote a product at $5, but inbound freight, customs duties, and taxes can easily push the real landed cost much higher.",
-                    icon: AlertCircle,
-                    stat: "+40%",
-                    statLabel: "Avg Markup",
+                    title: "The 'Landed' Reality",
+                    description: "Your COGS starts with the 'Landed Cost'—the total price of a product once it arrives at your warehouse, including inbound freight, customs duties, and taxes.",
+                    icon: Globe,
+                    stat: "Landed",
+                    statLabel: "True Cost",
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
                     statColor: "text-amber-600",
-                    tooltip: "Freight and duties often add 30-50% to the base product cost."
+                    tooltip: "The Landed Cost is the only accurate way to determine your starting point for wholesale or retail pricing."
                 },
                 {
-                    title: "Packaging Adds Up Quickly",
-                    description: "Don't forget the cost of polybags, custom boxes, labels, and inserts. These seemingly small per-unit costs heavily impact margins at scale.",
-                    icon: Scale,
-                    stat: "Hidden",
-                    statLabel: "Extra Cost",
+                    title: "Direct Material Accuracy",
+                    description: "Small costs like polybags, tissue paper, and custom boxes add up quickly. This calculator ensures these direct materials are factored into your unit economics.",
+                    icon: Box,
+                    stat: "Fixed",
+                    statLabel: "Materials",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "A premium box can cost as much as $1 per unit depending on size."
+                    tooltip: "Account for every label and insert to ensure your per-unit cost is 100% accurate."
                 },
                 {
-                    title: "Fulfillment > Manufacturing",
-                    description: "For many low-cost items, the cost to pick, pack, and ship (Fulfillment) is actually higher than the cost to make the product.",
-                    icon: CreditCard,
-                    stat: "Reality",
-                    statLabel: "Check Fees",
+                    title: "Full-Cycle Visibility",
+                    description: "By including pick-and-pack fees and outbound shipping, you gain a 'Total COGS' view, revealing the actual expense of getting a product into your customer's hands.",
+                    icon: Warehouse,
+                    stat: "Total",
+                    statLabel: "Per Unit",
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600",
                     statColor: "text-indigo-600",
-                    tooltip: "Common in items under $20 selling price."
+                    tooltip: "In e-commerce, this total view is essential for identifying which products are actually scalable."
                 }
             ]}
         />

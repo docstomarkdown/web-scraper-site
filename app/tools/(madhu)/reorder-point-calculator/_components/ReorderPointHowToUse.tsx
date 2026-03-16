@@ -8,20 +8,20 @@ export function ReorderPointHowToUse() {
             steps={[
                 {
                     title: "Daily Sales",
-                    description: "Enter your average daily baseline unit sales and worst-case max usage.",
+                    description: "Enter how many products you typically sell in a day. If you sell 20 to 30 items, use an average of 25 to keep things simple.",
                     icon: TrendingUp
                 },
                 {
-                    title: "Lead Time",
-                    description: "Input normal supplier delivery times and potential maximum delay days.",
+                    title: "Delivery Time",
+                    description: "Enter the number of days your supplier usually takes to deliver products to your warehouse, including a few days for processing.",
                     icon: Clock
                 },
                 {
-                    title: "Calculate ROP",
-                    description: "Calculate your exact reorder point safety stock requirement automatically.",
+                    title: "Add a Safety Buffer",
+                    description: "Optionally, enter extra units to keep as emergency backup. This helps prevent stockouts if sales increase or shipments are delayed.",
                     icon: ShieldCheck
                 }
             ]}
         />
     )
-}
+}

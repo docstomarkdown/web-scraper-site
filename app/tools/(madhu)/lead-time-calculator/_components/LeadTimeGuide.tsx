@@ -1,6 +1,6 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { Factory, Ship, Clock, BookOpen } from "lucide-react"
+import { Building2, Route, ShieldAlert, BookOpen } from "lucide-react"
 export function LeadTimeGuide() {
     return (
         <ToolGuide
@@ -10,7 +10,7 @@ export function LeadTimeGuide() {
                 {
                     title: "Supplier Production Time",
                     description: "This is the 'In-Factory' duration. It covers everything from raw material sourcing to final assembly. Even a 1-day delay here cascades through your entire supply chain.",
-                    icon: Factory,
+                    icon: Building2,
                     stat: "Core",
                     statLabel: "Manf. Pillar",
                     iconBg: "bg-blue-50",
@@ -21,7 +21,7 @@ export function LeadTimeGuide() {
                 {
                     title: "Transit & Logistics",
                     description: "Calculates the time spent on water, air, or road. Includes customs clearance and port drayage—often the most unpredictable part of your lead time.",
-                    icon: Ship,
+                    icon: Route,
                     stat: "Global",
                     statLabel: "Freight Path",
                     iconBg: "bg-indigo-50",
@@ -31,7 +31,7 @@ export function LeadTimeGuide() {
                 {
                     title: "The Critical Safety Buffer",
                     description: "A 15-20% buffer is industry standard. While optional in this tool, including it ensures your 'Est. Delivery Date' accounts for unexpected delays.",
-                    icon: Clock,
+                    icon: ShieldAlert,
                     stat: "Optional",
                     statLabel: "Safety Margin",
                     iconBg: "bg-amber-50",
@@ -41,4 +41,4 @@ export function LeadTimeGuide() {
             ]}
         />
     )
-}
+}
