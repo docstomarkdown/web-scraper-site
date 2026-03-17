@@ -1,5 +1,6 @@
 "use client"
 import { BookOpen, LucideIcon } from "lucide-react"
+import { ReactNode } from "react"
 import { ToolSectionHeader } from "./ToolSectionHeader"
 import { cn } from "@/lib/utils"
 
@@ -26,7 +27,7 @@ function getAccentGradient(iconBg: string): string {
 
 export interface GuideItem {
     title: string
-    description: string
+    description: string | ReactNode
     icon: LucideIcon
     iconBg: string
     iconColor: string

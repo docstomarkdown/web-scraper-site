@@ -18,14 +18,14 @@ export function CouponROIGuide() {
                 },
                 {
                     title: "Break-even Point",
-                    description: <>The number of redemptions needed to cover your campaign costs. If you don&apos;t reach this number, the campaign loses money. It&apos;s calculated by dividing Campaign Cost by (Profit per Order - Discount).</>,
+                    description: "The number of redemptions needed to cover your campaign costs. If you don't reach this number, the campaign loses money. It's calculated by dividing Campaign Cost by (Profit per Order - Discount).",
                     icon: BarChart2,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
                 },
                 {
                     title: "True Cost of Discounting",
-                    description: <>A 20% discount doesn&apos;t just reduce revenue by 20%—it reduces profit by much more. If your margin is 30%, a 20% discount slashes your profit by 66%.</>,
+                    description: "A 20% discount doesn't just reduce revenue by 20% - it reduces profit by much more. If your margin is 30%, a 20% discount slashes your profit by 66%.",
                     icon: DollarSign,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
@@ -33,4 +33,4 @@ export function CouponROIGuide() {
             ]}
         />
     )
-}
+}

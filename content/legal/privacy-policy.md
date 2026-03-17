@@ -1,12 +1,12 @@
-## About Web Scraper.do
+## About Web Scraper.pro
 
-Web Scraper.do is a product of **Thinksolv Technologies Pvt Ltd** ("we", "us", "our"). Our website address is [https://www.webscraper.do](https://www.webscraper.do). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, store, and safeguard your data when you use our browser extension and related services.
+Web Scraper.pro is a product of **Thinksolv Technologies Pvt Ltd** ("we", "us", "our"). Our website address is [https://www.webscraper.pro](https://www.webscraper.pro). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, store, and safeguard your data when you use our browser extension and related services.
 
 ## Information We Collect
 
 We collect only the minimum information necessary to deliver and improve our services:
 
-- **Account Information** — Your email address, used to authenticate your Web Scraper.do license and manage your subscription.
+- **Account Information** — Your email address, used to authenticate your Web Scraper.pro license and manage your subscription.
 - **Usage Analytics** — Anonymized, aggregated usage data such as feature usage frequency and session duration to help us improve the product experience.
 - **Technical Data** — Browser type, operating system, and extension version for compatibility and debugging purposes.
 - **Support Communications** — Any information you voluntarily provide when contacting our support team.
@@ -24,7 +24,7 @@ Your information is used strictly for the following purposes:
 
 ## Browser Extension Permissions
 
-Web Scraper.do requires specific browser permissions to function. Here is a transparent breakdown of each:
+Web Scraper.pro requires specific browser permissions to function. Here is a transparent breakdown of each:
 
 - **Access to all websites** — Required to enable data extraction from the web pages you choose to scrape. The extension only activates on pages where you explicitly initiate a scraping session.
 - **Downloads** — Required to export your extracted data to your local device in formats such as CSV, JSON, or Excel.
@@ -50,7 +50,7 @@ We do **not** sell, rent, or trade your personal information. Your data may only
 
 ## Cookies
 
-Web Scraper.do uses only essential cookies required for the proper functioning of our website and services:
+Web Scraper.pro uses only essential cookies required for the proper functioning of our website and services:
 
 - **Session Cookies** — To maintain your authenticated session and remember your preferences.
 - **Security Cookies** — To protect against unauthorized access and cross-site request forgery.
@@ -72,7 +72,7 @@ We retain your personal information only for as long as necessary to provide our
 
 ## Children's Privacy
 
-Web Scraper.do is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children. If we become aware that a child has provided us with personal data, we will take steps to delete it promptly.
+Web Scraper.pro is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children. If we become aware that a child has provided us with personal data, we will take steps to delete it promptly.
 
 ## Changes to This Policy
 

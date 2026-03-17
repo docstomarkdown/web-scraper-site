@@ -1,6 +1,6 @@
-// Shared footer — delegates to FooterV2 so all pages use the same footer design.
-import FooterV2 from "@/components/landing-v2/FooterV2";
+// Shared footer — delegates to the landing footer component.
+import LandingFooter from "@/components/landing/Footer";
 
 export default function Footer() {
-  return <FooterV2 />;
+  return <LandingFooter />;
 }

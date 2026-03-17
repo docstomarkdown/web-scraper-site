@@ -68,7 +68,7 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-2 group">
               <Icons.logo className="w-10 h-10" />
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700">
-                {productConfig.product.logoText}
+                Web Scraper Pro
               </span>
             </Link>
           </div>
@@ -146,10 +146,10 @@ export default function Header() {
             <div className="hidden sm:block">
               <Button
                 asChild
-                className="h-10 px-6 rounded-full bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20 hover:shadow-xl hover:shadow-slate-900/30 transition-all duration-300"
+                className="h-10 px-6 rounded-xl border border-[#2772ED]/25 bg-[#2772ED]/8 text-[#1f5ec2] hover:bg-[#2772ED]/14 hover:border-[#2772ED]/35 shadow-sm shadow-[#2772ED]/10 transition-all duration-300"
               >
                 <Link href={productConfig.product.ctaUrl} target="_blank">
-                  {productConfig.product.ctaText}
+                  Install Web Scraper Pro
                 </Link>
               </Button>
             </div>
@@ -170,7 +170,7 @@ export default function Header() {
                 <SheetHeader className="p-6 border-b border-slate-100 text-left">
                   <SheetTitle className="flex items-center gap-2">
                     <Icons.logo className="w-8 h-8" />
-                    <span className="font-bold text-lg text-slate-900">{productConfig.product.logoText}</span>
+                    <span className="font-bold text-lg text-slate-900">Web Scraper Pro</span>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="overflow-y-auto h-[calc(100vh-80px)] p-6 pb-20">
@@ -213,9 +213,9 @@ export default function Header() {
                       </div>
                     ))}
                     <div className="pt-6 mt-auto">
-                      <Button asChild className="w-full h-11 rounded-full text-base shadow-lg shadow-blue-500/20">
+                      <Button asChild className="w-full h-11 rounded-xl border border-[#2772ED]/25 bg-[#2772ED]/8 hover:bg-[#2772ED]/14 hover:border-[#2772ED]/35 text-base text-[#1f5ec2] shadow-sm shadow-[#2772ED]/10 transition-all duration-300">
                         <Link href={productConfig.product.ctaUrl} target="_blank">
-                          {productConfig.product.ctaText}
+                          Install Web Scraper Pro
                         </Link>
                       </Button>
                     </div>

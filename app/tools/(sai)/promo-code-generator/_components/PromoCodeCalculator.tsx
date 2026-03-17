@@ -50,6 +50,11 @@ export function PromoCodeCalculator() {
         toast.success("Copied to clipboard")
         setTimeout(() => setCopiedIndex(null), 2000)
     }
+    const copyAll = useCallback(() => {
+        if (generatedCodes.length === 0) return
+        navigator.clipboard.writeText(generatedCodes.join("\n"))
+        toast.success(`Copied ${generatedCodes.length} code${generatedCodes.length > 1 ? "s" : ""}`)
+    }, [generatedCodes])
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -260,4 +265,4 @@ function CharacterChip({ label, sub, icon: Icon, checked, onChange }: { label: s
             </div>
         </button>
     )
-}
+}

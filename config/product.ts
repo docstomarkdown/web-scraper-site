@@ -102,7 +102,7 @@ export const productConfig = {
     image: "hero-image.png",
     version: "1.0.0",
     lastUpdated: "2026-02-02",
-    supportmail: "vikram@thinksolv.com",
+    supportmail: "vikram@webscraper.pro",
   },
 
   // Hero section
@@ -400,7 +400,7 @@ export const productConfig = {
   contact: {
     heading: "Get in Touch",
     subheading: "Have questions about Web Scraper.do? We're here to help.",
-    email: "vikram@thinksolv.com",
+    email: "vikram@webscraper.pro",
     address:
       "Thinksolv Technologies Pvt Ltd, KCT Tech Park, Coimbatore, India.",
     socialLinks: {
