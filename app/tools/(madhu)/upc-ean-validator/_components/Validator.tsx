@@ -1,10 +1,10 @@
 "use client"
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
     Calculator,
-    ChevronDown,
+    Maximize2,
     FileUp,
     Info,
     CheckCircle2,
@@ -45,6 +45,7 @@ interface ValidationResult {
     details: string[]
     calculationSteps: CalculationStep[]
 }
+
 export function Validator() {
     const { toast } = useToast()
     const [inputCode, setInputCode] = useState("")
@@ -302,7 +303,7 @@ export function Validator() {
                         <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white">
                             <CalculatorCardHeader
                                 title="UPC/EAN Validator"
-                                description="Enter your barcode number to do coded to validate."
+                                description="Validate any UPC or EAN barcode instantly — verify check digits, detect errors, and confirm format compliance."
                                 guideId="how-to-use"
                                 tooltip="How to use this validator"
                                 onReset={clearAll}
@@ -732,7 +733,7 @@ export function Validator() {
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
                                                                         </span>
-                                                                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                                                                        <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
                                                                     </Button>
                                                                 </DialogTrigger>
                                                                 <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
@@ -750,9 +751,20 @@ export function Validator() {
                                                                     </DialogHeader>
                                                                     <div className="space-y-3 py-4">
                                                                         <div className="space-y-3 relative">
-                                                                            <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")} />
+                                                                            <motion.div
+                                                                                initial={{ height: 0 }}
+                                                                                animate={{ height: "100%" }}
+                                                                                transition={{ duration: 0.8, delay: 0.2 }}
+                                                                                className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")}
+                                                                            />
                                                                             {result.calculationSteps.map((step, idx) => (
-                                                                                <div key={idx} className="flex gap-4 relative">
+                                                                                <motion.div
+                                                                                    key={idx}
+                                                                                    initial={{ opacity: 0, x: -10 }}
+                                                                                    animate={{ opacity: 1, x: 0 }}
+                                                                                    transition={{ duration: 0.4, delay: 0.1 + (idx * 0.1) }}
+                                                                                    className="flex gap-4 relative"
+                                                                                >
                                                                                     <div className={cn(
                                                                                         "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10 transition-colors",
                                                                                         result.isValid
@@ -772,7 +784,7 @@ export function Validator() {
                                                                                             {step.value}
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
+                                                                                </motion.div>
                                                                             ))}
                                                                         </div>
                                                                         <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">

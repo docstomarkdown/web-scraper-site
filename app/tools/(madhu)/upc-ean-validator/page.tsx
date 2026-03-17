@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { Validator } from "./_components/Validator"
 import { ValidatorGuide } from "./_components/ValidatorGuide"
 import { ValidatorHowToUse } from "./_components/ValidatorHowToUse"
+import { ValidatorInfo } from "./_components/ValidatorInfo"
 import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
 export const metadata: Metadata = {
@@ -17,13 +18,16 @@ export default function UPCEANValidatorPage() {
                     <Validator />
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.15}>
+                        <ValidatorInfo />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <ValidatorHowToUse />
                     </FadeIn>
-                    <FadeIn delay={0.3}>
+                    <FadeIn delay={0.25}>
                         <ValidatorGuide />
                     </FadeIn>
-                    <FadeIn delay={0.4}>
+                    <FadeIn delay={0.3}>
                         <ToolFAQ
                             faqs={[
                                 {
@@ -49,7 +53,7 @@ export default function UPCEANValidatorPage() {
                             ]}
                         />
                     </FadeIn>
-                    <FadeIn delay={0.5}>
+                    <FadeIn delay={0.35}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
                 </div>
