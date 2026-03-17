@@ -81,10 +81,30 @@ const config: Config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'dialog-overlay-in': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        'dialog-overlay-out': {
+          from: { opacity: '1' },
+          to: { opacity: '0' },
+        },
+        'dialog-bloom-in': {
+          from: { opacity: '0', transform: 'translate(-50%, -50%) scale(0.92)' },
+          to: { opacity: '1', transform: 'translate(-50%, -50%) scale(1)' },
+        },
+        'dialog-bloom-out': {
+          from: { opacity: '1', transform: 'translate(-50%, -50%) scale(1)' },
+          to: { opacity: '0', transform: 'translate(-50%, -50%) scale(0.92)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'dialog-overlay-in': 'dialog-overlay-in 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'dialog-overlay-out': 'dialog-overlay-out 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        'dialog-bloom-in': 'dialog-bloom-in 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'dialog-bloom-out': 'dialog-bloom-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'sans-serif'],

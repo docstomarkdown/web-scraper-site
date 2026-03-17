@@ -6,7 +6,7 @@ import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
 export const metadata: Metadata = {
     title: "Lead Time Calculator - Production to Delivery Estimator",
-    description: "Calculate total inventory lead time including production, shipping, customs, and buffers. Plan your restock cycles with precision.",
+    description: "Calculate total inventory lead time including production, shipping, customs, and buffers.",
 }
 export default function LeadTimeCalculatorPage() {
     return (
@@ -33,20 +33,24 @@ export default function LeadTimeCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is lead time in supply chain?",
-                                    answer: "Lead time is the total amount of time that elapses between the moment a customer places an order and the moment they receive the product. In manufacturing, it's the time from the 'Start Production' signal to 'Warehouse Delivery'."
+                                    question: "Why does my actual lead time often differ from what my supplier promises?",
+                                    answer: "Suppliers often give you the 'best-case' production time. Real lead time includes your own order processing time, shipping transit, customs clearance, and local delivery. We recommend tracking your last 3 shipments to find your true average."
                                 },
                                 {
-                                    question: "How do I calculate my reorder point (ROP)?",
-                                    answer: "Use the formula: (Daily Sales × Lead Time) + Safety Stock. If you sell 10 units/day and lead time is 45 days, you need to reorder when you have at least 450 units left."
+                                    question: "What should I include in 'Supplier Time'?",
+                                    answer: "Include the total time from purchase order submission to the moment goods are ready for pickup. This should account for raw material sourcing, manufacturing, and factory-level quality inspections."
                                 },
                                 {
-                                    question: "Does this calculator account for weekends?",
-                                    answer: "Production and shipping often move on weekends, but customs and local courier deliveries might not. This calculator uses total calendar days to give a realistic conservative estimate."
+                                    question: "How much 'Safety Buffer' is recommended?",
+                                    answer: "Most supply chain experts recommend a 15-20% buffer. If your total production and shipping time is 50 days, adding a 10-day buffer helps account for port congestion or customs delays."
                                 },
                                 {
-                                    question: "What is the difference between Supplier Time and Total Lead Time?",
-                                    answer: "Supplier Time only covers manufacturing and processing. Total Lead Time (which this tool calculates) includes Supplier Time, Shipping Time, and the Safety Buffer for final delivery."
+                                    question: "Does this account for national holidays?",
+                                    answer: "This calculator uses total calendar days. When planning, you should manually increase your 'Safety Buffer' if your timeline overlaps with major events like Chinese New Year or peak holiday seasons."
+                                },
+                                {
+                                    question: "How can I reduce my lead time?",
+                                    answer: "Common strategies include sourcing from local suppliers to reduce transit time, consolidating shipments, automating order processing, and choosing faster shipping modes like air freight over ocean freight for urgent stock."
                                 }
                             ]}
                         />

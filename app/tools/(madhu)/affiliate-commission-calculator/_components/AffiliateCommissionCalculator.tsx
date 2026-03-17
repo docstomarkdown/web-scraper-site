@@ -81,18 +81,18 @@ export function AffiliateCommissionCalculator() {
 
     return (
         <div className="max-w-6xl mx-auto py-2">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-2">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch pt-2">
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 flex flex-col h-full space-y-3">
-                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
+                <div className="lg:col-span-7 flex flex-col h-full">
+                    <Card className="border border-slate-200/80 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
                         <CalculatorCardHeader
                             title="Affiliate Payout Calculator"
-                            description="Enter your traffic, pricing, and commission details to estimate affiliate payouts and profitability."
+                            description="Enter traffic, pricing, and commission details to estimate affiliate payouts and profitability."
                             currency={currencyCode}
                             onCurrencyChange={setCurrencyCode}
                             onReset={handleReset}
                         />
-                        <CardContent className="p-4 md:p-6 pb-12 md:pb-16 space-y-3 flex-1 flex flex-col">
+                        <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3 flex-1 flex flex-col">
                             {/* All Inputs in Groups */}
                             <div className="space-y-6 max-w-[520px] mx-auto w-full">
                                 {/* 1. Campaign Traffic */}
@@ -171,13 +171,9 @@ export function AffiliateCommissionCalculator() {
                 </div>
 
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-3">
+                <div className="lg:col-span-5 h-full">
                     <ResultSummaryCard
-                        title={
-                            hasInputs
-                                ? "AFFILITATE PAYOUTS (Total Commission Paid)"
-                                : "AFFILITATE PAYOUTS (Total Commission Paid)"
-                        }
+                        title="AFFILIATE PAYOUTS — Total Commission Paid"
                         primaryResult={{
                             value: Math.round(results.affiliatePayout).toLocaleString(),
                             unit: currencySymbol,

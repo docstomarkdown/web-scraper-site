@@ -1,27 +1,28 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Calculator, DollarSign, BarChart3, Target } from "lucide-react"
+import { SlidersHorizontal, Calculator, BarChart3 } from "lucide-react"
+
 export function GrossMarginHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Calculator"
+            title="Optimizing Your Profit Margins"
             steps={[
                 {
-                    title: "Total Revenue",
-                    description: "Enter the gross sales amount generated from your specific products.",
+                    title: "Strategic Mode Selection",
+                    description: "Select <strong>Find Margin</strong> to analyze current deals, or use <strong>Find Revenue</strong> to calculate your ideal selling price.",
+                    icon: SlidersHorizontal
+                },
+                {
+                    title: "Cost & Revenue Input",
+                    description: "Enter your <strong>COGS</strong> and <strong>Total Revenue</strong>. Our precision engine handles the multi-mode math instantly.",
                     icon: Calculator
                 },
                 {
-                    title: "Direct Costs",
-                    description: "Input the precise Cost of Goods Sold connected directly to those sales.",
-                    icon: DollarSign
-                },
-                {
-                    title: "View Margin",
-                    description: "Instantly see your exact Gross Profit amount and percentage margin.",
+                    title: "Performance Analysis",
+                    description: "Review your <strong>Gross Profit</strong> and <strong>Margin %</strong>. Use these insights to negotiate better supply costs or adjust prices.",
                     icon: BarChart3
                 }
             ]}
         />
     )
-}
+}

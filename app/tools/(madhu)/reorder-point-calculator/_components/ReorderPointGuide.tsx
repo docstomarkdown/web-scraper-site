@@ -1,44 +1,44 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { AlertCircle, Timer, Warehouse, BookOpen } from "lucide-react"
+import { LineChart, Hourglass, Coins, BookOpen } from "lucide-react"
 export function ReorderPointGuide() {
     return (
         <ToolGuide
-            title="The Hidden Truth About This Process"
+            title="Best Practices for Reordering Inventory"
             icon={BookOpen}
             items={[
                 {
-                    title: "The Marketplace Ranking Tax",
-                    description: "Running out of stock doesn't just lose sales today—it destroys your search rank. Markets like Amazon prioritize 'In-Stock' reliability over almost everything else.",
-                    icon: AlertCircle,
-                    stat: "42%",
-                    statLabel: "Rank Recovery Risk",
-                    iconBg: "bg-red-50",
-                    iconColor: "text-red-600",
-                    statColor: "text-red-600",
-                    tooltip: "Recovering your previous ranking can take 3x longer than the duration of the stock-out."
-                },
-                {
-                    title: "The Lead Time Illusion",
-                    description: "Sellers often forget 'Admin Time'. If it takes you 3 days to approve an invoice, your lead time is 3 days longer than the factory says. Factor this into your calculation.",
-                    icon: Timer,
-                    stat: "+3 Days",
-                    statLabel: "Admin Buffer",
-                    iconBg: "bg-orange-50",
-                    iconColor: "text-orange-600",
-                    statColor: "text-orange-600"
-                },
-                {
-                    title: "Capital Opportunity Cost",
-                    description: "Setting an ROP too high wastes cash. Every $1 tied up in excessive safety stock is $1 you can't spend on new product launches or marketing.",
-                    icon: Warehouse,
-                    stat: "22%",
-                    statLabel: "Capital Drag",
+                    title: "Protect Your Store's Ranking",
+                    description: "Staying in stock is the best way to keep your search ranking high. If you run out, your store could drop in search results, making it harder for customers to find you.",
+                    icon: LineChart,
+                    stat: "Essential",
+                    statLabel: "Consistency",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
-                    statColor: "text-blue-600"
+                    statColor: "text-blue-600",
+                    tooltip: "Consistent availability prevents ranking drops."
+                },
+                {
+                    title: "Don't Forget Processing Time",
+                    description: "When calculating lead time, add 2-3 extra days for 'admin time'—like paying the invoice and getting the warehouse ready to receive the goods.",
+                    icon: Hourglass,
+                    stat: "+2 Days",
+                    statLabel: "Admin Buffer",
+                    iconBg: "bg-purple-50",
+                    iconColor: "text-purple-600",
+                    statColor: "text-purple-600"
+                },
+                {
+                    title: "Use Cash More Wisely",
+                    description: "By knowing exactly when to reorder, you won't buy products too early. This keeps your cash free for other things, like marketing or new product launches.",
+                    icon: Coins,
+                    stat: "Better",
+                    statLabel: "Cash Flow",
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
+                    statColor: "text-emerald-600"
                 }
             ]}
         />
     )
-}
+}

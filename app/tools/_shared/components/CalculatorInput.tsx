@@ -1,5 +1,6 @@
 "use client"
 import * as React from "react"
+import { currencies } from "./CurrencyCombobox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, TooltipArrow } from "@/components/ui/tooltip"
@@ -7,7 +8,8 @@ import { Info, LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export interface CalculatorInputProps {
-    label: string
+    label: React.ReactNode
+    labelClassName?: string
     value: number | string | ""
     onChange: (value: any) => void
     min?: number
@@ -27,10 +29,13 @@ export interface CalculatorInputProps {
     benchmarkBadge?: boolean
     hideSeparator?: boolean
     isOptional?: boolean
+    groupingAction?: React.ReactNode
+    rowAction?: React.ReactNode
 }
 
 export function CalculatorInput({
     label,
+    labelClassName,
     value,
     onChange,
     min = 0,
@@ -49,7 +54,9 @@ export function CalculatorInput({
     highlight = false,
     benchmarkBadge = false,
     hideSeparator = false,
-    isOptional = false
+    isOptional = false,
+    groupingAction,
+    rowAction
 }: CalculatorInputProps) {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
@@ -144,6 +151,12 @@ export function CalculatorInput({
     }
 
     const getCurrencyInfo = React.useCallback((code: string) => {
+        // Try looking up in our custom currencies list first (consistent with the combo box)
+        const found = currencies.find(c => c.code === code)
+        if (found) {
+            return { symbol: found.symbol, isSuffix: false }
+        }
+
         const tryFormat = (display: 'narrowSymbol' | 'symbol') => {
             try {
                 const formatter = new Intl.NumberFormat('en-US', {
@@ -170,12 +183,10 @@ export function CalculatorInput({
     return (
         <div
             className={cn(
-                "max-w-[520px] mx-auto w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
-                // With groupingTitle or if inside a group: keep left padding for tree-line/icon offset
-                // Without groupingTitle AND standalone: remove left padding so label aligns flush
+                "w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
                 (groupingTitle || isInLabeledGroup)
-                    ? "px-3 sm:px-5"
-                    : "pr-3 sm:pr-5 pl-0"
+                    ? "max-w-[520px] mx-auto px-3 sm:px-5"
+                    : "max-w-none ml-0 pr-3 sm:pr-5 pl-0"
             )}
             ref={containerRef}
             data-has-title={!!groupingTitle}
@@ -189,38 +200,56 @@ export function CalculatorInput({
                 {/* Dynamic Connecting Line Fragment: Ensures a solid vertical path ONLY for labeled groups */}
                 {isInLabeledGroup && (
                     <div
-                        className="absolute left-[-19.5px] w-[1.5px] bg-blue-200/70 z-0"
+                        className="absolute left-[-19px] w-[1.5px] bg-blue-200/70 z-0"
                         style={{
                             top: groupingTitle ? '14px' : '-50px',
                             bottom: isLastInGroup ? '10px' : '-50px',
                         }}
                     />
                 )}
-                {groupingTitle && (
-                    <div className="flex items-center gap-2 -ml-[33px] mb-0.5 relative h-7">
-                        {GroupIcon && (
-                            <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
-                                <GroupIcon className="w-3.5 h-3.5 text-blue-600" />
-                            </div>
-                        )}
-                        <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight">
-                            {groupingTitle}
-                        </span>
-                        {benchmarkBadge && (
-                            <>
-                                <span className="text-slate-300 text-sm z-10 select-none">·</span>
-                                <span className="text-[11px] text-blue-400 italic z-10 whitespace-nowrap">
-                                    Industry benchmarks pre-filled
-                                </span>
-                            </>
-                        )}
-                    </div>
-                )}
+                {groupingTitle && (() => {
+                    // Parse groupingTitle to separate main title from (Optional)
+                    const optionalMatch = groupingTitle.match(/^(.+?)\s*\((Optional|optional)\)$/i);
+                    const mainTitle = optionalMatch ? optionalMatch[1].trim() : groupingTitle;
+                    const hasOptional = !!optionalMatch;
+                    
+                    return (
+                        <div className="flex items-center gap-2 -ml-[33px] mb-3 relative">
+                            {GroupIcon && (
+                                <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
+                                    <GroupIcon className="w-3.5 h-3.5 text-blue-600" />
+                                </div>
+                            )}
+                            <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight flex-1">
+                                {mainTitle}
+                                {hasOptional && (
+                                    <span className="ml-1.5 text-[11px] font-normal italic text-slate-400">(optional)</span>
+                                )}
+                            </span>
+                            {groupingAction && (
+                                <div className="z-10 ml-auto">
+                                    {groupingAction}
+                                </div>
+                            )}
+                            {benchmarkBadge && (
+                                <>
+                                    <span className="text-slate-300 text-sm z-10 select-none">·</span>
+                                    <span className="text-[11px] text-blue-400 italic z-10 whitespace-nowrap">
+                                        Industry benchmarks pre-filled
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    );
+                })()}
                 <div className="flex items-center gap-3 w-full relative z-10">
                     <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
                         <Label
                             htmlFor={inputId}
-                            className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1"
+                            className={cn(
+                                "text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1",
+                                labelClassName
+                            )}
                         >
                             {label}
                             {isOptional && (
@@ -246,7 +275,7 @@ export function CalculatorInput({
                             </Tooltip>
                         )}
                     </div>
-                    <div className="relative group flex-shrink-0">
+                    <div className="relative group flex-shrink-0 flex items-center gap-3">
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div className="relative">
@@ -296,6 +325,7 @@ export function CalculatorInput({
                                 </TooltipContent>
                             )}
                         </Tooltip>
+                        {rowAction && <div className="flex-shrink-0">{rowAction}</div>}
                     </div>
                 </div>
             </div>

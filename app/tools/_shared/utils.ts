@@ -1,4 +1,16 @@
+import { currencies } from "./components/CurrencyCombobox"
+
 export const formatCurrency = (val: number, currency: string = 'USD') => {
+    const found = currencies.find(c => c.code === currency)
+    const formatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    })
+
+    if (found) {
+        return `${found.symbol} ${formatter.format(val)}`
+    }
+
     try {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',

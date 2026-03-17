@@ -1,13 +1,10 @@
 "use client"
 import React, { useState, useEffect, useMemo } from "react"
-import { Scale, RefreshCw, Info, AlertTriangle, Truck, DollarSign, Package, Copy, ChevronUp, ChevronDown, HelpCircle, Check } from "lucide-react";
+import { Scale, RefreshCw, Info } from "lucide-react";
 import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Separator } from "@/components/ui/separator"
-import { ResultFeedbackCard, Counter } from "../../../_shared/components"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { CalculatorCardHeader, CalculatorInput, ResultSummaryCard, Counter } from "../../../_shared/components"
 type WeightUnit = "oz" | "lbs" | "g" | "kg"
 interface ConversionResult {
     oz: number
@@ -19,7 +16,6 @@ export function WeightConverter() {
     const [inputValue, setInputValue] = useState<string>("")
     const [inputUnit, setInputUnit] = useState<WeightUnit>("lbs")
     const [targetUnit, setTargetUnit] = useState<WeightUnit>("kg")
-    const [isCopied, setIsCopied] = useState(false)
     // Smart default switching: When input unit changes, ensure target isn't the same (if possible)
     useEffect(() => {
         if (inputUnit === targetUnit || (inputUnit === 'lbs' && targetUnit === 'lbs')) {
@@ -50,52 +46,7 @@ export function WeightConverter() {
             kg: baseInGrams / 1000
         }
     }, [inputValue, inputUnit])
-    const shippingImpact = useMemo(() => {
-        if (!inputValue) return null
-        const lbs = conversions.lbs
-        const oz = conversions.oz
-        let tierName = ""
-        let tierRule = ""
-        let costRange = ""
-        let status = ""
-        let statusColor = ""
-        let thresholdAlert = null
-        let dimWarning = false
-        if (oz <= 15.99) {
-            tierName = "Lightweight"
-            tierRule = "Best for USPS ground advantage (under 1 lb)"
-            costRange = "$4.50 – $7.50"
-            status = "High margin safe"
-            statusColor = "text-blue-500 bg-blue-50 border-blue-100"
-            if (oz >= 12) {
-                thresholdAlert = "⚠ Shipping costs increase once you exceed 1 lb."
-            }
-        } else if (lbs <= 5) {
-            tierName = "Standard parcel"
-            tierRule = "USPS priority mail / UPS ground"
-            costRange = "$8.50 – $15.00"
-            status = "Moderate impact"
-            statusColor = "text-amber-500 bg-amber-50 border-amber-100"
-            if (lbs <= 1.1) {
-                thresholdAlert = "You are slightly above 1 lb. Reducing packaging weight may lower shipping costs."
-            }
-        } else if (lbs <= 20) {
-            tierName = "Heavy parcel"
-            tierRule = "UPS ground / FedEx home delivery"
-            costRange = "$12.00 – $25.00+"
-            status = "High cost risk"
-            statusColor = "text-orange-500 bg-orange-50 border-orange-100"
-        } else {
-            tierName = "Oversized / Freight"
-            tierRule = "LTL or freight shipping required"
-            costRange = "$50.00+"
-            status = "Critical cost impact"
-            statusColor = "text-red-600 bg-red-50 border-red-100"
-        }
-        // Removed DIM warning logic entirely for now as requested
-        return { tierName, tierRule, costRange, status, statusColor, thresholdAlert, dimWarning: false }
-    }, [conversions.lbs, conversions.oz, inputValue])
-    const formatCompact = (val: number) => {
+    const formatCompact = (val: number): string => {
         if (Math.abs(val) < 100000) return val.toLocaleString(undefined, { maximumFractionDigits: 2 })
         return new Intl.NumberFormat('en-US', {
             notation: "compact",
@@ -107,311 +58,177 @@ export function WeightConverter() {
         const allUnits: WeightUnit[] = ["lbs", "oz", "kg", "g"]
         return allUnits.filter(u => u !== inputUnit && u !== targetUnit)
     }, [inputUnit, targetUnit])
-    const copyToClipboard = () => {
-        const val = parseFloat(inputValue) || 0
-        const text = `
-Weight Converter Result:
-Input: ${val} ${inputUnit}
-Conversions:
-${conversions.lbs.toFixed(4)} lbs
-${conversions.oz.toFixed(4)} oz
-${conversions.kg.toFixed(4)} kg
-${conversions.g.toFixed(4)} g
-Shipping Tier: ${shippingImpact?.tierName || 'N/A'}
-Estimated Cost: ${shippingImpact?.costRange || 'N/A'}
-`.trim()
-        navigator.clipboard.writeText(text)
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
+    
+    const handleReset = () => {
+        setInputValue("")
+        setInputUnit("lbs")
+        setTargetUnit("kg")
     }
-    const scrollToGuide = () => {
-        const element = document.getElementById('how-to-use');
-        if (element) {
-            const offset = 120
-            const elementPosition = element.getBoundingClientRect().top + window.scrollY
-            const offsetPosition = elementPosition - offset
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            })
-        }
-    };
     return (
         <div className="p-8 sm:p-12 max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
                 {/* Left Column: Input (Col Span 7) */}
                 <div className="lg:col-span-7 h-full">
-                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden h-full flex flex-col">
-                        <CardHeader className="pb-4 border-b border-slate-50 flex flex-col items-start space-y-6">
-                            <div className="space-y-1 w-full">
-                                <div className="flex items-center gap-3">
-                                    <CardTitle className="text-xl font-bold text-blue-600">
-                                        Calculator Inputs
-                                    </CardTitle>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={scrollToGuide}
-                                                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-100 h-8 w-8 rounded-full transition-colors"
-                                                >
-                                                    <HelpCircle className="w-4 h-4" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" className="text-xs bg-slate-900 text-white border-slate-800">
-                                                How to use this converter
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </div>
-                                <CardDescription className="text-slate-500 font-medium">Configure your weight and target unit.</CardDescription>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8">
-                            {/* Weight Configuration Section */}
-                            <div className="space-y-6">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Scale className="w-4 h-4 text-slate-400" />
-                                    Weight Configuration
-                                </label>
-                                <div className="space-y-4">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                        <div className="flex items-center gap-2">
-                                            <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                                                Input Weight
-                                            </label>
-                                            <TooltipProvider delayDuration={100}>
+                    <Card className="border-slate-200 shadow-sm relative overflow-hidden bg-white h-full flex flex-col">
+                        <CalculatorCardHeader
+                            title="Weight Converter"
+                            description="Enter your weight value and select units to convert between lbs, oz, kg, and grams."
+                            guideId="how-to-use"
+                            tooltip="How to use this converter"
+                            onReset={handleReset}
+                        />
+                        <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
+                            {/* All Inputs in Groups */}
+                            <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                {/* Weight Configuration */}
+                                <div className="weight-config-group space-y-3">
+                                    <CalculatorInput
+                                        hideSeparator={true}
+                                        label="Input Weight"
+                                        value={inputValue}
+                                        onChange={(v) => setInputValue(v.toString())}
+                                        placeholder="12.00"
+                                        type="number"
+                                        tooltip="Enter the weight value you wish to convert"
+                                        groupingTitle="Weight Configuration"
+                                        groupingIcon={Scale}
+                                    />
+                                    <div className="calculator-input-row max-w-[520px] mx-auto px-3 sm:px-5">
+                                        <div className="flex items-center gap-3 w-full relative z-10">
+                                            <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
+                                                <label className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1">
+                                                    Weight Unit
+                                                </label>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <button
                                                             type="button"
                                                             tabIndex={-1}
-                                                            className="text-slate-500 hover:text-blue-600 transition-colors cursor-default"
+                                                            className="text-slate-400 hover:text-blue-500 transition-colors cursor-help shrink-0"
                                                         >
-                                                            <Info className="h-3.5 w-3.5" />
+                                                            <Info className="w-3.5 h-3.5" />
                                                         </button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                        Enter the weight value you wish to convert
+                                                    <TooltipContent side="top" className="max-w-xs text-[13px] font-normal bg-slate-900 text-white border-slate-800">
+                                                        Select the unit of measurement for the weight value you're entering.
                                                     </TooltipContent>
                                                 </Tooltip>
-                                            </TooltipProvider>
-                                        </div>
-                                        <Input
-                                            type="number"
-                                            value={inputValue}
-                                            onChange={(e) => setInputValue(e.target.value)}
-                                            className="h-11 text-base font-medium border-slate-200 bg-white shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:italic w-full sm:w-[210px] text-right hover:border-blue-600 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all"
-                                            placeholder="Ex: 12.00"
-                                        />
-                                    </div>
-                                    {/* Input Unit Row */}
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                        <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                                            Weight Unit
-                                        </label>
-                                        <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-[210px]">
-                                            {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
-                                                <button
-                                                    key={u}
-                                                    onClick={() => setInputUnit(u)}
-                                                    className={cn(
-                                                        "flex-1 py-1.5 rounded-md text-[10px] font-bold transition-all uppercase",
-                                                        inputUnit === u
-                                                            ? "bg-white text-blue-600 shadow-sm border border-blue-200"
-                                                            : "text-slate-500 hover:text-slate-900"
-                                                    )}
-                                                >
-                                                    {u}
-                                                </button>
-                                            ))}
+                                            </div>
+                                            <div className="relative group flex-shrink-0 flex items-center gap-3">
+                                                <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans w-36 sm:w-44">
+                                                    {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
+                                                        <button
+                                                            key={u}
+                                                            onClick={() => setInputUnit(u)}
+                                                            className={cn(
+                                                                "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
+                                                                inputUnit === u
+                                                                    ? "bg-white text-blue-600 shadow-sm border border-blue-200"
+                                                                    : "text-slate-500 hover:text-slate-900"
+                                                            )}
+                                                        >
+                                                            {u}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <Separator className="bg-slate-100" />
-                            {/* Target Configuration Section */}
-                            <div className="space-y-6">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <RefreshCw className="w-4 h-4 text-slate-400" />
-                                    Conversion Target
-                                </label>
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <label className="text-base font-semibold text-slate-700 whitespace-nowrap">
-                                        Target Unit
-                                    </label>
-                                    <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 w-full sm:w-[210px]">
-                                        {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
-                                            <button
-                                                key={u}
-                                                onClick={() => setTargetUnit(u)}
-                                                className={cn(
-                                                    "flex-1 py-1.5 rounded-md text-[10px] font-bold transition-all uppercase",
-                                                    targetUnit === u
-                                                        ? "bg-white text-blue-600 shadow-sm border border-blue-200"
-                                                        : "text-slate-500 hover:text-slate-900",
-                                                    inputUnit === u && "opacity-50 cursor-not-allowed"
-                                                )}
-                                                disabled={inputUnit === u}
-                                            >
-                                                {u}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex gap-2 pt-4 border-t border-slate-100">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setInputValue("")}
-                                    className="flex-[2] h-11 border-dashed hover:bg-slate-50 text-slate-500 hover:text-slate-900 transition-all font-medium"
-                                >
-                                    <RefreshCw className="w-4 h-4 mr-2" /> Reset Input
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    onClick={copyToClipboard}
-                                    className={cn(
-                                        "flex-1 h-11 shadow-sm transition-all font-bold",
-                                        isCopied
-                                            ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-50 hover:text-green-700"
-                                            : "border-slate-300 hover:bg-slate-50 text-slate-900"
-                                    )}
-                                >
-                                    {isCopied ? (
-                                        <><Check className="w-4 h-4 mr-2" /> Copied!</>
-                                    ) : (
-                                        <><Copy className="w-4 h-4 mr-2" /> Copy Results</>
-                                    )}
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card >
-                </div >
-                {/* Right Column: Results (Col Span 5) */}
-                < div className="lg:col-span-5 relative flex flex-col h-full space-y-8" >
-                    {/* Conversion Results */}
-                    < ResultFeedbackCard
-                        title="CONVERSION MATRIX"
-                        titleLabel="Live Calculation"
-                        mainValue={
-                            <div className="flex items-baseline flex-wrap gap-x-2">
-                                <Counter
-                                    value={conversions[targetUnit]}
-                                    formatter={formatCompact}
-                                    className={cn(
-                                        conversions[targetUnit] > 1000000 ? "text-3xl" : "text-4xl"
-                                    )}
-                                />
-                                <span className="text-lg font-medium opacity-50">
-                                    {targetUnit}
-                                </span>
-                            </div>
-                        }
-                    >
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2">
-                            {secondaryUnits.map((unit) => (
-                                <div key={unit} className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5 flex flex-col justify-center min-h-[85px]">
-                                    <p className="text-xs font-bold text-slate-300 mb-1">
-                                        {unit === 'lbs' ? 'Pounds' : unit === 'oz' ? 'Ounces' : unit === 'kg' ? 'Kilograms' : 'Grams'}
-                                    </p>
-                                    <div className="flex items-baseline flex-wrap gap-x-1">
-                                        <p className={cn(
-                                            "text-lg sm:text-xl font-bold text-blue-400 break-all leading-tight",
-                                            conversions[unit] > 1000000 && "text-base sm:text-lg"
-                                        )}>
-                                            <Counter
-                                                value={conversions[unit]}
-                                                formatter={formatCompact}
+                                {/* Conversion Target */}
+                                <div className="space-y-0">
+                                    <div className="calculator-input-row max-w-[520px] mx-auto px-3 sm:px-5 pb-0">
+                                        <div className="h-px bg-slate-100/80 w-[calc(100%+48px)] -ml-6 mb-3 mt-1" />
+                                        <div className="relative w-full">
+                                            {/* Connecting Line - extends from icon to bottom of Target Unit row */}
+                                            <div
+                                                className="absolute left-[-19px] w-[1.5px] bg-blue-200/70 z-0"
+                                                style={{
+                                                    top: '14px',
+                                                    bottom: '0px',
+                                                }}
                                             />
-                                        </p>
-                                        <span className="text-[10px] font-normal opacity-50 uppercase">{unit}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </ResultFeedbackCard >
-                    {/* Shipping Impact Section */}
-                    < div className="space-y-2 flex-1 flex flex-col" >
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="p-1.5 bg-slate-100 rounded-lg text-slate-600">
-                                <Truck className="w-4 h-4" />
-                            </div>
-                            <h3 className="text-lg font-bold text-slate-900">Shipping impact analysis</h3>
-                        </div>
-                        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 relative overflow-hidden group flex-1 flex flex-col justify-center">
-                            {shippingImpact ? (
-                                <>
-                                    {/* 1. Weight Tier Section */}
-                                    <div className="space-y-4 pt-2">
-                                        <div className="space-y-1">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs sm:text-[13px] font-medium text-slate-400 tracking-wide">Weight tier</span>
-                                                <span className={cn("text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider opacity-90 -mt-1 -mr-0.5", shippingImpact.statusColor)}>
-                                                    {shippingImpact.status}
+                                            <div className="flex items-center gap-2 -ml-[33px] mb-0.5 relative h-7 z-10">
+                                                <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
+                                                    <RefreshCw className="w-3.5 h-3.5 text-blue-600" />
+                                                </div>
+                                                <span className="text-[16px] font-bold text-slate-600 capitalize z-10 tracking-tight flex-1">
+                                                    Conversion Target
                                                 </span>
                                             </div>
-                                            <h4 className="text-base font-bold text-slate-900 tracking-tight leading-none pt-1">
-                                                {shippingImpact.tierName}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                    {/* 2. Estimated Cost Section */}
-                                    <div className="space-y-1.5 pb-2">
-                                        <span className="text-xs sm:text-[13px] font-medium text-slate-400 block">Estimated shipping cost</span>
-                                        <div>
-                                            <div className="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">
-                                                {shippingImpact.costRange}
+                                            <div className="flex items-center gap-3 w-full relative z-10 mt-3">
+                                                <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
+                                                    <label className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1">
+                                                        Target Unit
+                                                    </label>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button
+                                                                type="button"
+                                                                tabIndex={-1}
+                                                                className="text-slate-400 hover:text-blue-500 transition-colors cursor-help shrink-0"
+                                                            >
+                                                                <Info className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-xs text-[13px] font-normal bg-slate-900 text-white border-slate-800">
+                                                            Select the unit you want to convert your weight to.
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </div>
+                                                <div className="relative group flex-shrink-0 flex items-center gap-3">
+                                                    <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans w-36 sm:w-44">
+                                                        {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
+                                                            <button
+                                                                key={u}
+                                                                onClick={() => setTargetUnit(u)}
+                                                                disabled={inputUnit === u}
+                                                                className={cn(
+                                                                    "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
+                                                                    targetUnit === u
+                                                                        ? "bg-white text-blue-600 shadow-sm border border-blue-200"
+                                                                        : "text-slate-500 hover:text-slate-900",
+                                                                    inputUnit === u && "opacity-50 cursor-not-allowed"
+                                                                )}
+                                                            >
+                                                                {u}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    {/* Alerts */}
-                                    {shippingImpact.thresholdAlert && (
-                                        <div className="space-y-3 pt-2">
-                                            <div className="flex gap-3 bg-amber-50 p-3 rounded-xl border border-amber-100 text-amber-800 text-sm font-semibold items-center">
-                                                <AlertTriangle className="w-5 h-5 flex-shrink-0 text-amber-600" />
-                                                <p>{shippingImpact.thresholdAlert}</p>
-                                            </div>
-                                        </div>
-                                    )}
-                                </>
-                            ) : (
-                                <>
-                                    {/* Ghost Content Background */}
-                                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]" />
-                                    <div className="relative z-0 space-y-8 blur-[1px] opacity-[0.08] select-none pointer-events-none">
-                                        <div className="space-y-3">
-                                            <div className="h-3 w-16 bg-slate-400 rounded-full" />
-                                            <div className="h-7 w-40 bg-slate-500 rounded-lg" />
-                                            <div className="h-4 w-56 bg-slate-300 rounded-md" />
-                                        </div>
-                                        <div className="h-px bg-slate-200 w-full" />
-                                        <div className="space-y-3">
-                                            <div className="h-3 w-28 bg-slate-400 rounded-full" />
-                                            <div className="h-9 w-32 bg-slate-500 rounded-lg" />
-                                            <div className="h-3 w-44 bg-slate-300 rounded-md" />
-                                        </div>
-                                    </div>
-                                    {/* Floating Insight Card */}
-                                    <div className="absolute inset-0 flex items-center justify-center p-5 bg-white/20 backdrop-blur-[0.5px]">
-                                        <div className="bg-white p-5 rounded-2xl shadow-xl shadow-slate-900/5 border border-slate-100 text-center space-y-3 transform transition-all duration-500 group-hover:scale-[1.02] max-w-[240px]">
-                                            <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-500 mx-auto shadow-inner">
-                                                <Truck className="w-7 h-7 animate-pulse" />
-                                            </div>
-                                            <div className="space-y-1.5">
-                                                <h4 className="text-base font-bold text-slate-900 tracking-tight">Unlock Insights</h4>
-                                                <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                                                    Enter a weight to see <strong>carrier tiers</strong>, estimated costs & margin warnings.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div >
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+                {/* Right Column: Results (Col Span 5) */}
+                <div className="lg:col-span-5 flex flex-col space-y-3 h-full">
+                    {/* Conversion Results */}
+                    <ResultSummaryCard
+                        title="Conversion Result"
+                        primaryResult={{
+                            value: formatCompact(conversions[targetUnit]),
+                            unit: targetUnit === 'lbs' ? 'lb' : targetUnit,
+                            label: "Target Conversion",
+                            key: "target"
+                        }}
+                        secondaryResults={secondaryUnits.map((unit) => ({
+                            key: unit,
+                            label: unit === 'lbs' ? 'Pounds' : unit === 'oz' ? 'Ounces' : unit === 'kg' ? 'Kilograms' : 'Grams',
+                            value: formatCompact(conversions[unit]),
+                            unit: unit === 'lbs' ? 'lb' : unit,
+                            tooltip: `Weight in ${unit === 'lbs' ? 'pounds' : unit === 'oz' ? 'ounces' : unit === 'kg' ? 'kilograms' : 'grams'}`
+                        }))}
+                        isCalculated={!!inputValue}
+                        checklistItems={[
+                            { label: "Enter Weight", isComplete: !!inputValue }
+                        ]}
+                        emptyResultLabel="Conversion Result"
+                        description={inputValue ? `Converted from ${inputValue} ${inputUnit} to ${targetUnit}` : undefined}
+                    />
                 </div >
             </div >
         </div >

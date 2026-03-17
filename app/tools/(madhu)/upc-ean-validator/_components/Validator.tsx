@@ -1,28 +1,27 @@
 "use client"
-import React, { useState, useEffect, useCallback } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import React, { useState, useEffect, useCallback, useRef } from "react"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
-    Copy,
-    RefreshCw,
-    XCircle,
-    ShieldCheck,
-    ArrowRight,
-    Barcode as BarcodeIcon,
-    HelpCircle,
     Calculator,
-    ChevronDown,
-    ChevronUp
+    Maximize2,
+    FileUp,
+    Info,
+    CheckCircle2,
+    Check,
+    XCircle,
+    AlertTriangle,
+    Activity,
+    ClipboardPenLine,
+    Upload,
+    ImageIcon,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
-import { ActionButtons, InputCardHeader, MadhuSubHeader } from "../../ToolTemplate"
-import { FadeIn, ResultFeedbackCard, CalculatorInput } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, FadeIn } from "@/app/tools/_shared/components"
 import { useBarcodeScanner } from "@/app/tools/_shared/hooks/useBarcodeScanner"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import Barcode from 'react-barcode'
+import { motion, AnimatePresence } from "framer-motion"
 import {
     Dialog,
     DialogContent,
@@ -46,14 +45,11 @@ interface ValidationResult {
     details: string[]
     calculationSteps: CalculationStep[]
 }
+
 export function Validator() {
     const { toast } = useToast()
     const [inputCode, setInputCode] = useState("")
     const [result, setResult] = useState<ValidationResult | null>(null)
-    const [isMounted, setIsMounted] = useState(false)
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
     // Memoize the validator function to use in the hook callback
     // We need to implement validateBarcode inside the component or outside?
     // It is inside. We need to be careful with dependencies.
@@ -179,19 +175,82 @@ export function Validator() {
     const clearAll = () => {
         setInputCode("")
         setResult(null)
-        setResult(null) // redundant set
-        toast({
-            title: "Reset",
-            description: "Input cleared.",
-        })
+        setBulkResults([])
+        setBulkFileName("")
     }
-    // useBarcodeScanner Hook
+
+    // Bulk validation state
+    const [bulkResults, setBulkResults] = useState<{ code: string; result: ValidationResult }[]>([])
+    const [bulkFileName, setBulkFileName] = useState<string>("")
+    const [isDragOver, setIsDragOver] = useState(false)
+
+    // useBarcodeScanner Hook (for image scanning)
     const { handleFileUpload } = useBarcodeScanner({
         onScan: (decodedText) => {
             setInputCode(decodedText)
             setResult(validateBarcode(decodedText))
+            setBulkResults([])
         }
     })
+
+    // Bulk file upload handler (CSV/TXT)
+    const handleBulkFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        const reader = new FileReader()
+        reader.onload = (event) => {
+            const text = event.target?.result as string
+            if (!text) return
+
+            // Parse lines — supports comma-separated, newline-separated, or mixed
+            const codes = text
+                .split(/[\n\r,;]+/)
+                .map(line => line.trim().replace(/[\s-]/g, ""))
+                .filter(line => line.length > 0 && /^\d+$/.test(line))
+
+            if (codes.length === 0) {
+                toast({ title: "No valid barcodes found", description: "The file should contain numeric barcodes, one per line or comma-separated.", variant: "destructive" })
+                return
+            }
+
+            // Always treat as bulk (even single — shown in the unified bulk card)
+            const results = codes.map(code => ({
+                code,
+                result: validateBarcode(code)
+            }))
+            setBulkResults(results)
+            setBulkFileName(file.name)
+            setInputCode("")
+            setResult(null)
+        }
+        reader.readAsText(file)
+        e.target.value = '' // reset input
+    }, [validateBarcode, toast])
+
+    // Drag and drop handlers
+    const handleDragOver = useCallback((e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragOver(true)
+    }, [])
+    const handleDragLeave = useCallback((e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragOver(false)
+    }, [])
+    const handleDrop = useCallback((e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragOver(false)
+        const file = e.dataTransfer.files?.[0]
+        if (file) {
+            const fakeEvent = { target: { files: [file], value: '' } } as unknown as React.ChangeEvent<HTMLInputElement>
+            if (file.type.startsWith('image/')) {
+                handleFileUpload(fakeEvent)
+            } else {
+                handleBulkFileUpload(fakeEvent)
+            }
+        }
+    }, [handleBulkFileUpload, handleFileUpload])
+
     const scrollToGuide = () => {
         const element = document.getElementById('how-to-use');
         if (element) {
@@ -204,17 +263,10 @@ export function Validator() {
             });
         }
     };
-    const getBarcodeFormat = (format: BarcodeFormat) => {
-        switch (format) {
-            case "UPC-A": return "UPC"
-            case "EAN-13": return "EAN13"
-            case "EAN-8": return "EAN8"
-            default: return "CODE128"
-        }
-    }
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
-            {/* Hidden file input for upload */}
+            {/* Hidden file inputs */}
             <input
                 type="file"
                 id="barcode-upload"
@@ -222,60 +274,152 @@ export function Validator() {
                 className="hidden"
                 onChange={handleFileUpload}
             />
+            <input
+                type="file"
+                id="bulk-upload"
+                accept=".csv,.txt,.text"
+                className="hidden"
+                onChange={handleBulkFileUpload}
+            />
+            <input
+                type="file"
+                id="combined-upload"
+                accept=".csv,.txt,.text,image/*"
+                className="hidden"
+                onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (!file) return
+                    if (file.type.startsWith('image/')) {
+                        handleFileUpload(e)
+                    } else {
+                        handleBulkFileUpload(e)
+                    }
+                }}
+            />
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* LEFT: Input (Col Span 6) */}
                 <div className="lg:col-span-6">
                     <FadeIn delay={0.2} direction="right">
                         <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white">
-                            <InputCardHeader
-                                title="Validator Inputs"
-                                subtitle="Enter your barcode number or upload an image below."
-                                onHelpClick={scrollToGuide}
+                            <CalculatorCardHeader
+                                title="UPC/EAN Validator"
+                                description="Validate any UPC or EAN barcode instantly — verify check digits, detect errors, and confirm format compliance."
+                                guideId="how-to-use"
+                                tooltip="How to use this validator"
                                 onReset={clearAll}
                             />
-                            <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
-                                <div className="space-y-3">
-                                    <MadhuSubHeader title="Identifier Details" icon={BarcodeIcon} className="mb-0" />
+                            <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-6 flex-1 flex flex-col">
+                                 {/* Unified Input Structure */}
+                                <div className="space-y-6">
                                     <CalculatorInput
                                         label="Barcode Number"
                                         value={inputCode}
                                         onChange={(v) => {
                                             if (/^[\d\s-]*$/.test(v)) {
                                                 setInputCode(v)
+                                                setBulkResults([])
                                             }
                                         }}
                                         placeholder="Ex: 036000291452"
                                         tooltip="Enter EAN / UPC (8, 12, or 13 digits) to validate."
                                         type="text"
                                     />
-                                    {/* Scan Controls */}
-                                    <div className="pt-2">
-                                        <Button
-                                            variant="secondary"
-                                            className="w-full h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
-                                            onClick={() => document.getElementById('barcode-upload')?.click()}
-                                        >
-                                            <div className="flex items-center">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className="w-4 h-4 mr-2 text-blue-500"
+
+                                    <AnimatePresence mode="wait">
+                                        {bulkResults.length > 0 ? (
+                                            /* Bulk uploaded success state */
+                                            <motion.div
+                                                key="bulk-success"
+                                                initial={{ opacity: 0, scale: 0.97 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.97 }}
+                                                transition={{ duration: 0.25 }}
+                                                className="flex flex-col items-center justify-center py-7 px-4 rounded-xl border-2 border-emerald-300 bg-emerald-50/60"
+                                            >
+                                                <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-3">
+                                                    <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                                                </div>
+                                                <p className="text-sm font-bold text-emerald-700 text-center">
+                                                    Bulk Upload Complete
+                                                </p>
+                                                <p className="text-[11px] text-emerald-600/80 mt-1 text-center">
+                                                    {bulkResults.length} barcode{bulkResults.length !== 1 ? 's' : ''} loaded from{" "}
+                                                    <span className="font-bold">{bulkFileName}</span>
+                                                </p>
+                                                <button
+                                                    className="mt-3 text-[10px] text-slate-400 hover:text-slate-600 underline underline-offset-2 transition-colors"
+                                                    onClick={() => { setBulkResults([]); setBulkFileName("") }}
                                                 >
-                                                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                                                    <circle cx="9" cy="9" r="2" />
-                                                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                                                </svg>
-                                                Upload Image
-                                            </div>
-                                        </Button>
-                                    </div>
+                                                    Clear &amp; upload another
+                                                </button>
+                                            </motion.div>
+                                        ) : (
+                                            <motion.div
+                                                key="upload-options"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.25 }}
+                                                className="space-y-6"
+                                            >
+                                                {/* Divider */}
+                                                <div className="flex items-center gap-4 py-1">
+                                                    <div className="h-px bg-slate-200 flex-1"></div>
+                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Or upload file</span>
+                                                    <div className="h-px bg-slate-200 flex-1"></div>
+                                                </div>
+
+                                                {/* Buttons */}
+                                                <div className="flex gap-3">
+                                                    <Button
+                                                        variant="secondary"
+                                                        className="flex-1 h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
+                                                        onClick={() => document.getElementById('barcode-upload')?.click()}
+                                                    >
+                                                        <div className="flex items-center justify-center">
+                                                            <ImageIcon className="w-4 h-4 mr-2 text-blue-500 shrink-0" />
+                                                            Upload Image
+                                                        </div>
+                                                    </Button>
+                                                    <Button
+                                                        variant="secondary"
+                                                        className="flex-1 h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
+                                                        onClick={() => document.getElementById('bulk-upload')?.click()}
+                                                    >
+                                                        <div className="flex items-center justify-center">
+                                                            <FileUp className="w-4 h-4 mr-2 text-blue-500 shrink-0" />
+                                                            Upload CSV / TXT
+                                                        </div>
+                                                    </Button>
+                                                </div>
+
+                                                {/* Dropzone */}
+                                                <div
+                                                    className={cn(
+                                                        "relative flex flex-col items-center justify-center py-6 px-4 rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer",
+                                                        isDragOver
+                                                            ? "border-blue-400 bg-blue-50/50"
+                                                            : "border-slate-200 bg-slate-50/50 hover:border-slate-300 hover:bg-slate-50"
+                                                    )}
+                                                    onDragOver={handleDragOver}
+                                                    onDragLeave={handleDragLeave}
+                                                    onDrop={handleDrop}
+                                                    onClick={() => document.getElementById('combined-upload')?.click()}
+                                                >
+                                                    <Upload className={cn(
+                                                        "w-5 h-5 mb-2 transition-colors",
+                                                        isDragOver ? "text-blue-500" : "text-slate-400"
+                                                    )} />
+                                                    <p className="text-xs text-slate-500 font-medium text-center">
+                                                        Drag &amp; drop your file here
+                                                    </p>
+                                                    <p className="text-[10px] text-slate-400 mt-1 text-center">
+                                                        Supports Image, CSV, and TXT files
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
 
                             </CardContent>
@@ -286,191 +430,386 @@ export function Validator() {
                 <div className="lg:col-span-6">
                     <FadeIn delay={0.4} direction="left" className="h-full">
                         <div className="space-y-3">
-                            {/* Blue Result Card (Always Visible) */}
-                            <ResultFeedbackCard
-                                variant="default"
-                                title="Validation Status"
-                                titleLabel={!inputCode ? "Ready" : result?.isValid ? "Valid" : "Invalid"}
-                                labelClassName={!inputCode ? "text-slate-400 bg-slate-600/50 border border-slate-500/50" : result?.isValid ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30" : "text-rose-400 bg-rose-500/20 border border-rose-500/30"}
-                                valueColor="text-white"
-                                mainValue={
-                                    <div className="flex items-baseline gap-3">
-                                        <span className={cn(inputCode ? "text-white font-bold" : "text-white/30 italic font-medium text-2xl sm:text-3xl")}>
-                                            {inputCode || "Awaiting Data"}
-                                        </span>
-                                    </div>
-                                }
+                            {/* Unified Result Card — shows bulk OR single, never both */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                             >
-                                <div className="space-y-3 mt-2">
-                                    <Row
-                                        label={
+                                <Card className="relative overflow-hidden border border-slate-200/60 shadow-sm rounded-2xl bg-[#F5F8FD]">
+                                    {/* ── Header ── */}
+                                    <div className="flex justify-between items-center gap-4 px-6 pt-5 pb-1">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
+                                                <Activity className="w-4 h-4 text-blue-600" />
+                                            </div>
+                                            <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
+                                                Results Panel
+                                            </span>
+                                        </div>
+                                        {/* Badge: single valid/invalid OR bulk summary */}
+                                        {bulkResults.length > 0 ? (
                                             <div className="flex items-center gap-1.5">
-                                                <span>Check Digit</span>
-                                                <Dialog>
-                                                    <TooltipProvider delayDuration={0}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <DialogTrigger asChild>
-                                                                    <button className="text-slate-400 hover:text-slate-200 transition-all p-0.5" aria-label="See calculation">
-                                                                        <HelpCircle className="w-3.5 h-3.5" />
-                                                                    </button>
-                                                                </DialogTrigger>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent side="top" className="bg-slate-900 border-slate-800 text-white text-xs">
-                                                                How calculation done
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
-                                                    <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
-                                                        <DialogHeader>
-                                                            <DialogTitle className="flex items-center gap-2 text-slate-900">
-                                                                <Calculator className="w-5 h-5 text-blue-500" />
-                                                                Calculation Breakdown
-                                                            </DialogTitle>
-                                                            <DialogDescription className="text-slate-500">
-                                                                {inputCode
-                                                                    ? <>Step-by-step verification regarding <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{inputCode}</span></>
-                                                                    : "Enter a barcode to see the step-by-step validation logic."
-                                                                }
-                                                            </DialogDescription>
-                                                        </DialogHeader>
-                                                        <div className="space-y-3 py-4">
-                                                            {result && result.calculationSteps.length > 0 ? (
-                                                                <div className="space-y-3 relative">
-                                                                    <div className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")} />
-                                                                    {result.calculationSteps.map((step, idx) => (
-                                                                        <div key={idx} className="flex gap-4 relative">
-                                                                            <div className={cn(
-                                                                                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10 transition-colors",
-                                                                                result.isValid
-                                                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
-                                                                                    : "bg-rose-50 border-rose-200 text-rose-600"
-                                                                            )}>
-                                                                                {step.step}
-                                                                            </div>
-                                                                            <div className="space-y-1">
-                                                                                <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
-                                                                                <div className={cn(
-                                                                                    "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
-                                                                                    result.isValid
-                                                                                        ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
-                                                                                        : "text-rose-700 bg-rose-50/50 border-rose-100"
-                                                                                )}>
-                                                                                    {step.value}
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            ) : (
-                                                                <div className="py-8 text-center text-slate-400">
-                                                                    <Calculator className="w-12 h-12 mx-auto mb-3 opacity-10" />
-                                                                    <p className="text-sm">Waiting for valid barcode input...</p>
-                                                                </div>
-                                                            )}
-                                                            <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                                                                <p className="text-xs text-blue-700 font-medium">
-                                                                    Note: Standard Modulo 10 Algorithm
-                                                                </p>
-                                                                <p className="text-[10px] text-blue-600 mt-1">
-                                                                    This calculation is used universally for GTIN barcodes (UPC, EAN) to detect common data entry errors.
+                                                <span className="text-[10.5px] font-bold text-emerald-700 bg-emerald-100/80 px-2.5 py-1.5 rounded-full">
+                                                    {bulkResults.filter(r => r.result.isValid).length} Valid
+                                                </span>
+                                                <span className="text-[10.5px] font-bold text-red-700 bg-red-100/80 px-2.5 py-1.5 rounded-full">
+                                                    {bulkResults.filter(r => !r.result.isValid).length} Invalid
+                                                </span>
+                                            </div>
+                                        ) : result ? (
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ duration: 0.4, ease: "easeInOut" }}
+                                                className={cn(
+                                                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold tracking-wide shrink-0 border-slate-200/50",
+                                                    result.isValid
+                                                        ? "bg-emerald-100/80 text-emerald-700"
+                                                        : "bg-red-100/80 text-red-700"
+                                                )}
+                                            >
+                                                {result.isValid ? "Valid" : "Invalid"}
+                                            </motion.div>
+                                        ) : null}
+                                    </div>
+
+                                    <AnimatePresence mode="wait">
+                                        {bulkResults.length > 0 ? (
+                                            /* ═══════════ BULK STATE ═══════════ */
+                                            <motion.div
+                                                key="bulk-state"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.35, ease: "easeInOut" }}
+                                                className="px-5 pb-5 pt-3 space-y-2 max-h-[520px] overflow-y-auto"
+                                            >
+                                                {bulkResults.map((item, idx) => (
+                                                    <motion.div
+                                                        key={idx}
+                                                        initial={{ opacity: 0, y: 6 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ duration: 0.22, delay: idx * 0.025, ease: "easeOut" }}
+                                                        className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-3.5 flex items-center justify-between gap-3"
+                                                    >
+                                                        <div className="flex items-center gap-3 min-w-0">
+                                                            {item.result.isValid
+                                                                ? <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                                                                : <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                            }
+                                                            <div className="min-w-0">
+                                                                <p className="text-sm font-bold text-slate-800 font-mono truncate">{item.code}</p>
+                                                                <p className="text-[10px] text-slate-500">
+                                                                    {item.result.format !== "Unknown" ? item.result.format : "Unknown format"}
+                                                                    {item.result.isValid && ` · Check Digit: ${item.result.checkDigit}`}
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                    </DialogContent>
-                                                </Dialog>
-                                            </div>
-                                        }
-                                        value={result?.checkDigit || "-"}
-                                        className="text-slate-300"
-                                    />
-                                    {result && !result.isValid && result.expectedCheckDigit !== "-" && (
-                                        <Row label="Expected Check Digit" value={result.expectedCheckDigit} className="text-rose-400 font-bold" />
-                                    )}
-                                    <Row label="Analysis" value={result?.message || "Waiting for input..."} className={cn("transition-colors duration-300", !result ? "text-blue-400" : result.isValid ? "text-emerald-400 font-bold" : "text-rose-400 font-bold")} />
-                                </div>
-                            </ResultFeedbackCard>
-                            {/* Barcode Preview */}
-                            <Card className="bg-white border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center min-h-[160px] flex-1 transition-all duration-300 overflow-hidden">
-                                {result && result.isValid && isMounted ? (
-                                    <div className="flex flex-col items-center w-full animate-in fade-in zoom-in-95 duration-200 fill-mode-forwards">
-                                        <h3 className="text-base font-bold text-slate-900 mb-2">Identified {result.format} Barcode</h3>
-                                        <div className="p-4 bg-white rounded-lg border border-slate-100 shadow-sm w-full flex justify-center overflow-hidden mb-4">
-                                            <div className="scale-110 sm:scale-125 origin-center">
-                                                <Barcode
-                                                    value={inputCode}
-                                                    format={getBarcodeFormat(result.format)}
-                                                    width={2}
-                                                    height={80}
-                                                    fontSize={16}
-                                                    background="transparent"
-                                                    marginTop={10}
-                                                    marginBottom={10}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="relative w-full flex flex-col items-center justify-center py-6 group">
-                                        {/* Ghost Barcode & Animation */}
-                                        {isMounted && (
-                                            <>
-                                                <div className="scale-110 sm:scale-125 origin-center opacity-10 grayscale">
-                                                    <Barcode
-                                                        value="000000000000"
-                                                        format="UPC"
-                                                        width={2}
-                                                        height={80}
-                                                        fontSize={18}
-                                                        background="transparent"
-                                                        lineColor="#64748b"
-                                                    />
-                                                </div>
-                                                {/* Scanning Laser Animation (Visible when no input) */}
-                                                {!inputCode && (
-                                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                        <div className="w-[200px] h-[120px] relative">
-                                                            <div className="absolute top-0 left-0 w-full h-[2px] bg-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.5)] animate-[scan_3s_ease-in-out_infinite]" />
+                                                        <span className={cn(
+                                                            "text-[10px] font-bold px-2.5 py-1 rounded-full flex-shrink-0",
+                                                            item.result.isValid
+                                                                ? "text-emerald-700 bg-emerald-50"
+                                                                : "text-red-700 bg-red-50"
+                                                        )}>
+                                                            {item.result.isValid ? "Valid" : "Invalid"}
+                                                        </span>
+                                                    </motion.div>
+                                                ))}
+                                            </motion.div>
+                                        ) : !result ? (
+                                            /* ═══════════ EMPTY STATE ═══════════ */
+                                            <motion.div
+                                                key="empty-state"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.4, ease: "easeInOut" }}
+                                                className="relative z-10 px-6 pb-6 pt-2"
+                                            >
+                                                <div className="relative">
+                                                    <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+                                                        <motion.div
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
+                                                            transition={{ duration: 0.55, ease: "easeOut" }}
+                                                            className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_40px_rgba(59,130,246,0.12)] rounded-2xl px-6 py-5 flex flex-col items-center gap-3 w-fit max-w-[320px] pointer-events-auto"
+                                                        >
+                                                            <div className="relative flex items-center justify-center">
+                                                                <span className="absolute w-11 h-11 rounded-xl bg-blue-400/15 animate-ping" style={{ animationDuration: "2.8s" }} />
+                                                                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200/60 flex items-center justify-center text-blue-500 shadow-sm">
+                                                                    <ClipboardPenLine className="w-[18px] h-[18px]" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex flex-col items-center gap-1.5">
+                                                                <div className="flex items-center gap-3 text-blue-500/70">
+                                                                    <svg className="w-5 h-3 shrink-0" viewBox="0 0 40 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                        <path d="M9 19l-7-7 7-7" />
+                                                                        <path d="M2 12h36" />
+                                                                    </svg>
+                                                                    <p className="text-[12.5px] text-slate-500 font-semibold leading-snug whitespace-nowrap z-10">
+                                                                        Fill in the inputs to see your
+                                                                    </p>
+                                                                </div>
+                                                                <span className="inline-flex items-center px-3 py-1 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100/80 text-[11.5px] font-extrabold text-blue-600/90 tracking-wide shadow-sm shadow-blue-100/50">
+                                                                    Validation Status
+                                                                </span>
+                                                            </div>
+                                                        </motion.div>
+                                                    </div>
+
+                                                    {/* Ghosted Skeleton */}
+                                                    <div className="blur-[2.5px] opacity-40 select-none pointer-events-none">
+                                                        <div className="flex flex-col items-center justify-center py-5 px-4 mb-2">
+                                                            <div className="h-2.5 w-24 rounded-full bg-slate-200/60 mb-3 animate-pulse" />
+                                                            <div className="h-12 w-40 rounded-xl bg-slate-200/50 mb-2 animate-pulse" style={{ animationDelay: "0.1s" }} />
+                                                            <div className="flex flex-col items-center gap-1.5 mt-1">
+                                                                <div className="h-2 w-44 rounded-full bg-slate-200/60 animate-pulse" style={{ animationDelay: "0.2s" }} />
+                                                                <div className="h-2 w-32 rounded-full bg-slate-200/50 animate-pulse" style={{ animationDelay: "0.3s" }} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="h-px w-full bg-slate-200/40 my-4" />
+                                                        <div className="space-y-3 px-2">
+                                                            <div className="bg-slate-50/50 border border-slate-100 p-3 rounded-xl">
+                                                                <div className="h-2 w-20 rounded-full bg-slate-200/60 mb-3 animate-pulse" />
+                                                                <div className="h-4 w-16 rounded-lg bg-slate-200/50 animate-pulse" />
+                                                            </div>
+                                                            <div className="bg-slate-50/50 border border-slate-100 p-3 rounded-xl">
+                                                                <div className="h-2 w-24 rounded-full bg-slate-200/60 mb-3 animate-pulse" style={{ animationDelay: "0.1s" }} />
+                                                                <div className="h-4 w-12 rounded-lg bg-slate-200/50 animate-pulse" style={{ animationDelay: "0.15s" }} />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                )}
-                                            </>
+                                                </div>
+                                            </motion.div>
+                                        ) : (
+                                            /* ═══════════ RESULTS STATE ═══════════ */
+                                            <motion.div
+                                                key="results-state"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.55, ease: "easeInOut" }}
+                                                className="flex flex-col"
+                                            >
+                                                {/* ── Primary Hero: Valid / Invalid ── */}
+                                                <div className="px-5 pb-4">
+                                                    <motion.div
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                                                        className="relative flex flex-col items-center text-center py-6 px-4 rounded-2xl bg-slate-50/70 border border-slate-100/80"
+                                                    >
+
+
+                                                        <motion.div
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
+                                                            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                                                            className="flex items-baseline justify-center"
+                                                        >
+                                                            <span className={cn(
+                                                                "text-[2.75rem] sm:text-[3.25rem] font-black tracking-tighter leading-none",
+                                                                result.isValid ? "text-emerald-600" : "text-red-600"
+                                                            )}>
+                                                                {result.isValid ? "Valid" : "Invalid"}
+                                                            </span>
+                                                        </motion.div>
+
+                                                        <motion.p
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
+                                                            transition={{ duration: 0.3, delay: 0.2 }}
+                                                            className="text-[12px] text-slate-500 font-medium max-w-[280px] mx-auto leading-relaxed mt-2.5"
+                                                        >
+                                                            {result.isValid
+                                                                ? `Matches ${result.format} standard. Structure and check digit are correct.`
+                                                                : result.details.join(". ")}
+                                                        </motion.p>
+                                                    </motion.div>
+                                                </div>
+
+                                                {/* ── Validation Checks ── */}
+                                                <div className="px-5 pb-5 space-y-2.5">
+                                                    {/* Format Check */}
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 8 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ duration: 0.3, delay: 0.12, ease: "easeOut" }}
+                                                        className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
+                                                    >
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            {result.format !== "Unknown"
+                                                                ? <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                                                                : <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                            }
+                                                            <span className="text-sm font-bold text-slate-800">Barcode type</span>
+                                                        </div>
+                                                        <div className="pl-7 space-y-1.5">
+                                                            {result.format !== "Unknown" ? (
+                                                                <>
+                                                                    <div className="flex items-center gap-1.5">
+                                                                        <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                                                                        <span className="text-xs text-slate-600">
+                                                                            Barcode type: <span className="font-bold text-slate-800">{result.format}</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="flex items-center gap-1.5">
+                                                                    <AlertTriangle className="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
+                                                                    <span className="text-xs text-slate-600">{result.message}</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </motion.div>
+
+                                                    {/* Check Digit Analysis */}
+                                                    {result.format !== "Unknown" && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 8 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            transition={{ duration: 0.3, delay: 0.17, ease: "easeOut" }}
+                                                            className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
+                                                        >
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                {result.isValid
+                                                                    ? <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                                                                    : <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                                }
+                                                                <span className="text-sm font-bold text-slate-800">Check Digit Analysis</span>
+                                                            </div>
+                                                            <div className="pl-7 space-y-1.5">
+                                                                {result.isValid ? (
+                                                                    <div className="flex items-center gap-1.5">
+                                                                        <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                                                                        <span className="text-xs text-slate-600">
+                                                                            Check digit is correct: <span className="font-bold text-slate-800">{result.checkDigit}</span>
+                                                                        </span>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="flex items-center gap-1.5">
+                                                                        <AlertTriangle className="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
+                                                                        <span className="text-xs text-slate-600">
+                                                                            Entered check digit is <span className="font-bold text-slate-800">{result.checkDigit}</span>, expected <span className="font-bold text-slate-800">{result.expectedCheckDigit}</span>.
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+
+                                                    {/* View Calculation Breakdown */}
+                                                    {result.calculationSteps.length > 0 && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 8 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            transition={{ duration: 0.3, delay: 0.22, ease: "easeOut" }}
+                                                            className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
+                                                        >
+                                                            <Dialog>
+                                                                <DialogTrigger asChild>
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        className="w-full h-auto p-0 text-xs font-medium justify-between hover:bg-transparent"
+                                                                    >
+                                                                        <span className="flex items-center gap-2">
+                                                                            <Calculator className="w-4 h-4 text-blue-500" />
+                                                                            View Calculation Breakdown
+                                                                            <TooltipProvider delayDuration={0}>
+                                                                                <Tooltip>
+                                                                                    <TooltipTrigger asChild>
+                                                                                        <span
+                                                                                            onClick={(e) => e.stopPropagation()}
+                                                                                            className="flex-shrink-0 text-slate-400 hover:text-blue-600 transition-colors cursor-help"
+                                                                                            aria-label="Calculation breakdown info"
+                                                                                        >
+                                                                                            <Info className="w-3.5 h-3.5" />
+                                                                                        </span>
+                                                                                    </TooltipTrigger>
+                                                                                    <TooltipContent side="top" className="bg-slate-900 border-slate-800 text-white text-xs">
+                                                                                        Step-by-step check digit calculation
+                                                                                    </TooltipContent>
+                                                                                </Tooltip>
+                                                                            </TooltipProvider>
+                                                                        </span>
+                                                                        <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
+                                                                    </Button>
+                                                                </DialogTrigger>
+                                                                <DialogContent className="max-w-md bg-white text-slate-900 border-slate-200">
+                                                                    <DialogHeader>
+                                                                        <DialogTitle className="flex items-center gap-2 text-slate-900">
+                                                                            <Calculator className="w-5 h-5 text-blue-500" />
+                                                                            Calculation Breakdown
+                                                                        </DialogTitle>
+                                                                        <DialogDescription className="text-slate-500">
+                                                                            {inputCode
+                                                                                ? <>Step-by-step verification regarding <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-xs">{inputCode}</span></>
+                                                                                : "Enter a barcode to see the step-by-step validation logic."
+                                                                            }
+                                                                        </DialogDescription>
+                                                                    </DialogHeader>
+                                                                    <div className="space-y-3 py-4">
+                                                                        <div className="space-y-3 relative">
+                                                                            <motion.div
+                                                                                initial={{ height: 0 }}
+                                                                                animate={{ height: "100%" }}
+                                                                                transition={{ duration: 0.8, delay: 0.2 }}
+                                                                                className={cn("absolute left-3 top-2 bottom-2 w-0.5", result.isValid ? "bg-emerald-100" : "bg-rose-100")}
+                                                                            />
+                                                                            {result.calculationSteps.map((step, idx) => (
+                                                                                <motion.div
+                                                                                    key={idx}
+                                                                                    initial={{ opacity: 0, x: -10 }}
+                                                                                    animate={{ opacity: 1, x: 0 }}
+                                                                                    transition={{ duration: 0.4, delay: 0.1 + (idx * 0.1) }}
+                                                                                    className="flex gap-4 relative"
+                                                                                >
+                                                                                    <div className={cn(
+                                                                                        "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-black z-10 transition-colors",
+                                                                                        result.isValid
+                                                                                            ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                                                                                            : "bg-rose-50 border-rose-200 text-rose-600"
+                                                                                    )}>
+                                                                                        {step.step}
+                                                                                    </div>
+                                                                                    <div className="space-y-1">
+                                                                                        <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                                        <div className={cn(
+                                                                                            "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
+                                                                                            result.isValid
+                                                                                                ? "text-emerald-700 bg-emerald-50/50 border-emerald-100"
+                                                                                                : "text-rose-700 bg-rose-50/50 border-rose-100"
+                                                                                        )}>
+                                                                                            {step.value}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </motion.div>
+                                                                            ))}
+                                                                        </div>
+                                                                        <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                                                            <p className="text-xs text-blue-700 font-medium">
+                                                                                Note: Standard Modulo 10 Algorithm
+                                                                            </p>
+                                                                            <p className="text-[10px] text-blue-600 mt-1">
+                                                                                This calculation is used universally for GTIN barcodes (UPC, EAN) to detect common data entry errors.
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </DialogContent>
+                                                            </Dialog>
+                                                        </motion.div>
+                                                    )}
+                                                </div>
+                                            </motion.div>
                                         )}
-                                        {/* Center Text */}
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2">
-                                            <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-100 shadow-sm flex flex-col items-center">
-                                                <BarcodeIcon className="w-8 h-8 text-slate-300 mb-1" />
-                                                <p className="text-sm font-semibold text-slate-500">
-                                                    {!inputCode ? "Awaiting Input..." : "Invalid Format"}
-                                                </p>
-                                                <p className="text-[10px] text-slate-400">
-                                                    {!inputCode ? "Enter a barcode to visualize" : "Check code length and structure"}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <style jsx global>{`
-                                            @keyframes scan {
-                                                0%, 100% { top: 10%; opacity: 0.2; }
-                                                50% { top: 90%; opacity: 1; }
-                                            }
-                                        `}</style>
-                                    </div>
-                                )}
-                            </Card>
+                                    </AnimatePresence>
+                                </Card>
+                            </motion.div>
                         </div>
                     </FadeIn>
                 </div>
             </div>
         </FadeIn >
-    )
-}
-function Row({ label, value, className }: { label: React.ReactNode, value: React.ReactNode, className?: string }) {
-    return (
-        <div className={`flex justify-between items-center text-sm ${className}`}>
-            <span>{label}</span>
-            <span className="font-medium tracking-wide">
-                {value}
-            </span>
-        </div>
     )
 }

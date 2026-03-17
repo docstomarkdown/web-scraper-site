@@ -1,4 +1,4 @@
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { DaysOfInventoryCalculator } from "./_components/DaysOfInventoryCalculator"
 import { DaysOfInventoryHowToUse } from "./_components/DaysOfInventoryHowToUse"
 import { DaysOfInventoryGuide } from "./_components/DaysOfInventoryGuide"
@@ -12,13 +12,7 @@ export default function DaysOfInventoryCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4 tracking-tight">
-                            Days of Inventory Remaining Calculator
-                        </h1>
-                    </FadeIn>
-                </div>
+                <ToolPageTitle title="Days of Inventory Remaining Calculator" />
                 <div className="mb-20">
                     <DaysOfInventoryCalculator />
                 </div>

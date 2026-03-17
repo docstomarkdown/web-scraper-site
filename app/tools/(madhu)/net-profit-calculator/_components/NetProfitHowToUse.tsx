@@ -1,25 +1,25 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { DollarSign, Search, Calculator, TrendingUp } from "lucide-react"
+import { DollarSign, PieChart, Calculator } from "lucide-react"
 export function NetProfitHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Tool"
+            title="Master Your Bottom Line"
             steps={[
                 {
-                    title: "Income Data",
-                    description: "Enter your Total Revenue from all sales channels before any deductions.",
+                    title: "Revenue Capture",
+                    description: "Input your <strong>Total Revenue</strong> before any deductions to establish your baseline income.",
                     icon: DollarSign
                 },
                 {
-                    title: "Business Expenses",
-                    description: "Input COGS, ad spend, overhead, and your estimated tax rate.",
+                    title: "Operational Costs",
+                    description: "Log your <strong>COGS</strong>, marketing spend, and overhead to see what it truly costs to run your business.",
                     icon: Calculator
                 },
                 {
-                    title: "Profit Allocation",
-                    description: "Visualize exactly where your revenue goes with the distribution chart.",
-                    icon: TrendingUp
+                    title: "Profit Strategy",
+                    description: "Evaluate your <strong>Net Profit</strong> and use the margin breakdown to identify your biggest saving opportunities.",
+                    icon: PieChart
                 }
             ]}
         />
