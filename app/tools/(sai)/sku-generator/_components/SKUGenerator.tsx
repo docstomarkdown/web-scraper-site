@@ -434,4 +434,4 @@ function SKUInput({ label, value, onChange, placeholder, icon: Icon, tooltip }: 
             </div>
         </div>
     )
-}
+}

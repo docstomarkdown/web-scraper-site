@@ -9,9 +9,10 @@ import {
     Info,
     CheckCircle2,
     Check,
+    X,
     XCircle,
     AlertTriangle,
-    Activity,
+    ClipboardList,
     ClipboardPenLine,
     Upload,
     ImageIcon,
@@ -303,16 +304,16 @@ export function Validator() {
                         <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white min-h-[360px]">
                             <CalculatorCardHeader
                                 title="UPC/EAN Validator"
-                                description="Validate any UPC or EAN barcode instantly — verify check digits, detect errors, and confirm format compliance."
+                                description="Enter a barcode, upload an image, or import a CSV/TXT file to check status—with bulk validation support."
                                 guideId="how-to-use"
                                 tooltip="How to use this validator"
                                 onReset={clearAll}
                             />
                             <CardContent className="p-6 md:p-8 space-y-0">
                                 {/* ── Single Barcode Input ── */}
-                                <div className="space-y-1.5 mb-6">
+                                <div className="mb-6">
                                     <CalculatorInput
-                                        label="Barcode Number"
+                                        label="UPC / EAN Number"
                                         value={inputCode}
                                         onChange={(v) => {
                                             if (/^[\d\s-]*$/.test(v)) {
@@ -324,9 +325,6 @@ export function Validator() {
                                         tooltip="Enter EAN / UPC (8, 12, or 13 digits) to validate."
                                         type="text"
                                     />
-                                    <p className="text-[11px] text-slate-400 font-medium pl-0.5">
-                                        Accepts UPC‑A (12), EAN‑13 (13), or EAN‑8 (8) digits
-                                    </p>
                                 </div>
 
                                 {/* ── Divider ── */}
@@ -373,7 +371,7 @@ export function Validator() {
                                             <div
                                                 className={cn(
                                                     "relative rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer",
-                                                    "px-5 py-5",
+                                                    "px-6 py-6",
                                                     isDragOver
                                                         ? "border-blue-400 bg-blue-50/60"
                                                         : "border-slate-200 bg-slate-50/40 hover:border-blue-300 hover:bg-blue-50/30"
@@ -383,42 +381,32 @@ export function Validator() {
                                                 onDrop={handleDrop}
                                                 onClick={() => document.getElementById('combined-upload')?.click()}
                                             >
-                                                <div className="flex flex-col items-center gap-2.5">
+                                                <div className="flex flex-col items-center gap-3">
                                                     <div className={cn(
-                                                        "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
+                                                        "w-11 h-11 rounded-xl flex items-center justify-center transition-colors",
                                                         isDragOver ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"
                                                     )}>
                                                         <Upload className="w-5 h-5" />
                                                     </div>
-                                                    <div className="text-center">
-                                                        <p className="text-[13px] font-semibold text-slate-600">
-                                                            Drop file here or <span className="text-blue-600">browse</span>
+                                                    <div className="text-center space-y-1.5">
+                                                        <p className="text-[13.5px] font-semibold text-slate-700 leading-snug">
+                                                            Drop file here or <span className="text-blue-600 hover:text-blue-700 transition-colors">browse</span>
                                                         </p>
-                                                        <p className="text-[11px] text-slate-400 mt-0.5">
-                                                            Barcode image, CSV, or TXT
+                                                        <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                                                            Supports barcode images, CSV, or TXT files
                                                         </p>
+                                                        <div className="flex items-center justify-center gap-2 pt-1">
+                                                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100">
+                                                                <ImageIcon className="w-3 h-3 text-blue-600" />
+                                                                <span className="text-[10px] font-semibold text-blue-700">Image</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-100">
+                                                                <FileUp className="w-3 h-3 text-emerald-600" />
+                                                                <span className="text-[10px] font-semibold text-emerald-700">Bulk CSV/TXT</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            {/* Quick action buttons */}
-                                            <div className="flex gap-2 mt-3">
-                                                <button
-                                                    type="button"
-                                                    className="flex-1 flex items-center justify-center gap-2 h-9 text-[12px] font-semibold text-slate-500 bg-white border border-slate-200 rounded-lg hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50/40 transition-all duration-200"
-                                                    onClick={(e) => { e.stopPropagation(); document.getElementById('barcode-upload')?.click() }}
-                                                >
-                                                    <ImageIcon className="w-3.5 h-3.5" />
-                                                    Scan Image
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="flex-1 flex items-center justify-center gap-2 h-9 text-[12px] font-semibold text-slate-500 bg-white border border-slate-200 rounded-lg hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50/40 transition-all duration-200"
-                                                    onClick={(e) => { e.stopPropagation(); document.getElementById('bulk-upload')?.click() }}
-                                                >
-                                                    <FileUp className="w-3.5 h-3.5" />
-                                                    Bulk CSV / TXT
-                                                </button>
                                             </div>
                                         </motion.div>
                                     )}
@@ -442,9 +430,9 @@ export function Validator() {
                                     <div className="flex justify-between items-center gap-4 px-6 pt-5 pb-1">
                                         <div className="flex items-center gap-2.5">
                                             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
-                                                <Activity className="w-4 h-4 text-blue-600" />
+                                                <ClipboardList className="w-4 h-4 text-blue-600" />
                                             </div>
-                                            <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
+                                            <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
                                                 Results Panel
                                             </span>
                                         </div>
@@ -464,13 +452,17 @@ export function Validator() {
                                                 animate={{ opacity: 1 }}
                                                 transition={{ duration: 0.4, ease: "easeInOut" }}
                                                 className={cn(
-                                                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold tracking-wide shrink-0 border-slate-200/50",
+                                                    "flex items-center justify-center px-2.5 py-1.5 rounded-full border shrink-0 border-slate-200/50",
                                                     result.isValid
                                                         ? "bg-emerald-100/80 text-emerald-700"
                                                         : "bg-red-100/80 text-red-700"
                                                 )}
                                             >
-                                                {result.isValid ? "Valid" : "Invalid"}
+                                                {result.isValid ? (
+                                                    <Check className="w-3.5 h-3.5" />
+                                                ) : (
+                                                    <X className="w-3.5 h-3.5" />
+                                                )}
                                             </motion.div>
                                         ) : null}
                                     </div>

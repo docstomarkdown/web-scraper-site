@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Ruler, Package, ArrowRight, Activity, ClipboardPenLine, ArrowLeft } from "lucide-react"
+import { Ruler, Package, ArrowRight, ClipboardList, ClipboardPenLine, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion, AnimatePresence } from "framer-motion"
@@ -75,9 +75,9 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
             <div className="flex justify-between items-center gap-4 px-6 pt-5 pb-1">
                 <div className="flex items-center gap-2.5">
                     <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
-                        <Activity className="w-4 h-4 text-blue-600" />
+                        <ClipboardList className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
+                    <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
                         Results Panel
                     </span>
                 </div>
