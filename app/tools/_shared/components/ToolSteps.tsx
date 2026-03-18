@@ -34,7 +34,7 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                     {/* Card Content */}
                                     <div className="bg-white rounded-2xl border border-slate-200/60 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-300 p-6 pt-10 pb-8 w-full h-full flex flex-col text-left font-sans overflow-hidden">
                                         {/* Icon box */}
-                                        <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 rounded-xl flex items-center justify-center text-blue-600 mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-3deg]">
+                                        <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 rounded-xl flex items-center justify-center text-blue-600 mb-4 transition-transform duration-300 group-hover:scale-110 origin-center">
                                             <Icon className="w-5 h-5" />
                                         </div>
                                         <h3 className="text-[16px] font-bold text-slate-600 mb-2 leading-tight transition-colors duration-300 min-h-[2.75rem] flex items-end">
@@ -64,7 +64,7 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                             {/* Card */}
                             <div className="flex-1 bg-white rounded-2xl border border-slate-200/60 p-5 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] group-hover:shadow-md transition-all duration-300">
                                 <div className="flex items-center gap-3 mb-2.5">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 flex items-center justify-center text-blue-600 rounded-xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 flex items-center justify-center text-blue-600 rounded-xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 origin-center">
                                         <Icon className="w-4 h-4" />
                                     </div>
                                     <h3 className="text-[16px] font-bold text-slate-600 leading-snug transition-colors duration-300">

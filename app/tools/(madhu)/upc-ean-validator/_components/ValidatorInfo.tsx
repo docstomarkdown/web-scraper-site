@@ -1,5 +1,4 @@
 "use client"
-import { Barcode, ShieldCheck, ScanSearch } from "lucide-react"
 import { ToolOverview } from "@/app/tools/_shared/components"
 
 export function ValidatorInfo() {
@@ -10,19 +9,19 @@ export function ValidatorInfo() {
             definition="UPC (Universal Product Code) and EAN (European Article Number) are the numeric barcodes printed on product packaging to uniquely identify items — used at checkout, in warehouses, and across online marketplaces worldwide."
             facts={[
                 {
-                    icon: ShieldCheck,
-                    label: "Check Digit",
-                    detail: "Last digit verifies all others are correct via GS1 Modulo 10",
+                    stat: "3 Formats",
+                    label: "Accepted",
+                    detail: "UPC-A (12 digits), EAN-13 (13 digits), and EAN-8 (8 digits) — covers virtually every retail barcode globally.",
                 },
                 {
-                    icon: ScanSearch,
-                    label: "Why Validate?",
-                    detail: "Invalid barcodes get rejected at checkout and on Amazon, Walmart",
+                    stat: "Instant",
+                    label: "Validation",
+                    detail: "Paste or scan any barcode and get immediate format checks, check-digit verification, and error correction.",
                 },
                 {
-                    icon: Barcode,
-                    label: "Supported Formats",
-                    detail: "UPC-A (12 digits) · EAN-13 (13 digits) · EAN-8 (8 digits)",
+                    stat: "GS1",
+                    label: "Standard",
+                    detail: "Uses the official Modulo 10 algorithm — the same standard Amazon, Walmart, and every POS system relies on.",
                 },
             ]}
         />
