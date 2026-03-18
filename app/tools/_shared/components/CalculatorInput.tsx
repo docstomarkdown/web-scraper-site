@@ -252,11 +252,6 @@ export function CalculatorInput({
                             )}
                         >
                             {label}
-                            {isOptional && (
-                                <span className="ml-1.5 font-normal italic text-[12px] text-slate-400 lowercase tracking-normal">
-                                    (optional)
-                                </span>
-                            )}
                         </Label>
                         {tooltip && (
                             <Tooltip>
@@ -273,6 +268,11 @@ export function CalculatorInput({
                                     {tooltip}
                                 </TooltipContent>
                             </Tooltip>
+                        )}
+                        {isOptional && (
+                            <span className="font-normal italic text-[12px] text-slate-400 lowercase tracking-normal">
+                                (optional)
+                            </span>
                         )}
                     </div>
                     <div className="relative group flex-shrink-0 flex items-center gap-3">

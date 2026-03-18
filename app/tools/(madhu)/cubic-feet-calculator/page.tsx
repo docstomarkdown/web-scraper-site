@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { CubicFeetCalculator } from "./_components/CubicFeetCalculator"
+import { CubicFeetInfo } from "./_components/CubicFeetInfo"
 import { CubicFeetHowToUse } from "./_components/CubicFeetHowToUse"
 import { CubicFeetGuide } from "./_components/CubicFeetGuide"
 import { CTA } from "@/components/sections/CTA"
@@ -17,6 +18,9 @@ export default function CubicFeetCalculatorPage() {
                     <CubicFeetCalculator />
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.15}>
+                        <CubicFeetInfo />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <CubicFeetHowToUse />
                     </FadeIn>
@@ -28,27 +32,27 @@ export default function CubicFeetCalculatorPage() {
                             faqs={[
                                 {
                                     question: "What units can I use to enter dimensions?",
-                                    answer: "You can use <strong>4 different units</strong>: Feet (ft) - the default, Inches (in), Centimeters (cm), or Meters (m). Simply select your preferred unit from the tabs above the input fields. The calculator automatically converts everything and displays results in Cubic Feet, Cubic Meters, and Cubic Inches."
+                                    answer: "You can enter dimensions in <strong>4 units</strong>: Feet (default), Inches, Centimeters, or Meters. Select your unit from the tab row at the top of the input panel — all three dimension fields switch together. The results always show Cubic Feet, Cubic Meters, and Cubic Inches simultaneously."
                                 },
                                 {
-                                    question: "How does the quantity feature work?",
-                                    answer: "The <strong>Number of Units</strong> field (optional) lets you calculate total volume for multiple identical items. Enter dimensions once, then specify how many units you have. The calculator multiplies the single-item volume by your quantity to give you the total volume for all items combined."
+                                    question: "How does the Quantity field work?",
+                                    answer: "The <strong>Number of Units</strong> field (optional, under the Quantity section) lets you calculate total volume for multiple identical items. When a quantity greater than 1 is entered, the Results Panel shows both the single-unit volume as the hero figure <em>and</em> a \"Total Volume\" card with the combined volume for the entire batch."
                                 },
                                 {
-                                    question: "Why do results show full numbers instead of abbreviations?",
-                                    answer: "We display <strong>complete numbers with comma formatting</strong> (e.g., 3,350,000.00 instead of 3.35M) so all users can understand the exact values without needing to decode abbreviations. This prevents confusion and ensures transparency in volume calculations."
+                                    question: "How do I get an Estimated Total Cost?",
+                                    answer: "Open the <strong>Cost</strong> section (optional) at the bottom of the input panel. Select your currency from the currency picker — 50+ currencies are supported with correct symbols — then enter your cost per cubic foot. The results panel will show an Estimated Total Cost card with the correct currency formatting automatically applied."
                                 },
                                 {
                                     question: "What's the difference between CFT, CBM, and Cubic Inches?",
-                                    answer: "<strong>Cubic Feet (CFT)</strong> is the primary result and standard for US warehouses and Amazon FBA. <strong>Cubic Meters (CBM)</strong> is used for international sea freight. <strong>Cubic Inches</strong> is useful for precise measurements. Our calculator shows all three simultaneously so you have the exact values needed for any shipping or storage scenario."
+                                    answer: "<strong>Cubic Feet (CFT)</strong> is the primary result and the standard unit for US warehouse storage and Amazon FBA fees. <strong>Cubic Meters (CBM)</strong> is used by international sea freight carriers. <strong>Cubic Inches</strong> is useful for precise small-item calculations. All three are displayed at the same time so you always have the right figure for the right platform."
                                 },
                                 {
-                                    question: "Do I need to enter all fields to get results?",
-                                    answer: "You need to enter <strong>Length, Width, and Height</strong> to see volume results. The Quantity field is optional - if left empty, it defaults to 1 unit. Results update in real-time as you type, so you'll see calculations instantly once all three dimensions are entered."
+                                    question: "Why does the hero value show a compact format like 518.15K?",
+                                    answer: "The large hero number uses a <strong>compact notation</strong> (K for thousands, M for millions, B for billions) to fit neatly in the display without truncation. The Other Units card below it always shows the full precise number — for example, 44,016.7292 m³ — so you never lose accuracy."
                                 },
                                 {
-                                    question: "How accurate are the calculations?",
-                                    answer: "Our calculator provides <strong>precise decimal calculations</strong> - up to 4 decimal places for Cubic Meters and 2 decimal places for Cubic Feet and Cubic Inches. This level of precision is essential for accurate freight quotes and storage fee calculations, preventing costly billing errors."
+                                    question: "How precise are the calculations?",
+                                    answer: "The tool outputs up to <strong>4 decimal places for Cubic Meters</strong> (CBM) and <strong>2 decimal places for Cubic Feet and Cubic Inches</strong>. This level of precision matches what Amazon FBA and LTL freight carriers require to price storage and shipping correctly."
                                 }
                             ]}
                         />
