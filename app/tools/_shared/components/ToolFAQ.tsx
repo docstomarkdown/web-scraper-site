@@ -35,7 +35,7 @@ export function ToolFAQ({ title = "Frequently Asked Questions", icon = MessagesS
                                 <div className="flex items-center gap-3.5 text-left flex-1 min-w-0">
                                     {/* Numbered badge → question icon when open */}
                                     <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 border border-slate-200/60 group-data-[state=open]:bg-gradient-to-br group-data-[state=open]:from-blue-500 group-data-[state=open]:to-blue-600 group-data-[state=open]:border-transparent group-data-[state=open]:shadow-md group-data-[state=open]:shadow-blue-500/25 transition-all duration-300">
-                                        <span className="text-[11px] font-black text-slate-400 leading-none group-data-[state=open]:hidden">
+                                        <span className="text-[11px] font-black text-slate-500 leading-none group-data-[state=open]:hidden">
                                             {String(index + 1).padStart(2, '0')}
                                         </span>
                                         <MessageCircleQuestion className="w-4 h-4 text-white hidden group-data-[state=open]:block" />

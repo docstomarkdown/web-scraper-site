@@ -269,4 +269,4 @@ function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, valu
             </div>
         </div>
     )
-}
+}
