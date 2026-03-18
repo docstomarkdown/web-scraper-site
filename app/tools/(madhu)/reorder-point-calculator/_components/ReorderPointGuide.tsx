@@ -8,33 +8,32 @@ export function ReorderPointGuide() {
             icon={BookOpen}
             items={[
                 {
-                    title: "Protect Your Store's Ranking",
-                    description: "Staying in stock is the best way to keep your search ranking high. If you run out, your store could drop in search results, making it harder for customers to find you.",
+                    title: "Protect Your Rankings",
+                    description: "Going out of stock (OOS) is the #1 reason for search rank drops. A correctly calculated reorder point ensures you stay live 24/7.",
                     icon: LineChart,
                     stat: "Essential",
-                    statLabel: "Consistency",
-                    iconBg: "bg-blue-50",
+                    statLabel: "Rank Protection",
+                    iconBg: "bg-blue-50/50",
                     iconColor: "text-blue-600",
-                    statColor: "text-blue-600",
-                    tooltip: "Consistent availability prevents ranking drops."
+                    statColor: "text-blue-600"
                 },
                 {
-                    title: "Don't Forget Processing Time",
-                    description: "When calculating lead time, add 2-3 extra days for 'admin time'—like paying the invoice and getting the warehouse ready to receive the goods.",
+                    title: "Admin Lead Time",
+                    description: "Suppliers often quote production time. Don't forget to add a 2-3 day buffer for shipping prep and receiving at your warehouse.",
                     icon: Hourglass,
-                    stat: "+2 Days",
-                    statLabel: "Admin Buffer",
-                    iconBg: "bg-purple-50",
+                    stat: "+3 Days",
+                    statLabel: "Receiving Buffer",
+                    iconBg: "bg-purple-50/50",
                     iconColor: "text-purple-600",
                     statColor: "text-purple-600"
                 },
                 {
-                    title: "Use Cash More Wisely",
-                    description: "By knowing exactly when to reorder, you won't buy products too early. This keeps your cash free for other things, like marketing or new product launches.",
+                    title: "Inventory Turnover",
+                    description: "Higher reorder points increase your available inventory. Balancing this with Sales Velocity is key to maximizing cash flow efficiency.",
                     icon: Coins,
-                    stat: "Better",
+                    stat: "Optimized",
                     statLabel: "Cash Flow",
-                    iconBg: "bg-emerald-50",
+                    iconBg: "bg-emerald-50/50",
                     iconColor: "text-emerald-600",
                     statColor: "text-emerald-600"
                 }

@@ -1,25 +1,26 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Weight, SlidersHorizontal, LayoutList } from "lucide-react"
+import { Scale, Truck, ChevronDown } from "lucide-react"
+
 export function WeightConverterHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Weight Converter"
+            title="How to Use This Tool"
             steps={[
                 {
-                    title: "Enter Weight Value",
-                    description: "Type the numeric weight value you want to convert in the input field.",
-                    icon: Weight
+                    title: "Enter Weight & Select Unit",
+                    description: "Type your product weight, then tap one of the four unit buttons — lbs, oz, kg, or g — to set the input unit. The Target Unit selector below lets you pick your primary conversion target.",
+                    icon: Scale
                 },
                 {
-                    title: "Select Units",
-                    description: "Choose your input unit (lbs, oz, kg, or g) and target unit using the tab buttons. The target unit cannot be the same as the input unit.",
-                    icon: SlidersHorizontal
+                    title: "Pick Carrier & Shipping Speed",
+                    description: "Choose from 7+ global carriers (USPS, FedEx, UPS, DHL, Royal Mail, Canada Post, Australia Post) or select by shipping speed (Standard, Express, Next Day). The tool highlights your active cost tier immediately.",
+                    icon: Truck
                 },
                 {
-                    title: "View Results",
-                    description: "Instantly see the converted weight in your target unit, plus all other unit conversions displayed in the results panel.",
-                    icon: LayoutList
+                    title: "Explore the Cost Breakdown",
+                    description: "Click \"View Cost Breakdown\" to reveal every weight tier for your selected carrier — with your current tier highlighted. See exactly how many lbs separate you from the next (more expensive) band.",
+                    icon: ChevronDown
                 }
             ]}
         />

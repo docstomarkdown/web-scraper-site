@@ -9,6 +9,7 @@ import {
     Info,
     CheckCircle2,
     Check,
+    X,
     XCircle,
     Activity,
     ClipboardPenLine,
@@ -230,14 +231,19 @@ export function Converter() {
                                         <motion.div
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.4, ease: "easeInOut" }}
                                             className={cn(
-                                                "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold tracking-wide shrink-0 border-slate-200/50",
+                                                "flex items-center justify-center px-2.5 py-1.5 rounded-full border shrink-0 border-slate-200/50",
                                                 status.isValid
                                                     ? "bg-emerald-100/80 text-emerald-700"
                                                     : "bg-red-100/80 text-red-700"
                                             )}
                                         >
-                                            {status.isValid ? "Converted" : "Invalid GTIN"}
+                                            {status.isValid ? (
+                                                <Check className="w-3.5 h-3.5" />
+                                            ) : (
+                                                <X className="w-3.5 h-3.5" />
+                                            )}
                                         </motion.div>
                                     ) : null}
                                 </div>
@@ -319,12 +325,8 @@ export function Converter() {
                                         >
                                             <div className="px-5 pb-5 pt-3 space-y-3">
                                                 {/* Output Fields list as requested */}
-                                                <div className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]">
-                                                    <div className="flex items-center gap-2 mb-3">
-                                                        <Info className="w-5 h-5 text-blue-500 shrink-0" />
-                                                        <span className="text-sm font-bold text-slate-800">Conversion Output</span>
-                                                    </div>
-                                                    <div className="pl-7 space-y-3">
+                                                <div className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-5 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]">
+                                                    <div className="space-y-4">
                                                         
                                                         {status.isValid && results ? (
                                                             <>
