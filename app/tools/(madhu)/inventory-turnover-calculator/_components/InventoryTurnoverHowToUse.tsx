@@ -1,24 +1,25 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Wallet, Package, RefreshCw } from "lucide-react"
+
 export function InventoryTurnoverHowToUse() {
     return (
         <ToolSteps
             title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Enter Your Total Costs (COGS)",
-                    description: "Input the total 'Cost of Goods Sold' for your chosen period. This reflects the direct costs of the products you've successfully sold.",
+                    title: "Enter COGS",
+                    description: "Choose your preferred currency and input the 'Cost of Goods Sold' for your chosen period.",
                     icon: Wallet
                 },
                 {
-                    title: "Check Your Stock Value",
-                    description: "Enter the total amount you paid for the products currently ready for sale, including items on your shelves or in your warehouse.",
+                    title: "Inventory Values",
+                    description: "Enter your 'Opening Inventory' and 'Closing Inventory' values to analyze stock flow.",
                     icon: Package
                 },
                 {
                     title: "Analyze Your Metrics",
-                    description: "Instantly see your turnover ratio and Days Sales in Inventory (DSI) to measure performance.",
+                    description: "Set your analysis period and instantly see your turnover ratio, Days to Sell Inventory, and Average Value.",
                     icon: RefreshCw
                 }
             ]}

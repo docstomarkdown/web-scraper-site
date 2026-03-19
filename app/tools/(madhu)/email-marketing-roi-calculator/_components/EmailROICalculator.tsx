@@ -8,7 +8,7 @@ import {
     CalculatorCardHeader,
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, MousePointerClick } from "lucide-react"
+import { Users, MousePointerClick, TrendingUp, UserCheck } from "lucide-react"
 import { CampaignResults } from "./CampaignResults"
 
 export function EmailROICalculator() {
@@ -146,6 +146,7 @@ export function EmailROICalculator() {
                                 value: netProfit.toFixed(2),
                                 isCurrency: true,
                                 tooltip: "Total revenue generated minus the campaign cost.",
+                                icon: TrendingUp,
                             },
                             {
                                 key: "cpa",
@@ -153,6 +154,7 @@ export function EmailROICalculator() {
                                 value: cpa.toFixed(2),
                                 isCurrency: true,
                                 tooltip: "Average cost required to acquire one customer.",
+                                icon: UserCheck,
                             },
                         ]}
                         showLiveBadge={true}

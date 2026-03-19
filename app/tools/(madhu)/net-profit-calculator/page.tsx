@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { NetProfitCalculator } from "./_components/NetProfitCalculator"
+import { NetProfitOverview } from "./_components/NetProfitOverview"
 import { NetProfitHowToUse } from "./_components/NetProfitHowToUse"
 import { NetProfitGuide } from "./_components/NetProfitGuide"
 import { CTA } from "@/components/sections/CTA"
@@ -18,12 +19,15 @@ export default function NetProfitCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <NetProfitHowToUse />
+                        <NetProfitOverview />
                     </FadeIn>
                     <FadeIn delay={0.3}>
-                        <NetProfitGuide />
+                        <NetProfitHowToUse />
                     </FadeIn>
                     <FadeIn delay={0.4}>
+                        <NetProfitGuide />
+                    </FadeIn>
+                    <FadeIn delay={0.5}>
                         <ToolFAQ
                             faqs={[
                                 {
@@ -41,11 +45,15 @@ export default function NetProfitCalculatorPage() {
                                 {
                                     question: "Why does the tool subtract taxes from the net profit?",
                                     answer: "Many business owners make the mistake of spending 'Operational Profit' before taxes are paid. By subtracting your estimated tax rate, this tool gives you a realistic view of the actual cash you can safely withdraw or reinvest back into the business."
+                                },
+                                {
+                                    question: "How do I use the new Income & Expense Breakdown?",
+                                    answer: "After your net profit is calculated, look for the 'View Income & Expense Breakdown' dropdown near the bottom of the Results Panel. Clicking it will expand an interactive chart and categorized list showing exactly what percentage of your revenue is consumed by each distinct cost block."
                                 }
                             ]}
                         />
                     </FadeIn>
-                    <FadeIn delay={0.5}>
+                    <FadeIn delay={0.6}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
                 </div>

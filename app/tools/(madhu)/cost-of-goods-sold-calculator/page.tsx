@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { COGSCalculator } from "./_components/COGSCalculator"
+import { COGSOverview } from "./_components/COGSOverview"
 import { COGSHowToUse } from "./_components/COGSHowToUse"
 import { COGSGuide } from "./_components/COGSGuide"
 import { CTA } from "@/components/sections/CTA"
@@ -23,6 +24,9 @@ export default function COGSCalculatorPage() {
                     <COGSCalculator />
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.1}>
+                        <COGSOverview />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <COGSHowToUse />
                     </FadeIn>
@@ -34,19 +38,19 @@ export default function COGSCalculatorPage() {
                             faqs={[
                                 {
                                     question: "What is Cost of Goods Sold (COGS)?",
-                                    answer: "Cost of Goods Sold (COGS) refers to the direct costs attributable to the production or acquisition of the goods sold by your company. This includes the product cost, shipping, duties, and packaging."
+                                    answer: "Cost of Goods Sold (COGS) refers to the direct costs attributable to the production or acquisition of the goods sold by your company. This includes the product cost, shipping, and packaging."
                                 },
                                 {
-                                    question: "Why include Fulfillment & Outbound Shipping?",
-                                    answer: "While fulfillment isn't always part of traditional manufacturing COGS, in e-commerce, it is a direct variable cost incurred to deliver a product to a customer. Knowing this total cost per unit is vital for pricing your products correctly."
+                                    question: "Why do you include Shipping and Fulfillment in COGS?",
+                                    answer: "In e-commerce, fulfillment and shipping are direct variable costs incurred to deliver a product safely to a customer. Factoring these into your COGS provides a transparent and actionable view for your pricing strategy."
                                 },
                                 {
                                     question: "Are advertising costs (ROAS) included in COGS?",
-                                    answer: "No. This calculator is designed strictly to determine your direct per-unit variable costs. Advertising spend, software subscriptions, and general fixed overhead should remain separate from your base Cost of Goods Sold."
+                                    answer: "No. This calculator focuses strictly on determining your direct per-unit variable costs. Advertising spend, software subscriptions, and general fixed overhead should remain separate from your Cost of Goods Sold."
                                 },
                                 {
-                                    question: "Do I need to enter 'Units Sold'?",
-                                    answer: "Entering your Units Sold is completely optional. If left blank, you will simply see your COGS per Unit. If you enter a number, the calculator will immediately show your Total COGS across that inventory batch."
+                                    question: "How does the Cost Breakdown help?",
+                                    answer: "The Cost Breakdown splits your Total COGS across your input quantity, revealing exactly how much capital is tied up in product, logistics, packaging, and fulfillment individually. This illuminates areas where you can optimize costs."
                                 }
                             ]}
                         />

@@ -2,7 +2,7 @@
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info, CheckCircle2, Circle, ArrowLeft, Percent, ClipboardList, ClipboardPenLine, TextCursorInput, MousePointerClick } from "lucide-react"
+import { Info, CheckCircle2, Circle, ArrowLeft, Percent, ClipboardList, ClipboardPenLine, TextCursorInput, MousePointerClick, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { currencies, formatCurrencyValue } from "./CurrencyCombobox"
@@ -14,6 +14,8 @@ interface SecondaryResult {
     tooltip?: string
     isCurrency?: boolean // New flag to handle currency formatting
     className?: string // Added to support custom grid layouts
+    icon?: LucideIcon | React.ComponentType<any> // Icon to display instead of the dot
+    badge?: string // Badge text to display inline (e.g. "$ 90.00/ft³")
 }
 export interface ChecklistItem {
     key?: string
@@ -47,6 +49,7 @@ interface ResultSummaryCardProps {
     className?: string
     checklistItems?: ChecklistItem[]
     variant?: 'indicators' | 'editorial'
+    children?: React.ReactNode
 }
 export function ResultSummaryCard({
     title,
@@ -64,7 +67,8 @@ export function ResultSummaryCard({
     dynamicMessages,
     className,
     checklistItems,
-    variant = 'indicators'
+    variant = 'indicators',
+    children
 }: ResultSummaryCardProps) {
     const [showResults, setShowResults] = React.useState(isCalculated)
     const completedCount = checklistItems ? checklistItems.filter(i => i.isComplete).length : 0
@@ -99,7 +103,7 @@ export function ResultSummaryCard({
         if (isFront) {
             return (
                 <span className="flex items-baseline">
-                    <span className="mr-0.5 opacity-90">{unit}</span>
+                    <span className="mr-0.5">{unit}</span>
                     {value}
                 </span>
             )
@@ -108,7 +112,7 @@ export function ResultSummaryCard({
         return (
             <span className="flex items-baseline">
                 {value}
-                <span className="ml-1 opacity-70 font-medium text-[0.6em]">{unit}</span>
+                <span className="ml-1 font-medium text-[0.6em]">{unit}</span>
             </span>
         )
     }
@@ -138,7 +142,7 @@ export function ResultSummaryCard({
             if (numericProfitLoss > 0) return "text-emerald-600"
             if (numericProfitLoss < 0) return "text-red-600"
         }
-        return "text-slate-400"
+        return "text-slate-800"
     }
     const badge = (() => {
         if (profitLossKey) {
@@ -402,7 +406,9 @@ export function ResultSummaryCard({
                             {/* ── Secondary Result Cards (full-width stacked) ── */}
                             {secondaryResults.length > 0 && secondaryResults.map((result, idx) => {
                                 const isCurrencyCard = result.isCurrency && currency
+                                const hasBadge = !!result.badge
                                 const valueColor = getSecondaryValueColor(result)
+                                const IconComponent = result.icon
                                 return (
                                     <motion.div
                                         key={result.key}
@@ -410,46 +416,48 @@ export function ResultSummaryCard({
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.35, delay: 0.1 + idx * 0.05 }}
                                         className={cn(
-                                            "bg-white border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200",
-                                            "hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]",
-                                            isCurrencyCard
-                                                ? "border-blue-200/70 hover:border-blue-300 bg-blue-50/30"
-                                                : "border-slate-200/70 hover:border-slate-300",
+                                            "bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200",
+                                            "hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)] hover:border-slate-300",
                                             result.className
                                         )}
                                     >
-                                        {/* Header: dot + label + tooltip */}
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <span className={cn(
-                                                "w-1.5 h-1.5 rounded-full flex-shrink-0",
-                                                isCurrencyCard ? "bg-blue-400" : "bg-slate-300"
-                                            )} />
-                                            <span className={cn(
-                                                "text-[13px] font-bold",
-                                                isCurrencyCard ? "text-blue-600" : "text-slate-500"
-                                            )}>
-                                                {autoAdjustText(result.label)}
-                                            </span>
-                                            {result.tooltip && (
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <button type="button" tabIndex={-1} className="text-slate-300 hover:text-blue-500 transition-colors cursor-help shrink-0">
-                                                            <Info className="w-3 h-3" />
-                                                        </button>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
-                                                        {result.tooltip}
-                                                    </TooltipContent>
-                                                </Tooltip>
+                                        {/* Header: icon + label + badge + tooltip */}
+                                        <div className="flex items-center justify-between mb-2">
+                                            <div className="flex items-center gap-2">
+                                                {IconComponent ? (
+                                                    <IconComponent className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                                ) : (
+                                                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-slate-300" />
+                                                )}
+                                                <span className="text-[13px] font-bold text-slate-500">
+                                                    {autoAdjustText(result.label)}
+                                                </span>
+                                                {result.tooltip && (
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" tabIndex={-1} className="text-slate-300 hover:text-blue-500 transition-colors cursor-help shrink-0">
+                                                                <Info className="w-3 h-3" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
+                                                            {result.tooltip}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                )}
+                                            </div>
+                                            {result.badge && (
+                                                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-blue-100/80 text-blue-700">
+                                                    {result.badge}
+                                                </span>
                                             )}
                                         </div>
                                         {/* Value */}
-                                        <div className={cn("pl-3.5", isCurrencyCard && "pt-0.5")}>
+                                        <div className={cn(IconComponent ? "pl-6" : "pl-3.5", hasBadge && "pt-0.5")}>
                                             <span className={cn(
                                                 "font-black tracking-tight block",
                                                 isCurrencyCard
                                                     ? "text-xl text-slate-800"
-                                                    : cn("text-[16px]", valueColor === "text-slate-400" ? "text-slate-700" : valueColor)
+                                                    : cn("text-[16px]", valueColor)
                                             )}>
                                                 {formatValueWithUnit(
                                                     getDisplayValue(result.value, result.key),
@@ -461,6 +469,7 @@ export function ResultSummaryCard({
                                     </motion.div>
                                 )
                             })}
+                            {children}
                         </motion.div>
                     )}
                 </AnimatePresence>

@@ -8,18 +8,18 @@ export function EOQHowToUse() {
             title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Annual Demand",
-                    description: "Input the total units you expect to sell or use over a full year. If you only have monthly data, just multiply it by 12.",
+                    title: "Add Annual Demand",
+                    description: "Input the total units your business expects to sell or use over a full 12-month period. If you have monthly data, just multiply it by 12.",
                     icon: CalendarRange
                 },
                 {
-                    title: "Add Your Costs",
-                    description: "Enter your fixed Cost Per Order (like shipping or admin fees) and the annual Holding Cost to store a single unit.",
+                    title: "Enter Ordering & Holding Costs",
+                    description: "Provide your fixed Cost Per Order (shipping, handling, or admin fees) alongside the annual Holding Cost to store a single unit.",
                     icon: Banknote
                 },
                 {
-                    title: "Apply Your EOQ",
-                    description: "Order exactly the recommended number of units each time. This hits the lowest possible annual cost for your inventory.",
+                    title: "Get Optimal Ordering Setup",
+                    description: "Instantly see the exact units to order each time, how many orders to place annually, and the total cost to manage your inventory per year.",
                     icon: Target
                 }
             ]}

@@ -1,5 +1,6 @@
 import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { AffiliateCommissionCalculator } from "./_components/AffiliateCommissionCalculator"
+import { AffiliateOverview } from "./_components/AffiliateOverview"
 import { AffiliateHowToUse } from "./_components/AffiliateHowToUse"
 import { AffiliateGuide } from "./_components/AffiliateGuide"
 import { CTA } from "@/components/sections/CTA"
@@ -18,12 +19,15 @@ export default function AffiliateCommissionCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <AffiliateHowToUse />
+                        <AffiliateOverview />
                     </FadeIn>
                     <FadeIn delay={0.3}>
-                        <AffiliateGuide />
+                        <AffiliateHowToUse />
                     </FadeIn>
                     <FadeIn delay={0.4}>
+                        <AffiliateGuide />
+                    </FadeIn>
+                    <FadeIn delay={0.5}>
                         <ToolFAQ
                             faqs={[
                                 {
@@ -53,7 +57,7 @@ export default function AffiliateCommissionCalculatorPage() {
                             ]}
                         />
                     </FadeIn>
-                    <FadeIn delay={0.5}>
+                    <FadeIn delay={0.6}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
                 </div>

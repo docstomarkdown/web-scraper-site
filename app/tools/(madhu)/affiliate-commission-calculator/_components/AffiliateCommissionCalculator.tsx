@@ -5,7 +5,9 @@ import {
     Percent,
     ShoppingCart,
     Handshake,
-    PackageOpen
+    PackageOpen,
+    DollarSign,
+    TrendingUp
 } from "lucide-react"
 
 import {
@@ -182,29 +184,31 @@ export function AffiliateCommissionCalculator() {
                         }}
                         secondaryResults={[
                             {
+                                key: "netProfit",
+                                label: "Net Profit",
+                                value: Math.round(results.netProfit).toLocaleString(),
+                                unit: currencySymbol,
+                                tooltip: "Your take-home profit after deducting affiliate commissions and product costs. Calculated as Revenue − Affiliate Payout − Product Cost.",
+                                icon: TrendingUp,
+                            },
+                            {
                                 key: "totalRevenue",
                                 label: "Total Revenue",
                                 value: Math.round(results.totalRevenue).toLocaleString(),
                                 unit: currencySymbol,
-                                tooltip: "Total revenue generated from estimated sales. Calculated as Estimated Sales × Average Order Value."
+                                tooltip: "Total revenue generated from estimated sales. Calculated as Estimated Sales × Average Order Value.",
+                                icon: DollarSign,
                             },
                             {
                                 key: "estimatedSales",
                                 label: "Estimated Sales",
                                 value: Math.round(results.estimatedSales).toLocaleString(),
                                 unit: " sales",
-                                tooltip: "Number of actual purchases expected from the affiliate traffic. Calculated as Clicks × Conversion Rate."
-                            },
-                            {
-                                key: "netProfit",
-                                label: "Net Profit",
-                                value: Math.round(results.netProfit).toLocaleString(),
-                                unit: currencySymbol,
-                                tooltip: "Your take-home profit after deducting affiliate commissions and product costs. Calculated as Revenue − Affiliate Payout − Product Cost."
+                                tooltip: "Number of actual purchases expected from the affiliate traffic. Calculated as Clicks × Conversion Rate.",
+                                icon: ShoppingCart,
                             }
                         ]}
                         isCalculated={hasInputs}
-                        profitLossKey="netProfit"
 
                         checklistItems={[
                             { key: 'traffic', label: 'Affiliate Traffic', isComplete: values.affiliateTraffic !== "" },

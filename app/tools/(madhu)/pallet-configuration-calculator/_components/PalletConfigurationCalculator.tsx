@@ -15,6 +15,7 @@ import {
     Truck,
     DollarSign,
     Ruler,
+    Scale,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -574,41 +575,47 @@ export function PalletConfigurationCalculator() {
                                 key: "unitsPerLayer",
                                 label: "Units per layer",
                                 value: results ? `${results.unitsPerLayer} (${results.unitsAlongLength}×${results.unitsAlongWidth})` : "0 (0×0)",
-                                tooltip: "Number of boxes that fit on a single layer"
+                                tooltip: "Number of boxes that fit on a single layer",
+                                icon: Grid3x3,
                             },
                             {
                                 key: "layers",
                                 label: "Total layers",
                                 value: results ? results.layers : 0,
                                 unit: "layers",
-                                tooltip: "Number of layers stacked vertically"
+                                tooltip: "Number of layers stacked vertically",
+                                icon: Layers,
                             },
                             {
                                 key: "orientation",
                                 label: "Orientation",
                                 value: results ? results.orientation : "Standard",
-                                tooltip: "Optimal box orientation for maximum efficiency"
+                                tooltip: "Optimal box orientation for maximum efficiency",
+                                icon: RefreshCw,
                             },
                             {
                                 key: "areaEfficiency",
                                 label: "Space efficiency",
                                 value: results ? results.areaEfficiency : 0,
                                 unit: "%",
-                                tooltip: "Percentage of pallet surface area utilized"
+                                tooltip: "Percentage of pallet surface area utilized",
+                                icon: Target,
                             },
                             {
                                 key: "totalWeight",
                                 label: "Total weight",
                                 value: results ? results.totalWeight : 0,
                                 unit: "lb",
-                                tooltip: "Total weight of all boxes on the pallet"
+                                tooltip: "Total weight of all boxes on the pallet",
+                                icon: Scale,
                             },
                             {
                                 key: "loadHeight",
                                 label: "Load height",
                                 value: results ? results.loadHeight : 0,
                                 unit: "in",
-                                tooltip: "Total height of the loaded pallet including pallet base"
+                                tooltip: "Total height of the loaded pallet including pallet base",
+                                icon: Ruler,
                             }
                         ]}
                         isCalculated={!!results}

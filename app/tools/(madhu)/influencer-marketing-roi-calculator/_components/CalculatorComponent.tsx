@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Card, CardContent } from "../../../../../components/ui/card"
-import { Wallet, Box, ShoppingCart } from "lucide-react"
+import { Wallet, Box, ShoppingCart, TrendingUp, DollarSign, Receipt, Target } from "lucide-react"
 
 import { FadeIn, CalculatorInput, CalculatorCardHeader, ResultSummaryCard } from "../../../_shared/components"
 import { BudgetAllocation } from "./BudgetAllocation"
@@ -162,28 +162,32 @@ export function InfluencerROICalculator() {
                                 label: "Net Profit",
                                 value: profitLoss.toFixed(2),
                                 isCurrency: true,
-                                tooltip: "Revenue minus all costs. Positive = profit. Negative = loss."
+                                tooltip: "Revenue minus all costs. Positive = profit. Negative = loss.",
+                                icon: TrendingUp,
                             },
                             {
                                 key: "totalRevenue",
                                 label: "Total Revenue",
                                 value: totalRevenue.toFixed(2),
                                 isCurrency: true,
-                                tooltip: "Selling Price × Total Orders."
+                                tooltip: "Selling Price × Total Orders.",
+                                icon: DollarSign,
                             },
                             {
                                 key: "totalCost",
                                 label: "Total Cost",
                                 value: totalCost.toFixed(2),
                                 isCurrency: true,
-                                tooltip: "Influencer Fee + Ad Spend + (Product Cost + Shipping) × Orders."
+                                tooltip: "Influencer Fee + Ad Spend + (Product Cost + Shipping) × Orders.",
+                                icon: Receipt,
                             },
                             {
                                 key: "profitPerOrder",
                                 label: "Profit per Order",
                                 value: profitPerOrder.toFixed(2),
                                 isCurrency: true,
-                                tooltip: "Net Profit ÷ Total Orders. Your earnings per sale."
+                                tooltip: "Net Profit ÷ Total Orders. Your earnings per sale.",
+                                icon: Target,
                             }
                         ]}
                         isCalculated={hasAnyData}

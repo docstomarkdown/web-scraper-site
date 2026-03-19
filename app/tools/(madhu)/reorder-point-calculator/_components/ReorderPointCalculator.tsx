@@ -1,7 +1,9 @@
 "use client"
 import React, { useState, useMemo, useEffect } from "react"
 import {
-    Info
+    Info,
+    TrendingUp,
+    ShieldCheck
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -109,14 +111,16 @@ export function ReorderPointCalculator() {
                                 label: "Demand During Delivery Time",
                                 tooltip: "Estimated units sold during lead time (Daily Units Sold × Delivery Time).",
                                 value: Math.round(results.leadTimeDemand),
-                                unit: "Units"
+                                unit: "Units",
+                                icon: TrendingUp,
                             },
                             ...(values.safetyStock !== "" ? [{
                                 key: "safety",
                                 label: "Safety Stock",
                                 tooltip: "The chosen buffer stock to protect against delays or demand spikes.",
                                 value: Math.round(results.safetyStock),
-                                unit: "Units"
+                                unit: "Units",
+                                icon: ShieldCheck,
                             }] : [])
                         ]}
                         emptyMessage="Reorder Point"
