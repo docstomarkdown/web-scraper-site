@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Percent, Target, Wallet } from "lucide-react"
+import { Percent, Target, Wallet, DollarSign } from "lucide-react"
 import {
     CalculatorInput,
     ResultSummaryCard,
@@ -92,6 +92,7 @@ export function GrossMarginCalculator() {
                     value: derivedProfit,
                     isCurrency: true as const,
                     tooltip: "Actual cash profit after subtracting COGS from Revenue.",
+                    icon: DollarSign,
                 },
             ]
             : mode === "revenue"
@@ -102,6 +103,7 @@ export function GrossMarginCalculator() {
                         value: derivedProfit,
                         isCurrency: true as const,
                         tooltip: "Profit earned at this selling price.",
+                        icon: DollarSign,
                     },
                     {
                         key: "margin",
@@ -109,6 +111,7 @@ export function GrossMarginCalculator() {
                         value: parseFloat(derivedMargin.toFixed(2)),
                         unit: "%",
                         tooltip: "The gross margin % you set as your target.",
+                        icon: Percent,
                     },
                 ]
                 : [
@@ -118,6 +121,7 @@ export function GrossMarginCalculator() {
                         value: derivedProfit,
                         isCurrency: true as const,
                         tooltip: "Profit earned if COGS stays at or below this limit.",
+                        icon: DollarSign,
                     },
                     {
                         key: "margin",
@@ -125,6 +129,7 @@ export function GrossMarginCalculator() {
                         value: parseFloat(derivedMargin.toFixed(2)),
                         unit: "%",
                         tooltip: "The target gross margin you are calculating for.",
+                        icon: Percent,
                     },
                 ]
 
@@ -158,7 +163,7 @@ export function GrossMarginCalculator() {
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left: Inputs */}
-                <div className="lg:col-span-7 space-y-3">
+                <div className="lg:col-span-7 space-y-3 self-start lg:sticky lg:top-28">
                     <Card className="border border-slate-200 shadow-xl shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
                         <CalculatorCardHeader
                             title="Margin Calculator"
@@ -187,13 +192,13 @@ export function GrossMarginCalculator() {
                                 {mode === "revenue" && (
                                     <>
                                         <CalculatorInput label="Cost of Goods Sold (COGS)" value={cogs} onChange={setCogs} placeholder="6000.00" tooltip="Your cost to produce or acquire the product." currency={currency} />
-                                        <CalculatorInput label="Target Gross Margin (%)" value={targetMargin} onChange={setTargetMargin} placeholder="40.0" max={99.99} tooltip="The gross margin percentage you want to achieve." suffix="%" />
+                                        <CalculatorInput label="Target Gross Margin" value={targetMargin} onChange={setTargetMargin} placeholder="40.0" max={99.99} tooltip="The gross margin percentage you want to achieve." suffix="%" />
                                     </>
                                 )}
                                 {mode === "cogs" && (
                                     <>
                                         <CalculatorInput label="Target Revenue" value={revenue} onChange={setRevenue} placeholder="10000.00" tooltip="The sales revenue you expect or aim for." currency={currency} />
-                                        <CalculatorInput label="Target Gross Margin (%)" value={targetMargin} onChange={setTargetMargin} placeholder="40.0" max={99.99} tooltip="The gross margin percentage you need to maintain." suffix="%" />
+                                        <CalculatorInput label="Target Gross Margin" value={targetMargin} onChange={setTargetMargin} placeholder="40.0" max={99.99} tooltip="The gross margin percentage you need to maintain." suffix="%" />
                                     </>
                                 )}
                             </div>

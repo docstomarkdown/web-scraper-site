@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { GrossMarginCalculator } from "./_components/GrossMarginCalculator"
+import { GrossMarginOverview } from "./_components/GrossMarginOverview"
 import { GrossMarginHowToUse } from "./_components/GrossMarginHowToUse"
 import { GrossMarginGuide } from "./_components/GrossMarginGuide"
 import { CTA } from "@/components/sections/CTA"
@@ -20,12 +21,15 @@ export default function GrossMarginCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <GrossMarginHowToUse />
+                        <GrossMarginOverview />
                     </FadeIn>
                     <FadeIn delay={0.3}>
-                        <GrossMarginGuide />
+                        <GrossMarginHowToUse />
                     </FadeIn>
                     <FadeIn delay={0.4}>
+                        <GrossMarginGuide />
+                    </FadeIn>
+                    <FadeIn delay={0.5}>
                         <ToolFAQ
                             faqs={[
                                 {
@@ -43,11 +47,15 @@ export default function GrossMarginCalculatorPage() {
                                 {
                                     question: "How can I use 'Find COGS' mode?",
                                     answer: "If you know your market's top price point and your required margin, this mode tells you the maximum you can afford to spend on making or buying the product while still staying profitable."
+                                },
+                                {
+                                    question: "How does the sticky panel help me?",
+                                    answer: "The sticky left panel keeps your input controls locked in place while you scroll through your financial results on the right. This allows you to rapidly adjust your target margins or costs without constantly scrolling up and down, saving you time and keeping your focus on the numbers."
                                 }
                             ]}
                         />
                     </FadeIn>
-                    <FadeIn delay={0.5}>
+                    <FadeIn delay={0.6}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
                 </div>

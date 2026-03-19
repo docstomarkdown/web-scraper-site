@@ -13,7 +13,7 @@ export function ReorderPointOverview() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Inventory Strategy
+                            Tool Essentials
                         </h2>
                     </div>
                 </div>
@@ -24,25 +24,25 @@ export function ReorderPointOverview() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="What is a Reorder Point Calculator?"
+                heading="For sellers who can't afford to run out of stock — the "
                 headingAccent="Reorder Point Calculator"
-                definition="A Reorder Point (ROP) Calculator determines the inventory level that triggers a restock. By analyzing your daily sales velocity and supplier lead times, it tells you exactly when to order more stock to ensure you never go out of stock or miss a sale while waiting for a delivery."
+                definition="Every stockout is a lost sale — and often a lost customer. This tool is built for e-commerce operators, Amazon FBA sellers, and inventory managers who need to know the precise inventory level at which they must place a new order to avoid running out of stock while waiting for their supplier to deliver. Input your daily sales rate and lead time to get an exact reorder trigger point, with optional safety stock for extra protection."
                 facts={[
                     {
                         stat: "Sales",
                         label: "Velocity",
-                        detail: "Uses your Average Daily Units Sold to calculate how much stock you consume while waiting for your next shipment.",
+                        detail: "Uses your average daily units sold to calculate stock consumption during your supplier's lead time."
                     },
                     {
                         stat: "Lead",
                         label: "Time",
-                        detail: "Factor in the total time from order placement to delivery. Accurate lead times are critical for preventing backorders.",
+                        detail: "Factors in the full time from placing an order to receiving it — so your reorder point is never too late."
                     },
                     {
                         stat: "Safety",
-                        label: "Optional",
-                        detail: "Optionally add an emergency buffer (Safety Stock) to protect your business against unexpected demand spikes or supplier delays.",
-                    },
+                        label: "Buffer",
+                        detail: "Optionally add a safety stock buffer to protect against unexpected demand spikes or delayed supplier shipments."
+                    }
                 ]}
             />
         </div>

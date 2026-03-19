@@ -1,7 +1,7 @@
-import React from "react"
-import { Card } from "@/components/ui/card"
+import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer } from "recharts"
-import { Wallet } from "lucide-react"
+import { Wallet, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ProfitAllocationProps {
@@ -23,6 +23,7 @@ export function ProfitAllocation({
     netProfit,
     currency
 }: ProfitAllocationProps) {
+    const [isOpen, setIsOpen] = useState(false)
 
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -64,20 +65,42 @@ export function ProfitAllocation({
     ].filter(i => i.value > 0)
 
     return (
-        <Card className="bg-white border-slate-200 shadow-sm rounded-2xl overflow-hidden p-4 mt-4">
-            <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-bold text-slate-700 flex items-center gap-2">
+        <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.2 }}
+            className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl pt-1 pb-1 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
+        >
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 text-left transition-colors"
+                type="button"
+            >
+                <div className="flex items-center gap-2">
                     <Wallet className="w-4 h-4 text-blue-500" />
-                    Income & Expense Breakdown
-                </h4>
-                {netProfit < 0 && (
-                    <span className="text-[10px] font-black bg-red-50 text-red-600 px-2 py-0.5 rounded-full animate-pulse">
-                        Negative Margin
-                    </span>
-                )}
-            </div>
-
-            <div className="flex items-center gap-4 min-h-[140px]">
+                    <span className="text-[13px] font-bold text-slate-500">View Income & Expense Breakdown</span>
+                </div>
+                <div className="flex items-center gap-3">
+                    {netProfit < 0 && (
+                        <span className="text-[10px] font-black bg-red-50 text-red-600 px-2 py-0.5 rounded-full animate-pulse">
+                            Negative Margin
+                        </span>
+                    )}
+                    <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                    </motion.span>
+                </div>
+            </button>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.28, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                    >
+                        <div className="p-4 border-t border-slate-100 flex items-center gap-4 min-h-[140px]">
                 {/* Left: Donut Chart - Removed hover tooltip */}
                 <div className="h-[120px] w-[120px] relative shrink-0">
                     {revenue > 0 ? (
@@ -133,8 +156,11 @@ export function ProfitAllocation({
                         />
                     </div>
                 </div>
-            </div>
-        </Card>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     )
 }
 

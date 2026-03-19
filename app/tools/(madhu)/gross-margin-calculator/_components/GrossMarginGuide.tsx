@@ -21,7 +21,7 @@ export function GrossMarginGuide() {
                 },
                 {
                     title: "Reverse Pricing Strategy",
-                    description: "Don't guess your prices. Use the <strong>Find Revenue</strong> mode to tell the tool your required margin, and it will give you the exact price point needed to hit your financial goals.",
+                    description: "Don't guess your prices. Use the <strong>Find Revenue</strong> mode to tell the tool your required margin. As you scroll, the sticky dashboard instantly calculates the exact price point needed to hit your financial goals.",
                     icon: Target,
                     stat: "3-in-1",
                     statLabel: "Tool Versatility",

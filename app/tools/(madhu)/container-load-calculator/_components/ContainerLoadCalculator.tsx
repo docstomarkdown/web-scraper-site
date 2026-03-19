@@ -9,7 +9,9 @@ import {
     Package,
     Layers,
     XCircle,
-    Info
+    Info,
+    Scale,
+    Ruler
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -470,33 +472,38 @@ export function ContainerLoadCalculator() {
                                     value: result ? Math.round(result.totalWeight).toLocaleString() : "0",
                                     unit: "kg",
                                     tooltip: "The total gross weight of all boxes and pallets. Ensure this doesn't exceed the container's official safety rating.",
-                                    className: result?.limitReason === "Weight Limit" ? "text-amber-600 bg-amber-50/50 border-amber-100" : ""
+                                    className: result?.limitReason === "Weight Limit" ? "text-amber-600 bg-amber-50/50 border-amber-100" : "",
+                                    icon: Scale,
                                 },
                                 {
                                     key: "volume",
                                     label: "Cubic Volume",
                                     value: result ? result.totalVolume.toFixed(2) : "0.00",
                                     unit: "m³",
-                                    tooltip: "Space occupied in cubic meters based on exterior carton dimensions."
+                                    tooltip: "Space occupied in cubic meters based on exterior carton dimensions.",
+                                    icon: Box,
                                 },
                                 ...(loadType === "pallet" ? [
                                     {
                                         key: "pallets",
                                         label: "Pallet Count",
                                         value: result ? result.palletsCount : 0,
-                                        tooltip: "Total number of pallet units that fit on the container floor."
+                                        tooltip: "Total number of pallet units that fit on the container floor.",
+                                        icon: Layers,
                                     },
                                     {
                                         key: "boxes_per_pallet",
                                         label: "Inner Yield",
                                         value: result ? result.boxesPerPallet : 0,
-                                        tooltip: "Total boxes stacked on each individual pallet."
+                                        tooltip: "Total boxes stacked on each individual pallet.",
+                                        icon: Package,
                                     },
                                     {
                                         key: "layers",
                                         label: "Stack Layers",
                                         value: result ? result.layers : 0,
-                                        tooltip: "Vertical stacking levels permitted based on container interior height."
+                                        tooltip: "Vertical stacking levels permitted based on container interior height.",
+                                        icon: Ruler,
                                     }
                                 ] : [])
                             ]}

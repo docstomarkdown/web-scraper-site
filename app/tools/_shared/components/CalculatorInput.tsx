@@ -29,6 +29,7 @@ export interface CalculatorInputProps {
     benchmarkBadge?: boolean
     hideSeparator?: boolean
     isOptional?: boolean
+    isCurrency?: boolean
     groupingAction?: React.ReactNode
     rowAction?: React.ReactNode
 }
@@ -55,6 +56,7 @@ export function CalculatorInput({
     benchmarkBadge = false,
     hideSeparator = false,
     isOptional = false,
+    isCurrency = false,
     groupingAction,
     rowAction
 }: CalculatorInputProps) {
@@ -151,12 +153,7 @@ export function CalculatorInput({
     }
 
     const getCurrencyInfo = React.useCallback((code: string) => {
-        // Try looking up in our custom currencies list first (consistent with the combo box)
-        const found = currencies.find(c => c.code === code)
-        if (found) {
-            return { symbol: found.symbol, isSuffix: false }
-        }
-
+        // Try to detect suffix/prefix and symbol using Intl
         const tryFormat = (display: 'narrowSymbol' | 'symbol') => {
             try {
                 const formatter = new Intl.NumberFormat('en-US', {
@@ -165,9 +162,16 @@ export function CalculatorInput({
                     currencyDisplay: display,
                 })
                 const parts = formatter.formatToParts(1)
-                const symbol = parts.find(p => p.type === 'currency')?.value || code
+                const symbolPart = parts.find(p => p.type === 'currency')
+                const symbol = symbolPart?.value || code
+                
+                // If it's a known currency from our list, use our preferred symbol but keep the position logic
+                const found = currencies.find(c => c.code === code)
+                const finalSymbol = found ? found.symbol : symbol
+
+                // Check position: Is the currency part at the end?
                 const isSuffix = parts[parts.length - 1].type === 'currency'
-                return { symbol, isSuffix }
+                return { symbol: finalSymbol, isSuffix }
             } catch {
                 return null
             }
@@ -175,7 +179,7 @@ export function CalculatorInput({
         return tryFormat('narrowSymbol') ?? tryFormat('symbol') ?? { symbol: code, isSuffix: false }
     }, [])
 
-    const currencyInfo = React.useMemo(() => currency ? getCurrencyInfo(currency) : null, [currency, getCurrencyInfo])
+    const currencyInfo = React.useMemo(() => (currency || isCurrency) ? getCurrencyInfo(currency || "USD") : null, [currency, isCurrency, getCurrencyInfo])
     const finalPrefix = prefix || (currencyInfo && !currencyInfo.isSuffix ? currencyInfo.symbol : undefined)
     const finalSuffix = suffix || (currencyInfo && currencyInfo.isSuffix ? currencyInfo.symbol : undefined)
     const inputId = React.useId()

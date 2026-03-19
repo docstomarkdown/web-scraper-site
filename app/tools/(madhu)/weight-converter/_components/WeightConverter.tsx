@@ -159,11 +159,11 @@ const UNIT_ABBR: Record<WeightUnit, string> = {
 }
 
 const TIER_COLORS: Record<string, { bg: string; border: string; text: string; dot: string; badge: string }> = {
-    emerald: { bg: "bg-emerald-50", border: "border-emerald-200/70", text: "text-emerald-700", dot: "bg-emerald-400", badge: "bg-emerald-100 text-emerald-700" },
-    blue: { bg: "bg-blue-50", border: "border-blue-200/70", text: "text-blue-700", dot: "bg-blue-400", badge: "bg-blue-100 text-blue-700" },
-    amber: { bg: "bg-amber-50", border: "border-amber-200/70", text: "text-amber-700", dot: "bg-amber-400", badge: "bg-amber-100 text-amber-700" },
-    orange: { bg: "bg-orange-50", border: "border-orange-200/70", text: "text-orange-700", dot: "bg-orange-400", badge: "bg-orange-100 text-orange-700" },
-    slate: { bg: "bg-slate-50", border: "border-slate-200/70", text: "text-slate-600", dot: "bg-slate-400", badge: "bg-slate-100 text-slate-600" },
+    emerald: { bg: "bg-emerald-50", border: "border-emerald-200/70", text: "text-emerald-700", dot: "bg-emerald-400", badge: "bg-emerald-100/80 text-emerald-700" },
+    blue: { bg: "bg-blue-50", border: "border-blue-200/70", text: "text-blue-700", dot: "bg-blue-400", badge: "bg-blue-100/80 text-blue-700" },
+    amber: { bg: "bg-amber-50", border: "border-amber-200/70", text: "text-amber-700", dot: "bg-amber-400", badge: "bg-amber-100/80 text-amber-700" },
+    orange: { bg: "bg-orange-50", border: "border-orange-200/70", text: "text-orange-700", dot: "bg-orange-400", badge: "bg-orange-100/80 text-orange-700" },
+    slate: { bg: "bg-slate-50", border: "border-slate-200/70", text: "text-slate-600", dot: "bg-slate-400", badge: "bg-slate-100/80 text-slate-700" },
 }
 
 export function WeightConverter() {
@@ -613,16 +613,16 @@ export function WeightConverter() {
                                             className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
                                         >
                                             <div className="flex items-center gap-2 mb-3">
-                                                <RefreshCw className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                                                <span className="text-sm font-bold text-slate-800">Other Units</span>
+                                                <RefreshCw className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                                <span className="text-[13px] font-bold text-slate-500">Other Units</span>
                                             </div>
                                             <div className="pl-7 space-y-2">
                                                 {secondaryUnits.map((unit) => (
                                                     <div key={unit} className="flex items-center justify-between mt-1">
                                                         <span className="text-xs text-slate-600 font-medium">{UNIT_NAMES[unit]}</span>
-                                                        <span className="text-sm font-bold text-slate-800 font-mono">
-                                                            {formatCompact(conversions[unit], 4)}{" "}
-                                                            <span className="text-slate-400 font-normal text-xs">{UNIT_ABBR[unit]}</span>
+                                                        <span className="font-black tracking-tight text-[16px] text-slate-800 flex items-baseline">
+                                                            {formatCompact(conversions[unit], 4)}
+                                                            <span className="font-medium text-[0.6em] ml-1">{UNIT_ABBR[unit]}</span>
                                                         </span>
                                                     </div>
                                                 ))}
@@ -630,9 +630,9 @@ export function WeightConverter() {
                                                     <span className="text-xs text-slate-600 font-medium">
                                                         {UNIT_NAMES[inputUnit]} <span className="text-blue-400 text-[10px] ml-1">(input)</span>
                                                     </span>
-                                                    <span className="text-sm font-bold text-slate-800 font-mono">
-                                                        {formatCompact(conversions[inputUnit], 4)}{" "}
-                                                        <span className="text-slate-400 font-normal text-xs">{UNIT_ABBR[inputUnit]}</span>
+                                                    <span className="font-black tracking-tight text-[16px] text-slate-800 flex items-baseline">
+                                                        {formatCompact(conversions[inputUnit], 4)}
+                                                        <span className="font-medium text-[0.6em] ml-1">{UNIT_ABBR[inputUnit]}</span>
                                                     </span>
                                                 </div>
                                             </div>
@@ -649,20 +649,21 @@ export function WeightConverter() {
                                                 <div className="flex items-center justify-between mb-3">
                                                     <div className="flex items-center gap-2">
                                                         <Truck className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.1em]">
+                                                        <span className="text-[13px] font-bold text-slate-500">
                                                             {selectedShippingData.label} Estimate
                                                         </span>
                                                     </div>
-                                                    <span className={cn(
-                                                        "text-[10px] font-extrabold px-2 py-0.5 rounded flex-shrink-0",
-                                                        TIER_COLORS[activeTier.color]?.badge || TIER_COLORS.slate.badge
-                                                    )}>
+                                                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-blue-100/80 text-blue-700 flex-shrink-0">
                                                         {activeTier.cost}
                                                     </span>
                                                 </div>
-                                                <div className="pl-6">
-                                                    <span className="text-[13px] font-bold text-slate-700 leading-snug block mt-1">{activeTier.label}</span>
-                                                    <p className="text-[10px] text-slate-400 mt-0.5">{formatCompact(weightInLbs, 3)} lb</p>
+                                                <div className="pl-6 pt-0.5">
+                                                    <span className="font-black tracking-tight block text-xl text-slate-800">
+                                                        {activeTier.label}
+                                                    </span>
+                                                    <p className="text-[11px] font-medium text-slate-500 mt-1 flex items-baseline">
+                                                        {formatCompact(weightInLbs, 3)}<span className="ml-1 text-[0.8em]">lb</span>
+                                                    </p>
                                                 </div>
                                             </motion.div>
                                         )}
@@ -680,7 +681,7 @@ export function WeightConverter() {
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <Package className="w-4 h-4 text-blue-500" />
-                                                    <span className="text-sm font-bold text-slate-700">View Cost Breakdown</span>
+                                                    <span className="text-[13px] font-bold text-slate-500">View Cost Breakdown</span>
                                                 </div>
                                                 <motion.span
                                                     animate={{ rotate: showBreakdown ? 180 : 0 }}
