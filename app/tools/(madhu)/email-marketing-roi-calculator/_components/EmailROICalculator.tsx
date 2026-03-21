@@ -8,13 +8,13 @@ import {
     CalculatorCardHeader,
 } from "@/app/tools/_shared/components"
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, MousePointerClick, TrendingUp, UserCheck } from "lucide-react"
+import { Users, MousePointerClick, TrendingUp, CircleDollarSign } from "lucide-react"
 import { CampaignResults } from "./CampaignResults"
 
 export function EmailROICalculator() {
     const [currency, setCurrency] = useState("USD")
     const [listSize, setListSize] = useState<number | "">("")
-    const [campaignCost, setCampaignCost] = useState<number | "">("")
+    const [campaignCost, setCampaignCost] = useState<number | "">(0)
     const [openRate, setOpenRate] = useState<number | "">(20)
     const [clickThroughRate, setClickThroughRate] = useState<number | "">(2.5)
     const [conversionRate, setConversionRate] = useState<number | "">(3)
@@ -23,7 +23,7 @@ export function EmailROICalculator() {
     const val = (v: number | "") => (v === "" ? 0 : v)
     const handleReset = () => {
         setListSize("")
-        setCampaignCost("")
+        setCampaignCost(0)
         setOpenRate(20)
         setClickThroughRate(2.5)
         setConversionRate(3)
@@ -43,9 +43,8 @@ export function EmailROICalculator() {
     const revenue = conversions * aov
     const netProfit = revenue - cost
     const roi = cost > 0 ? (netProfit / cost) * 100 : 0
-    const cpa = conversions > 0 ? cost / conversions : 0
 
-    const isCalculated = listSize !== "" && campaignCost !== ""
+    const isCalculated = listSize !== ""
     const formatCurrency = (v: number) =>
         new Intl.NumberFormat("en-US", {
             style: "currency",
@@ -88,19 +87,19 @@ export function EmailROICalculator() {
                             />
                             {/* Performance Metrics */}
                             <CalculatorInput
-                                label="Estimated Open Rate"
+                                label="Open Rate"
                                 value={openRate}
                                 onChange={setOpenRate}
                                 placeholder="Avg: 20"
                                 tooltip="Percentage of subscribers who open your email. Industry average: 20–25%."
                                 suffix="%"
                                 hint="Industry standard range: 20% – 25%"
-                                groupingTitle="Email Performance (Optional)"
+                                groupingTitle="Email Performance"
                                 groupingIcon={MousePointerClick}
                                 benchmarkBadge={true}
                             />
                             <CalculatorInput
-                                label="Email CTR (on Opens)"
+                                label="Click Rate"
                                 value={clickThroughRate}
                                 onChange={setClickThroughRate}
                                 placeholder="Avg: 2.5"
@@ -109,7 +108,7 @@ export function EmailROICalculator() {
                                 hint="Industry standard range: 2% – 3%"
                             />
                             <CalculatorInput
-                                label="Post-Click Conversion Rate"
+                                label="Sales Conversion Rate"
                                 value={conversionRate}
                                 onChange={setConversionRate}
                                 placeholder="Avg: 3"
@@ -118,7 +117,7 @@ export function EmailROICalculator() {
                                 hint="Industry standard range: 2% – 5%"
                             />
                             <CalculatorInput
-                                label="Avg. Order Value (AOV)"
+                                label="Average Order Value"
                                 value={averageOrderValue}
                                 onChange={setAverageOrderValue}
                                 placeholder="Avg: 50"
@@ -141,6 +140,14 @@ export function EmailROICalculator() {
                         }}
                         secondaryResults={[
                             {
+                                key: "revenue",
+                                label: "Total Revenue",
+                                value: revenue.toFixed(2),
+                                isCurrency: true,
+                                tooltip: "Total revenue generated from the campaign.",
+                                icon: CircleDollarSign,
+                            },
+                            {
                                 key: "netProfit",
                                 label: "Net Profit",
                                 value: netProfit.toFixed(2),
@@ -148,22 +155,13 @@ export function EmailROICalculator() {
                                 tooltip: "Total revenue generated minus the campaign cost.",
                                 icon: TrendingUp,
                             },
-                            {
-                                key: "cpa",
-                                label: "Cost Per Acquisition",
-                                value: cpa.toFixed(2),
-                                isCurrency: true,
-                                tooltip: "Average cost required to acquire one customer.",
-                                icon: UserCheck,
-                            },
                         ]}
                         showLiveBadge={true}
                         isCalculated={isCalculated}
                         profitLossKey="netProfit"
                         emptyResultLabel="Return on Investment"
                         checklistItems={[
-                            { key: 'size', label: 'Email List Size', isComplete: listSize !== "" },
-                            { key: 'cost', label: 'Campaign Cost', isComplete: campaignCost !== "" }
+                            { key: 'size', label: 'Email List Size', isComplete: listSize !== "" }
                         ]}
                         dynamicMessages={{
                             positive: "Great job! Your email campaign is profitable and generating a positive return.",

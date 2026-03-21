@@ -1,14 +1,17 @@
 import { Metadata } from "next"
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { COGSCalculator } from "./_components/COGSCalculator"
 import { COGSOverview } from "./_components/COGSOverview"
 import { COGSHowToUse } from "./_components/COGSHowToUse"
 import { COGSGuide } from "./_components/COGSGuide"
 import { CTA } from "@/components/sections/CTA"
+import { Lightbulb } from "lucide-react"
+
 export const metadata: Metadata = {
     title: 'COGS Calculator - Calculate Cost of Goods Sold & Fulfillment | Web Scraper.do',
     description: 'Free Cost of Goods Sold (COGS) calculator for e-commerce. Calculate true product cost including manufacturing, freight, customs, packaging, and fulfillment fees.',
 }
+
 export default function COGSCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
@@ -25,6 +28,11 @@ export default function COGSCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
+                        <ToolSectionHeader 
+                            title="Tool Essentials" 
+                            subtitle="Key information about Cost of Goods Sold and profitability you need to know."
+                            icon={Lightbulb}
+                        />
                         <COGSOverview />
                     </FadeIn>
                     <FadeIn delay={0.2}>

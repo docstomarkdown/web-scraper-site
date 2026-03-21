@@ -1,10 +1,11 @@
-import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { EOQCalculator } from "./_components/EOQCalculator"
 import { EOQHowToUse } from "./_components/EOQHowToUse"
 import { EOQGuide } from "./_components/EOQGuide"
 import { EOQOverview } from "./_components/EOQOverview"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
+import { Lightbulb } from "lucide-react"
 
 export const metadata: Metadata = {
     title: "Economic Order Quantity (EOQ) Calculator | Inventory Optimization Tool",
@@ -21,6 +22,11 @@ export default function EOQCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
+                        <ToolSectionHeader 
+                            title="Tool Essentials" 
+                            subtitle="Discover how balancing your ordering and holding costs unlocks massive inventory savings."
+                            icon={Lightbulb}
+                        />
                         <EOQOverview />
                     </FadeIn>
                     <FadeIn delay={0.3}>

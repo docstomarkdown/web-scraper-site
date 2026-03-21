@@ -1,9 +1,11 @@
-import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { EmailROICalculator } from "./_components/EmailROICalculator"
+import { EmailROIOverview } from "./_components/EmailROIOverview"
 import { EmailROIHowToUse } from "./_components/EmailROIHowToUse"
 import { EmailROIGuide } from "./_components/EmailROIGuide"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
+import { BookOpen } from "lucide-react"
 export const metadata: Metadata = {
     title: "Email Marketing ROI Calculator | Free Tools",
     description:
@@ -21,6 +23,14 @@ export default function EmailROICalculatorPage() {
                 </div>
                 {/* Supporting Sections */}
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.1}>
+                        <ToolSectionHeader 
+                            title="Behind the Calculations" 
+                            subtitle="Discover how tracking the right email marketing metrics unlocks massive hidden revenue potential."
+                            icon={BookOpen}
+                        />
+                        <EmailROIOverview />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <EmailROIHowToUse />
                     </FadeIn>
@@ -31,29 +41,29 @@ export default function EmailROICalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is 'Email CTR (on Opens)' and how is it different?",
+                                    question: "Why is the Click Rate based on Opens rather than total sent?",
                                     answer:
-                                        "Also known as CTOR (Click-to-Open Rate), <strong>Email CTR (on Opens)</strong> measures the effectiveness of your email content. It is the percentage of people who clicked a link <em>after</em> opening the email. A high CTR on opens shows that your message and offer are compelling.",
+                                        "This is known as the Click-to-Open Rate (CTOR). It's a much more accurate measure of your email's content quality, because it only tracks engagement from the people who actually saw what was inside the email.",
                                 },
                                 {
                                     question: "What are realistic industry benchmarks for email?",
                                     answer:
-                                        "While it varies by industry, typical benchmarks are an <strong>Open Rate of 20–25%</strong>, an <strong>Email CTR of 2–3%</strong>, and a <strong>Post-Click Conversion Rate of 2–5%</strong>. Our tool comes pre-filled with these averages to help you see potential results immediately.",
+                                        "Typical benchmarks are an <strong>Open Rate of 20–25%</strong>, a <strong>Click Rate of 2–3%</strong>, and a <strong>Sales Conversion Rate of 2–5%</strong>. Our tool comes pre-filled with these averages so you can instantly gauge your potential.",
                                 },
                                 {
                                     question: "How is 'Total Revenue' calculated?",
                                     answer:
-                                        "Revenue is calculated by taking your final <strong>Conversions</strong> counts and multiplying by the <strong>Average Order Value (AOV)</strong>. Conversions are derived from the funnel: Subscribers → Opens → Clicks → Sales.",
+                                        "Total Revenue multiplies your final <strong>Total Sales Conversions</strong> by your <strong>Average Order Value</strong>. It follows the precise drop-off logic: Subscribers → Emails Opened → Total Clicks → Conversions.",
                                 },
                                 {
-                                    question: "Why should I track CPA/CAC in email?",
+                                    question: "What if my Total Campaign Cost is zero?",
                                     answer:
-                                        "<strong>Cost Per Acquisition (CPA)</strong> tells you if your campaign is sustainable. If your CPA is $20 but each customer only brings in $15 in profit, you are losing money. Email has the highest ROI of any channel, often exceeding 4000% when done right.",
+                                        "If you're using a free email provider and aren't tracking your time expenses, you can simply leave the Campaign Cost at 0. The tool will calculate your Total Revenue purely as Net Profit without requiring an investment figure.",
                                 },
                                 {
                                     question: "Should I include my own time in 'Campaign Cost'?",
                                     answer:
-                                        "Yes! For an accurate ROI, you should assign a dollar value to the hours you spent writing, designing, and setting up the campaign. This helps you understand if your time is being invested profitably.",
+                                        "Yes, if you want a true ROI. Assigning a dollar value to the hours you spent writing, designing, and setting up the campaign gives you the most accurate reflection of your profitability.",
                                 },
                             ]}
                         />

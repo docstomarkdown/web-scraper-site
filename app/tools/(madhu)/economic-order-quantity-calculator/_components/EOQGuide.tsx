@@ -1,43 +1,45 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { Wallet, Scale, PiggyBank, Lightbulb } from "lucide-react"
+import { AlertTriangle, TrendingDown, RefreshCw, Lightbulb } from "lucide-react"
 
 export function EOQGuide() {
     return (
         <ToolGuide
-            title="About the EOQ Calculator"
+            title="What Most Inventory Buyers Get Wrong"
             icon={Lightbulb}
             items={[
                 {
-                    title: "Units to Order Each Time",
-                    description: "This tool calculates your clear, mathematical 'sweet spot' for ordering. It prevents you from tying up too much cash in excess stock while ensuring you don’t overspend on shipping by ordering too frequently.",
-                    icon: Wallet,
-                    stat: "Max",
-                    statLabel: "Savings",
+                    title: "Demand Changes — Recalculate Seasonally",
+                    description: "EOQ assumes steady annual demand, but your best-sellers spike during peak season. Recalculate with your Q4 or holiday demand separately to avoid stockouts right when sales are highest.",
+                    icon: RefreshCw,
+                    stat: "Recalculate",
+                    statLabel: "Seasonally",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    tooltip: "The standard metric balancing storage costs with ordering costs."
+                    tooltip: "Run EOQ with seasonal demand figures, not just annual averages."
                 },
                 {
-                    title: "Order Frequency & Schedule",
-                    description: "Instead of guessing when to buy, the calculator provides clear actionable insights: Exactly how many orders to place per year, and the precise number of days between each order so you stay on schedule.",
-                    icon: Scale,
-                    stat: "Perfect",
-                    statLabel: "Timing",
-                    iconBg: "bg-orange-50",
-                    iconColor: "text-orange-600",
-                    statColor: "text-orange-600"
+                    title: "Holding Cost is Often Underestimated",
+                    description: "Most buyers only count warehouse rent. But holding cost also includes insurance, product depreciation, the risk of it going unsold, and the cash tied up that could be invested elsewhere. The true rate is typically 20–30% of unit value per year.",
+                    icon: TrendingDown,
+                    stat: "20–30%",
+                    statLabel: "True Hold Rate",
+                    iconBg: "bg-amber-50",
+                    iconColor: "text-amber-600",
+                    statColor: "text-amber-600",
+                    tooltip: "Underestimating holding cost skews your EOQ and inflates order sizes."
                 },
                 {
-                    title: "Total Inventory Cost Insight",
-                    description: "See a crystal-clear breakdown of your total inventory management costs per year. The tool separates your Annual Ordering Cost from your Annual Holding Cost, giving you total financial visibility.",
-                    icon: PiggyBank,
-                    stat: "Complete",
-                    statLabel: "Visibility",
+                    title: "EOQ is a Floor, Not a Ceiling",
+                    description: "The EOQ result is the minimum-cost quantity — not a hard rule. If your supplier has a better price at a slightly larger MOQ, use this tool to compare the two costs. The difference is often smaller than the discount gained.",
+                    icon: AlertTriangle,
+                    stat: "Compare",
+                    statLabel: "With MOQ Deals",
                     iconBg: "bg-red-50",
                     iconColor: "text-red-600",
-                    statColor: "text-red-600"
+                    statColor: "text-red-600",
+                    tooltip: "Supplier discounts at higher quantities can beat your calculated EOQ."
                 }
             ]}
         />

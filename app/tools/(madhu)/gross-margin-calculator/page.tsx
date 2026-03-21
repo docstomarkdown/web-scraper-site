@@ -1,10 +1,11 @@
 import { Metadata } from "next"
-import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { GrossMarginCalculator } from "./_components/GrossMarginCalculator"
 import { GrossMarginOverview } from "./_components/GrossMarginOverview"
 import { GrossMarginHowToUse } from "./_components/GrossMarginHowToUse"
 import { GrossMarginGuide } from "./_components/GrossMarginGuide"
 import { CTA } from "@/components/sections/CTA"
+import { Lightbulb } from "lucide-react"
 
 export const metadata: Metadata = {
     title: "Gross Margin Calculator - Calculate Margin, Revenue & COGS | Web Scraper.do",
@@ -21,6 +22,11 @@ export default function GrossMarginCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
+                        <ToolSectionHeader 
+                            title="Tool Essentials" 
+                            subtitle="Understand how tracking your gross margins protects your business profitability and informs smarter pricing strategy."
+                            icon={Lightbulb}
+                        />
                         <GrossMarginOverview />
                     </FadeIn>
                     <FadeIn delay={0.3}>
