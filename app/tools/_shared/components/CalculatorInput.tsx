@@ -185,6 +185,7 @@ export function CalculatorInput({
     const inputId = React.useId()
 
     return (
+        <TooltipProvider delayDuration={200}>
         <div
             className={cn(
                 "w-full relative calculator-input-row [.calculator-input-row+&]:mt-3",
@@ -237,7 +238,6 @@ export function CalculatorInput({
                             )}
                             {benchmarkBadge && (
                                 <>
-                                    <span className="text-slate-300 text-sm z-10 select-none">·</span>
                                     <span className="text-[11px] text-blue-400 italic z-10 whitespace-nowrap">
                                         Industry benchmarks pre-filled
                                     </span>
@@ -334,5 +334,6 @@ export function CalculatorInput({
                 </div>
             </div>
         </div>
+        </TooltipProvider>
     )
 }
