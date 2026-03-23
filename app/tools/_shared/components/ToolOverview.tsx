@@ -2,6 +2,8 @@
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 
+import { ReactNode } from "react"
+
 export interface OverviewFact {
     stat: string
     label: string
@@ -11,7 +13,7 @@ export interface OverviewFact {
 interface ToolOverviewProps {
     heading: string
     headingAccent?: string
-    definition: string
+    definition: ReactNode
     facts: OverviewFact[]
     accent?: "blue" | "indigo" | "violet"
 }

@@ -23,7 +23,7 @@ export default function GrossMarginCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essentials" 
+                            title="Tool Essential" 
                             subtitle="Understand how tracking your gross margins protects your business profitability and informs smarter pricing strategy."
                             icon={Lightbulb}
                         />

@@ -14,14 +14,14 @@ export function COGSOverview() {
                     detail: "Consolidates every hidden expense (freight, packaging, fees) into one single 'True Cost' per unit, providing the foundation for all your pricing decisions."
                 },
                 {
-                    stat: "Hidden Fees",
-                    label: "Profit Protection",
-                    detail: "Surfaces small, quiet costs that usually chip away at your profit margins unnoticed, giving you complete financial visibility."
+                    stat: "Protect Profit",
+                    label: "Accurate Margins",
+                    detail: "Calculate every single expense upfront so you know exactly how much profit you'll make on every sale, without any unexpected surprises."
                 },
                 {
-                    stat: "Capital Lock",
-                    label: "Inventory Value",
-                    detail: "Instantly calculates the total capital you have locked inside your batches, which is essential for accurate cash flow and reinvestment planning."
+                    stat: "Detailed Breakdown",
+                    label: "Track All Expenses",
+                    detail: "Easily see exactly where your money is going by breaking down your costs between manufacturing, shipping, packaging, and extra fees."
                 }
             ]}
             accent="blue"

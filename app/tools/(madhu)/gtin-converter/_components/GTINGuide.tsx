@@ -39,7 +39,7 @@ export function GTINGuide() {
                 },
                 {
                     title: "Instant Image Scanning",
-                    description: "New scanning technology: upload a photo or label scan from your warehouse. Our tool automatically reads the numerical data from the image for instant validation and conversion — no more manual entry errors.",
+                    description: "New scanning technology: upload a photo from your warehouse. Our tool automatically reads the numerical data from the image for instant validation and conversion — no more manual entry errors.",
                     icon: ShieldCheck,
                     stat: "Scan-ID",
                     statLabel: "Auto-Read",

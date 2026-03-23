@@ -13,7 +13,7 @@ export function WeightConverterInfo() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Tool Essentials
+                            Tool Essential
                         </h2>
                     </div>
                 </div>
@@ -24,9 +24,9 @@ export function WeightConverterInfo() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="What is a Product Weight Converter?"
-                headingAccent="Product Weight Converter"
-                definition="A Product Weight Converter instantly translates a product's weight between Pounds (lbs), Ounces (oz), Kilograms (kg), and Grams (g) — and maps that weight to a real carrier shipping tier so you can see exactly how much shipping will cost before you list or ship a product."
+                heading="Why Use a Product Weight Converter?"
+                headingAccent="Product Weight Converter?"
+                definition="Used by e-commerce sellers, logistics managers, and fulfillment teams to accurately prepare catalog listings and estimate shipping fees. The Product Weight Converter instantly translates a product's weight between pounds, ounces, kilograms, and grams while automatically identifying exactly which pricing tier your package falls into for major shipping carriers."
                 facts={[
                     {
                         stat: "4 Units",

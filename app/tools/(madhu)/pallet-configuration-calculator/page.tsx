@@ -1,13 +1,17 @@
 import { Metadata } from "next"
-import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { PalletConfigurationCalculator } from "./_components/PalletConfigurationCalculator"
 import { PalletHowToUse } from "./_components/PalletHowToUse"
 import { PalletGuide } from "./_components/PalletGuide"
+import { PalletOverview } from "./_components/PalletOverview"
 import { CTA } from "@/components/sections/CTA"
+import { Lightbulb } from "lucide-react"
+
 export const metadata: Metadata = {
     title: "Pallet Configuration Calculator - Optimize Product Loading & Shipping",
     description: "Calculate optimal product configuration per pallet based on box dimensions. Maximize pallet efficiency, reduce shipping costs, and optimize warehouse space utilization.",
 }
+
 export default function PalletConfigurationCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
@@ -17,6 +21,14 @@ export default function PalletConfigurationCalculatorPage() {
                     <PalletConfigurationCalculator />
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.1}>
+                        <ToolSectionHeader 
+                            title="Tool Essential" 
+                            subtitle="Everything you need to know about finding the best way to load boxes onto a pallet."
+                            icon={Lightbulb}
+                        />
+                        <PalletOverview />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <PalletHowToUse />
                     </FadeIn>
@@ -27,28 +39,28 @@ export default function PalletConfigurationCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "Do I need to enter all fields to get results?",
-                                    answer: "No. You only need <strong>box length and width</strong> to see basic results (units per layer). Adding height enables vertical stacking calculations (total layers). Adding weight ensures you don't exceed weight limits."
+                                    question: "Why is the calculator showing 0 units for my configuration?",
+                                    answer: "This typically happens if a single <strong>box dimension</strong> is larger than your pallet length/width, or if your box height exceeds the <strong>Max Stack Height</strong>. Ensure your units (in/cm) are correct and that you haven't set a Max Pallet Weight lower than a single box's weight."
                                 },
                                 {
-                                    question: "What's the difference between the configuration presets?",
-                                    answer: "<strong>Standard LTL (72\" / 2,500 lb)</strong> is for general freight shipments. <strong>Amazon FBA (72\" / 1,500 lb)</strong> meets strict warehouse requirements. <strong>Max Volume (96\" / 3,000 lb)</strong> maximizes full truckload capacity. <strong>Double Stack (48\" / 1,200 lb)</strong> allows two pallets stacked in a trailer."
+                                    question: "What's the difference between Standard, Euro, and Custom pallets?",
+                                    answer: "<strong>Standard</strong> is the common North American GMA pallet (48 × 40 in). <strong>Euro</strong> is the standard European size (120 × 80 cm). Use <strong>Custom</strong> to enter any specific dimensions for overseas shipments or specialized rack systems."
                                 },
                                 {
-                                    question: "How does the calculator choose the best orientation?",
-                                    answer: "It tests <strong>6 orientations</strong> (Standard, Rotated 90°, On Side L/W, On End L/W) and selects the one with the most total units. If two orientations have the same total units, it picks the one with better area efficiency."
+                                    question: "Does the 'Used Height' result include the pallet's base height?",
+                                    answer: "Yes. The calculator accounts for a standard <strong>5.5-inch wooden pallet base</strong>. The 'Used Height' represents the total distance from the floor to the top of your stack, ensuring you stay compliant with the 72-inch LTL and Amazon FBA limits."
                                 },
                                 {
-                                    question: "What is Space Efficiency?",
-                                    answer: "Space Efficiency measures how much of the pallet's <strong>surface area</strong> is covered by boxes. 90%+ is excellent, 80-89% is good, below 80% means you're wasting space. Higher efficiency means more units per pallet and lower shipping costs per unit."
+                                    question: "How much does 'Allow Rotation' improve my pallet efficiency?",
+                                    answer: "By testing <strong>6 different box orientations</strong> (upright, end-to-end, side-by-side, etc.), the tool finds the maximum possible fit. Turning this on can often fit 10-20% more units, directly reducing your <strong>total shipping cost per unit</strong>."
                                 },
                                 {
-                                    question: "Can I use this for Euro pallets or custom sizes?",
-                                    answer: "Yes! Select <strong>Euro</strong> for standard European pallets (47.2\" × 39.4\") or choose <strong>Custom</strong> to enter any pallet dimensions. The calculator works with any rectangular pallet size in inches."
+                                    question: "Can I use this for Amazon FBA or standard LTL freight?",
+                                    answer: "Absolutely. The default <strong>72-inch stack height</strong> and optimization logic are designed to meet Amazon FBA and common carrier requirements. It helps you maximize warehouse space while avoiding the surcharges associated with unstable or oversized loads."
                                 },
                                 {
-                                    question: "Why am I getting warnings in my results?",
-                                    answer: "Warnings help prevent shipping issues. <strong>Significant unused edge space</strong> means your boxes don't fit efficiently. <strong>Low volume efficiency</strong> suggests adjusting stack height. <strong>Height exceeds 96\"</strong> warns that most trailers can't accommodate your load."
+                                    question: "How do weight limits affect the final layout?",
+                                    answer: "If you enter a <strong>Max Pallet Weight</strong> under Advanced Settings, the tool will automatically reduce the number of layers to ensure the pallet is safe for transport, even if there is still vertical space available. This prevents structural pallet failure and carrier rejections."
                                 }
                             ]}
                         />

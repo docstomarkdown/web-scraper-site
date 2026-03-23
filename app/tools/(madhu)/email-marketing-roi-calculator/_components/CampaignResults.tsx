@@ -111,7 +111,7 @@ export function CampaignResults({
                         </TooltipContent>
                     </Tooltip>
                 </div>
-                <span className="text-base font-bold text-emerald-600">
+                <span className="text-base font-bold text-slate-700">
                     <Counter value={revenue} formatter={formatCurrency} />
                 </span>
             </div>

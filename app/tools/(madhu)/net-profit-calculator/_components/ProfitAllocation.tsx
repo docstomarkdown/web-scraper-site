@@ -188,10 +188,7 @@ function LegendItem({
                     "w-2 h-2 rounded-full shrink-0",
                     isProfit && isNegative ? "bg-red-500" : color
                 )} />
-                <span className={cn(
-                    "font-medium truncate",
-                    isProfit ? (isNegative ? "text-red-600" : "text-emerald-700") : "text-slate-600"
-                )}>
+                <span className="font-medium truncate text-slate-600">
                     {label}
                 </span>
             </div>
@@ -200,10 +197,7 @@ function LegendItem({
                 <span className="font-bold text-slate-400">
                     {formatCurrency(value)}
                 </span>
-                <span className={cn(
-                    "font-black w-10 text-right",
-                    isProfit ? (isNegative ? "text-red-600" : "text-emerald-600") : "text-slate-900"
-                )}>
+                <span className="font-bold w-10 text-right text-slate-700">
                     {percent.toFixed(1)}%
                 </span>
             </div>

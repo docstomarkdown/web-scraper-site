@@ -31,24 +31,24 @@ export default function GTINConverterPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How do I convert a UPC image to EAN?",
-                                    answer: "Simply click the 'Upload Barcode Image' button and select a photo or scan of your product label. Our tool automatically scans the barcode from your image, validates the check digit, and instantly provides you with the 13-digit EAN (GTIN-13) equivalent used for international retail."
+                                    question: "What is a GTIN (Global Trade Item Number)?",
+                                    answer: "A GTIN is a unique, internationally recognized identifier used to look up product information in global databases. It is the actual number printed beneath a barcode (such as a UPC or EAN). GTINs ensure that products are uniformly identified across all e-commerce platforms, retail checkout systems, and supply chains."
                                 },
                                 {
-                                    question: "What is the difference between GTIN-12 and UPC-A?",
-                                    answer: "They are the same thing. GTIN-12 is the official GS1 name for the universal 12-digit barcode format used primarily in the United States and Canada (UPC-A). Our converter provides the GTIN-12 output for any barcode you enter."
+                                    question: "What are the different types of GTINs?",
+                                    answer: "There are four primary lengths of GTINs: <strong>GTIN-8</strong> (an 8-digit code for very small items), <strong>GTIN-12</strong> (a 12-digit code predominantly used in North America), <strong>GTIN-13</strong> (a 13-digit code used heavily in Europe and internationally), and <strong>GTIN-14</strong> (a 14-digit code used exclusively for wholesale shipping and bulk pallet logistics)."
                                 },
                                 {
-                                    question: "Why is the check digit important for GTINs?",
-                                    answer: "The final digit of any GTIN is a checksum calculated using the Modulo 10 algorithm. It prevents data entry errors. If the check digit is incorrect, marketplaces like Amazon or retail POS systems will reject the barcode. Our tool validates and corrects these digits automatically."
+                                    question: "What is the difference between UPC, EAN, and GTIN?",
+                                    answer: "\"GTIN\" is the overarching umbrella term for the underlying numerical data. \"UPC\" (Universal Product Code) and \"EAN\" (European Article Number) are simply the barcode graphics that hold that data. A UPC-A barcode contains a 12-digit GTIN (GTIN-12), while an EAN-13 barcode contains a 13-digit GTIN (GTIN-13)."
                                 },
                                 {
-                                    question: "Can I convert small-form barcodes like GTIN-8?",
-                                    answer: "Yes, our tool supports GTIN-8 (commonly used on very small products). You can enter an 8-digit code or upload an image of one, and we will convert it into the standard padded formats (GTIN-12, GTIN-13, and GTIN-14) used in databases."
+                                    question: "Why do I need to convert between different GTIN formats?",
+                                    answer: "Different marketplaces and retail systems require specific data lengths. For instance, Amazon often requires a 14-digit padded format for bulk inventory, or a European supplier might require your American 12-digit code converted into a 13-digit EAN. Conversion standardizes your number by adding necessary padding and recalculating the check digit so retail systems accept it globally."
                                 },
                                 {
-                                    question: "What is GTIN-14 used for in logistics?",
-                                    answer: "GTIN-14 is specifically designed for the 'outer' levels of packaging, such as shipping cartons or pallets containing multiple units of the same product. It is essential for inventory management and logistics, where it's often printed as an ITF-14 barcode."
+                                    question: "How does this GTIN Converter tool work?",
+                                    answer: "Simply type your GTIN manually or upload a photo of a barcode label. Our tool automatically reads the code, validates the Modulo 10 check digit to ensure it was printed correctly, and instantly converts your item across all four major formats (GTIN-8, GTIN-12, GTIN-13, and GTIN-14) simultaneously."
                                 }
                             ]}
                         />

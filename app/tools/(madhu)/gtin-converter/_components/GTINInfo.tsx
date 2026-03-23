@@ -13,7 +13,7 @@ export function GTINInfo() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Tool Essentials
+                            Tool Essential
                         </h2>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ export function InventoryTurnoverOverview() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Tool Essentials
+                            Tool Essential
                         </h2>
                     </div>
                 </div>
@@ -24,9 +24,9 @@ export function InventoryTurnoverOverview() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="For sellers who want to know if their stock is working for them — the "
+                heading="Why Use Inventory Turnover Calculator?"
                 headingAccent="Inventory Turnover Calculator"
-                definition="Slow-moving inventory is one of the silent killers of e-commerce profitability. This tool is used by warehouse managers, Amazon sellers, and retail buyers to measure how efficiently their stock is being sold and replenished. Enter your COGS and inventory values to instantly see your turnover ratio and exactly how many days your capital is tied up in unsold stock."
+                definition="The primary purpose of the Inventory Turnover Calculator is to measure how efficiently your business is selling and replenishing its inventory. Built for warehouse managers, Amazon sellers, and e-commerce brands, this tool eliminates guesswork by instantly calculating your turnover ratio and exactly how many days your capital is tied up in unsold stock. It is your essential tool for preventing slow-moving stock, optimizing cash flow, and making smarter purchasing decisions."
                 facts={[
                     {
                         stat: "Turnover",

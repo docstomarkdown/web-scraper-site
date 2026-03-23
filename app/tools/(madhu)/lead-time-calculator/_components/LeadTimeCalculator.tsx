@@ -122,6 +122,12 @@ export function LeadTimeCalculator() {
                     <ResultDateCard
                         title="TOTAL LEAD TIME"
                         isCalculated={hasInputs}
+                        customBadge={hasInputs ? {
+                            text: totals.total > 60 ? "Long Lead Time" : totals.buffer > 0 ? "Protected Transit" : "Standard Delivery",
+                            bgClass: totals.total > 60 ? "bg-amber-100/80" : "bg-emerald-100/80",
+                            textClass: totals.total > 60 ? "text-amber-700" : "text-emerald-700",
+                            icon: <Clock className="w-3.5 h-3.5" />
+                        } : undefined}
                         checklistItems={[
                             { label: "Enter Supplier Time", isComplete: values.supplier !== "" },
                             { label: "Enter Shipping Time", isComplete: values.shipping !== "" }

@@ -53,7 +53,7 @@ export function GrossMarginRevenueBreakdown({
                         <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0" />
                         <span>
                             Profit:{" "}
-                            <span className="font-bold text-emerald-600">
+                            <span className="font-bold text-slate-600">
                                 {profitPercent.toFixed(1)}%
                             </span>
                         </span>

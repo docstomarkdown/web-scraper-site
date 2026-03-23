@@ -13,7 +13,7 @@ export function CubicFeetInfo() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Tool Essentials
+                            Tool Essential
                         </h2>
                     </div>
                 </div>
@@ -24,9 +24,9 @@ export function CubicFeetInfo() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="What is a Cubic Feet Calculator?"
-                headingAccent="Cubic Feet Calculator"
-                definition="A Cubic Feet Calculator converts a product's Length × Width × Height dimensions into volume — expressed in cubic feet (CFT), cubic meters (CBM), and cubic inches. It is the essential first step for freight quoting, Amazon FBA storage fee estimation, and container load planning."
+                heading="Why Use a Cubic Feet Calculator?"
+                headingAccent="Cubic Feet Calculator?"
+                definition="Used by Amazon FBA sellers, freight forwarders, and warehouse planners to accurately estimate storage fees and plan container loads. The Cubic Feet Calculator takes your item's physical dimensions and instantly converts them into total volume, allowing you to quickly budget for freight routing and warehouse storage."
                 facts={[
                     {
                         stat: "4 Units",

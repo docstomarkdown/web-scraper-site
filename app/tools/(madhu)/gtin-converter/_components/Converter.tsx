@@ -15,6 +15,7 @@ import {
     ClipboardPenLine,
     AlertTriangle,
     ImageIcon,
+    Copy,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
@@ -196,6 +197,13 @@ export function Converter() {
                                         type="text"
                                     />
 
+                                    <div className="relative flex items-center justify-center">
+                                        <div className="w-full border-t border-slate-200/80"></div>
+                                        <span className="absolute px-3 bg-white text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
+                                            Or
+                                        </span>
+                                    </div>
+
                                     <Button
                                         variant="secondary"
                                         className="w-full h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
@@ -222,7 +230,7 @@ export function Converter() {
                                         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
                                             <Activity className="w-4 h-4 text-blue-600" />
                                         </div>
-                                        <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
+                                        <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                                             Results Panel
                                         </span>
                                     </div>
@@ -324,47 +332,75 @@ export function Converter() {
                                             className="flex flex-col"
                                         >
                                             <div className="px-5 pb-5 pt-3 space-y-3">
-                                                {/* Output Fields list as requested */}
-                                                <div className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-5 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]">
-                                                    <div className="space-y-4">
-                                                        
-                                                        {status.isValid && results ? (
-                                                            <>
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="text-sm font-semibold text-slate-500">Detected Format</span>
-                                                                    <span className="text-sm font-bold text-emerald-700">{status.format}</span>
+                                                <div className="space-y-3">
+                                                    {status.isValid && results ? (
+                                                        <>
+                                                            <motion.div
+                                                                initial={{ opacity: 0, scale: 0.98 }}
+                                                                animate={{ opacity: 1, scale: 1 }}
+                                                                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+                                                                className="relative flex flex-col items-center text-center py-5 px-4 mb-2"
+                                                            >
+                                                                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
+                                                                    Detected Format
+                                                                </span>
+                                                                <div className="flex items-baseline justify-center">
+                                                                    <span className="text-[2.75rem] sm:text-[3.25rem] font-black tracking-tighter leading-none text-blue-600">
+                                                                        {status.format}
+                                                                    </span>
                                                                 </div>
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="text-xs font-semibold text-slate-500">GTIN-8</span>
-                                                                    <span className="text-sm font-mono font-bold text-slate-700">{results.gtin8}</span>
-                                                                </div>
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="text-xs font-semibold text-slate-500">GTIN-12</span>
-                                                                    <span className="text-sm font-mono font-bold text-slate-700">{results.gtin12}</span>
-                                                                </div>
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="text-xs font-semibold text-slate-500">GTIN-13</span>
-                                                                    <span className="text-sm font-mono font-bold text-slate-700">{results.gtin13}</span>
-                                                                </div>
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="text-xs font-semibold text-slate-500">GTIN-14</span>
-                                                                    <span className="text-sm font-mono font-bold text-slate-700">{results.gtin14}</span>
-                                                                </div>
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                 <div className="flex items-center gap-1.5">
-                                                                    <AlertTriangle className="w-4 h-4 text-rose-500 shrink-0" />
-                                                                    <span className="text-sm font-bold text-rose-600">{status.format}</span>
-                                                                </div>
-                                                                <div className="flex flex-col gap-1 border-t pt-2 mt-2">
-                                                                    <span className="text-xs font-bold text-rose-500 uppercase tracking-wider">Error Message</span>
-                                                                    <span className="text-sm font-medium text-rose-700">{status.message}</span>
-                                                                </div>
-                                                            </>
-                                                        )}
+                                                            </motion.div>
 
-                                                    </div>
+                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                                {[
+                                                                    { label: "GTIN-8", value: results.gtin8, icon: BarcodeIcon, delay: 0.15 },
+                                                                    { label: "GTIN-12", value: results.gtin12, icon: BarcodeIcon, delay: 0.2 },
+                                                                    { label: "GTIN-13", value: results.gtin13, icon: BarcodeIcon, delay: 0.25 },
+                                                                    { label: "GTIN-14", value: results.gtin14, icon: BarcodeIcon, delay: 0.3 }
+                                                                ].map((item) => (
+                                                                    <motion.div
+                                                                        key={item.label}
+                                                                        initial={{ opacity: 0, y: 8 }}
+                                                                        animate={{ opacity: 1, y: 0 }}
+                                                                        transition={{ duration: 0.3, delay: item.delay, ease: "easeOut" }}
+                                                                        className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)] flex flex-col justify-between"
+                                                                    >
+                                                                        <div className="flex items-center gap-2 mb-1.5">
+                                                                            <item.icon className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                                                            <span className="text-[13px] font-bold text-slate-500">{item.label}</span>
+                                                                        </div>
+                                                                        <div className="pl-6 flex items-center justify-between gap-3">
+                                                                            <span className="text-[15px] font-mono font-bold text-slate-700 break-all">{item.value}</span>
+                                                                            <button
+                                                                                onClick={() => {
+                                                                                    navigator.clipboard.writeText(item.value)
+                                                                                }}
+                                                                                className="text-slate-400 hover:text-blue-600 transition-colors p-1 rounded-md hover:bg-blue-50/80 active:bg-blue-100 flex-shrink-0"
+                                                                                title="Copy to clipboard"
+                                                                            >
+                                                                                <Copy className="w-3.5 h-3.5" />
+                                                                            </button>
+                                                                        </div>
+                                                                    </motion.div>
+                                                                ))}
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 8 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+                                                            className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
+                                                        >
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
+                                                                <span className="text-[13px] font-bold text-slate-500">{status.format}</span>
+                                                            </div>
+                                                            <div className="pl-6 pt-1">
+                                                                <div className="text-[13px] font-medium text-slate-700">{status.message}</div>
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
                                                 </div>
                                                 
 

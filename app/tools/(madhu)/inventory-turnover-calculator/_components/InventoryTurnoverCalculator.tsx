@@ -111,7 +111,7 @@ export function InventoryTurnoverCalculator() {
                                         value={values.beginningInventory}
                                         onChange={(v) => handleInputChange('beginningInventory', v)}
                                         placeholder="25000"
-                                        tooltip="The value of your inventory at the very start of the measurement period."
+                                        tooltip="The total value of all unsold products (stock) you had in your warehouse at the very beginning of the time period."
                                         currency={values.currency}
                                     />
                                     <CalculatorInput
@@ -119,7 +119,7 @@ export function InventoryTurnoverCalculator() {
                                         value={values.endingInventory}
                                         onChange={(v) => handleInputChange('endingInventory', v)}
                                         placeholder="35000"
-                                        tooltip="The value of your inventory at the very end of the measurement period."
+                                        tooltip="The total value of all unsold products (stock) you still had left in your warehouse at the very end of the time period."
                                         currency={values.currency}
                                     />
                                     <CalculatorInput

@@ -77,7 +77,7 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
                     <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
                         <ClipboardList className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
+                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                         Results Panel
                     </span>
                 </div>
@@ -200,10 +200,10 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
                                                 {axis.label}
                                             </div>
                                             <div className="min-w-0">
-                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block leading-none mb-1">
+                                                <span className="text-[14px] font-bold text-slate-500 block leading-none mb-1">
                                                     {axis.full}
                                                 </span>
-                                                <span className="text-[15px] font-bold text-slate-600 tabular-nums">
+                                                <span className="text-[16px] sm:text-[17px] font-bold text-slate-700 tabular-nums">
                                                     {givenVal}
                                                     <span className="text-[11px] font-semibold text-slate-400 ml-1">{fromUnit}</span>
                                                 </span>
@@ -214,12 +214,12 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
 
                                         <div className="flex-1 min-w-0 text-right">
                                             {isFirst && (
-                                                <span className="text-[10px] font-bold text-blue-500/70 uppercase tracking-wider block leading-none mb-1">
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-blue-500/70 block leading-none mb-1">
                                                     Result
                                                 </span>
                                             )}
                                             {!isFirst && <div className="h-2.5" />}
-                                            <span className="text-[17px] font-black text-blue-600 tabular-nums tracking-tight">
+                                            <span className="text-[16px] sm:text-[17px] font-bold text-blue-600 tabular-nums tracking-tight">
                                                 {convertedVal}
                                                 <span className="text-[11px] font-semibold text-blue-400 ml-1">{toUnit}</span>
                                             </span>

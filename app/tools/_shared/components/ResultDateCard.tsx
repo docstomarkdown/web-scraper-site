@@ -150,7 +150,8 @@ export function ResultDateCard({
         >
             <Card
                 className={cn(
-                    "relative overflow-hidden border border-slate-200/60 bg-white shadow-sm rounded-2xl",
+                    "relative overflow-hidden border border-slate-200/60 shadow-sm rounded-2xl",
+                    "bg-[#F5F8FD]",
                     className
                 )}
             >
@@ -160,7 +161,7 @@ export function ResultDateCard({
                         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
                             <ClipboardList className="w-4 h-4 text-blue-600" />
                         </div>
-                        <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
+                        <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                             Results Panel
                         </span>
                     </div>
@@ -295,14 +296,13 @@ export function ResultDateCard({
                             transition={{ duration: 0.55, ease: "easeInOut" }}
                             className="flex flex-col"
                         >
-                            {/* ── Primary Hero ── */}
-                            <div className="px-5 pb-4">
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                                    className="relative flex flex-col items-center text-center py-6 px-4 rounded-2xl bg-slate-50/70 border border-slate-100/80"
-                                >
+                            {/* ── Primary Hero (transparent, no border box) ── */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.97 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.4, delay: 0.05 }}
+                                className="relative flex flex-col items-center text-center py-6 px-4 bg-transparent"
+                            >
                                     {displayLabel && (
                                         <motion.span
                                             initial={{ opacity: 0, y: 3 }}
@@ -325,7 +325,6 @@ export function ResultDateCard({
                                         </span>
                                     </motion.div>
                                 </motion.div>
-                            </div>
 
                             {/* ── Date Section ── */}
                             <div className="px-5 pb-4">
@@ -340,12 +339,12 @@ export function ResultDateCard({
                                             {dateSection.icon ?? <Calendar className="w-5 h-5 text-blue-500" />}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.08em] leading-none mb-1.5 group-hover:text-slate-500 transition-colors">
+                                            <p className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-none mb-1.5 group-hover:text-slate-600 transition-colors">
                                                 {dateSection.label}
                                             </p>
-                                            <p className="text-[16px] font-extrabold text-slate-500 tracking-tight truncate">
-                                                {isCalculated ? dateSection.value : (dateSection.emptyText ?? "Waiting for inputs…")}
-                                            </p>
+                                            <p className="text-[16px] sm:text-[17px] font-bold text-slate-700 tracking-tight truncate">
+                                                 {isCalculated ? dateSection.value : (dateSection.emptyText ?? "Waiting for inputs…")}
+                                             </p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -360,7 +359,7 @@ export function ResultDateCard({
                                     className="group bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
                                 >
                                     {infoCard.title && (
-                                        <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.08em] leading-none mb-2 group-hover:text-slate-500 transition-colors">
+                                        <p className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-none mb-2 group-hover:text-slate-600 transition-colors">
                                             {infoCard.title}
                                         </p>
                                     )}

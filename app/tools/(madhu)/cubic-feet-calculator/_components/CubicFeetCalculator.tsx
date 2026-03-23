@@ -133,13 +133,13 @@ export function CubicFeetCalculator() {
                                         groupingTitle="Dimensions"
                                         groupingIcon={Box}
                                         groupingAction={
-                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans ml-4 w-36 sm:w-44">
+                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-11 font-sans ml-4 w-36 sm:w-44">
                                                 {(["ft", "in", "cm", "m"] as DimensionUnit[]).map((u) => (
                                                     <button
                                                         key={u}
                                                         onClick={() => setUnit(u)}
                                                         className={cn(
-                                                            "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
+                                                            "px-3 h-full rounded-md text-[13px] font-bold transition-all flex-1 flex items-center justify-center",
                                                             unit === u
                                                                 ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                 : "text-slate-500 hover:text-slate-900"
@@ -232,7 +232,7 @@ export function CubicFeetCalculator() {
                                     <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50">
                                         <Calculator className="w-4 h-4 text-blue-600" />
                                     </div>
-                                    <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
+                                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                                         Results Panel
                                     </span>
                                 </div>
@@ -241,10 +241,16 @@ export function CubicFeetCalculator() {
                                         <motion.div
                                             key="live"
                                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/50 bg-emerald-100/50 text-[10.5px] font-bold text-emerald-700"
+                                            className={cn(
+                                                "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold",
+                                                results.cft > 100 ? "bg-amber-100/50 text-amber-700 border-amber-200/50" : "bg-emerald-100/50 text-emerald-700 border-slate-200/50"
+                                            )}
                                         >
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-                                            Live
+                                            <span className={cn(
+                                                "w-1.5 h-1.5 rounded-full animate-pulse inline-block",
+                                                results.cft > 100 ? "bg-amber-500" : "bg-emerald-500"
+                                            )} />
+                                            {results.cft > 100 ? "Oversized Volume" : hasMultipleUnits ? "Bulk Load" : "Standard Size"}
                                         </motion.div>
                                     ) : (
                                         <motion.div
@@ -365,9 +371,9 @@ export function CubicFeetCalculator() {
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
                                                         <Package className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                        <span className="text-[13px] font-bold text-slate-500">Total Volume <span className="font-medium text-[11px] ml-1 opacity-70">(×{qtyNum} items)</span></span>
+                                                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Total Volume <span className="font-medium text-[11px] ml-1 opacity-70">(×{qtyNum} items)</span></span>
                                                     </div>
-                                                    <span className="text-[13px] font-bold text-slate-800">
+                                                    <span className="text-[16px] sm:text-[17px] font-bold text-slate-700 tabular-nums">
                                                         {formatCompact(results.cft, 2)} <span className="font-normal">ft³</span>
                                                     </span>
                                                 </div>
@@ -383,19 +389,19 @@ export function CubicFeetCalculator() {
                                         >
                                             <div className="flex items-center gap-2 mb-3">
                                                 <RefreshCw className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                <span className="text-[13px] font-bold text-slate-500">Other Units</span>
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Other Units</span>
                                             </div>
                                             <div className="pl-7 space-y-2">
                                                 <div className="flex items-center justify-between mt-1">
                                                     <span className="text-xs text-slate-600 font-medium">Cubic Meters</span>
-                                                    <span className="text-sm font-bold text-slate-800 font-mono">
+                                                    <span className="text-[16px] sm:text-[17px] font-bold text-slate-700 tabular-nums">
                                                         {formatCompact(results.cbm, 4)}{" "}
                                                         <span className="font-normal text-xs">m³</span>
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between mt-1">
                                                     <span className="text-xs text-slate-600 font-medium">Cubic Inches</span>
-                                                    <span className="text-sm font-bold text-slate-800 font-mono">
+                                                    <span className="text-[16px] sm:text-[17px] font-bold text-slate-700 tabular-nums">
                                                         {formatCompact(results.inches, 2)}{" "}
                                                         <span className="font-normal text-xs">in³</span>
                                                     </span>
@@ -416,7 +422,7 @@ export function CubicFeetCalculator() {
                                                         <span className="flex items-center justify-center w-4 h-4 rounded-full bg-blue-100 text-blue-600 font-bold text-[10px] flex-shrink-0">
                                                             {getCurrencySymbol(currency)}
                                                         </span>
-                                                        <span className="text-[13px] font-bold text-slate-500">
+                                                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">
                                                             Estimated Total Cost
                                                         </span>
                                                     </div>
@@ -425,7 +431,7 @@ export function CubicFeetCalculator() {
                                                     </span>
                                                 </div>
                                                 <div className="pl-6 pt-1">
-                                                    <span className="text-xl font-black text-slate-800 tracking-tight block">
+                                                    <span className="text-[16px] sm:text-[17px] font-bold text-slate-700 tracking-tight block">
                                                         {formatCurrency(results.estimatedCost)}
                                                     </span>
                                                 </div>

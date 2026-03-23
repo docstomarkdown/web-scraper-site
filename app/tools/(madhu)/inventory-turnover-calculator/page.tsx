@@ -44,7 +44,7 @@ export default function InventoryTurnoverCalculatorPage() {
                                 },
                                 {
                                     question: "What is the difference between Turnover Ratio and Days to Sell Inventory?",
-                                    answer: "They are two sides of the same coin. The <b>Turnover Ratio</b> tells you how <i>many times</i> you sold your stock, while <b>Days to Sell Inventory</b> tells you exactly <i>how many days</i> on average it takes to turn your stock into a sale."
+                                    answer: "They are two sides of the same coin. The <b>Turnover Ratio</b> tells you how many times you sold your stock, while <b>Days to Sell Inventory</b> tells you exactly how many days on average it takes to turn your stock into a sale."
                                 },
                                 {
                                     question: "Why does the tool ask for an Analysis Period?",

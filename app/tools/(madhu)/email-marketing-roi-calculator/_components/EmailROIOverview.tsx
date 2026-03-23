@@ -4,9 +4,9 @@ import { ToolOverview } from "@/app/tools/_shared/components/ToolOverview"
 export function EmailROIOverview() {
     return (
         <ToolOverview
-            heading="Calculate Your Email ROI"
-            headingAccent="Email ROI"
-            definition="The Email Marketing ROI Calculator is designed for marketers, agency owners, and e-commerce founders who want to instantly measure the profitability of their email campaigns. Instead of guessing your returns, this tool gives you a clear, crisp breakdown of your campaign's performance—from the moment an email is opened to the final conversion, so you can see exactly how much revenue every send generates."
+            heading="Why Use Email ROI Calculator?"
+            headingAccent="Email ROI Calculator"
+            definition="The primary purpose of the Email ROI Calculator is to instantly measure the true profitability of your email campaigns. Built for marketers, agency owners, and e-commerce founders, this tool breaks down your campaign's performance from the initial open to the final conversion. It is your essential tool for tracking engagement, calculating exactly how much revenue every send generates, and optimizing your future marketing strategies."
             facts={[
                 {
                     stat: "4,000%+",

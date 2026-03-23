@@ -4,36 +4,35 @@ import { Building2, Route, ShieldAlert, BookOpen } from "lucide-react"
 export function LeadTimeGuide() {
     return (
         <ToolGuide
-            title="Understanding Your Lead Time Components"
+            title="What Does This Tool Calculate For You?"
             icon={BookOpen}
             items={[
                 {
-                    title: "Supplier Production Time",
-                    description: "This is the 'In-Factory' duration. It covers everything from raw material sourcing to final assembly. Even a 1-day delay here cascades through your entire supply chain.",
+                    title: "Total Production Days",
+                    description: "The calculator adds up the exact number of days your supplier takes to source materials, manufacture the product, and complete quality checks. You can see how any delays here will impact your final arrival date.",
                     icon: Building2,
-                    stat: "Core",
-                    statLabel: "Manf. Pillar",
+                    stat: "Factory",
+                    statLabel: "Manufacturing",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
-                    statColor: "text-blue-600",
-                    tooltip: "Includes quality checks and packaging before the goods leave the factory."
+                    statColor: "text-blue-600"
                 },
                 {
-                    title: "Transit & Logistics",
-                    description: "Calculates the time spent on water, air, or road. Includes customs clearance and port drayage—often the most unpredictable part of your lead time.",
+                    title: "Door-to-Door Shipping Time",
+                    description: "Enter your freight duration (whether air or sea) and the calculator aggregates it with port and customs delays. You instantly see how fast shipping methods could save you from stockouts.",
                     icon: Route,
-                    stat: "Global",
-                    statLabel: "Freight Path",
+                    stat: "Transit",
+                    statLabel: "Logistics",
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600",
                     statColor: "text-indigo-600"
                 },
                 {
-                    title: "The Critical Safety Buffer",
-                    description: "A 15-20% buffer is industry standard. While optional in this tool, including it ensures your 'Est. Delivery Date' accounts for unexpected delays.",
+                    title: "Safety Buffer Timeline",
+                    description: "Never miss a restock deadline again! By easily adding an exact buffer to the tool (like a 10-day safety net), the calculator guarantees your 'Estimated Delivery Date' accounts for the expected supply chain chaos.",
                     icon: ShieldAlert,
-                    stat: "Optional",
-                    statLabel: "Safety Margin",
+                    stat: "Delay",
+                    statLabel: "Protection",
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
                     statColor: "text-amber-600"

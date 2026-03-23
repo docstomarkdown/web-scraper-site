@@ -8,18 +8,18 @@ export function WeightConverterHowToUse() {
             title="How to Use This Tool"
             steps={[
                 {
-                    title: "Enter Weight & Select Unit",
-                    description: "Type your product weight, then tap one of the four unit buttons — lbs, oz, kg, or g — to set the input unit. The Target Unit selector below lets you pick your primary conversion target.",
+                    title: "Enter Item Weight",
+                    description: "Just type in your item's weight and pick your unit (like pounds or kilograms). We'll instantly convert it into all other measurement sizes for you.",
                     icon: Scale
                 },
                 {
-                    title: "Pick Carrier & Shipping Speed",
-                    description: "Choose from 7+ global carriers (USPS, FedEx, UPS, DHL, Royal Mail, Canada Post, Australia Post) or select by shipping speed (Standard, Express, Next Day). The tool highlights your active cost tier immediately.",
+                    title: "Select Shipping",
+                    description: "Want to know shipping costs? Choose your preferred carrier or shipping speed, and we'll automatically find the correct pricing tier for your item's weight.",
                     icon: Truck
                 },
                 {
-                    title: "Explore the Cost Breakdown",
-                    description: "Click \"View Cost Breakdown\" to reveal every weight tier for your selected carrier — with your current tier highlighted. See exactly how many lbs separate you from the next (more expensive) band.",
+                    title: "View Breakdown",
+                    description: "Open the cost breakdown to see exactly which shipping bracket your item falls into, and easily check how much more weight you can add before the price goes up!",
                     icon: ChevronDown
                 }
             ]}

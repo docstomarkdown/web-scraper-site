@@ -23,7 +23,7 @@ export default function NetProfitCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essentials" 
+                            title="Tool Essential" 
                             subtitle="Everything you need to know about calculating your business's true take-home pay."
                             icon={Lightbulb}
                         />
@@ -40,7 +40,7 @@ export default function NetProfitCalculatorPage() {
                             faqs={[
                                 {
                                     question: "What is the difference between Gross Profit and Net Profit?",
-                                    answer: "<strong>Gross Profit</strong> is only your Revenue minus COGS (what it costs to make the product). <strong>Net Profit</strong> is the 'True Bottom Line'—it's what remains after subtracting EVERYTHING else, including ads, rent, software, payroll, and taxes. It is your actual take-home pay."
+                                    answer: "<strong>Gross Profit</strong> is only your Revenue minus COGS (what it costs to make the product). <strong>Net Profit</strong> is the 'True Bottom Line'—it's what remains after subtracting everything else, including ads, rent, software, payroll, and taxes. It is your actual take-home pay."
                                 },
                                 {
                                     question: "Should I include my own salary in the overhead costs?",
