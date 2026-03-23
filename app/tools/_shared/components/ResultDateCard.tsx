@@ -339,12 +339,12 @@ export function ResultDateCard({
                                             {dateSection.icon ?? <Calendar className="w-5 h-5 text-blue-500" />}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.08em] leading-none mb-1.5 group-hover:text-slate-500 transition-colors">
+                                            <p className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-none mb-1.5 group-hover:text-slate-600 transition-colors">
                                                 {dateSection.label}
                                             </p>
-                                            <p className="text-[16px] font-extrabold text-slate-500 tracking-tight truncate">
-                                                {isCalculated ? dateSection.value : (dateSection.emptyText ?? "Waiting for inputs…")}
-                                            </p>
+                                            <p className="text-[16px] sm:text-[17px] font-bold text-slate-700 tracking-tight truncate">
+                                                 {isCalculated ? dateSection.value : (dateSection.emptyText ?? "Waiting for inputs…")}
+                                             </p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -359,7 +359,7 @@ export function ResultDateCard({
                                     className="group bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]"
                                 >
                                     {infoCard.title && (
-                                        <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.08em] leading-none mb-2 group-hover:text-slate-500 transition-colors">
+                                        <p className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-none mb-2 group-hover:text-slate-600 transition-colors">
                                             {infoCard.title}
                                         </p>
                                     )}

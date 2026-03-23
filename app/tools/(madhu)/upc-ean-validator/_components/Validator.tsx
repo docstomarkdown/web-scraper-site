@@ -654,7 +654,7 @@ export function Validator() {
                                                                     <div className="flex items-center gap-1.5">
                                                                         <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                                                                         <span className="text-xs text-slate-600">
-                                                                            Barcode type: <span className="font-bold text-slate-800">{result.format}</span>
+                                                                            Barcode type: <span className="font-bold text-slate-700">{result.format}</span>
                                                                         </span>
                                                                     </div>
                                                                 </>
@@ -687,14 +687,14 @@ export function Validator() {
                                                                     <div className="flex items-center gap-1.5">
                                                                         <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                                                                         <span className="text-xs text-slate-600">
-                                                                            Check digit is correct: <span className="font-bold text-slate-800">{result.checkDigit}</span>
+                                                                            Check digit is correct: <span className="font-bold text-slate-700">{result.checkDigit}</span>
                                                                         </span>
                                                                     </div>
                                                                 ) : (
                                                                     <div className="flex items-center gap-1.5">
                                                                         <AlertTriangle className="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
                                                                         <span className="text-xs text-slate-600">
-                                                                            Entered check digit is <span className="font-bold text-slate-800">{result.checkDigit}</span>, expected <span className="font-bold text-slate-800">{result.expectedCheckDigit}</span>.
+                                                                            Entered check digit is <span className="font-bold text-slate-700">{result.checkDigit}</span>, expected <span className="font-bold text-slate-700">{result.expectedCheckDigit}</span>.
                                                                         </span>
                                                                     </div>
                                                                 )}
@@ -777,7 +777,7 @@ export function Validator() {
                                                                                         {step.step}
                                                                                     </div>
                                                                                     <div className="space-y-1">
-                                                                                        <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                                        <p className="text-sm font-bold text-slate-700 leading-none">{step.description}</p>
                                                                                         <div className={cn(
                                                                                             "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
                                                                                             result.isValid

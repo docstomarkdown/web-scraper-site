@@ -138,11 +138,7 @@ export function ResultSummaryCard({
         return text.replace(/Profit/g, "Loss").replace(/PROFIT/g, "LOSS").replace(/profit/g, "loss")
     }
     const getSecondaryValueColor = (result: SecondaryResult) => {
-        if (profitLossKey && result.key === profitLossKey) {
-            if (numericProfitLoss > 0) return "text-emerald-600"
-            if (numericProfitLoss < 0) return "text-red-600"
-        }
-        return "text-slate-800"
+        return "text-slate-700"
     }
     const badge = (() => {
         if (profitLossKey) {
@@ -429,7 +425,7 @@ export function ResultSummaryCard({
                                                 ) : (
                                                     <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-slate-300" />
                                                 )}
-                                                <span className="text-[13px] font-bold text-slate-500">
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">
                                                     {autoAdjustText(result.label)}
                                                 </span>
                                                 {result.tooltip && (
@@ -454,10 +450,10 @@ export function ResultSummaryCard({
                                         {/* Value */}
                                         <div className={cn(IconComponent ? "pl-6" : "pl-3.5", hasBadge && "pt-0.5")}>
                                             <span className={cn(
-                                                "font-black tracking-tight block",
+                                                "font-bold tracking-tight block text-[16px] sm:text-[17px]",
                                                 isCurrencyCard
-                                                    ? "text-xl text-slate-800"
-                                                    : cn("text-[16px]", valueColor)
+                                                    ? "text-slate-700"
+                                                    : valueColor
                                             )}>
                                                 {formatValueWithUnit(
                                                     getDisplayValue(result.value, result.key),

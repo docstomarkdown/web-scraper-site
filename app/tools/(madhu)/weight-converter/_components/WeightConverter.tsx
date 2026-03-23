@@ -624,13 +624,13 @@ export function WeightConverter() {
                                         >
                                             <div className="flex items-center gap-2 mb-3">
                                                 <RefreshCw className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                <span className="text-[13px] font-bold text-slate-500">Other Units</span>
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Other Units</span>
                                             </div>
                                             <div className="pl-7 space-y-2">
                                                 {secondaryUnits.map((unit) => (
                                                     <div key={unit} className="flex items-center justify-between mt-1">
                                                         <span className="text-xs text-slate-600 font-medium">{UNIT_NAMES[unit]}</span>
-                                                        <span className="font-black tracking-tight text-[16px] text-slate-800 flex items-baseline">
+                                                        <span className="font-bold tracking-tight text-[16px] sm:text-[17px] text-slate-700 flex items-baseline">
                                                             {formatCompact(conversions[unit], 4)}
                                                             <span className="font-medium text-[0.6em] ml-1">{UNIT_ABBR[unit]}</span>
                                                         </span>
@@ -640,7 +640,7 @@ export function WeightConverter() {
                                                     <span className="text-xs text-slate-600 font-medium">
                                                         {UNIT_NAMES[inputUnit]} <span className="text-blue-400 text-[10px] ml-1">(input)</span>
                                                     </span>
-                                                    <span className="font-black tracking-tight text-[16px] text-slate-800 flex items-baseline">
+                                                    <span className="font-bold tracking-tight text-[16px] sm:text-[17px] text-slate-700 flex items-baseline">
                                                         {formatCompact(conversions[inputUnit], 4)}
                                                         <span className="font-medium text-[0.6em] ml-1">{UNIT_ABBR[inputUnit]}</span>
                                                     </span>
@@ -659,7 +659,7 @@ export function WeightConverter() {
                                                 <div className="flex items-center justify-between mb-3">
                                                     <div className="flex items-center gap-2">
                                                         <Truck className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                        <span className="text-[13px] font-bold text-slate-500">
+                                                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">
                                                             {selectedShippingData.label} Estimate
                                                         </span>
                                                     </div>
@@ -668,7 +668,7 @@ export function WeightConverter() {
                                                     </span>
                                                 </div>
                                                 <div className="pl-6 pt-0.5">
-                                                    <span className="font-black tracking-tight block text-xl text-slate-800">
+                                                    <span className="font-bold tracking-tight block text-[16px] sm:text-[17px] text-slate-700">
                                                         {activeTier.label}
                                                     </span>
                                                     <p className="text-[11px] font-medium text-slate-500 mt-1 flex items-baseline">
@@ -691,7 +691,7 @@ export function WeightConverter() {
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <Package className="w-4 h-4 text-blue-500" />
-                                                    <span className="text-[13px] font-bold text-slate-500">View Cost Breakdown</span>
+                                                    <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">View Cost Breakdown</span>
                                                 </div>
                                                 <motion.span
                                                     animate={{ rotate: showBreakdown ? 180 : 0 }}

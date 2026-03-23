@@ -577,13 +577,12 @@ export function PalletConfigurationCalculator() {
                                 <div className="w-7 h-7 rounded-lg bg-blue-50 ring-[6px] ring-white flex items-center justify-center flex-shrink-0 z-10">
                                     <Grid3x3 className="w-3.5 h-3.5 text-blue-600" />
                                 </div>
-                                <span className="text-[15px] font-semibold text-slate-500 uppercase z-10 tracking-tight">
+                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 z-10 tracking-tight">
                                     Pallet Layout — Top View
                                 </span>
                             </div>
                         }
                         variant="compact"
-                        mainValue={null}
                     >
                         <PalletTopView results={results} />
                     </ResultFeedbackCard>
@@ -724,22 +723,22 @@ function PalletTopView({ results }: TopViewProps) {
                 {/* Bottom Legend */}
                 <div className="absolute bottom-3 left-0 right-0 px-6 flex justify-between items-center text-slate-400">
                     <div className="flex flex-col gap-0">
-                        <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Arrangement</span>
-                        <span className={cn("text-xs font-bold", isDummy ? "text-blue-400" : "text-slate-900")}>
+                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-tight">Arrangement</span>
+                        <span className={cn("text-[16px] sm:text-[17px] font-bold tracking-tight block", isDummy ? "text-blue-400" : "text-slate-700")}>
                             {displayResults.unitsAlongLength} × {displayResults.unitsAlongWidth} Grid
                         </span>
                     </div>
                     <div className="h-6 w-px bg-slate-200 mx-1" />
                     <div className="flex flex-col items-center gap-0">
-                        <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Total stack</span>
-                        <span className={cn("text-xs font-bold", isDummy ? "text-blue-400" : "text-blue-600")}>
+                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-tight">Total stack</span>
+                        <span className={cn("text-[16px] sm:text-[17px] font-bold tracking-tight block", isDummy ? "text-blue-400" : "text-blue-600")}>
                             {displayResults.layers} {displayResults.layers === 1 ? 'Layer' : 'Layers'}
                         </span>
                     </div>
                     <div className="h-6 w-px bg-slate-200 mx-1" />
                     <div className="flex flex-col items-end gap-0 text-right">
-                        <span className="text-[9px] font-bold tracking-[0.05em] uppercase opacity-50">Fill Rate</span>
-                        <span className={cn("text-xs font-bold", isDummy ? "text-blue-400" : displayResults.areaEfficiency >= 80 ? "text-emerald-600" : "text-amber-500")}>
+                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 leading-tight">Fill Rate</span>
+                        <span className={cn("text-[16px] sm:text-[17px] font-bold tracking-tight block", isDummy ? "text-blue-400" : "text-slate-700")}>
                             {isDummy ? "—" : `${displayResults.areaEfficiency.toFixed(0)}%`}
                         </span>
                     </div>

@@ -370,7 +370,7 @@ export function Converter() {
                                                                             <span className="text-[13px] font-bold text-slate-500">{item.label}</span>
                                                                         </div>
                                                                         <div className="pl-6 flex items-center justify-between gap-3">
-                                                                            <span className="text-[15px] font-mono font-bold text-slate-800 break-all">{item.value}</span>
+                                                                            <span className="text-[15px] font-mono font-bold text-slate-700 break-all">{item.value}</span>
                                                                             <button
                                                                                 onClick={() => {
                                                                                     navigator.clipboard.writeText(item.value)

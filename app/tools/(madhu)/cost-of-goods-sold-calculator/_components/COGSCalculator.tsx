@@ -294,7 +294,7 @@ export function COGSCalculator() {
                                                     <span className="text-[13px] font-bold text-slate-500">COGS per Unit</span>
                                                 </div>
                                                 <div className="pl-6 pt-0.5">
-                                                    <span className="font-black tracking-tight block text-xl text-slate-800">
+                                                    <span className="font-bold tracking-tight block text-[16px] sm:text-[17px] text-slate-700">
                                                         {formatCurrencyValue(results.cogsPerUnit, currency)}
                                                     </span>
                                                 </div>
@@ -311,7 +311,7 @@ export function COGSCalculator() {
                                                     <span className="text-[13px] font-bold text-slate-500">Quantity</span>
                                                 </div>
                                                 <div className="pl-6 pt-0.5">
-                                                    <span className="font-black tracking-tight block text-xl text-slate-800">
+                                                    <span className="font-bold tracking-tight block text-[16px] sm:text-[17px] text-slate-700">
                                                         {results.qty}
                                                     </span>
                                                 </div>
@@ -355,7 +355,7 @@ export function COGSCalculator() {
                                                                     <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                                                                     <span className="text-[12px] font-semibold text-slate-600">Product Cost</span>
                                                                 </div>
-                                                                <span className="text-[13px] font-black tracking-tight text-slate-800">
+                                                                <span className="text-[13px] font-bold tracking-tight text-slate-700">
                                                                     {formatCurrencyValue(results.breakdown.productTotal, currency)}
                                                                 </span>
                                                             </div>
@@ -365,7 +365,7 @@ export function COGSCalculator() {
                                                                     <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                                                                     <span className="text-[12px] font-semibold text-slate-600">Shipping Cost</span>
                                                                 </div>
-                                                                <span className="text-[13px] font-black tracking-tight text-slate-800">
+                                                                <span className="text-[13px] font-bold tracking-tight text-slate-700">
                                                                     {formatCurrencyValue(results.breakdown.shippingTotal, currency)}
                                                                 </span>
                                                             </div>
@@ -375,7 +375,7 @@ export function COGSCalculator() {
                                                                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                                                                     <span className="text-[12px] font-semibold text-slate-600">Packaging</span>
                                                                 </div>
-                                                                <span className="text-[13px] font-black tracking-tight text-slate-800">
+                                                                <span className="text-[13px] font-bold tracking-tight text-slate-700">
                                                                     {formatCurrencyValue(results.breakdown.packagingTotal, currency)}
                                                                 </span>
                                                             </div>
@@ -385,7 +385,7 @@ export function COGSCalculator() {
                                                                     <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
                                                                     <span className="text-[12px] font-semibold text-slate-600">Fulfillment</span>
                                                                 </div>
-                                                                <span className="text-[13px] font-black tracking-tight text-slate-800">
+                                                                <span className="text-[13px] font-bold tracking-tight text-slate-700">
                                                                     {formatCurrencyValue(results.breakdown.fulfillmentTotal, currency)}
                                                                 </span>
                                                             </div>
