@@ -133,13 +133,13 @@ export function CubicFeetCalculator() {
                                         groupingTitle="Dimensions"
                                         groupingIcon={Box}
                                         groupingAction={
-                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans ml-4 w-36 sm:w-44">
+                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-11 font-sans ml-4 w-36 sm:w-44">
                                                 {(["ft", "in", "cm", "m"] as DimensionUnit[]).map((u) => (
                                                     <button
                                                         key={u}
                                                         onClick={() => setUnit(u)}
                                                         className={cn(
-                                                            "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
+                                                            "px-3 h-full rounded-md text-[13px] font-bold transition-all flex-1 flex items-center justify-center",
                                                             unit === u
                                                                 ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                 : "text-slate-500 hover:text-slate-900"
@@ -232,7 +232,7 @@ export function CubicFeetCalculator() {
                                     <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50">
                                         <Calculator className="w-4 h-4 text-blue-600" />
                                     </div>
-                                    <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
+                                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                                         Results Panel
                                     </span>
                                 </div>
@@ -241,10 +241,16 @@ export function CubicFeetCalculator() {
                                         <motion.div
                                             key="live"
                                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/50 bg-emerald-100/50 text-[10.5px] font-bold text-emerald-700"
+                                            className={cn(
+                                                "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold",
+                                                results.cft > 100 ? "bg-amber-100/50 text-amber-700 border-amber-200/50" : "bg-emerald-100/50 text-emerald-700 border-slate-200/50"
+                                            )}
                                         >
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-                                            Live
+                                            <span className={cn(
+                                                "w-1.5 h-1.5 rounded-full animate-pulse inline-block",
+                                                results.cft > 100 ? "bg-amber-500" : "bg-emerald-500"
+                                            )} />
+                                            {results.cft > 100 ? "Oversized Volume" : hasMultipleUnits ? "Bulk Load" : "Standard Size"}
                                         </motion.div>
                                     ) : (
                                         <motion.div

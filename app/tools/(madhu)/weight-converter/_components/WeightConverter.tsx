@@ -291,13 +291,13 @@ export function WeightConverter() {
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </div>
-                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans w-36 sm:w-44">
+                                            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-11 font-sans w-36 sm:w-44">
                                                 {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
                                                     <button
                                                         key={u}
                                                         onClick={() => setInputUnit(u)}
                                                         className={cn(
-                                                            "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
+                                                            "px-3 h-full rounded-md text-[13px] font-bold transition-all flex-1 flex items-center justify-center",
                                                             inputUnit === u
                                                                 ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                 : "text-slate-500 hover:text-slate-900"
@@ -335,14 +335,14 @@ export function WeightConverter() {
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </div>
-                                                <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-7 font-sans w-36 sm:w-44">
+                                                <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 h-11 font-sans w-36 sm:w-44">
                                                     {(["lbs", "oz", "kg", "g"] as WeightUnit[]).map((u) => (
                                                         <button
                                                             key={u}
                                                             onClick={() => setTargetUnit(u)}
                                                             disabled={inputUnit === u}
                                                             className={cn(
-                                                                "px-3 h-full rounded-md text-[11px] font-bold transition-all flex-1 flex items-center justify-center",
+                                                                "px-3 h-full rounded-md text-[13px] font-bold transition-all flex-1 flex items-center justify-center",
                                                                 targetUnit === u
                                                                     ? "bg-white text-blue-600 shadow-sm border border-blue-200"
                                                                     : "text-slate-500 hover:text-slate-900",
@@ -395,7 +395,7 @@ export function WeightConverter() {
                                                             setShippingMode("carrier")
                                                         }}
                                                     >
-                                                        <SelectTrigger className="h-8 text-[12px] border border-slate-200 font-semibold transition-all px-2.5 bg-white text-slate-700 focus:ring-0 focus:ring-offset-0 focus:outline-none hover:border-slate-300 shadow-sm">
+                                                        <SelectTrigger className="h-11 text-[13px] border border-slate-200 font-semibold transition-all px-3 bg-white text-slate-700 focus:ring-0 focus:ring-offset-0 focus:outline-none hover:border-slate-300 shadow-sm rounded-xl">
                                                             <SelectValue placeholder="Select..." />
                                                         </SelectTrigger>
                                                         <SelectContent align="end" className="max-h-[300px] border-slate-200 shadow-xl rounded-xl z-[1001]">
@@ -443,7 +443,7 @@ export function WeightConverter() {
                                                             setShippingMode("class")
                                                         }}
                                                     >
-                                                        <SelectTrigger className="h-8 text-[12px] border border-slate-200 font-semibold transition-all px-2.5 bg-white text-slate-700 focus:ring-0 focus:ring-offset-0 focus:outline-none hover:border-slate-300 shadow-sm">
+                                                        <SelectTrigger className="h-11 text-[13px] border border-slate-200 font-semibold transition-all px-3 bg-white text-slate-700 focus:ring-0 focus:ring-offset-0 focus:outline-none hover:border-slate-300 shadow-sm rounded-xl">
                                                             <SelectValue placeholder="Select..." />
                                                         </SelectTrigger>
                                                         <SelectContent align="end" className="max-h-[300px] border-slate-200 shadow-xl rounded-xl z-[1001]">
@@ -481,7 +481,7 @@ export function WeightConverter() {
                                     <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50">
                                         <Scale className="w-4 h-4 text-blue-600" />
                                     </div>
-                                    <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
+                                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                                         Results Panel
                                     </span>
                                 </div>
@@ -490,10 +490,20 @@ export function WeightConverter() {
                                         <motion.div
                                             key="live"
                                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/50 bg-emerald-100/50 text-[10.5px] font-bold text-emerald-700"
+                                            className={cn(
+                                                "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold",
+                                                activeTier?.color === "emerald" ? "bg-emerald-100/50 text-emerald-700 border-emerald-200/50" :
+                                                activeTier?.color === "amber" || activeTier?.color === "orange" ? "bg-amber-100/50 text-amber-700 border-amber-200/50" :
+                                                "bg-blue-100/50 text-blue-700 border-blue-200/50"
+                                            )}
                                         >
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-                                            Live
+                                            <span className={cn(
+                                                "w-1.5 h-1.5 rounded-full animate-pulse inline-block",
+                                                activeTier?.color === "emerald" ? "bg-emerald-500" :
+                                                activeTier?.color === "amber" || activeTier?.color === "orange" ? "bg-amber-500" :
+                                                "bg-blue-500"
+                                            )} />
+                                            {activeTier ? activeTier.label.split("(")[0].trim() : "Target Weight"}
                                         </motion.div>
                                     ) : (
                                         <motion.div

@@ -29,7 +29,7 @@ export default function COGSCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader 
-                            title="Tool Essentials" 
+                            title="Tool Essential" 
                             subtitle="Key information about Cost of Goods Sold and profitability you need to know."
                             icon={Lightbulb}
                         />

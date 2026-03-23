@@ -77,7 +77,7 @@ function ConvertedDimensionsCard(props: ConvertedDimensionsCardProps) {
                     <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
                         <ClipboardList className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="text-[12px] sm:text-[13px] font-extrabold text-blue-700 uppercase tracking-[0.14em] leading-none">
+                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                         Results Panel
                     </span>
                 </div>

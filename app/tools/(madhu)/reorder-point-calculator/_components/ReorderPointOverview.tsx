@@ -13,7 +13,7 @@ export function ReorderPointOverview() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Tool Essentials
+                            Tool Essential
                         </h2>
                     </div>
                 </div>
@@ -24,9 +24,9 @@ export function ReorderPointOverview() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="For sellers who can't afford to run out of stock — the "
+                heading="Why Use Reorder Point Calculator?"
                 headingAccent="Reorder Point Calculator"
-                definition="Every stockout is a lost sale — and often a lost customer. This tool is built for e-commerce operators, Amazon FBA sellers, and inventory managers who need to know the precise inventory level at which they must place a new order to avoid running out of stock while waiting for their supplier to deliver. Input your daily sales rate and lead time to get an exact reorder trigger point, with optional safety stock for extra protection."
+                definition="The primary purpose of the Reorder Point Calculator is to find the exact inventory level at which you must place a new order to avoid stockouts. Built for e-commerce operators, Amazon FBA sellers, and warehouse managers, this tool eliminates guesswork by factoring in your daily sales rate and supplier lead time. It is your essential tool for optimizing stock levels, maintaining cash flow, and ensuring you never lose a sale due to empty shelves."
                 facts={[
                     {
                         stat: "Sales",

@@ -31,28 +31,24 @@ export default function AffiliateCommissionCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is the minimum I need to enter to get results?",
-                                    answer: "Three fields: <strong>Affiliate Traffic (Clicks)</strong>, <strong>Average Order Value</strong>, and <strong>Affiliate Commission Rate</strong>. <strong>Conversion Rate</strong> is pre-filled with an industry default, and <strong>Product Cost</strong> is optional for profitability analysis."
-                                },
-                                {
-                                    question: "How is Affiliate Payout calculated?",
-                                    answer: "<strong>Affiliate Payout</strong> = <strong>Total Revenue</strong> × <strong>Commission %</strong>. Total Revenue itself is calculated as <strong>Estimated Sales</strong> × <strong>Average Order Value</strong>, where Estimated Sales = <strong>Clicks</strong> × <strong>Conversion Rate</strong>. This gives you the total commission you'll pay across all affiliate-driven sales."
-                                },
-                                {
-                                    question: "How is Net Profit calculated?",
-                                    answer: "<strong>Net Profit</strong> = <strong>Total Revenue</strong> − <strong>Affiliate Payout</strong> − <strong>Product Cost</strong>. Product Cost is expressed as a percentage of revenue and has no default value. Filling it in shows you what you actually keep after paying affiliates and covering your fulfillment costs."
+                                    question: "What are typical commission rates?",
+                                    answer: "Typical rates vary by industry: Physical goods range from <strong>5% to 15%</strong>, SaaS and digital products from <strong>20% to 50%</strong>. Test a few different rates in the calculator to see how they uniquely affect your profit margins before setting a firm policy."
                                 },
                                 {
                                     question: "Why is Affiliate Payout the primary result?",
                                     answer: "The main purpose of this tool is to estimate how much you will pay affiliates at a given commission rate. That's why <strong>Affiliate Payout</strong> is highlighted as the primary metric, with <strong>Revenue</strong>, <strong>Sales</strong>, and <strong>Net Profit</strong> shown as supporting context."
                                 },
                                 {
-                                    question: "What are typical commission rates?",
-                                    answer: "Typical rates vary by industry: Physical goods range from <strong>5% to 15%</strong>, SaaS and digital products from <strong>20% to 50%</strong>. Test a few different rates in the calculator to see how they uniquely affect your profit margins before setting a firm policy."
+                                    question: "How is Affiliate Payout calculated?",
+                                    answer: "<strong>Affiliate Payout</strong> = <strong>Total Revenue</strong> × <strong>Commission %</strong>. Total Revenue itself is calculated as <strong>Estimated Sales</strong> × <strong>Average Order Value</strong>, where Estimated Sales = <strong>Clicks</strong> × <strong>Conversion Rate</strong>. This gives you the total commission you'll pay across all affiliate-driven sales."
                                 },
                                 {
                                     question: "What does the Product Cost (% of Revenue) field do?",
                                     answer: "This optional field represents your cost to produce or source the product as a percentage of revenue. It has no default — leave it blank if you only care about payout. Fill it in to see your <strong>Net Profit</strong> after deducting both affiliate commissions and product costs."
+                                },
+                                {
+                                    question: "How is Net Profit calculated?",
+                                    answer: "<strong>Net Profit</strong> = <strong>Total Revenue</strong> − <strong>Affiliate Payout</strong> − <strong>Product Cost</strong>. Product Cost is expressed as a percentage of revenue and has no default value. Filling it in shows you what you actually keep after paying affiliates and covering your fulfillment costs."
                                 }
                             ]}
                         />

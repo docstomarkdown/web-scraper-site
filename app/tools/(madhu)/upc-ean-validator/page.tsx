@@ -31,12 +31,12 @@ export default function UPCEANValidatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is a check digit and why does it matter?",
-                                    answer: "The check digit is the last digit of a barcode, calculated using the GS1 Modulo 10 algorithm. It verifies the integrity of all previous digits. If incorrect, the barcode won't scan at point-of-sale terminals, causing checkout failures and inventory issues."
-                                },
-                                {
                                     question: "What barcode formats does this validator support?",
                                     answer: "We support <b>UPC-A</b> (12 digits, standard in North America), <b>EAN-13</b> (13 digits, global standard), and <b>EAN-8</b> (8 digits for small packages). All formats use the same Modulo 10 check digit algorithm."
+                                },
+                                {
+                                    question: "What is a check digit and why does it matter?",
+                                    answer: "The check digit is the last digit of a barcode, calculated using the GS1 Modulo 10 algorithm. It verifies the integrity of all previous digits. If incorrect, the barcode won't scan at point-of-sale terminals, causing checkout failures and inventory issues."
                                 },
                                 {
                                     question: "Why is my barcode showing as invalid?",
@@ -44,11 +44,11 @@ export default function UPCEANValidatorPage() {
                                 },
                                 {
                                     question: "Can I upload a barcode image instead of typing it?",
-                                    answer: "Yes! Click the 'Upload Image' button to scan a barcode from an image file. The tool will automatically extract the barcode number and validate it, showing you the validation results and check digit calculation."
+                                    answer: "Yes! You can click the upload section or drag and drop an image file. The tool will automatically extract the barcode number and validate it, showing you the check digit calculation."
                                 },
                                 {
-                                    question: "What happens if my barcode is invalid?",
-                                    answer: "The validator shows you exactly what's wrong: whether it's a length error or a check digit error. If it's a check digit error, you'll see the expected check digit so you can correct it. Invalid barcodes won't scan at retail stores or work on e-commerce platforms."
+                                    question: "Does this tool support bulk barcode validation?",
+                                    answer: "Yes, you can upload a CSV, TXT, or text file containing multiple barcodes (one per line or comma-separated). The validator will process them all instantly and provide a summary of valid and invalid codes."
                                 }
                             ]}
                         />

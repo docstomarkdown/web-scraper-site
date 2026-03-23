@@ -59,7 +59,7 @@ function PrimedDashboardCard({
                     <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600/10 border border-blue-200/60">
                         <BarChart3 className="w-3.5 h-3.5 text-blue-600" />
                     </div>
-                    <span className="text-[11px] font-black text-blue-700/70 uppercase tracking-[0.18em] leading-none">
+                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                         Results Panel
                     </span>
                 </div>
@@ -269,7 +269,7 @@ function MinimalistCoreCard({
                     <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600/10 border border-blue-200/60">
                         <Activity className="w-3.5 h-3.5 text-blue-600" />
                     </div>
-                    <span className="text-[11px] font-black text-blue-700/70 uppercase tracking-[0.18em] leading-none">
+                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                         Results Panel
                     </span>
                 </div>

@@ -37,7 +37,7 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                         <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-indigo-50/80 ring-1 ring-inset ring-blue-500/10 rounded-xl flex items-center justify-center text-blue-600 mb-4 transition-transform duration-300 group-hover:scale-110 origin-center">
                                             <Icon className="w-5 h-5" />
                                         </div>
-                                        <h3 className="text-[16px] font-bold text-slate-600 mb-2 leading-tight transition-colors duration-300 min-h-[2.75rem] flex items-end">
+                                        <h3 className="text-[14.5px] lg:text-[16px] font-bold text-slate-600 mb-2 leading-tight tracking-tight transition-colors duration-300 min-h-0 md:min-h-[2.25rem] flex items-center">
                                             <span>Step {index + 1}: {step.title}</span>
                                         </h3>
                                         <p

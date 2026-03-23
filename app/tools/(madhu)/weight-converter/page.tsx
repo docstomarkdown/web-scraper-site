@@ -31,10 +31,6 @@ export default function WeightConverterPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How do I switch the input unit?",
-                                    answer: "Use the <strong>four unit buttons</strong> (lbs, oz, kg, g) next to the Weight Unit row. The Target Unit row below lets you choose which unit appears as the large hero number in the Results Panel. All other units are always shown in the \"Other Units\" card regardless of your target selection."
-                                },
-                                {
                                     question: "Which shipping carriers are supported?",
                                     answer: "The tool includes tier estimates for <strong>7+ global carriers</strong>: USPS, FedEx, UPS, and DHL for US and global shipping, plus Royal Mail (UK), Canada Post, and Australia Post for regional shipping. Each carrier has its own set of weight tiers with realistic cost range estimates."
                                 },

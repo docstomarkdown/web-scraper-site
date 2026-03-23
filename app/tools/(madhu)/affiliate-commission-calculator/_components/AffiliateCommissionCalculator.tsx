@@ -209,7 +209,9 @@ export function AffiliateCommissionCalculator() {
                             }
                         ]}
                         isCalculated={hasInputs}
-
+                        profitLossKey="netProfit"
+                        showLiveBadge={hasInputs}
+                        liveBadgeText={hasInputs ? "Commission Calculated" : "Draft"}
                         checklistItems={[
                             { key: 'traffic', label: 'Affiliate Traffic', isComplete: values.affiliateTraffic !== "" },
                             { key: 'aov', label: 'Average Order Value', isComplete: values.averageOrderValue !== "" },

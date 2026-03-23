@@ -13,7 +13,7 @@ export function AffiliateOverview() {
                     </div>
                     <div>
                         <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
-                            Tool Essentials
+                            Tool Essential
                         </h2>
                     </div>
                 </div>
@@ -24,9 +24,9 @@ export function AffiliateOverview() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="Built for store owners who run affiliate programs — the "
+                heading="Why Use Affiliate Payout Calculator?"
                 headingAccent="Affiliate Payout Calculator"
-                definition="If you sell online and pay commissions to influencers, bloggers, or referral partners, this tool was made for you. Before launching or scaling any affiliate campaign, you need to know two numbers: how much you'll pay out in commissions, and how much you'll actually keep. This calculator gives you both — instantly and transparently — so you can set smarter commission rates and protect your profit margins."
+                definition="The primary purpose of the Affiliate Payout Calculator is to securely project exactly how much commission you owe and how much profit you keep. Built for store owners, brands, and affiliate managers, this tool transparently simulates sales data against your commission rates. It is your essential tool for testing different payout percentages, ensuring affiliates are rewarded fairly, and protecting your core profit margins."
                 facts={[
                     {
                         stat: "Payout",

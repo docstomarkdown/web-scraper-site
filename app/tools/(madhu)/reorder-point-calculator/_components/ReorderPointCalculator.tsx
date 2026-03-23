@@ -96,6 +96,7 @@ export function ReorderPointCalculator() {
                         title="REORDER POINT"
                         description="Place your next order when inventory drops to this amount."
                         isCalculated={hasInputs}
+                        liveBadgeText={values.safetyStock ? "Buffered Stock" : "Just-In-Time"}
                         checklistItems={[
                             { label: "Enter Daily Units Sold", isComplete: values.salesVelocity !== "" },
                             { label: "Enter Delivery Time", isComplete: values.leadTime !== "" }

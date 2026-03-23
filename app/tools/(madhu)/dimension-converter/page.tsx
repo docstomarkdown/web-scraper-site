@@ -21,7 +21,7 @@ export default function DimensionConverterPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader
-                            title="Behind the Calculations"
+                            title="Tool Essential"
                             subtitle="Understand how instant unit conversions keep your product dimensions accurate across every marketplace and region."
                             icon={BookOpen}
                         />
