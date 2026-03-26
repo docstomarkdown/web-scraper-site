@@ -35,6 +35,7 @@ interface ResultDateCardProps {
     showLiveBadge?: boolean
     liveBadgeText?: string
     isCalculated?: boolean
+    description?: string
     emptyMessage?: string
     emptyResultLabel?: string
     className?: string
@@ -58,6 +59,7 @@ export function ResultDateCard({
     showLiveBadge = true,
     liveBadgeText = "Live",
     isCalculated = false,
+    description,
     emptyMessage,
     emptyResultLabel,
     className,
@@ -139,7 +141,10 @@ export function ResultDateCard({
             icon: undefined,
         }
 
-    const displayLabel = primaryResult.label
+    const displayLabelComponent = primaryResult.label || title
+    const displayLabel = displayLabelComponent
+    const displayDescription = description
+
     const emptyLabel = emptyMessage ?? (emptyResultLabel || primaryResult.label || title || "Result")
 
     return (
@@ -324,6 +329,17 @@ export function ResultDateCard({
                                             {formatValueWithUnit(primaryResult.value, primaryResult.unit, primaryResult.isCurrency)}
                                         </span>
                                     </motion.div>
+
+                                    {displayDescription && (
+                                        <motion.p
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.3, delay: 0.22 }}
+                                            className="text-[11.5px] text-slate-500 font-medium mt-2 max-w-[280px] mx-auto leading-relaxed"
+                                        >
+                                            {displayDescription}
+                                        </motion.p>
+                                    )}
                                 </motion.div>
 
                             {/* ── Date Section ── */}

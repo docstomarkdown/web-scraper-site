@@ -35,6 +35,7 @@ interface ResultSummaryCardProps {
     currency?: string // Global currency code for the card
     showLiveBadge?: boolean
     liveBadgeText?: string
+    liveBadgeColor?: "emerald" | "amber" | "rose" | "blue" | "slate"
     isCalculated?: boolean
     profitLossKey?: string
     validationBadgeText?: { valid: string; invalid: string }
@@ -58,6 +59,7 @@ export function ResultSummaryCard({
     currency,
     showLiveBadge = true,
     liveBadgeText = "Live",
+    liveBadgeColor = "emerald",
     isCalculated = false,
     profitLossKey,
     validationBadgeText,
@@ -159,11 +161,16 @@ export function ResultSummaryCard({
                 }
             }
         }
+        const colors = {
+            emerald: { bg: "bg-emerald-100/50", dot: "bg-emerald-500", textCol: "text-emerald-700" },
+            amber: { bg: "bg-amber-100/50 border-amber-200", dot: "bg-amber-500", textCol: "text-amber-700 font-semibold" },
+            rose: { bg: "bg-rose-100/50 border-rose-200", dot: "bg-rose-500", textCol: "text-rose-700 font-semibold" },
+            blue: { bg: "bg-blue-100/50 border-blue-200", dot: "bg-blue-500", textCol: "text-blue-700 font-semibold" },
+            slate: { bg: "bg-slate-100/50 border-slate-200", dot: "bg-slate-500", textCol: "text-slate-700 font-semibold" },
+        }
         return {
             text: liveBadgeText || "Live",
-            bg: "bg-emerald-100/50",
-            dot: "bg-emerald-500",
-            textCol: "text-emerald-700"
+            ...colors[liveBadgeColor]
         }
     })()
     // Dynamic description generator
@@ -181,8 +188,8 @@ export function ResultSummaryCard({
         return "A quick measure of your success."
     })()
     // Handle title and label adjustments
-    const displayTitle = title ? autoAdjustText(title) : undefined
-    const displayLabel = primaryResult.label ? autoAdjustText(primaryResult.label) : undefined
+    const displayLabelComponent = primaryResult.label || title
+    const displayLabel = displayLabelComponent ? autoAdjustText(displayLabelComponent) : undefined
     // For display purposes, we might want to show the absolute value if we are already labeling it as "Loss"
     // and if it's the primary profit/loss result.
     const getDisplayValue = (val: string | number, key?: string) => {
@@ -375,17 +382,6 @@ export function ResultSummaryCard({
                                         {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
                                     </span>
                                 </motion.div>
-
-                                {displayTitle && (
-                                    <motion.span
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.3, delay: 0.2 }}
-                                        className="text-[1rem] font-bold text-slate-700 mt-1"
-                                    >
-                                        {displayTitle}
-                                    </motion.span>
-                                )}
 
                                 {displayDescription && (
                                     <motion.p
