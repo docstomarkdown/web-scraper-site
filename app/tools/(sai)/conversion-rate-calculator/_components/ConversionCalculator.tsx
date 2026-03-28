@@ -1,117 +1,117 @@
 "use client"
 import React, { useState } from "react"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Users, MousePointerClick, TrendingUp } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { Card, CardContent } from "@/components/ui/card"
+import { Users, MousePointerClick, TrendingUp, AlertCircle } from "lucide-react"
+import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultSummaryCard } from "@/app/tools/_shared/components"
+
 export function ConversionCalculator() {
     const [visitors, setVisitors] = useState<number | "">("")
     const [conversions, setConversions] = useState<number | "">("")
+
     const val = (v: number | "") => (v === "" ? 0 : v)
+
     const handleReset = () => {
         setVisitors("")
         setConversions("")
     }
+
     // Calculation
     const visitorsVal = val(visitors)
     const conversionsVal = val(conversions)
+
     let rate = 0
     let isValid = false
-    if (visitorsVal > 0 && conversionsVal >= 0) {
+
+    if (visitorsVal > 0 && conversionsVal >= 0 && conversionsVal <= visitorsVal) {
         rate = (conversionsVal / visitorsVal) * 100
         isValid = true
+    } else if (conversionsVal > visitorsVal && visitorsVal > 0) {
+        // Handle invalid case where conversions > visitors
+        isValid = true
+        rate = (conversionsVal / visitorsVal) * 100
     }
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-3">
-                    <Card className="border border-slate-200 shadow-sm bg-white">
+                <div className="lg:col-span-7 space-y-3 lg:sticky lg:top-8">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden rounded-3xl">
                         <CalculatorCardHeader
+                            title="Traffic & Conversions"
                             description="Enter traffic and conversion data."
                             onReset={handleReset}
                             guideId="conversion-guide"
                         />
-                        <CardContent className="space-y-3 pt-6">
-                            <CalculatorInput
-                                label="Total Visitors (Sessions)"
-                                value={visitors}
-                                onChange={setVisitors}
-                                placeholder="1000"
-                                max={10000000}
-                                tooltip="The total number of unique visitors or sessions."
-                            />
-                            <CalculatorInput
-                                label="Total Conversions"
-                                value={conversions}
-                                onChange={setConversions}
-                                placeholder="50"
-                                max={1000000}
-                                tooltip="The number of visitors who completed the desired action (e.g. purchase, signup)."
-                            />
+                        <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3">
+                            <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        label="Total Visitors (Sessions)"
+                                        value={visitors}
+                                        onChange={setVisitors}
+                                        placeholder="1000"
+                                        max={10000000}
+                                        tooltip="The total number of unique visitors or sessions."
+                                        groupingTitle="Performance Metrics"
+                                        groupingIcon={TrendingUp}
+                                    />
+                                    <CalculatorInput
+                                        label="Total Conversions"
+                                        value={conversions}
+                                        onChange={setConversions}
+                                        placeholder="50"
+                                        max={1000000}
+                                        tooltip="The number of visitors who completed the desired action (e.g. purchase, signup)."
+                                    />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
+
                 {/* Results Section */}
-                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
+                <div className="lg:col-span-5 space-y-3">
+                    <ResultSummaryCard
                         title="Conversion Rate"
-                        mainValue={
-                            <Counter value={rate} formatter={(v) => `${v.toFixed(2)}%`} />
+                        isCalculated={isValid}
+                        liveBadgeText={
+                            rate >= 3 ? "Excellent" : rate >= 1 ? "Average" : "Low"
                         }
-                        valueColor={isValid ? "text-blue-400" : "text-white"}
-                        secondaryMetrics={[
+                        liveBadgeColor={
+                            rate >= 3 ? "emerald" : rate >= 1 ? "amber" : "rose"
+                        }
+                        primaryResult={{
+                            value: rate.toFixed(2),
+                            unit: "%"
+                        }}
+                        secondaryResults={[
                             {
-                                label: "Visitors",
-                                value: <Counter value={visitorsVal} formatter={(v) => v.toLocaleString()} />,
-                                color: "text-slate-300"
+                                key: "visitors",
+                                label: "Total Visitors",
+                                value: visitorsVal.toLocaleString(),
+                                icon: Users,
+                                tooltip: "Total unique visitors or sessions"
                             },
                             {
-                                label: "Conversions",
-                                value: <Counter value={conversionsVal} formatter={(v) => v.toLocaleString()} />,
-                                color: "text-blue-400"
+                                key: "conversions",
+                                label: "Total Conversions",
+                                value: conversionsVal.toLocaleString(),
+                                icon: MousePointerClick,
+                                tooltip: "Total successful conversions"
                             }
                         ]}
+                        emptyMessage="Conversion rate"
+                        description={
+                            rate >= 3
+                                ? "Excellent → Above average conversion" 
+                                : rate >= 1 
+                                    ? "Average → Room for optimization" 
+                                    : "Low → Needs improvement in offer or traffic"
+                        }
                     />
-                    {/* Indicator Badge */}
-                    {isValid && (
-                        <div className={cn(
-                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            rate >= 3 ? "bg-blue-50 border-blue-200 text-blue-700" :
-                                rate >= 1 ? "bg-blue-50 border-blue-200 text-blue-700" :
-                                    "bg-red-50 border-red-200 text-red-700"
-                        )}>
-                            {rate >= 3 ? "🚀 Excellent Conversion Rate" : rate >= 1 ? "✅ Average Conversion Rate" : "⚠️ Low Conversion Rate"}
-                        </div>
-                    )}
-                    {/* Breakdown Card */}
-                    {isValid ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="px-4 py-3 border-b border-slate-100">
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Traffic Breakdown</p>
-                            </div>
-                            <div className="divide-y divide-slate-50">
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Total Visitors</span>
-                                    <span className="text-sm font-medium text-slate-700">{visitorsVal.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-blue-50/50">
-                                    <span className="text-sm text-blue-600 font-medium">Converted Users</span>
-                                    <span className="text-sm font-bold text-blue-600">{conversionsVal.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
-                                    <span className="text-sm text-slate-500">Non-Converted Users</span>
-                                    <span className="text-sm font-medium text-slate-700">{(visitorsVal - conversionsVal).toLocaleString()}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter traffic data to see breakdown.</p>
-                        </div>
-                    )}
-                    {/* Insight Card */}
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
+                     {/* Insight Card */}
+                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mt-4">
                         <TrendingUp className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                         <div>
                             <h4 className="text-sm font-semibold text-emerald-900 mb-1">Benchmarks</h4>
@@ -124,4 +124,4 @@ export function ConversionCalculator() {
             </div>
         </FadeIn>
     )
-}
+}

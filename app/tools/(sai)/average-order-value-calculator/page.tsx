@@ -2,8 +2,10 @@ import { Metadata } from "next"
 import { AOVCalculator } from "./_components/AOVCalculator"
 import { AOVGuide } from "./_components/AOVGuide"
 import { AOVHowToUse } from "./_components/AOVHowToUse"
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { AOVOverview } from "./_components/AOVOverview"
+import { FadeIn, ToolFAQ, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
+import { BookOpen } from "lucide-react"
 export const metadata: Metadata = {
     title: 'Average Order Value (AOV) Calculator | Web Scraper.do',
     description: 'Calculate your Average Order Value (AOV) to understand customer spending habits and improve your pricing strategy.',
@@ -26,6 +28,14 @@ export default function AOVCalculatorPage() {
                     <AOVCalculator />
                 </div>
                 <div className="max-w-5xl mx-auto space-y-16" id="aov-guide">
+                    <FadeIn delay={0.2}>
+                        <ToolSectionHeader
+                            title="Tool Essential"
+                            subtitle="Understand how tracking your Average Order Value helps you grow your store's total revenue with every transaction."
+                            icon={BookOpen}
+                        />
+                        <AOVOverview />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <AOVHowToUse />
                     </FadeIn>
@@ -59,4 +69,4 @@ export default function AOVCalculatorPage() {
             </div>
         </div>
     )
-}
+}

@@ -1,26 +1,28 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
 import { Tag, Truck, Calculator } from "lucide-react"
+
 export function PoshmarkFeeHowToUse() {
     return (
         <ToolSteps
+            title="How to Calculate Your Poshmark Payout"
             steps={[
                 {
-                    title: "Sale Info",
-                    description: "Enter intended catalog retail selling tag plus any deliberate shipping incentives listed.",
+                    title: "Enter Sold Price",
+                    description: "Input the expected selling price for your item. Remember that Poshmark's fee structure changes for items listed under $15.",
                     icon: Tag
                 },
                 {
-                    title: "Sourcing",
-                    description: "Input optional prior original manufacturer wholesale sourcing amount to get net margin.",
+                    title: "Add Shipping Discounts",
+                    description: "If you're offering a shipping discount (e.g., Offer to Likers), enter that amount here to see its impact on your final payout.",
                     icon: Truck
                 },
                 {
-                    title: "Check Cost",
-                    description: "Instantly calculate standard rigid $2.95 cuts or heavy 20% platform value surcharges.",
+                    title: "Input Item Cost",
+                    description: "Add your original purchase price to calculate your true net profit and profit margin, giving you a full picture of your ROI.",
                     icon: Calculator
                 }
             ]}
         />
     )
-}
+}
