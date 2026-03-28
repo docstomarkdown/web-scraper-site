@@ -1,26 +1,27 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Calculator, DollarSign, TrendingUp } from "lucide-react"
+import { DollarSign, Users, BarChart3 } from "lucide-react"
+
 export function CACHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Sales Cost",
-                    description: "Enter specific commissions, outbound tools, and direct sales team pay.",
+                    title: "Enter Your Spend",
+                    description: "Input your total fully loaded sales and marketing costs — including ad spend, salaries, commissions, tools, and overhead for the period.",
                     icon: DollarSign
                 },
                 {
-                    title: "Ad Budgets",
-                    description: "Add total creative marketing spend and promotional expenditures overall.",
-                    icon: Calculator
+                    title: "Add New Customers",
+                    description: "Enter only the number of new customers acquired during that same period. Do not include returning or repeat buyers.",
+                    icon: Users
                 },
                 {
-                    title: "Check Value",
-                    description: "Divide by your overall new signups to verify your true cost per shopper.",
-                    icon: TrendingUp
+                    title: "Review Your CAC",
+                    description: "Instantly see your cost per customer with a dynamic performance badge, and compare it against the recommended 3:1 LTV:CAC benchmark.",
+                    icon: BarChart3
                 }
             ]}
         />
     )
-}
+}

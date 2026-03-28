@@ -15,7 +15,7 @@ interface ToolOverviewProps {
     headingAccent?: string
     definition: ReactNode
     facts: OverviewFact[]
-    accent?: "blue" | "indigo" | "violet"
+    accent?: "blue" | "indigo" | "violet" | "rose" | "emerald" | "amber" | "red"
 }
 
 const accentStyles = {
@@ -44,6 +44,42 @@ const accentStyles = {
         columnDivider: "bg-violet-100/60",
         statColor: "text-violet-600",
         cardBorder: "border-violet-100/50",
+        cardBg: "bg-white/70",
+    },
+    rose: {
+        headingAccent: "text-rose-600",
+        sectionBg: "bg-gradient-to-br from-rose-50/80 via-slate-50/60 to-white",
+        border: "border-rose-100/80",
+        columnDivider: "bg-rose-100/60",
+        statColor: "text-rose-600",
+        cardBorder: "border-rose-100/50",
+        cardBg: "bg-white/70",
+    },
+    red: {
+        headingAccent: "text-red-600",
+        sectionBg: "bg-gradient-to-br from-red-50/80 via-slate-50/60 to-white",
+        border: "border-red-100/80",
+        columnDivider: "bg-red-100/60",
+        statColor: "text-red-600",
+        cardBorder: "border-red-100/50",
+        cardBg: "bg-white/70",
+    },
+    emerald: {
+        headingAccent: "text-emerald-600",
+        sectionBg: "bg-gradient-to-br from-emerald-50/80 via-slate-50/60 to-white",
+        border: "border-emerald-100/80",
+        columnDivider: "bg-emerald-100/60",
+        statColor: "text-emerald-600",
+        cardBorder: "border-emerald-100/50",
+        cardBg: "bg-white/70",
+    },
+    amber: {
+        headingAccent: "text-amber-600",
+        sectionBg: "bg-gradient-to-br from-amber-50/80 via-slate-50/60 to-white",
+        border: "border-amber-100/80",
+        columnDivider: "bg-amber-100/60",
+        statColor: "text-amber-600",
+        cardBorder: "border-amber-100/50",
         cardBg: "bg-white/70",
     },
 }

@@ -6,18 +6,18 @@ export function AOVHowToUse() {
         <ToolSteps
             steps={[
                 {
-                    title: "Gross Revenue",
-                    description: "Enter the combined sales revenue over your chosen reporting window.",
+                    title: "Select Currency",
+                    description: "Start by choosing your preferred local currency from the global dropdown menu located in the card header.",
                     icon: DollarSign
                 },
                 {
-                    title: "Total Orders",
-                    description: "Input the total number of single distinct checkout transactions recorded.",
+                    title: "Input Sales Metrics",
+                    description: "Enter your total gross revenue alongside the exact number of transactions your store recorded during the period.",
                     icon: ShoppingBag
                 },
                 {
-                    title: "Check Value",
-                    description: "Instantly evaluate exactly how much the average consumer spends total.",
+                    title: "Analyze Dashboard",
+                    description: "Instantly review your true Average Order Value, complete with dynamic performance badges and side-by-side metric breakdowns.",
                     icon: Calculator
                 }
             ]}
