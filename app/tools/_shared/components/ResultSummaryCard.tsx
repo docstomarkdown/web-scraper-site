@@ -73,8 +73,97 @@ export function ResultSummaryCard({
     children
 }: ResultSummaryCardProps) {
     const [showResults, setShowResults] = React.useState(isCalculated)
-    const completedCount = checklistItems ? checklistItems.filter(i => i.isComplete).length : 0
-    const totalCount = checklistItems ? checklistItems.length : 0
+    
+    // Dynamic Mandatory Fields Computation
+    const [dynamicStats, setDynamicStats] = React.useState({ completed: 0, total: 0 });
+    const [hasInteracted, setHasInteracted] = React.useState(false);
+
+    React.useEffect(() => {
+        if (typeof document === 'undefined') return;
+        
+        const updateStats = () => {
+            const elements = Array.from(document.querySelectorAll('.calculator-input-row, button, .calculator-input-field'));
+            
+            let currentGroupOptional = false;
+            let total = 0;
+            let completed = 0;
+            const seenInputs = new Set();
+
+            elements.forEach(el => {
+                if (el.classList.contains('calculator-input-row') && el.getAttribute('data-has-title') === 'true') {
+                    currentGroupOptional = el.textContent?.toLowerCase().includes('optional') || false;
+                }
+                else if (el.tagName === 'BUTTON') {
+                    const text = el.textContent?.toLowerCase() || '';
+                    if (text.includes('optional')) {
+                        currentGroupOptional = true;
+                    } else if (text.includes('advanced') && !text.includes('optional')) {
+                        currentGroupOptional = false;
+                    }
+                }
+                else if (el.classList.contains('calculator-input-field') && !seenInputs.has(el)) {
+                    seenInputs.add(el);
+                    const input = el as HTMLInputElement;
+                    const val = input.value.trim();
+                    const row = input.closest('.calculator-input-row');
+                    const labelText = row?.querySelector('label')?.parentElement?.textContent?.toLowerCase() || '';
+                    const isSelfOptional = labelText.includes('optional') || input.dataset.ignoreChecklist === 'true';
+                    
+                    const isMandatory = !currentGroupOptional && !isSelfOptional;
+
+                    if (isMandatory) {
+                        total++;
+                        if (val !== "") {
+                            completed++;
+                        }
+                    }
+                }
+            });
+
+            setDynamicStats(prev => (prev.completed === completed && prev.total === total) ? prev : { completed, total });
+        };
+
+        updateStats();
+
+        const handleInput = (e: Event) => {
+            if ((e.target as HTMLElement).classList.contains('calculator-input-field')) {
+                setHasInteracted(true);
+                setTimeout(updateStats, 10);
+            }
+        };
+        
+        const handleClick = (e: Event) => {
+            const btn = (e.target as HTMLElement).closest('button');
+            if (btn && btn.textContent?.toLowerCase().includes('reset')) {
+                setHasInteracted(false);
+            }
+            setTimeout(updateStats, 50); 
+            setTimeout(updateStats, 200);
+        };
+
+        document.addEventListener('input', handleInput);
+        document.addEventListener('click', handleClick);
+        const interval = setInterval(updateStats, 1000);
+
+        return () => {
+            document.removeEventListener('input', handleInput);
+            document.removeEventListener('click', handleClick);
+            clearInterval(interval);
+        };
+    }, []);
+
+    let completedCount = dynamicStats.completed;
+    let totalCount = dynamicStats.total;
+
+    // Fallback
+    if (totalCount === 0 && checklistItems) {
+        totalCount = checklistItems.length;
+        completedCount = checklistItems.filter(i => i.isComplete).length;
+    }
+
+    if (!hasInteracted && completedCount < totalCount) {
+        completedCount = 0;
+    }
 
     React.useEffect(() => {
         if (isCalculated) {

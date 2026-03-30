@@ -1,26 +1,26 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Tag, Truck, Percent } from "lucide-react"
+import { Tag, Percent, TrendingUp } from "lucide-react"
 export function EbayFeeHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "List Price",
-                    description: "Enter target selling cost, requested shipping fees, and your active store tier.",
+                    title: "Enter Sale Details",
+                    description: "Input the item's selling price, the shipping amount charged to the buyer, and your product sourcing cost.",
                     icon: Tag
                 },
                 {
-                    title: "Set Category",
-                    description: "Select accurate item class taxonomy for the correct final value constraints.",
-                    icon: Truck
+                    title: "Add Platform Fees",
+                    description: "Include the standard Final Value Fee rate, per-order fee, and any Promoted Listings percentage you plan to use.",
+                    icon: Percent
                 },
                 {
-                    title: "Check Profit",
-                    description: "Instantly evaluate overall explicit eBay markdowns and your net money kept.",
-                    icon: Percent
+                    title: "Analyze Profitability",
+                    description: "Instantly view a breakdown of all marketplace deductions to reveal your exact net earnings and true profit margin.",
+                    icon: TrendingUp
                 }
             ]}
         />
     )
-}
+}

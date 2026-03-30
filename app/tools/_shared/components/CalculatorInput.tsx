@@ -29,6 +29,7 @@ export interface CalculatorInputProps {
     benchmarkBadge?: boolean
     hideSeparator?: boolean
     isOptional?: boolean
+    ignoreChecklist?: boolean
     isCurrency?: boolean
     groupingAction?: React.ReactNode
     rowAction?: React.ReactNode
@@ -56,6 +57,7 @@ export function CalculatorInput({
     benchmarkBadge = false,
     hideSeparator = false,
     isOptional = false,
+    ignoreChecklist = false,
     isCurrency = false,
     groupingAction,
     rowAction
@@ -305,6 +307,7 @@ export function CalculatorInput({
                                             finalPrefix && "pl-10",
                                             finalSuffix && "pr-10"
                                         )}
+                                        data-ignore-checklist={ignoreChecklist}
                                         min={String(type) === "number" ? min : undefined}
                                         max={String(type) === "number" ? max : undefined}
                                         step={String(type) === "number" ? step : undefined}
