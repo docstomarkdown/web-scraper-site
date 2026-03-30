@@ -1,70 +1,67 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Package, Scale, Info, Box, Truck } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Box, Scale, Truck, DollarSign } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultSummaryCard } from "@/app/tools/_shared/components"
+
 export function FBARemovalCalculator() {
-    // State
-    const [unitWeight, setUnitWeight] = useState<number | "">("")
+    const [currency, setCurrency] = useState("USD")
+
+    // Dimension Inputs
     const [length, setLength] = useState<number | "">("")
     const [width, setWidth] = useState<number | "">("")
     const [height, setHeight] = useState<number | "">("")
+
+    // Weight & Quantity
+    const [unitWeight, setUnitWeight] = useState<number | "">("")
     const [quantity, setQuantity] = useState<number | "">("")
-    const [currency, setCurrency] = useState("USD")
-    // Derived State
+
+    // Results
     const [sizeTier, setSizeTier] = useState<"Standard" | "Large/Bulky" | null>(null)
-    const [shippingWeight, setShippingWeight] = useState<number>(0)
-    const [removalFeePerUnit, setRemovalFeePerUnit] = useState<number>(0)
-    const [totalCost, setTotalCost] = useState<number>(0)
+    const [shippingWeight, setShippingWeight] = useState(0)
+    const [removalFeePerUnit, setRemovalFeePerUnit] = useState(0)
+    const [totalCost, setTotalCost] = useState(0)
+
     const handleReset = () => {
-        setUnitWeight("")
         setLength("")
         setWidth("")
         setHeight("")
+        setUnitWeight("")
         setQuantity("")
+        setSizeTier(null)
+        setShippingWeight(0)
+        setRemovalFeePerUnit(0)
+        setTotalCost(0)
     }
-    // Get currency symbol
-    const currencySymbol = currencies.find(c => c.code === currency)?.symbol || "$"
-    // specific 2025 fee logic
+
     useEffect(() => {
         const w = Number(unitWeight) || 0
         const l = Number(length) || 0
         const wi = Number(width) || 0
         const h = Number(height) || 0
         const q = Number(quantity) || 0
+
         if (w === 0 || l === 0 || wi === 0 || h === 0) {
             setTotalCost(0)
             setRemovalFeePerUnit(0)
             setSizeTier(null)
+            setShippingWeight(0)
             return
         }
-        // 1. Determine Size Tier
-        // Standard: <= 18 x 14 x 8 inches AND <= 20 lbs
+
         const isStandardDims = l <= 18 && wi <= 14 && h <= 8
         const isStandardWeight = w <= 20
         const isStandard = isStandardDims && isStandardWeight
         const specificTier = isStandard ? "Standard" : "Large/Bulky"
         setSizeTier(specificTier)
-        // 2. Calculate Dimensional Weight (Divisor 139)
+
         const dimWeight = (l * wi * h) / 139
-        // 3. Determine Shipping Weight
-        // For Standard: Unit weight only? No, usually greater of unit or dim weight for fees, 
-        // BUT for removal fees specifically, the rate card uses "Shipping Weight".
-        // Use greater of unit or dim weight.
         const shipW = Math.max(w, dimWeight)
         setShippingWeight(shipW)
-        // 4. Calculate Fee based on 2025 Rate Card
+
         let fee = 0
         if (isStandard) {
-            // Standard Size Tiers (Weight in lb ranges)
-            // Rate card: 
-            // 0-0.5 lb: $1.04
-            // 0.5-1.0 lb: $1.53
-            // 1.0-2.0 lb: $2.27
-            // > 2 lb: $2.89 + $1.06/lb above 2lb
             if (shipW <= 0.5) fee = 1.04
             else if (shipW <= 1.0) fee = 1.53
             else if (shipW <= 2.0) fee = 2.27
@@ -74,13 +71,6 @@ export function FBARemovalCalculator() {
                 fee = 2.89 + (additionalLbs * 1.06)
             }
         } else {
-            // Large Bulky / Extra Large
-            // 0-1 lb: $3.12
-            // 1-2 lb: $4.30
-            // 2-4 lb: $6.36
-            // 4-10 lb: $10.04
-            // > 10 lb: $14.32 + $1.06/lb above 10 lb
-            // "For these size tiers, shipping weight is rounded up to the nearest whole pound"
             const roundedShipW = Math.ceil(shipW)
             if (roundedShipW <= 1) fee = 3.12
             else if (roundedShipW <= 2) fee = 4.30
@@ -91,175 +81,209 @@ export function FBARemovalCalculator() {
                 fee = 14.32 + (additionalLbs * 1.06)
             }
         }
+
         setRemovalFeePerUnit(fee)
         setTotalCost(fee * q)
     }, [unitWeight, length, width, height, quantity])
+
+    const isValid = length !== "" && width !== "" && height !== "" && unitWeight !== "" && quantity !== ""
+
     return (
-        <div className="w-full max-w-6xl mx-auto space-y-8">
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="space-y-1">
-                    <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                        Removal Order Cost Calculator
-                    </h2>
-                </div>
-            </div>
+        <FadeIn className="w-full max-w-6xl mx-auto py-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Left Column: Inputs */}
-                <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CalculatorCardHeader
-                        description="Enter your details."
-                        onReset={handleReset}
-                        currency={currency}
-                        onCurrencyChange={setCurrency}
-                    />
-                    <CardContent className="p-6 md:p-8 space-y-8">
-                        {/* Dimensional Data */}
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Box className="w-4 h-4 text-slate-400" />
-                                    Dimensions (Inches)
-                                </label>
-                            </div>
-                            <div className="grid grid-cols-1 gap-4">
-                                <CalculatorInput
-                                    label="Length"
-                                    value={length}
-                                    onChange={setLength}
-                                    placeholder="10"
-                                />
-                                <CalculatorInput
-                                    label="Width"
-                                    value={width}
-                                    onChange={setWidth}
-                                    placeholder="8"
-                                />
-                                <CalculatorInput
-                                    label="Height"
-                                    value={height}
-                                    onChange={setHeight}
-                                    placeholder="6"
-                                />
-                            </div>
-                        </div>
-                        <Separator className="bg-slate-100" />
-                        {/* Weight & Quantity */}
-                        <div className="grid grid-cols-1 gap-4">
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Scale className="w-4 h-4 text-slate-400" />
-                                    Unit Weight
-                                </label>
-                                <CalculatorInput
-                                    label="Weight (lbs)"
-                                    value={unitWeight}
-                                    onChange={setUnitWeight}
-                                    placeholder="0.5"
-                                    tooltip="The actual weight of a single unit."
-                                />
-                            </div>
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Truck className="w-4 h-4 text-slate-400" />
-                                    Removal Quantity
-                                </label>
-                                <CalculatorInput
-                                    label="Total Units"
-                                    value={quantity}
-                                    onChange={setQuantity}
-                                    placeholder="100"
-                                    tooltip="How many units to remove?"
-                                />
-                            </div>
-                        </div>
-                        {/* Size Tier Alert */}
-                        {Boolean(sizeTier) && (
-                            <FadeIn>
-                                <div className={cn(
-                                    "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
-                                    sizeTier === "Standard"
-                                        ? "bg-emerald-50/50 border-emerald-100"
-                                        : "bg-amber-50/50 border-amber-100"
-                                )}>
-                                    <div className={cn(
-                                        "p-2 rounded-lg bg-white shadow-sm ring-1",
-                                        sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
-                                    )}>
-                                        <Box className="w-4 h-4" />
-                                    </div>
-                                    <div>
-                                        <p className={cn(
-                                            "text-sm font-semibold",
-                                            sizeTier === "Standard" ? "text-emerald-900" : "text-amber-900"
-                                        )}>
-                                            {sizeTier} Size Tier Detected
-                                        </p>
-                                        <p className={cn(
-                                            "text-xs mt-0.5",
-                                            sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
-                                        )}>
-                                            Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
-                                        </p>
-                                    </div>
+                {/* Left: Inputs */}
+                <div className="lg:col-span-7 space-y-3">
+                    <Card className="border border-slate-200 shadow-sm bg-white">
+                        <CalculatorCardHeader
+                            title="Product Dimensions & Quantity"
+                            description="Enter dimensions (inches), unit weight (lbs), and quantity to estimate removal costs."
+                            onReset={handleReset}
+                            guideId="fba-removal-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
+                        <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3 flex flex-col">
+                            <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                {/* Dimensions */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        hideSeparator={true}
+                                        groupingTitle="Dimensions"
+                                        groupingIcon={Box}
+                                        label="Length"
+                                        value={length}
+                                        onChange={setLength}
+                                        placeholder="10"
+                                        suffix="in"
+                                        step={0.1}
+                                        min={0}
+                                        max={10000}
+                                        tooltip="The longest side of your packaged product in inches."
+                                        autoFocus
+                                    />
+                                    <CalculatorInput
+                                        label="Width"
+                                        value={width}
+                                        onChange={setWidth}
+                                        placeholder="8"
+                                        suffix="in"
+                                        step={0.1}
+                                        min={0}
+                                        max={10000}
+                                        tooltip="The second-longest side of your packaged product in inches."
+                                    />
+                                    <CalculatorInput
+                                        label="Height"
+                                        value={height}
+                                        onChange={setHeight}
+                                        placeholder="6"
+                                        suffix="in"
+                                        step={0.1}
+                                        min={0}
+                                        max={10000}
+                                        tooltip="The shortest side of your packaged product in inches."
+                                    />
                                 </div>
-                            </FadeIn>
-                        )}
-                    </CardContent>
-                </Card>
-                {/* Right Column: Results */}
+
+                                {/* Weight & Quantity */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        groupingTitle="Weight & Quantity"
+                                        groupingIcon={Scale}
+                                        label="Unit Weight"
+                                        value={unitWeight}
+                                        onChange={setUnitWeight}
+                                        placeholder="0.5"
+                                        suffix="lbs"
+                                        step={0.01}
+                                        min={0}
+                                        max={1000}
+                                        tooltip="The physical weight of a single unit in pounds. Amazon uses the greater of actual or dimensional weight for billing."
+                                    />
+                                    <CalculatorInput
+                                        label="Removal Quantity"
+                                        value={quantity}
+                                        onChange={setQuantity}
+                                        placeholder="100"
+                                        suffix="units"
+                                        step={1}
+                                        min={1}
+                                        max={1000000}
+                                        tooltip="The total number of units you want to remove or dispose from Amazon's fulfillment centers."
+                                    />
+                                </div>
+
+                                {/* Size Tier Alert */}
+                                {Boolean(sizeTier) && (
+                                    <FadeIn>
+                                        <div className={cn(
+                                            "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
+                                            sizeTier === "Standard"
+                                                ? "bg-emerald-50/60 border-emerald-100"
+                                                : "bg-amber-50/60 border-amber-100"
+                                        )}>
+                                            <div className={cn(
+                                                "p-2 rounded-lg bg-white shadow-sm ring-1 shrink-0",
+                                                sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
+                                            )}>
+                                                <Box className="w-4 h-4" />
+                                            </div>
+                                            <div>
+                                                <p className={cn(
+                                                    "text-sm font-semibold",
+                                                    sizeTier === "Standard" ? "text-emerald-900" : "text-amber-900"
+                                                )}>
+                                                    {sizeTier} Size Tier Detected
+                                                </p>
+                                                <p className={cn(
+                                                    "text-xs mt-0.5",
+                                                    sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
+                                                )}>
+                                                    Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight.toFixed(2)} lbs shipping weight.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </FadeIn>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Right: Results */}
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="Estimated Removal Cost"
-                        titleLabel="Total Fees"
-                        mainValue={<Counter value={totalCost} prefix={currencySymbol} />}
-                        valueColor="text-slate-100"
-                        secondaryMetrics={[
+                    <ResultSummaryCard
+                        isCalculated={isValid}
+                        currency={currency}
+                        emptyMessage="removal order cost"
+                        liveBadgeText={
+                            isValid
+                                ? sizeTier === "Standard" ? "Standard Size"
+                                : "Large/Bulky"
+                                : "Draft"
+                        }
+                        liveBadgeColor={
+                            isValid
+                                ? sizeTier === "Standard" ? "emerald"
+                                : "amber"
+                                : "slate"
+                        }
+                        dynamicMessages={{
+                            positive: `Your total removal order is estimated at ${new Intl.NumberFormat("en-US", { style: "currency", currency }).format(totalCost)}.`,
+                            negative: `Your total removal order is estimated at ${new Intl.NumberFormat("en-US", { style: "currency", currency }).format(totalCost)}.`,
+                            neutral: `Your total removal order is estimated at ${new Intl.NumberFormat("en-US", { style: "currency", currency }).format(totalCost)}.`
+                        }}
+                        primaryResult={{
+                            value: totalCost,
+                            label: "Total Removal Cost",
+                            isCurrency: true,
+                            key: "totalCost"
+                        }}
+                        secondaryResults={[
                             {
+                                key: "perUnit",
                                 label: "Fee Per Unit",
-                                value: <Counter value={removalFeePerUnit} prefix={currencySymbol} />,
+                                value: removalFeePerUnit,
+                                isCurrency: true,
+                                icon: DollarSign,
+                                tooltip: "The per-unit removal fee Amazon charges based on your product's size tier and shipping weight."
                             },
                             {
+                                key: "billingWeight",
                                 label: "Billing Weight",
-                                value: `${shippingWeight.toFixed(2)} lbs`,
+                                value: shippingWeight > 0 ? `${(shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight).toFixed(2)} lbs` : "0 lbs",
+                                icon: Scale,
+                                tooltip: "The greater of your unit's actual weight or dimensional weight. This is what Amazon uses to calculate the fee."
+                            },
+                            {
+                                key: "sizeTierResult",
+                                label: "Size Tier",
+                                value: sizeTier ?? "—",
+                                icon: Truck,
+                                tooltip: "Standard items must be ≤18×14×8 in and ≤20 lbs. Everything else is Large/Bulky."
                             }
                         ]}
+                        checklistItems={[
+                            { key: "len", label: "Length", isComplete: length !== "" },
+                            { key: "wid", label: "Width", isComplete: width !== "" },
+                            { key: "hei", label: "Height", isComplete: height !== "" },
+                            { key: "wgt", label: "Unit Weight", isComplete: unitWeight !== "" },
+                            { key: "qty", label: "Quantity", isComplete: quantity !== "" },
+                        ]}
                     >
-                        <div className="flex justify-between items-center py-2 border-t border-slate-100 mt-2">
+                    </ResultSummaryCard>
+
+                    {/* Rate Card Badge */}
+                    {isValid && (
+                        <div className="bg-white border border-slate-200 rounded-xl px-5 py-3 flex items-center justify-between shadow-sm">
                             <span className="text-sm text-slate-500 font-medium">Rate Card Year</span>
-                            <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-100">
+                            <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
                                 2025 Rates
-                            </Badge>
-                        </div>
-                    </ResultFeedbackCard>
-                    {/* Breakdown Card */}
-                    {totalCost > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
-                            <div className="px-5 py-3.5 border-b border-slate-100">
-                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
-                            </div>
-                            <div className="divide-y divide-slate-100">
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Per-Unit Fee</span>
-                                    <span className="text-sm font-semibold text-slate-800">{currencySymbol}{removalFeePerUnit.toFixed(2)}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Quantity</span>
-                                    <span className="text-sm font-semibold text-slate-800">{Number(quantity).toLocaleString()} units</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                    <span className="text-sm font-bold text-slate-900">Total Removal Cost</span>
-                                    <span className="text-base font-bold text-emerald-600">{currencySymbol}{totalCost.toFixed(2)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter details to calculate removal cost.</p>
+                            </span>
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </FadeIn>
     )
-}
+}

@@ -1,186 +1,336 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { ShoppingBag, Truck, CreditCard, Tag, DollarSign, Package } from "lucide-react"
-import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tag, DollarSign, Percent, Package } from "lucide-react"
+import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultSummaryCard } from "@/app/tools/_shared/components"
+import { PODProfitBreakdown } from "./PODProfitBreakdown"
+
 export function PODProfitCalculator() {
     const [currency, setCurrency] = useState("USD")
+    
     // Revenue Inputs
-    const [sellingPrice, setSellingPrice] = useState<number | "">("")
-    const [shippingCharge, setShippingCharge] = useState<number | "">("")
+    const [itemPrice, setItemPrice] = useState<number | "">("")
+    const [shippingCharged, setShippingCharged] = useState<number | "">("")
+    
     // Cost Inputs
-    const [baseCost, setBaseCost] = useState<number | "">("") // Product + Print
-    const [shippingCost, setShippingCost] = useState<number | "">("") // What provider charges
-    const [platformFeePercent, setPlatformFeePercent] = useState<number | "">("") // e.g. Etsy 6.5%
-    const [transactionFeePercent, setTransactionFeePercent] = useState<number | "">("") // e.g. Stripe 2.9%
-    const [transactionFeeFixed, setTransactionFeeFixed] = useState<number | "">("") // e.g. $0.30
-    const currencySymbol = currencies.find(c => c.code === currency)?.symbol || "$"
+    const [productCost, setProductCost] = useState<number | "">("") 
+    const [shippingCost, setShippingCost] = useState<number | "">("") 
+    
+    // Fees
+    const [transactionFeePercent, setTransactionFeePercent] = useState<number | "">("")
+    const [paymentProcessingPercent, setPaymentProcessingPercent] = useState<number | "">("")
+    const [fixedProcessingFee, setFixedProcessingFee] = useState<number | "">("")
+    const [platformFeePercent, setPlatformFeePercent] = useState<number | "">("")
+    const [offsiteAdsPercent, setOffsiteAdsPercent] = useState<number | "">("")
+
+    useEffect(() => {
+        if (transactionFeePercent === "") setTransactionFeePercent(6.5)
+        if (paymentProcessingPercent === "") setPaymentProcessingPercent(3)
+        if (fixedProcessingFee === "") setFixedProcessingFee(0.25)
+    }, [])
+
+    const handleReset = () => {
+        setItemPrice("")
+        setShippingCharged("")
+        setProductCost("")
+        setShippingCost("")
+        setTransactionFeePercent(6.5)
+        setPaymentProcessingPercent(3)
+        setFixedProcessingFee(0.25)
+        setPlatformFeePercent("")
+        setOffsiteAdsPercent("")
+    }
+
     // Results
     const [totalRevenue, setTotalRevenue] = useState(0)
     const [totalCosts, setTotalCosts] = useState(0)
+    const [totalFees, setTotalFees] = useState(0)
     const [netProfit, setNetProfit] = useState(0)
     const [margin, setMargin] = useState(0)
+    
+    // Amounts for breakdown
+    const [platformAmount, setPlatformAmount] = useState(0)
+    const [transactionAmount, setTransactionAmount] = useState(0)
+    const [paymentProcAmount, setPaymentProcAmount] = useState(0)
+    const [offsiteAdAmount, setOffsiteAdAmount] = useState(0)
+
     useEffect(() => {
-        const price = Number(sellingPrice) || 0
-        const charge = Number(shippingCharge) || 0
-        const cost = Number(baseCost) || 0
-        const shipCost = Number(shippingCost) || 0
-        const pFeePct = Number(platformFeePercent) || 0
+        const price = Number(itemPrice) || 0
+        const charge = Number(shippingCharged) || 0
+        const pCost = Number(productCost) || 0
+        const sCost = Number(shippingCost) || 0
+        
         const tFeePct = Number(transactionFeePercent) || 0
-        const tFeeFixed = Number(transactionFeeFixed) || 0
-        // 1. Total Revenue
+        const ppFeePct = Number(paymentProcessingPercent) || 0
+        const fixFee = Number(fixedProcessingFee) >= 0 && fixedProcessingFee !== "" ? Number(fixedProcessingFee) : 0
+        const pFeePct = Number(platformFeePercent) || 0
+        const adsPct = Number(offsiteAdsPercent) || 0
+
         const revenue = price + charge
-        // 2. Fees
-        // Platform fees usually apply to total revenue (price + shipping)
+
+        if (revenue === 0) {
+            setTotalRevenue(0)
+            setTotalCosts(0)
+            setTotalFees(0)
+            setNetProfit(0)
+            setMargin(0)
+            setPlatformAmount(0)
+            setTransactionAmount(0)
+            setPaymentProcAmount(0)
+            setOffsiteAdAmount(0)
+            return
+        }
+
         const platformFees = revenue * (pFeePct / 100)
-        // Transaction fees usually apply to total revenue
-        const transactionFees = (revenue * (tFeePct / 100)) + tFeeFixed
-        const totalFees = platformFees + transactionFees
-        // 3. Total Costs
-        const allCosts = cost + shipCost + totalFees
-        // 4. Net Profit
+        const transFee = revenue * (tFeePct / 100)
+        const paymentProc = (revenue * (ppFeePct / 100)) + fixFee
+        const transactionTotal = transFee + paymentProc
+        const offsiteAds = revenue * (adsPct / 100)
+        
+        const sumFees = platformFees + transactionTotal + offsiteAds
+        const allCosts = pCost + sCost + sumFees
         const profit = revenue - allCosts
-        // 5. Margin
-        const calcMargin = revenue > 0 ? (profit / revenue) * 100 : 0
+        const calcMargin = (profit / revenue) * 100
+
         setTotalRevenue(revenue)
         setTotalCosts(allCosts)
+        setTotalFees(sumFees)
         setNetProfit(profit)
         setMargin(calcMargin)
-    }, [sellingPrice, shippingCharge, baseCost, shippingCost, platformFeePercent, transactionFeePercent, transactionFeeFixed])
+        setPlatformAmount(platformFees)
+        setTransactionAmount(transFee)
+        setPaymentProcAmount(paymentProc)
+        setOffsiteAdAmount(offsiteAds)
+    }, [itemPrice, shippingCharged, productCost, shippingCost, transactionFeePercent, paymentProcessingPercent, fixedProcessingFee, platformFeePercent, offsiteAdsPercent])
+
+    const isValid = itemPrice !== "" && productCost !== "" && shippingCost !== "" && transactionFeePercent !== "" && paymentProcessingPercent !== "" && shippingCharged !== ""
+
     return (
-        <FadeIn className="w-full max-w-6xl mx-auto space-y-8">
+        <FadeIn className="w-full max-w-6xl mx-auto py-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Inputs */}
-                <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CalculatorCardHeader
-                        description="Enter your sales and production details."
-                        onReset={() => { setSellingPrice(""); setShippingCharge(""); setBaseCost(""); setShippingCost(""); setPlatformFeePercent(""); setTransactionFeePercent(""); setTransactionFeeFixed(""); }}
-                        currency={currency}
-                        onCurrencyChange={setCurrency}
-                    />
-                    <CardContent className="p-6 md:p-8 space-y-8">
-                        {/* Revenue Section */}
-                        <div className="space-y-3">
-                            <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                <Tag className="w-4 h-4 text-slate-400" />
-                                Revenue
-                            </h3>
-                            <div className="grid grid-cols-1 gap-4">
-                                <CalculatorInput
-                                    label={`Selling Price (${currencySymbol})`}
-                                    value={sellingPrice}
-                                    onChange={setSellingPrice}
-                                    placeholder="25.00"
-                                />
-                                <CalculatorInput
-                                    label={`Shipping Charge (${currencySymbol})`}
-                                    value={shippingCharge}
-                                    onChange={setShippingCharge}
-                                    placeholder="5.00"
-                                    tooltip="What you charge the customer for shipping."
-                                />
+                <div className="lg:col-span-7 space-y-3">
+                    <Card className="border border-slate-200 shadow-sm bg-white">
+                        <CalculatorCardHeader
+                            title="Product & Fee Details"
+                            description="Enter your POD product costs, sale price, and platform fees."
+                            onReset={handleReset}
+                            guideId="pod-profit-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
+
+                        <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3 flex flex-col">
+                            <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                {/* Revenue */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        hideSeparator={true}
+                                        groupingTitle="Revenue"
+                                        groupingIcon={Tag}
+                                        label="Item Price"
+                                        value={itemPrice}
+                                        onChange={setItemPrice}
+                                        placeholder="25.00"
+                                        max={100000}
+                                        step={0.01}
+                                        tooltip="Your product's final selling price."
+                                        isCurrency
+                                        currency={currency}
+                                        autoFocus
+                                    />
+                                    <CalculatorInput
+                                        label="Shipping Charged to Customer"
+                                        value={shippingCharged}
+                                        onChange={setShippingCharged}
+                                        placeholder="5.00"
+                                        max={100000}
+                                        step={0.01}
+                                        tooltip="What the customer pays you for shipping."
+                                        isCurrency
+                                        currency={currency}
+                                    />
+                                </div>
+
+                                {/* Costs */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        groupingTitle="Costs"
+                                        groupingIcon={Package}
+                                        label="Product Cost"
+                                        value={productCost}
+                                        onChange={setProductCost}
+                                        placeholder="10.00"
+                                        max={100000}
+                                        step={0.01}
+                                        tooltip="The base cost to manufacture or print the product."
+                                        isCurrency
+                                        currency={currency}
+                                    />
+                                    <CalculatorInput
+                                        label="Shipping Cost"
+                                        value={shippingCost}
+                                        onChange={setShippingCost}
+                                        placeholder="4.50"
+                                        max={100000}
+                                        step={0.01}
+                                        tooltip="What your POD supplier charges you to ship the item."
+                                        isCurrency
+                                        currency={currency}
+                                    />
+                                </div>
+
+                                {/* Fees */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        groupingTitle="Fees"
+                                        groupingIcon={Percent}
+                                        label="Transaction Fee"
+                                        value={transactionFeePercent}
+                                        onChange={setTransactionFeePercent}
+                                        placeholder="6.5"
+                                        suffix="%"
+                                        step={0.1}
+                                        min={0}
+                                        max={100}
+                                        tooltip="Fee applied per transaction, common on Etsy (6.5%) or similar marketplace."
+                                        hint={transactionFeePercent === 6.5 ? "Default Etsy transaction fee applied." : undefined}
+                                        ignoreChecklist={true}
+                                    />
+                                    <CalculatorInput
+                                        label="Payment Processing"
+                                        value={paymentProcessingPercent}
+                                        onChange={setPaymentProcessingPercent}
+                                        placeholder="3"
+                                        suffix="%"
+                                        step={0.1}
+                                        min={0}
+                                        max={100}
+                                        tooltip="A percentage taken by the payment processor (like Stripe/PayPal)."
+                                        hint={paymentProcessingPercent === 3 ? "Standard industry default applied." : undefined}
+                                        ignoreChecklist={true}
+                                    />
+                                    <CalculatorInput
+                                        label="Fixed Processing Fee"
+                                        value={fixedProcessingFee}
+                                        onChange={setFixedProcessingFee}
+                                        placeholder="0.25"
+                                        step={0.01}
+                                        min={0}
+                                        max={1000}
+                                        tooltip="A flat fee commonly charged per transaction by payment processors."
+                                        isCurrency
+                                        currency={currency}
+                                        isOptional
+                                        hint={fixedProcessingFee === 0.25 ? "Etsy typically charges $0.25 or Stripe $0.30 fixed fee." : undefined}
+                                    />
+                                    <CalculatorInput
+                                        label="Platform Fee"
+                                        value={platformFeePercent}
+                                        onChange={setPlatformFeePercent}
+                                        placeholder="0"
+                                        suffix="%"
+                                        step={0.1}
+                                        min={0}
+                                        max={100}
+                                        tooltip="Any extra listing, final value, or generic platform fee not already covered."
+                                        isOptional
+                                    />
+                                    <CalculatorInput
+                                        label="Offsite Ads"
+                                        value={offsiteAdsPercent}
+                                        onChange={setOffsiteAdsPercent}
+                                        placeholder="0"
+                                        suffix="%"
+                                        step={0.1}
+                                        min={0}
+                                        max={100}
+                                        tooltip="Etsy or other platform fees for sales generated through their offsite ads program (often 12-15%)."
+                                        isOptional
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        {/* Cost Section */}
-                        <div className="space-y-3">
-                            <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                <Package className="w-4 h-4 text-slate-400" />
-                                Base Costs
-                            </h3>
-                            <div className="grid grid-cols-1 gap-4">
-                                <CalculatorInput
-                                    label={`Product Cost (${currencySymbol})`}
-                                    value={baseCost}
-                                    onChange={setBaseCost}
-                                    placeholder="10.00"
-                                    tooltip="Base cost from provider (e.g. Printful) including printing."
-                                />
-                                <CalculatorInput
-                                    label={`Shipping Cost (${currencySymbol})`}
-                                    value={shippingCost}
-                                    onChange={setShippingCost}
-                                    placeholder="4.50"
-                                    tooltip="What the provider charges YOU for shipping."
-                                />
-                            </div>
-                        </div>
-                        {/* Fees Section */}
-                        <div className="space-y-3">
-                            <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                <CreditCard className="w-4 h-4 text-slate-400" />
-                                Platform Fees
-                            </h3>
-                            <div className="grid grid-cols-1 gap-4">
-                                <CalculatorInput
-                                    label="Platform Fee (%)"
-                                    value={platformFeePercent}
-                                    onChange={setPlatformFeePercent}
-                                    placeholder="5" // Etsy is 6.5% now, 5% is generic
-                                    tooltip="Fee charged by the marketplace (e.g. Etsy, eBay)."
-                                />
-                                <CalculatorInput
-                                    label="Trans. Fee (%)"
-                                    value={transactionFeePercent}
-                                    onChange={setTransactionFeePercent}
-                                    placeholder="2.9"
-                                />
-                                <CalculatorInput
-                                    label={`Fixed Fee (${currencySymbol})`}
-                                    value={transactionFeeFixed}
-                                    onChange={setTransactionFeeFixed}
-                                    placeholder="0.30"
-                                />
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-                {/* Results */}
+                        </CardContent>
+                    </Card>
+                </div>
+
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="Net Profit"
-                        titleLabel="Total Earnings"
-                        mainValue={<Counter value={netProfit} prefix={currencySymbol} />}
-                        valueColor={netProfit >= 0 ? "text-slate-100" : "text-rose-400"}
-                        secondaryMetrics={[
+                    <ResultSummaryCard
+                        isCalculated={isValid}
+                        currency={currency}
+                        emptyMessage="POD profit"
+                        profitLossKey="netProfit"
+                        liveBadgeText={
+                            isValid
+                                ? netProfit > 0 ? "Profitable"
+                                : netProfit === 0 ? "Break Even"
+                                : "Unprofitable"
+                                : "Draft"
+                        }
+                        liveBadgeColor={
+                            isValid
+                                ? netProfit > 0 ? "emerald"
+                                : netProfit === 0 ? "amber"
+                                : "rose"
+                                : "slate"
+                        }
+                        dynamicMessages={{
+                            positive: `You keep ${margin.toFixed(1)}% of total revenue as net profit.`,
+                            negative: `Your POD costs and fees exceed your total revenue.`,
+                            neutral: "You broke even. Your revenues match your costs exactly."
+                        }}
+                        primaryResult={{
+                            value: netProfit,
+                            label: "Net Profit (You Earn)",
+                            isCurrency: true,
+                            key: "netProfit"
+                        }}
+                        secondaryResults={[
                             {
+                                key: "margin",
                                 label: "Profit Margin",
-                                value: <Counter value={margin} formatter={(v) => `${v.toFixed(1)}%`} />,
-                                color: margin >= 15 ? "text-emerald-500 font-bold" : (margin > 0 ? "text-emerald-500 font-bold" : "text-rose-400")
+                                value: margin.toFixed(1),
+                                unit: "%",
+                                icon: Percent,
+                                tooltip: "Your net profit represented as a percentage of your total gross revenue."
                             },
                             {
-                                label: "Total Revenue",
-                                value: <Counter value={totalRevenue} prefix={currencySymbol} />,
+                                key: "totalCosts",
+                                label: "Total Costs",
+                                value: totalCosts,
+                                isCurrency: true,
+                                icon: DollarSign,
+                                tooltip: "The combined cost of manufacturing the item and your supplier's shipping fee."
+                            },
+                            {
+                                key: "totalFees",
+                                label: "Total Fees",
+                                value: totalFees,
+                                isCurrency: true,
+                                icon: DollarSign,
+                                tooltip: "The sum of transaction, processing, and all optional platform fees."
                             }
                         ]}
-                    />
-                    {/* Breakdown */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-indigo-500">
-                        <div className="px-5 py-3.5 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
-                        </div>
-                        <div className="divide-y divide-slate-100">
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Base Cost</span>
-                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(baseCost).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Shipping Cost</span>
-                                <span className="text-sm font-semibold text-slate-800">{currencySymbol}{Number(shippingCost).toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5">
-                                <span className="text-sm text-slate-600">Total Fees</span>
-                                <span className="text-sm font-semibold text-red-600">
-                                    {currencySymbol}{(Number(totalCosts) - Number(baseCost) - Number(shippingCost)).toFixed(2)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-indigo-50/20">
-                                <span className="text-sm font-bold text-slate-900">Total Costs</span>
-                                <span className="text-base font-bold text-indigo-900">
-                                    {currencySymbol}{totalCosts.toFixed(2)}
-                                </span>
-                            </div>
-                        </div>
+                        checklistItems={[
+                            { key: "item", label: "Item Price", isComplete: itemPrice !== "" },
+                            { key: "shipchg", label: "Shipping Charge", isComplete: shippingCharged !== "" },
+                            { key: "pcost", label: "Product Cost", isComplete: productCost !== "" },
+                            { key: "scost", label: "Shipping Cost", isComplete: shippingCost !== "" }
+                        ]}
+                    >
+                    </ResultSummaryCard>
+                    
+                    <div className="mt-4">
+                        <PODProfitBreakdown
+                            netProfit={netProfit}
+                            platformFee={platformAmount}
+                            transactionFee={transactionAmount}
+                            paymentProcessingFee={paymentProcAmount}
+                            offsiteAdFee={offsiteAdAmount}
+                            productCost={Number(productCost) || 0}
+                            shippingCost={Number(shippingCost) || 0}
+                            totalRevenue={totalRevenue}
+                            currency={currency}
+                        />
                     </div>
                 </div>
             </div>
