@@ -7,22 +7,22 @@ export function PODProfitOverview() {
         <ToolOverview
             heading="Why Use the POD Profit Calculator?"
             headingAccent="POD Profit Calculator"
-            definition="Designed to calculate the exact profit margins, total revenue, and underlying hidden costs of selling custom-printed merchandise online. This calculator is built specifically for ecommerce sellers, dropshippers, and creative designers running Print on Demand businesses on platforms like Etsy, Shopify, or eBay. Our tool eliminates the guesswork from your pricing strategy—simply input your item price alongside supplier costs, dual-shipping expenses, and marketplace transaction fees to instantly receive a crystal-clear, real-time breakdown of your true net profit down to the cent."
+            definition="Used by sellers on Amazon FBA, this tool helps you decide what to do with unsold inventory stored in Amazon’s warehouses. Whether you're a beginner, private label seller, or experienced FBA seller, it provides a quick way to compare removal and disposal costs with your expected resale value. Simply enter your units, fees, and selling price to instantly see your profit or loss, understand the true cost of each option, and identify the most cost-effective action—so you can avoid unnecessary losses and make smarter inventory decisions"
             facts={[
                 {
-                    label: "Margin Accuracy",
-                    stat: "Real-time",
-                    detail: "Instantly pinpoint your exact net profit and margin percentages."
+                    stat: "Accurate",
+                    label: "Profit Calculation",
+                    detail: "Factor in costs, fees, and shipping to see your actual earnings per sale instead of rough estimates."
                 },
                 {
-                    label: "Cost Tracking",
-                    stat: "Comprehensive",
-                    detail: "Accounts for supplier costs, dual-shipping, and processing fees."
+                    stat: "Smarter",
+                    label: "Pricing Strategy",
+                    detail: "Set competitive prices that protect your margins while avoiding hidden expenses and underpricing."
                 },
                 {
-                    label: "Fee Breakdown",
-                    stat: "Dynamic",
-                    detail: "Visualize how marketplace fees and ad rates impact your bottom line."
+                    stat: "Complete",
+                    label: "Cost Transparency",
+                    detail: "Visualize every cost from production to fees, uncovering ways to cut expenses and boost profit."
                 }
             ]}
         />

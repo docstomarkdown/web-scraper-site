@@ -6,18 +6,18 @@ export function CouponROIHowToUse() {
         <ToolSteps
             steps={[
                 {
-                    title: "Promo Setup",
-                    description: "Enter your discount sum, total code redemptions, and average cart size.",
+                    title: "Step 1: Input Promo Data",
+                    description: "Enter your total media spend, the number of codes redeemed, and your average cart size before applying the discount.",
                     icon: DollarSign
                 },
                 {
-                    title: "Baseline Profit",
-                    description: "Input your average foundational margins to assess true monetary impact.",
+                    title: "Step 2: Add Profit Mechanics",
+                    description: "Input the per-order monetary discount and your standard baseline margin percentage to capture true profitability impact.",
                     icon: Calculator
                 },
                 {
-                    title: "Check Returns",
-                    description: "Instantly discover if the marketing coupon brought in incremental gains.",
+                    title: "Step 3: Review Full ROI",
+                    description: "Instantly check your dynamic net profitability breakdown and verify whether the specific campaign achieved its financial target.",
                     icon: PieChart
                 }
             ]}

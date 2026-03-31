@@ -7,22 +7,23 @@ export function FBARemovalOverview() {
         <ToolOverview
             heading="Why Use the FBA Removal Order Calculator?"
             headingAccent="FBA Removal Order Calculator"
-            definition="Used by Amazon FBA sellers to instantly estimate the cost of retrieving or disposing of unsold inventory stored in Amazon's fulfillment centers. Whether you're a private label brand, wholesale seller, or seasoned FBA merchant, this tool helps you make smarter decisions before submitting a removal or disposal order. Enter your product dimensions, weight, and unit quantity to get an instant, 2025-accurate cost breakdown—so you know exactly what Amazon will charge before you commit."
+            definition="Used by sellers on Amazon FBA to evaluate the true cost of removing or disposing unsold inventory and compare it with potential resale value. Whether you're a private label seller, wholesaler, or experienced FBA merchant, this tool helps you make smarter decisions before placing a removal order. Enter your inventory details, fees, and expected selling price to instantly see your profit or loss and identify the most cost-effective option—so you know exactly what action to take."
             facts={[
                 {
-                    label: "Rate Accuracy",
-                    stat: "2025 Rates",
-                    detail: "Reflects Amazon's latest Feb 2025 removal and disposal fee schedule."
+                    stat: "Smart",
+                    label: "Decision Recommendation",
+                    detail: "Instantly recommends the best action—Remove, Dispose, or Hold—so you can maximize profit with zero guesswork."
                 },
                 {
-                    label: "Size Detection",
-                    stat: "Auto-Detect",
-                    detail: "Automatically classifies your item as Standard or Large/Bulky size tier."
+                    stat: "Transparent",
+                    label: "Profit & Loss Clarity",
+                    detail: "Clearly shows your expected profit after removal and potential loss from disposal—so you instantly understand the real financial impact of each option."
                 },
                 {
-                    label: "Cost Clarity",
-                    stat: "Per-Unit & Total",
-                    detail: "See both the per-unit fee and total order cost side by side."
+                    stat: "Actionable",
+                    label: "Cost vs Recovery Comparison",
+                    detail: "Compares Amazon fees with your resale value to reveal the better option—so you know if recovering inventory is worth it."
+
                 }
             ]}
         />

@@ -186,6 +186,12 @@ export function ResultSummaryCard({
                 </span>
             )
         }
+        
+        // If it's a string that doesn't contain a number, return it as is
+        if (typeof value === 'string' && isNaN(numValue)) {
+            return value
+        }
+
         const displayNum = isNaN(numValue) ? 0 : numValue
         if (!unit) return displayNum
         // Symbols that usually go at the front

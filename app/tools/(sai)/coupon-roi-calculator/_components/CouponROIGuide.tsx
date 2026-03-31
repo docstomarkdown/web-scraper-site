@@ -8,24 +8,24 @@ export function CouponROIGuide() {
             icon={Target}
             items={[
                 {
-                    title: "What is Coupon ROI?",
-                    description: "Coupon ROI measures the profitability of a discount campaign. It compares the net profit generated from coupon-driven sales against the total cost of the campaign (media spend + discount value).",
+                    title: "Analyze Coupon ROI",
+                    description: "Coupon ROI measures the **true profitability** of your discount campaign. It effectively compares the net profit generated from coupon sales against the **total variable costs** like media spend and discount deductions.",
                     icon: TrendingUp,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
-                    stat: "Positive",
-                    statLabel: "Target ROI"
+                    stat: "Net",
+                    statLabel: "Profitability"
                 },
                 {
-                    title: "Break-even Point",
-                    description: "The number of redemptions needed to cover your campaign costs. If you don't reach this number, the campaign loses money. It's calculated by dividing Campaign Cost by (Profit per Order - Discount).",
-                    icon: BarChart2,
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
+                    title: "Find Your Break-even",
+                    description: "Discover the specific **number of redemptions** required to offset your campaign investments. Falling short of this metric means your campaign is operating at a **monetary loss**.",
+                    icon: Target,
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-500",
                 },
                 {
-                    title: "True Cost of Discounting",
-                    description: "A 20% discount doesn't just reduce revenue by 20% - it reduces profit by much more. If your margin is 30%, a 20% discount slashes your profit by 66%.",
+                    title: "The True Cost of Discounts",
+                    description: "Discounts disproportionately impact net profit, not just top-line revenue. For instance, an aggressive **20% discount** on a standard 30% margin realistically slashes your exact net profit by **66%**.",
                     icon: DollarSign,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
