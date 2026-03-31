@@ -1,26 +1,27 @@
 "use client";
 import { ToolSteps } from "@/app/tools/_shared/components";
-import { Package, Timer, CreditCard } from "lucide-react";
+import { Package, Clock, BarChart2 } from "lucide-react";
+
 export function PackagingHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Supply Total",
-                    description: "Enter completely the absolute cost of outer boxes, solid tape, filler, and inserts.",
+                    title: "Enter Your Material Costs",
+                    description: "Input the per-unit cost of your box or mailer. Add optional materials like padding, tape, labels, and branding inserts if you use them.",
                     icon: Package
                 },
                 {
-                    title: "Labor Rate",
-                    description: "Input fulfillment warehouse wages and the exact precise time spent taping one box.",
-                    icon: Timer
+                    title: "Add Your Labor Rate",
+                    description: "Enter how many minutes it takes to pack one order and your hourly wage (or the rate you'd pay someone else). This calculates a precise labor cost per package.",
+                    icon: Clock
                 },
                 {
-                    title: "View Total",
-                    description: "Instantly calculate the heavy actual bottom-line cost processing a shipped catalog item.",
-                    icon: CreditCard
+                    title: "Review Your True Cost",
+                    description: "See your total packaging cost per unit, your material vs. labor split, and the full batch total — so you can price products and scale with confidence.",
+                    icon: BarChart2
                 }
             ]}
         />
     );
-}
+}

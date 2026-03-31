@@ -8,15 +8,15 @@ import { CTA } from "@/components/sections/CTA"
 import { BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
-    title: "FBA Removal Order Cost Calculator | Web Scraper.do",
-    description: "Calculate Amazon FBA removal and disposal order fees for 2025. Estimate costs for standard and oversize items by entering dimensions, weight, and quantity."
+    title: "FBA Removal vs Disposal Calculator | Web Scraper.do",
+    description: "Compare Amazon FBA removal and disposal fees. Calculate potential profit, net difference, and identify whether to remove, dispose, or hold your stranded inventory."
 }
 
 export default function FBARemovalOrderPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <ToolPageTitle title="FBA Removal Order Calculator" direction="down" duration={0.6} />
+                <ToolPageTitle title="FBA Removal vs Disposal Calculator" direction="down" duration={0.6} />
 
                 <div className="mb-20">
                     <FBARemovalCalculator />

@@ -6,21 +6,21 @@ export function CouponROIHowToUse() {
         <ToolSteps
             steps={[
                 {
-                    title: "Promo Setup",
-                    description: "Enter your discount sum, total code redemptions, and average cart size.",
+                    title: "Enter Campaign Basics",
+                    description: "Input your total campaign cost (e.g., ad spend), the number of coupons distributed, and how many were actually redeemed by customers.",
                     icon: DollarSign
                 },
                 {
-                    title: "Baseline Profit",
-                    description: "Input your average foundational margins to assess true monetary impact.",
+                    title: "Add Sales Data",
+                    description: "Enter your Average Order Value (AOV), the discount amount applied per order, and your base profit margin. This allows us to calculate your true Cost of Goods Sold.",
                     icon: Calculator
                 },
                 {
-                    title: "Check Returns",
-                    description: "Instantly discover if the marketing coupon brought in incremental gains.",
+                    title: "Review Profit & ROI",
+                    description: "Instantly see your Return on Investment, Net Profit, and a comprehensive breakdown of your campaign's true financial impact.",
                     icon: PieChart
                 }
             ]}
         />
     )
-}
+}

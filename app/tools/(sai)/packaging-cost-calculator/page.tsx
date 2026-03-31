@@ -2,45 +2,85 @@ import { Metadata } from "next";
 import { PackagingCostCalculator } from "./_components/PackagingCostCalculator";
 import { PackagingGuide } from "./_components/PackagingGuide";
 import { PackagingHowToUse } from "./_components/PackagingHowToUse";
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components";
+import { PackagingCostOverview } from "./_components/PackagingCostOverview";
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components";
+import { BookOpen } from "lucide-react";
 import { CTA } from "@/components/sections/CTA";
+
 export const metadata: Metadata = {
-    title: "Packaging Cost Calculator | Calculate Material & Labor Costs",
-    description: "Calculate the true cost of your packaging materials and labor per unit. Optimize your shipping expenses with this free calculator.",
+    title: "Packaging Cost Calculator | Calculate Material & Labor Costs Per Unit",
+    description: "Calculate the true per-unit cost of your packaging — materials, tape, labels, and labor. Optimize your fulfillment expenses and price products accurately with this free tool.",
 };
+
 const faqs = [
+    // ── Getting Started ──
     {
-        question: "Why should I calculate labor cost?",
-        answer: "Time is money. If you spend 5 minutes packing an order, you are not spending that time growing your business. Calculating this cost helps you decide if you should hire help or outsource fulfillment.",
+        question: "What inputs does this calculator need?",
+        answer: "At minimum: your box or mailer cost, the time it takes to pack one order (in minutes), and your hourly wage. Everything else — padding, tape, labels, and branding inserts — is optional but recommended for a fully accurate cost.",
     },
     {
-        question: "Do I need to include the cost of the shipping label?",
-        answer: "Yes! Thermal labels cost about $0.02 - $0.05 each. While small, over 1000 orders, that's $20-$50 in hidden costs.",
+        question: "What does 'Cost Per Unit' mean?",
+        answer: "It is the total packaging cost for a single order, combining all material costs plus the labor cost for that one package. This is the number you should add to your product's cost of goods when pricing for sale.",
     },
+    {
+        question: "How is the labor cost calculated?",
+        answer: "Labor Cost = (Minutes to Pack ÷ 60) × Hourly Wage. For example, 5 minutes at a $18/hr wage equals $1.50 in labor per package. This applies even if you are packing orders yourself — your time has real monetary value.",
+    },
+
+    // ── Inputs & Fields ──
+    {
+        question: "Should I include the cost of the shipping label?",
+        answer: "Yes. Thermal labels typically cost $0.02–$0.05 each. While small per order, at 1,000 orders a month that's $20–$50 in hidden costs. Use the optional 'Shipping Label' field to capture this accurately.",
+    },
+    {
+        question: "What counts as a 'Branding / Inserts' cost?",
+        answer: "Anything extra placed inside the package purely for customer experience: stickers, thank-you cards, crinkle paper, tissue paper, or promotional flyers. These are optional but real costs that affect your margin.",
+    },
+    {
+        question: "What does 'Order Quantity' do?",
+        answer: "It scales the per-unit cost into a Batch Total — useful for projecting total packaging spend across an entire fulfillment run. It does not change the per-unit cost calculation.",
+    },
+
+    // ── Costs & Optimization ──
     {
         question: "How can I reduce my packaging costs?",
-        answer: "Buy in bulk (e.g., 500 boxes instead of 50), switch to lighter materials like poly mailers to save on shipping weight, and optimize your box size to avoid paying for 'air'.",
+        answer: "Three proven strategies: (1) Switch rigid boxes to poly mailers for non-fragile items — savings of $0.50–$1.00 per shipment. (2) Buy in bulk — 500 units of tape or labels can cost 30–40% less per unit than small quantities. (3) Right-size your packaging — boxes much larger than the product add dead weight, increasing both material and shipping costs.",
     },
     {
-        question: "What is 'Branding Cost'?",
-        answer: "This includes anything extra you put in the box for customer experience: stickers, thank you cards, tissue paper, crinkle paper, or promotional flyers.",
+        question: "What is a typical packaging cost range?",
+        answer: "For simple e-commerce orders: $0.50–$1.50 for materials alone. Add labor at a standard $15/hr wage and 4 minutes per box, that's another $1.00 — bringing most totals to $1.50–$2.50 per unit. Products requiring special handling, gift wrapping, or extra branding can easily reach $3–$5.",
+    },
+
+    // ── Interpretation ──
+    {
+        question: "Is labor cost worth tracking if I pack orders myself?",
+        answer: "Absolutely. If you are spending 10 hours a week packing, that time cannot be spent on sourcing, marketing, or customer service. Tracking your labor cost helps you recognize when outsourcing fulfillment — like a 3PL or Amazon FBA — becomes financially worth it.",
+    },
+    {
+        question: "How does this help me price my products correctly?",
+        answer: "Your selling price must cover: product cost + packaging cost + shipping fee + platform fees + desired profit margin. Most sellers who skip packaging costs end up underpricing, which erodes margins invisibly. This calculator gives you the missing piece.",
     },
 ];
+
 export default function Page() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <FadeIn>
-                    <div className="max-w-4xl mx-auto text-center mb-12">
-                        <h1 className="text-4xl md:text-[42px] font-bold text-slate-900 mb-4">
-                            Packaging Cost Calculator
-                        </h1>
-                    </div>
-                </FadeIn>
+                <ToolPageTitle title="Packaging Cost Calculator" direction="down" duration={0.6} />
+
                 <div className="mb-20">
                     <PackagingCostCalculator />
                 </div>
-                <div className="max-w-5xl mx-auto space-y-16">
+
+                <div className="max-w-5xl mx-auto space-y-16" id="tool-guide">
+                    <FadeIn delay={0.2}>
+                        <ToolSectionHeader
+                            title="Tool Essential"
+                            subtitle="Stop losing money on hidden fulfillment expenses. Calculate the true per-unit cost of your packaging materials, tape, labels, and labor down to the cent."
+                            icon={BookOpen}
+                        />
+                        <PackagingCostOverview />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <PackagingHowToUse />
                     </FadeIn>
@@ -57,4 +97,4 @@ export default function Page() {
             </div>
         </div>
     );
-}
+}
