@@ -7,22 +7,22 @@ export function CouponROIOverview() {
         <ToolOverview
             heading="Why Use the Coupon ROI Calculator?"
             headingAccent="Coupon ROI Calculator"
-            definition="Used by e-commerce and retail marketers to determine the true profitability of discount campaigns. This tool helps you see beyond surface-level sales spikes and understand exactly how discounts impact your bottom line. Simply input your campaign costs, discounts, and margins to accurately calculate your return on investment, net profit, and the hidden costs of discounting—empowering you to make smarter promotional decisions."
+            definition="The Coupon ROI Calculator is a tool for e-commerce marketers and business owners to measure the true profitability of their coupon and discount campaigns. It calculates return on investment by comparing campaign costs, discount amounts, redemption rates, and sales generated, helping users quickly see whether their promotions are profitable or resulting in losses. It is commonly used for seasonal sales, flash deals, and promotional campaigns across platforms like Shopify, Amazon, and Etsy to evaluate performance and make data-driven decisions for better marketing results."
             facts={[
                 {
                     stat: "Accurate",
                     label: "Profit Tracking",
-                    detail: "Calculate exact net profit by factoring in hidden costs like campaign spend and COGS."
+                    detail: "Get a true picture of your campaign profitability by factoring in cost, redemptions, AOV, discounts, and profit margin.No guesswork—just precise financial clarity."
                 },
                 {
-                    stat: "Actionable",
-                    label: "Insights",
-                    detail: "Instantly see if a campaign is profitable or operating at a loss."
+                    stat: "Instant",
+                    label: "ROI & Profit Insights",
+                    detail: "See your ROI, net profit, or loss immediately after entering your data.Quickly understand if your coupon campaign is actually making money or not."
                 },
                 {
-                    stat: "Strategic",
-                    label: "Planning",
-                    detail: "Determine the exact break-even point required for future discounts to succeed."
+                    stat: "Smarter",
+                    label: "Discount Decisions",
+                    detail: "Know whether to scale, optimize, or stop your coupon strategy.Helps you avoid unprofitable discounts and improve future campaign performance."
                 }
             ]}
         />
