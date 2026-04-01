@@ -26,8 +26,7 @@ export function PackagingCostCalculator() {
     const [laborCostPerUnit, setLaborCostPerUnit] = useState(0)
     const [totalPackagingCost, setTotalPackagingCost] = useState(0)
     const [batchTotal, setBatchTotal] = useState(0)
-    const [materialPct, setMaterialPct] = useState(0)
-    const [laborPct, setLaborPct] = useState(0)
+    const [addonCost, setAddonCost] = useState(0)
 
     const handleReset = () => {
         setBoxCost("")
@@ -55,12 +54,13 @@ export function PackagingCostCalculator() {
         const total = materials + labor
         const batch = total * qty
 
+        const addons = padding + tape + label + branding
+
         setTotalMaterialCost(materials)
         setLaborCostPerUnit(labor)
         setTotalPackagingCost(total)
         setBatchTotal(batch)
-        setMaterialPct(total > 0 ? (materials / total) * 100 : 0)
-        setLaborPct(total > 0 ? (labor / total) * 100 : 0)
+        setAddonCost(addons)
     }, [boxCost, paddingCost, tapeCost, labelCost, brandingCost, laborTime, hourlyWage, orderQuantity])
 
     const isValid = boxCost !== "" && laborTime !== "" && hourlyWage !== ""
@@ -72,7 +72,7 @@ export function PackagingCostCalculator() {
         <FadeIn className="w-full max-w-6xl mx-auto py-8" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* ── Inputs Column ── */}
-                <div className="lg:col-span-7 space-y-3">
+                <div className="lg:col-span-7 space-y-3 lg:sticky lg:top-8">
                     <Card className="border border-slate-200 shadow-sm bg-white">
                         <CalculatorCardHeader
                             title="Packaging Details"
@@ -238,14 +238,14 @@ export function PackagingCostCalculator() {
                 </div>
 
                 {/* ── Results Column ── */}
-                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
+                <div className="lg:col-span-5 space-y-3">
                     <ResultSummaryCard
                         isCalculated={isValid}
                         currency={currency}
                         emptyMessage="Total Packaging Cost"
                         showLiveBadge={true}
-                        liveBadgeText="Live"
-                        liveBadgeColor="blue"
+                        liveBadgeText={isValid ? (addonCost > 0 ? "Full Cost" : "Base Cost") : "Live"}
+                        liveBadgeColor={isValid ? (addonCost > 0 ? "emerald" : "blue") : "slate"}
                         description={
                             isValid
                                 ? qty > 1
@@ -255,19 +255,11 @@ export function PackagingCostCalculator() {
                         }
                         primaryResult={{
                             value: totalPackagingCost,
-                            label: "Cost Per Unit",
+                            label: "Total Cost Per Unit",
                             isCurrency: true,
                             key: "costPerUnit"
                         }}
                         secondaryResults={[
-                            {
-                                key: "batchTotal",
-                                label: qty > 1 ? `Batch Total (×${qty.toLocaleString()})` : "Batch Total",
-                                value: batchTotal,
-                                isCurrency: true,
-                                icon: DollarSign,
-                                tooltip: `Your total packaging spend across all ${qty.toLocaleString()} unit${qty > 1 ? "s" : ""} in this order run.`
-                            },
                             {
                                 key: "totalMaterials",
                                 label: "Material Cost",
@@ -285,12 +277,20 @@ export function PackagingCostCalculator() {
                                 tooltip: `Calculated as (${Number(laborTime) || 0} min ÷ 60) × ${currency} ${Number(hourlyWage) || 0}/hr wage.`
                             },
                             {
-                                key: "materialPct",
-                                label: "Material Share",
-                                value: materialPct.toFixed(1),
-                                unit: "%",
-                                icon: Percent,
-                                tooltip: "The percentage of total per-unit cost accounted for by physical materials."
+                                key: "addonCost",
+                                label: "Add-on Cost",
+                                value: addonCost,
+                                isCurrency: true,
+                                icon: Scissors,
+                                tooltip: "Combined cost of all optional add-on items (padding, tape, labels, and branding)."
+                            },
+                            {
+                                key: "batchTotal",
+                                label: qty > 1 ? `Batch Total (×${qty.toLocaleString()})` : "Batch Total",
+                                value: batchTotal,
+                                isCurrency: true,
+                                icon: DollarSign,
+                                tooltip: `Your total packaging spend across all ${qty.toLocaleString()} unit${qty > 1 ? "s" : ""} in this order run.`
                             }
                         ]}
                         checklistItems={[

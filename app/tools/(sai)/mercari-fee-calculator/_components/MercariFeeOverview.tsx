@@ -1,35 +1,30 @@
 "use client";
 import React from "react";
 import { ToolOverview } from "@/app/tools/_shared/components/ToolOverview";
-import { Calculator, DollarSign, EyeOff } from "lucide-react";
 
 export function MercariFeeOverview() {
     return (
         <ToolOverview
-            title="Mercari Fee Calculator"
-            description="Our advanced Mercari Fee Calculator empowers sellers to precisely understand their margins. By accounting for the 10% selling fee, the 2.9% + $0.50 payment processing fee, and your raw item and shipping costs, this tool reveals the absolute true net profit—preventing hidden losses and optimizing your pricing strategy before you ever hit list."
-            metrics={[
+            heading="What is the Mercari Fee Calculator?"
+            headingAccent="Mercari Fee Calculator"
+            definition="The Mercari Fee Calculator is a free tool that shows how much money you will actually earn when selling an item on Mercari, a popular online marketplace for buying and selling new or used products.The tool calculates your total fees, shipping costs, expenses, and final profit, so you instantly know your real earnings before listing an item.It is used by individual sellers, resellers, side-hustlers, and small businesses who want a quick and accurate profit estimate. This tool is helpful for anyone selling online, even if they have never used Mercari before."
+            accent="blue"
+            facts={[
                 {
+                    stat: "10%",
                     label: "Selling Fee",
-                    value: "10%",
-                    icon: Calculator,
-                    color: "text-blue-600",
-                    bg: "bg-blue-100",
+                    detail: "Mercari's flat selling fee is applied to every transaction. It's deducted automatically from your payout after the item sells."
                 },
                 {
-                    label: "Processing",
-                    value: "2.9%",
-                    icon: DollarSign,
-                    color: "text-emerald-600",
-                    bg: "bg-emerald-100",
+                    stat: "2.9% + $0.50",
+                    label: "Processing Fee",
+                    detail: "A separate payment processing fee charged on the total amount the buyer pays, covering card and transaction costs."
                 },
                 {
+                    stat: "Revealed",
                     label: "Hidden Costs",
-                    value: "Calculated",
-                    icon: EyeOff,
-                    color: "text-rose-600",
-                    bg: "bg-rose-100",
-                },
+                    detail: "Shipping, packaging, and processing fees stack up invisibly. This tool calculates all of them to show your accurate take-home profit."
+                }
             ]}
         />
     );

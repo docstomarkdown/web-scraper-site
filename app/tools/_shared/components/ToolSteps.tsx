@@ -41,7 +41,7 @@ export function ToolSteps({ steps, title = "How to Use This Calculator", icon = 
                                             <span>Step {index + 1}: {step.title}</span>
                                         </h3>
                                         <p
-                                            className="text-[14.5px] text-slate-500 leading-relaxed font-medium line-clamp-6 [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
+                                            className="text-[14.5px] text-slate-500 leading-relaxed font-medium [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
                                             dangerouslySetInnerHTML={{ __html: step.description.replace(/<strong>(.*?)<\/strong>/gi, '$1') }}
                                         />
                                     </div>

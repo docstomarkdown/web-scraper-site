@@ -4,60 +4,74 @@ import { Card } from "@/components/ui/card"
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer } from "recharts"
 import { PieChart } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCurrencyValue } from "@/app/tools/_shared/components"
 
-interface MercariFeeBreakdownProps {
-    price: number;
-    cost: number;
-    ship: number;
-    other: number;
-    sellingFee: number;
-    processingFee: number;
+interface CLVBreakdownProps {
+    clvRevenue: number;
+    grossProfit: number;
+    cacVal: number;
     netProfit: number;
+    marginVal: number;
     currency?: string;
     className?: string;
 }
 
-export function MercariFeeBreakdown({
-    price,
-    cost,
-    ship,
-    other,
-    sellingFee,
-    processingFee,
+export function CLVBreakdown({
+    clvRevenue,
+    grossProfit,
+    cacVal,
     netProfit,
+    marginVal,
     currency = "USD",
     className
-}: MercariFeeBreakdownProps) {
-    const formatCurrency = (val: number) =>
-        new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 2 }).format(val)
+}: CLVBreakdownProps) {
+    const formatCurrency = (val: number) => formatCurrencyValue(val, currency, 0)
 
-    const pieTotal = price;
+    const cogs = clvRevenue - grossProfit;
+    const pieTotal = clvRevenue;
     const calcPct = (val: number) => (pieTotal > 0 ? (val / pieTotal) * 100 : 0)
 
     const rawData = [
-        { name: netProfit >= 0 ? "Net Profit" : "Net Loss", value: netProfit, color: "#10b981", isCost: false, isMandatory: true },
-        { name: "Mercari Fee", value: sellingFee, color: "#f43f5e", isCost: true, isMandatory: true },
-        { name: "Processing Fee", value: processingFee, color: "#f59e0b", isCost: true, isMandatory: true },
-        { name: "Item Cost", value: cost, color: "#3b82f6", isCost: true, isMandatory: false },
-        { name: "Shipping Cost", value: ship, color: "#8b5cf6", isCost: true, isMandatory: false },
-        { name: "Other Expenses", value: other, color: "#0ea5e9", isCost: true, isMandatory: false }
+        { name: netProfit >= 0 ? "Net Profit" : "Net Loss", value: Math.max(netProfit, 0), color: "#10b981", isCost: false, isMandatory: true },
+        { name: "Product Costs (base)", value: cogs, color: "#f43f5e", isCost: true, isMandatory: true },
+        { name: "Acq. Cost (CAC)", value: cacVal, color: "#f59e0b", isCost: true, isMandatory: false },
     ]
 
     const pieData = rawData.filter(i => i.value > 0)
 
-    const legendItems = rawData
-        .filter(item => item.isMandatory || item.value > 0)
-        .map(item => ({
-            label: item.name,
-            value: item.value,
-            pct: Math.abs(item.value) > 0 ? calcPct(Math.abs(item.value)) : 0,
-            colorBg: item.color,
-            isCost: item.isCost
-        }))
+    // Ensure legend always renders to prevent layout shifts
+    const legendItems = [
+        {
+            label: "Product Costs",
+            value: cogs,
+            pct: calcPct(cogs),
+            colorBg: "#f43f5e",
+            isCost: true,
+            isTotal: false,
+        },
+        ...(cacVal > 0 || netProfit === 0 ? [{
+            label: "Acq. Cost",
+            value: cacVal,
+            pct: calcPct(cacVal),
+            colorBg: "#f59e0b",
+            isCost: true,
+            isTotal: false,
+        }] : []),
+        {
+            label: netProfit >= 0 ? "Net Profit" : "Net Loss",
+            value: netProfit,
+            pct: Math.abs(calcPct(netProfit)),
+            colorBg: netProfit >= 0 ? "#10b981" : "#e11d48",
+            isCost: netProfit < 0,
+            isTotal: false,
+        },
+    ]
 
     const chartSizeClass = "h-[120px] w-[120px] sm:h-[140px] sm:w-[140px]";
     const innerR = 45;
     const outerR = 60;
+
+    const isEmpty = clvRevenue <= 0;
 
     return (
         <Card className={cn("border border-slate-200/60 shadow-sm bg-[#F5F8FD] rounded-2xl p-4 sm:p-5 flex flex-col gap-4 sm:gap-5", className)}>
@@ -67,14 +81,14 @@ export function MercariFeeBreakdown({
                     <PieChart className="w-3.5 h-3.5 text-blue-600" />
                 </div>
                 <h2 className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
-                    Cost Breakdown
+                    Lifetime Value Breakdown
                 </h2>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full">
                 {/* Chart */}
                 <div className={cn("relative shrink-0", chartSizeClass)}>
-                    {pieTotal > 0 ? (
+                    {!isEmpty ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <RechartsPie>
                                 <Pie
@@ -95,13 +109,14 @@ export function MercariFeeBreakdown({
                         </ResponsiveContainer>
                     ) : (
                         <div className="absolute inset-0 flex items-center justify-center text-center p-3 text-slate-400 text-[10.5px] leading-tight font-medium border-2 border-dashed border-slate-200/70 rounded-full bg-slate-50/40">
-                            Add data to see breakdown
+                            Enter data to see breakdown
                         </div>
                     )}
-                    {pieTotal > 0 && (
+                    
+                    {!isEmpty && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span className="text-[10px] sm:text-[11px] font-medium text-slate-400 text-center leading-tight mb-0.5 mt-0.5">
-                                Sale Price
+                                Revenue
                             </span>
                             <span className="text-[11px] sm:text-[13px] font-bold text-slate-900 tracking-tight">
                                 {formatCurrency(pieTotal)}
@@ -113,34 +128,40 @@ export function MercariFeeBreakdown({
                 {/* Legend */}
                 <div className="flex-1 min-w-0 flex flex-col gap-2 relative w-full">
                     {legendItems.map((item) => {
-                        const isNetItem = !item.isCost;
+                        const isNetItem = item.isTotal;
                         const isPositive = item.value >= 0;
-                        const derivedDotColor = (isNetItem && !isPositive) ? "#e11d48" : item.colorBg;
 
                         return (
                             <div
                                 key={item.label}
-                                className="flex items-start sm:items-center justify-between px-3 bg-white border border-slate-200/80 rounded-[10px] py-1.5 shadow-sm w-full gap-2 transition-all hover:border-slate-300"
+                                className={cn(
+                                    "flex items-start sm:items-center justify-between px-3 bg-white border border-slate-200/80 rounded-[10px] py-1.5 shadow-sm w-full gap-2 transition-all hover:border-slate-300",
+                                    item.isTotal && "bg-slate-50 border-slate-200/50 shadow-sm mt-1"
+                                )}
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 min-w-0">
                                     <div
                                         className="w-2.5 h-2.5 rounded-full shrink-0 mt-0.5"
-                                        style={{ backgroundColor: derivedDotColor }}
+                                        style={{ backgroundColor: item.colorBg }}
                                     />
-                                    <span className="text-[12px] text-slate-600 font-bold leading-tight">
+                                    <span className={cn(
+                                        "text-[12px] font-bold leading-tight whitespace-nowrap overflow-hidden text-ellipsis",
+                                        item.isTotal ? "text-slate-800" : "text-slate-600"
+                                    )}>
                                         {item.label}
                                     </span>
                                 </div>
                                 <div className="flex items-center shrink-0">
                                     <span className={cn(
                                         "text-[12px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[50px]",
-                                        item.isCost ? "text-slate-500" : (!isPositive ? "text-rose-600" : "text-emerald-600")
+                                        item.isCost ? "text-slate-500" : (!isPositive ? "text-rose-600" : "text-[#10b981]")
                                     )}>
-                                        {!item.isCost && item.value > 0 ? "+" : ""}{formatCurrency(item.value)}
+                                        {!item.isCost && item.value > 0 ? "+" : ""}
+                                        {formatCurrency(item.value)}
                                     </span>
                                     <span className={cn(
                                         "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[32px] ml-2.5",
-                                        item.isCost ? "text-slate-900" : (!isPositive ? "text-rose-700" : "text-emerald-700")
+                                        item.isCost ? "text-slate-900" : (!isPositive ? "text-rose-700" : "text-[#10b981]")
                                     )}>
                                         {Math.abs(item.value) > 0 ? `${item.pct.toFixed(0)}%` : "—"}
                                     </span>
@@ -153,3 +174,4 @@ export function MercariFeeBreakdown({
         </Card>
     )
 }
+

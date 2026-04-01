@@ -5,9 +5,9 @@ import { ToolOverview } from "@/app/tools/_shared/components"
 export function PackagingCostOverview() {
     return (
         <ToolOverview
-            heading="Why Use the Packaging Cost Calculator?"
+            heading="What is the Packaging Cost Calculator?"
             headingAccent="Packaging Cost Calculator"
-            definition="Used by eCommerce sellers across platforms like Etsy, Amazon, Shopify, and eBay, this tool helps you quickly understand the true cost of packaging per order so you can avoid hidden expenses eating into your profits. The Packaging Cost Calculator lets you easily enter your packaging materials, packing time, and labor cost to instantly calculate what each shipment actually costs you, helping you make smarter pricing decisions, evaluate bulk packaging choices, and clearly see where your money is going so you can protect your margins and improve profitability."
+            definition="The Packaging Cost Calculator is a free online tool that helps sellers quickly calculate the total packaging cost per order, including materials and packing time. It shows your cost per unit and total expense instantly for clear cost understanding.This tool is mainly used by eCommerce sellers, small business owners, and fulfillment teams to know their exact packaging costs. It is commonly used on e-commerce tools and cost calculators for quick and accurate profit planning."
             facts={[
                 {
                     stat: "Accurate",
