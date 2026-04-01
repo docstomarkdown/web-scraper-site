@@ -87,7 +87,9 @@ export function AdBudgetCalculator() {
                             {/* Group 1: Goals */}
                             <div className="space-y-4 max-w-[520px] mx-auto w-full">
                                 <CalculatorInput
-                                    label={`Revenue Goal (Per Month)`}
+                                    label="Monthly Revenue Goal"
+                                    isCurrency
+                                    currency={currency}
                                     value={revenueGoal}
                                     onChange={setRevenueGoal}
                                     placeholder="100,000"
@@ -108,7 +110,9 @@ export function AdBudgetCalculator() {
                             {/* Group 2: Traffic Assumptions */}
                             <div className="space-y-4 max-w-[520px] mx-auto w-full pt-2">
                                 <CalculatorInput
-                                    label={`Avg. Cost Per Click`}
+                                    label="Avg. Cost Per Click"
+                                    isCurrency
+                                    currency={currency}
                                     value={avgCPC}
                                     onChange={setAvgCPC}
                                     placeholder="1.50"

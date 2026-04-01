@@ -65,7 +65,7 @@ export function CLVCalculator() {
                                     {/* Group 1: Customer Behavior */}
                                     <div className="space-y-4">
                                         <CalculatorInput
-                                            label={`Avg. Order Value `}
+                                            label="Avg. Order Value"
                                             value={aov}
                                             onChange={setAov}
                                             placeholder="50"
@@ -86,7 +86,8 @@ export function CLVCalculator() {
                                             tooltip="How many times, on average, a customer buys from you per year. For example, 4 = once per quarter."
                                         />
                                         <CalculatorInput
-                                            label="Customer Lifespan (Years)"
+                                            label="Customer Lifespan"
+                                            suffix="yrs"
                                             value={lifespan}
                                             onChange={setLifespan}
                                             placeholder="3"
@@ -98,7 +99,8 @@ export function CLVCalculator() {
                                     {/* Group 2: Unit Economics */}
                                     <div className="space-y-4">
                                         <CalculatorInput
-                                            label="Gross Margin (%)"
+                                            label="Gross Margin"
+                                            suffix="%"
                                             value={grossMargin}
                                             onChange={setGrossMargin}
                                             placeholder="40"
@@ -109,7 +111,7 @@ export function CLVCalculator() {
                                             groupingIcon={TrendingUp}
                                         />
                                         <CalculatorInput
-                                            label={`Acquisition Cost — CAC (${currency})`}
+                                            label="Acquisition Cost (CAC)"
                                             value={cac}
                                             onChange={setCac}
                                             placeholder="30"

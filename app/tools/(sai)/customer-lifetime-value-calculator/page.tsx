@@ -18,7 +18,7 @@ export default function CLVPage() {
                 <div className="text-center mb-10">
                     <FadeIn direction="down" duration={0.6}>
                         <h1 className="text-4xl font-bold tracking-tight text-slate-900 md:text-[42px] mb-4">
-                            Customer Lifetime Value (CLV) Calculator
+                            Customer Lifetime Value Calculator
                         </h1>
                     </FadeIn>
                 </div>

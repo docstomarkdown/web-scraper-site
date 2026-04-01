@@ -16,7 +16,7 @@ export default function ACoSCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
-                <ToolPageTitle title="Advertising Cost of Sales (ACoS) Calculator" direction="down" duration={0.6} />
+                <ToolPageTitle title="Advertising Cost of Sales Calculator" direction="down" duration={0.6} />
                 <div className="mb-20">
                     <ACoSCalculator />
                 </div>

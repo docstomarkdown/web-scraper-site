@@ -100,7 +100,7 @@ export function TACoSCalculator() {
                                     hideSeparator={true}
                                     groupingTitle="Business Data"
                                     groupingIcon={BarChart3}
-                                    label={`Total Revenue (${currency})`}
+                                    label="Total Revenue"
                                     value={totalRevenue}
                                     onChange={setTotalRevenue}
                                     placeholder="50000"
@@ -109,7 +109,7 @@ export function TACoSCalculator() {
                                     currency={currency}
                                 />
                                 <CalculatorInput
-                                    label={`Total Ad Spend (${currency})`}
+                                    label="Total Ad Spend"
                                     value={totalAdSpend}
                                     onChange={setTotalAdSpend}
                                     placeholder="5000"
@@ -123,7 +123,8 @@ export function TACoSCalculator() {
                                 <CalculatorInput
                                     groupingTitle="Profitability"
                                     groupingIcon={PieChart}
-                                    label="Gross Profit Margin (%)"
+                                    label="Gross Profit Margin"
+                                    suffix="%"
                                     value={grossMargin}
                                     onChange={setGrossMargin}
                                     placeholder="40.0"
