@@ -14,7 +14,7 @@ export default function TACoSPage() {
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
             <div className="container mx-auto px-4">
                 <ToolPageTitle 
-                    title="Total Advertising Cost of Sales (TACoS) Calculator"
+                    title="Total Advertising Cost of Sales Calculator"
                     direction="down"
                     duration={0.6}
                 />

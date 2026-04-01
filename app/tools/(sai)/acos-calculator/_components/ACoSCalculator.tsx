@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { ACoSBreakdown } from "./ACoSBreakdown"
 export function ACoSCalculator() {
+    const [currency, setCurrency] = useState<string>("USD")
     const [adSpend, setAdSpend] = useState<number | "">("")
     const [adRevenue, setAdRevenue] = useState<number | "">("")
     const [profitMargin, setProfitMargin] = useState<number | "">("")
@@ -108,6 +109,8 @@ export function ACoSCalculator() {
                             title="ACoS Details"
                             description="Enter your ad spend, revenue, and product margin."
                             onReset={handleReset}
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
                         />
                         <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Campaign Data */}
@@ -116,7 +119,9 @@ export function ACoSCalculator() {
                                     hideSeparator={true}
                                     groupingTitle="Campaign Data"
                                     groupingIcon={TrendingUp}
-                                    label="Ad Spend ($)"
+                                    label="Ad Spend"
+                                    isCurrency
+                                    currency={currency}
                                     value={adSpend}
                                     onChange={setAdSpend}
                                     placeholder="200.00"
@@ -124,7 +129,9 @@ export function ACoSCalculator() {
                                     tooltip="Total amount spent on advertising."
                                 />
                                 <CalculatorInput
-                                    label="Ad Revenue ($)"
+                                    label="Ad Revenue"
+                                    isCurrency
+                                    currency={currency}
                                     value={adRevenue}
                                     onChange={setAdRevenue}
                                     placeholder="800.00"
@@ -137,7 +144,9 @@ export function ACoSCalculator() {
                                 <CalculatorInput
                                     groupingTitle="Product Metrics"
                                     groupingIcon={Percent}
-                                    label="Profit Margin (%) (optional)"
+                                    label="Profit Margin"
+                                    suffix="%"
+                                    isOptional
                                     value={profitMargin}
                                     onChange={setProfitMargin}
                                     placeholder="40.0"
@@ -168,7 +177,7 @@ export function ACoSCalculator() {
                             }
                         ]}
                         profitLossKey="netProfit"
-                        currency="USD"
+                        currency={currency}
                         isCalculated={Number(adRevenue) > 0 && Number(adSpend) > 0}
                         emptyMessage="ACoS"
                         emptyResultLabel="ACoS %"
