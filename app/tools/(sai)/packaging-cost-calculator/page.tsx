@@ -15,10 +15,6 @@ export const metadata: Metadata = {
 const faqs = [
     // ── Getting Started ──
     {
-        question: "What inputs does this calculator need?",
-        answer: "At minimum: your box or mailer cost, the time it takes to pack one order (in minutes), and your hourly wage. Everything else — padding, tape, labels, and branding inserts — is optional but recommended for a fully accurate cost.",
-    },
-    {
         question: "What does 'Cost Per Unit' mean?",
         answer: "It is the total packaging cost for a single order, combining all material costs plus the labor cost for that one package. This is the number you should add to your product's cost of goods when pricing for sale.",
     },
@@ -27,19 +23,7 @@ const faqs = [
         answer: "Labor Cost = (Minutes to Pack ÷ 60) × Hourly Wage. For example, 5 minutes at a $18/hr wage equals $1.50 in labor per package. This applies even if you are packing orders yourself — your time has real monetary value.",
     },
 
-    // ── Inputs & Fields ──
-    {
-        question: "Should I include the cost of the shipping label?",
-        answer: "Yes. Thermal labels typically cost $0.02–$0.05 each. While small per order, at 1,000 orders a month that's $20–$50 in hidden costs. Use the optional 'Shipping Label' field to capture this accurately.",
-    },
-    {
-        question: "What counts as a 'Branding / Inserts' cost?",
-        answer: "Anything extra placed inside the package purely for customer experience: stickers, thank-you cards, crinkle paper, tissue paper, or promotional flyers. These are optional but real costs that affect your margin.",
-    },
-    {
-        question: "What does 'Order Quantity' do?",
-        answer: "It scales the per-unit cost into a Batch Total — useful for projecting total packaging spend across an entire fulfillment run. It does not change the per-unit cost calculation.",
-    },
+
 
     // ── Costs & Optimization ──
     {

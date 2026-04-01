@@ -1,26 +1,27 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { DollarSign, BarChart2 } from "lucide-react"
+import { CircleDollarSign, TrendingUp, PieChart } from "lucide-react"
+
 export function ACoSHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Total Spend",
-                    description: "Enter the overall exact amount of money spent on Amazon PPC campaigns.",
-                    icon: DollarSign
+                    title: "Enter Ad Spend",
+                    description: "Input the total monetary amount spent directly on your advertising campaigns.",
+                    icon: CircleDollarSign
                 },
                 {
-                    title: "Ads Revenue",
-                    description: "Input the total sales generated uniquely and directly from those ads.",
-                    icon: BarChart2
+                    title: "Add Ad Revenue",
+                    description: "Enter the total sales generated exclusively from those advertising efforts.",
+                    icon: TrendingUp
                 },
                 {
-                    title: "Check ACoS",
-                    description: "Instantly calculate your Advertising Cost of Sales return percentage.",
-                    icon: DollarSign
+                    title: "Check Net Profit",
+                    description: "Instantly view your ACoS percentage and see your exact net profit or loss after ad costs.",
+                    icon: PieChart
                 }
             ]}
         />
     )
-}
+}

@@ -24,6 +24,7 @@ export interface ChecklistItem {
 }
 interface ResultSummaryCardProps {
     title?: string
+    panelTitle?: string
     primaryResult: {
         value: string | number
         unit?: string
@@ -54,6 +55,7 @@ interface ResultSummaryCardProps {
 }
 export function ResultSummaryCard({
     title,
+    panelTitle,
     primaryResult,
     secondaryResults,
     currency,
@@ -325,7 +327,7 @@ export function ResultSummaryCard({
                             <ClipboardList className="w-4 h-4 text-blue-600" />
                         </div>
                         <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
-                            Results Panel
+                            Result Panel
                         </span>
                     </div>
 

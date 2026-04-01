@@ -192,7 +192,9 @@ export function formatCurrencyValue(value: number, code: string, maximumFraction
             minimumFractionDigits: maximumFractionDigits,
             maximumFractionDigits: maximumFractionDigits
         });
-        return `${found.symbol} ${formatter.format(value)}`;
+        const isNegative = value < 0;
+        const absValue = Math.abs(value);
+        return `${isNegative ? '-' : ''}${found.symbol}${formatter.format(absValue)}`;
     }
 
     try {

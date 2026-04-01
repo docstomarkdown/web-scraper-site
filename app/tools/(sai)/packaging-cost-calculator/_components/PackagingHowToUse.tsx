@@ -5,20 +5,21 @@ import { Package, Clock, BarChart2 } from "lucide-react";
 export function PackagingHowToUse() {
     return (
         <ToolSteps
+            title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Enter Your Material Costs",
-                    description: "Input the per-unit cost of your box or mailer. Add optional materials like padding, tape, labels, and branding inserts if you use them.",
+                    title: "Enter Base Costs",
+                    description: "Input the unit cost of your packaging (box/mailer) plus the manual packing time and hourly labor rate.",
                     icon: Package
                 },
                 {
-                    title: "Add Your Labor Rate",
-                    description: "Enter how many minutes it takes to pack one order and your hourly wage (or the rate you'd pay someone else). This calculates a precise labor cost per package.",
+                    title: "Add Optional Extras",
+                    description: "Include extra materials like padding, tape, labels, and branding inserts for a precise per-order cost.",
                     icon: Clock
                 },
                 {
-                    title: "Review Your True Cost",
-                    description: "See your total packaging cost per unit, your material vs. labor split, and the full batch total — so you can price products and scale with confidence.",
+                    title: "View Cost Breakdown",
+                    description: "Instantly see the true total cost per unit, with a visual split between materials, labor, and extras.",
                     icon: BarChart2
                 }
             ]}

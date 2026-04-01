@@ -5,48 +5,39 @@ import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer } from "rechart
 import { PieChart } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-interface MercariFeeBreakdownProps {
-    price: number;
-    cost: number;
-    ship: number;
-    other: number;
-    sellingFee: number;
-    processingFee: number;
+interface ACoSBreakdownProps {
+    revenue: number;
+    spend: number;
+    cogs: number;
     netProfit: number;
     currency?: string;
     className?: string;
 }
 
-export function MercariFeeBreakdown({
-    price,
-    cost,
-    ship,
-    other,
-    sellingFee,
-    processingFee,
+export function ACoSBreakdown({
+    revenue,
+    spend,
+    cogs,
     netProfit,
     currency = "USD",
     className
-}: MercariFeeBreakdownProps) {
+}: ACoSBreakdownProps) {
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 2 }).format(val)
 
-    const pieTotal = price;
+    const pieTotal = revenue;
     const calcPct = (val: number) => (pieTotal > 0 ? (val / pieTotal) * 100 : 0)
 
     const rawData = [
         { name: netProfit >= 0 ? "Net Profit" : "Net Loss", value: netProfit, color: "#10b981", isCost: false, isMandatory: true },
-        { name: "Mercari Fee", value: sellingFee, color: "#f43f5e", isCost: true, isMandatory: true },
-        { name: "Processing Fee", value: processingFee, color: "#f59e0b", isCost: true, isMandatory: true },
-        { name: "Item Cost", value: cost, color: "#3b82f6", isCost: true, isMandatory: false },
-        { name: "Shipping Cost", value: ship, color: "#8b5cf6", isCost: true, isMandatory: false },
-        { name: "Other Expenses", value: other, color: "#0ea5e9", isCost: true, isMandatory: false }
+        { name: "Product Costs", value: cogs, color: "#94a3b8", isCost: true, isMandatory: true },
+        { name: "Ad Spend", value: spend, color: "#3b82f6", isCost: true, isMandatory: true }
     ]
 
     const pieData = rawData.filter(i => i.value > 0)
 
     const legendItems = rawData
-        .filter(item => item.isMandatory || item.value > 0)
+        .filter(item => item.isMandatory || Math.abs(item.value) > 0)
         .map(item => ({
             label: item.name,
             value: item.value,
@@ -67,7 +58,7 @@ export function MercariFeeBreakdown({
                     <PieChart className="w-3.5 h-3.5 text-blue-600" />
                 </div>
                 <h2 className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
-                    Cost Breakdown
+                    Revenue Breakdown
                 </h2>
             </div>
 
@@ -101,7 +92,7 @@ export function MercariFeeBreakdown({
                     {pieTotal > 0 && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span className="text-[10px] sm:text-[11px] font-medium text-slate-400 text-center leading-tight mb-0.5 mt-0.5">
-                                Sale Price
+                                Ad Revenue
                             </span>
                             <span className="text-[11px] sm:text-[13px] font-bold text-slate-900 tracking-tight">
                                 {formatCurrency(pieTotal)}
@@ -131,7 +122,7 @@ export function MercariFeeBreakdown({
                                         {item.label}
                                     </span>
                                 </div>
-                                <div className="flex items-center shrink-0">
+                                <div className="flex items-center flex-1 justify-end shrink-0">
                                     <span className={cn(
                                         "text-[12px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[50px]",
                                         item.isCost ? "text-slate-500" : (!isPositive ? "text-rose-600" : "text-emerald-600")

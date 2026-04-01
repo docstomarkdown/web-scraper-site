@@ -73,7 +73,7 @@ export function PODProfitBreakdown({
             
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full">
                 {/* Left: Chart */}
-                <div className="h-[140px] w-[140px] sm:h-[160px] sm:w-[160px] relative shrink-0">
+                <div className="h-[120px] w-[120px] sm:h-[140px] sm:w-[140px] relative shrink-0">
                     {pieTotal > 0 ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <RechartsPie>
@@ -81,8 +81,8 @@ export function PODProfitBreakdown({
                                     data={pieData}
                                     cx="50%"
                                     cy="50%"
-                                    innerRadius={50}
-                                    outerRadius={70}
+                                    innerRadius={45}
+                                    outerRadius={60}
                                     paddingAngle={3}
                                     dataKey="value"
                                     stroke="none"
@@ -101,10 +101,10 @@ export function PODProfitBreakdown({
                     {/* Center Label */}
                     {pieTotal > 0 && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span className="text-[10px] sm:text-[11px] font-medium text-slate-400 text-center leading-tight mb-0.5">
+                            <span className="text-[10px] sm:text-[11px] font-medium text-slate-400 text-center leading-tight mb-0.5 mt-0.5">
                                 {isProfitable ? "Total Revenue" : "Total Costs"}
                             </span>
-                            <span className="text-[12px] sm:text-[14px] font-bold text-slate-900 tracking-tight">
+                            <span className="text-[11px] sm:text-[13px] font-bold text-slate-900 tracking-tight">
                                 {formatCurrency(pieTotal)}
                             </span>
                         </div>
