@@ -1,26 +1,27 @@
 "use client";
-import { ToolSteps } from "@/app/tools/_shared/components";
-import { BarChart, History, Calculator } from "lucide-react";
+import { ToolSteps } from "@/app/tools/_shared/components/ToolSteps";
+import { TrendingUp, BarChart3, ShieldCheck } from "lucide-react";
+
 export function SafetyStockHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Max Load",
-                    description: "Enter highly stressed worst-case scenarios encompassing peak unpredicted consumer demand and longest factory lag.",
-                    icon: History
+                    title: "Enter Worst-Case Data",
+                    description: "Input the highest daily sales you have ever seen and the longest lead time your supplier has taken. Use peak season or holiday data for accuracy.",
+                    icon: TrendingUp
                 },
                 {
-                    title: "Avg Baseline",
-                    description: "Input explicitly completely normal unproblematic tested supplier shipping times balanced against average regular daily flow.",
-                    icon: BarChart
+                    title: "Add Normal Baseline",
+                    description: "Enter your typical daily sales average and the usual number of days it takes for stock to arrive. A 30 to 60-day rolling average works best.",
+                    icon: BarChart3
                 },
                 {
-                    title: "Set Buffer",
-                    description: "Instantly guarantee exact minimal numeric inventory overflow bounds structurally required blocking destructive inventory outages.",
-                    icon: Calculator
+                    title: "Review Safety Buffer",
+                    description: "The calculator subtracts normal demand from worst-case demand to give you the exact number of extra units to always keep on hand.",
+                    icon: ShieldCheck
                 }
             ]}
         />
     );
-}
+}

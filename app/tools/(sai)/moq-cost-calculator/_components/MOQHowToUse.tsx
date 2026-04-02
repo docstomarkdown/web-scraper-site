@@ -1,26 +1,27 @@
 "use client";
 import { ToolSteps } from "@/app/tools/_shared/components/ToolSteps";
-import { Calculator, DollarSign, PackageSearch } from "lucide-react";
+import { Tag, Truck, ShieldAlert } from "lucide-react";
+
 export function MOQHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "MOQ Target",
-                    description: "Enter the required vendor Minimum Order Quantity plus single piece discount cost.",
-                    icon: Calculator
+                    title: "Enter Supplier Details",
+                    description: "Input the cost per unit and the Minimum Order Quantity required by the manufacturer.",
+                    icon: Tag
                 },
                 {
-                    title: "Holding Debt",
-                    description: "Input variable cumulative storage operational costs generated holding vast capacity.",
-                    icon: DollarSign
+                    title: "Add Logistics Costs",
+                    description: "Include shipping cost, duties, and any other costs for an accurate landed cost.",
+                    icon: Truck
                 },
                 {
-                    title: "Check Reality",
-                    description: "Analyze mathematically if the specific volume price cut beats massive storage drains.",
-                    icon: PackageSearch
+                    title: "Review Investment Risk",
+                    description: "Analyze your total upfront investment and inventory coverage duration based on expected sales.",
+                    icon: ShieldAlert
                 }
             ]}
         />
     );
-}
+}

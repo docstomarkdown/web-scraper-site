@@ -1,11 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalculatorInput } from "@/app/tools/_shared/components/CalculatorInput";
-import { ResultFeedbackCard } from "@/app/tools/_shared/components/ResultFeedbackCard";
+import { ResultSummaryCard } from "@/app/tools/_shared/components/ResultSummaryCard";
 import { FadeIn } from "@/app/tools/_shared/components/FadeIn";
-import { AlertTriangle } from "lucide-react";
-import { CalculatorCardHeader } from "@/app/tools/_shared/components";
+import { AlertTriangle, Tag, Truck, TrendingUp, Package, Calculator } from "lucide-react";
+import { CalculatorCardHeader } from "@/app/tools/_shared/components/CalculatorCardHeader";
+import { MOQBreakdown } from "./MOQBreakdown";
+
 export function MOQCalculator() {
     const [currency, setCurrency] = useState("USD");
     const [unitPrice, setUnitPrice] = useState<number | "">("");
@@ -13,6 +15,7 @@ export function MOQCalculator() {
     const [shippingCost, setShippingCost] = useState<number | "">("");
     const [miscCost, setMiscCost] = useState<number | "">("");
     const [monthlySales, setMonthlySales] = useState<number | "">("");
+
     const handleReset = () => {
         setUnitPrice("");
         setMoq("");
@@ -20,21 +23,9 @@ export function MOQCalculator() {
         setMiscCost("");
         setMonthlySales("");
     }
-    const currencySymbols: Record<string, string> = {
-        USD: '$', EUR: '€', GBP: '£', INR: '₹', AUD: 'A$', CAD: 'C$', JPY: '¥', CNY: '¥',
-        AED: 'AED', SGD: 'S$', HKD: 'HK$', CHF: 'Fr', MXN: 'MX$', BRL: 'R$', KRW: '₩',
-        RUB: '₽', ZAR: 'R', SEK: 'kr', NOK: 'kr', DKK: 'kr', PLN: 'zł', THB: '฿',
-        IDR: 'Rp', MYR: 'RM', PHP: '₱', VND: '₫', TRY: '₺', SAR: '﷼', NZD: 'NZ$',
-        EGP: 'E£', PKR: '₨', BDT: '৳', NGN: '₦', KES: 'KSh'
-    };
-    const symbol = currencySymbols[currency] || "$";
-    const formatCurrency = (val: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: currency,
-            maximumFractionDigits: 2
-        }).format(val);
-    };
+
+    const val = (v: number | "") => (v === "" ? 0 : v);
+
     const [totalInvestment, setTotalInvestment] = useState<number>(0);
     const [effectiveCostPerUnit, setEffectiveCostPerUnit] = useState<number>(0);
     const [monthsInventory, setMonthsInventory] = useState<number>(0);
@@ -43,160 +34,187 @@ export function MOQCalculator() {
         text: string;
         color: string;
     }>({ level: "neutral", text: "Enter details", color: "text-slate-400" });
+
     useEffect(() => {
-        const p = unitPrice === "" ? 0 : unitPrice;
-        const m = moq === "" ? 0 : moq;
-        const s = shippingCost === "" ? 0 : shippingCost;
-        const c = miscCost === "" ? 0 : miscCost;
-        const v = monthlySales === "" ? 0 : monthlySales;
+        const p = val(unitPrice);
+        const m = val(moq);
+        const s = val(shippingCost);
+        const c = val(miscCost);
+        const v = val(monthlySales);
+
         // 1. Total Investment
         const investment = (p * m) + s + c;
         setTotalInvestment(investment);
+
         // 2. Effective Cost Per Unit
         if (m > 0) {
             setEffectiveCostPerUnit(investment / m);
         } else {
             setEffectiveCostPerUnit(0);
         }
+
         // 3. Months of Inventory & Risk
         if (v > 0 && m > 0) {
             const months = m / v;
             setMonthsInventory(months);
             if (months <= 3) {
-                setRiskAssessment({ level: "good", text: "Low Risk", color: "text-blue-400" });
+                setRiskAssessment({ level: "good", text: "Low Risk", color: "text-blue-500" });
             } else if (months <= 6) {
-                setRiskAssessment({ level: "neutral", text: "Moderate Risk", color: "text-yellow-400" });
+                setRiskAssessment({ level: "neutral", text: "Moderate Risk", color: "text-amber-500" });
             } else {
-                setRiskAssessment({ level: "bad", text: "High Risk", color: "text-rose-400" });
+                setRiskAssessment({ level: "bad", text: "High Risk", color: "text-rose-500" });
             }
         } else {
             setMonthsInventory(0);
             setRiskAssessment({ level: "neutral", text: "Enter Sales", color: "text-slate-400" });
         }
     }, [unitPrice, moq, shippingCost, miscCost, monthlySales]);
+
+    const isCalculated = val(unitPrice) > 0 && val(moq) > 0;
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-3">
-                    <Card className="border border-slate-200 shadow-sm bg-white">
+                <div className="lg:col-span-7 space-y-3 lg:sticky lg:top-8">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
+                            title="MOQ Details"
                             description="Enter your supplier pricing, shipping, and sales data."
                             onReset={handleReset}
                             currency={currency}
                             onCurrencyChange={setCurrency}
                         />
                         <CardContent className="space-y-3 pt-6">
-                            <CalculatorInput
-                                label={`Unit Price (${symbol})`}
-                                value={unitPrice}
-                                onChange={setUnitPrice}
-                                placeholder="0.00"
-                                tooltip="The cost per single unit from your supplier."
-                            />
-                            <CalculatorInput
-                                label="Minimum Order Quantity (MOQ)"
-                                value={moq}
-                                onChange={setMoq}
-                                placeholder="0"
-                                tooltip="The minimum number of units you must purchase."
-                            />
-                            <CalculatorInput
-                                label={`Total Shipping Cost (${symbol})`}
-                                value={shippingCost}
-                                onChange={setShippingCost}
-                                placeholder="0.00"
-                                tooltip="Freight, sea shipping, or air courier costs for the entire batch."
-                            />
-                            <CalculatorInput
-                                label={`Miscellaneous Costs (${symbol})`}
-                                value={miscCost}
-                                onChange={setMiscCost}
-                                placeholder="0.00"
-                                tooltip="Customs duties, inspection fees, or other one-time batch costs."
-                            />
-                            <CalculatorInput
-                                label="Est. Monthly Sales Velocity"
-                                value={monthlySales}
-                                onChange={setMonthlySales}
-                                placeholder="0"
-                                tooltip="How many units you expect to sell per month."
-                            />
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full">
+                                <CalculatorInput
+                                    hideSeparator={true}
+                                    groupingTitle="Supplier Details"
+                                    groupingIcon={Tag}
+                                    label="Cost per Unit"
+                                    value={unitPrice}
+                                    isCurrency
+                                    currency={currency}
+                                    onChange={setUnitPrice}
+                                    placeholder="10.00"
+                                    tooltip="Price of one product from your supplier"
+                                />
+                                <CalculatorInput
+                                    label="Minimum Order Quantity (MOQ)"
+                                    value={moq}
+                                    onChange={setMoq}
+                                    placeholder="500"
+                                    tooltip="Minimum number of units you must buy"
+                                />
+                            </div>
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full pt-2">
+                                <CalculatorInput
+                                    groupingTitle="Additional Costs"
+                                    groupingIcon={Truck}
+                                    label="Shipping Cost"
+                                    isOptional
+                                    isCurrency
+                                    currency={currency}
+                                    value={shippingCost}
+                                    onChange={setShippingCost}
+                                    placeholder="0.00"
+                                    tooltip="Total shipping cost for the order"
+                                />
+                                <CalculatorInput
+                                    label="Other Costs"
+                                    isOptional
+                                    isCurrency
+                                    currency={currency}
+                                    value={miscCost}
+                                    onChange={setMiscCost}
+                                    placeholder="0.00"
+                                    tooltip="Extra costs like customs, packaging, or fees"
+                                />
+                            </div>
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full pt-2">
+                                <CalculatorInput
+                                    groupingTitle="Sales Velocity"
+                                    groupingIcon={TrendingUp}
+                                    label="Monthly Sales (Units)"
+                                    value={monthlySales}
+                                    onChange={setMonthlySales}
+                                    isOptional
+                                    placeholder="150"
+                                    tooltip="Number of units you expect to sell per month"
+                                />
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
+
                 {/* Results Section */}
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="Total Upfront Investment"
-                        titleLabel="Landed Cost"
-                        labelClassName="bg-blue-500/10 text-blue-400"
-                        mainValue={formatCurrency(totalInvestment)}
-                        valueColor="text-white"
-                        secondaryMetrics={[
+                    <ResultSummaryCard
+                        primaryResult={{
+                            value: totalInvestment,
+                            isCurrency: true,
+                            label: "Total Investment",
+                            key: "totalInvestment",
+                        }}
+                        secondaryResults={[
                             {
-                                label: "Inventory Coverage",
+                                key: "effectiveCostPerUnit",
+                                label: "Landed Cost per Unit",
+                                value: effectiveCostPerUnit,
+                                isCurrency: true,
+                                icon: Calculator,
+                                tooltip: "Real cost per product including shipping and extra charges"
+                            },
+                            {
+                                key: "inventoryCoverage",
+                                label: "Inventory Coverage (Months)",
                                 value: `${monthsInventory.toFixed(1)} Months`,
-                                color: riskAssessment.color,
-                            },
-                            {
-                                label: "Risk Level",
-                                value: riskAssessment.text,
-                                color: riskAssessment.color,
-                            },
+                                icon: Package,
+                                tooltip: "How long your stock will last based on your monthly sales"
+                            }
                         ]}
-                    />
+                        currency={currency}
+                        isCalculated={isCalculated}
+                        emptyMessage="Total Investment"
+                        liveBadgeText={riskAssessment.level === "good" ? "Low Risk" : riskAssessment.level === "bad" ? "High Risk" : riskAssessment.level === "neutral" && isCalculated ? "Moderate Risk" : "Review Inputs"}
+                        liveBadgeColor={riskAssessment.level === "good" ? "blue" : riskAssessment.level === "bad" ? "rose" : riskAssessment.level === "neutral" && isCalculated ? "amber" : "amber"}
+                    >
+                        <FadeIn delay={0.1}>
+                            <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] space-y-3 mt-4">
+                                <div className="flex items-start gap-3">
+                                    <AlertTriangle className={`w-5 h-5 mt-0.5 ${riskAssessment.level === "bad" ? "text-rose-500" : riskAssessment.level === "good" ? "text-blue-500" : "text-amber-500"}`} />
+                                    <div>
+                                        <h4 className="font-semibold text-slate-800 mb-1">
+                                            Investment Insight
+                                        </h4>
+                                        <p className="text-sm text-slate-600 leading-relaxed">
+                                            {isCalculated && val(monthlySales) > 0 ? (
+                                                riskAssessment.level === "bad"
+                                                    ? <><strong>{moq} units</strong> covers <strong>{monthsInventory.toFixed(1)} months</strong> of stock — too long. Cash is locked up; negotiate a lower MOQ.</>
+                                                    : riskAssessment.level === "good"
+                                                        ? <><strong>{moq} units</strong> covers <strong>{monthsInventory.toFixed(1)} months</strong> of stock — healthy range. Cash flow looks efficient.</>
+                                                        : <><strong>{moq} units</strong> covers <strong>{monthsInventory.toFixed(1)} months</strong> of stock — moderate. Monitor sales to avoid tying up capital.</>
+                                            ) : <>Enter your costs and monthly sales to see an investment risk summary.</>}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </FadeIn>
+                    </ResultSummaryCard>
+
                     {/* Breakdown Card */}
-                    {totalInvestment > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                            <div className="px-5 py-3.5 border-b border-slate-100">
-                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Investment Breakdown</p>
-                            </div>
-                            <div className="divide-y divide-slate-100">
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Product Cost</span>
-                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency((unitPrice === "" ? 0 : unitPrice) * (moq === "" ? 0 : moq))}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Total Shipping</span>
-                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(shippingCost === "" ? 0 : shippingCost)}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Misc Costs</span>
-                                    <span className="text-sm font-semibold text-slate-800">{formatCurrency(miscCost === "" ? 0 : miscCost)}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-4 bg-slate-50/50">
-                                    <span className="text-sm font-bold text-slate-900">Effective Cost Per Unit</span>
-                                    <span className="text-base font-bold text-blue-600">{formatCurrency(effectiveCostPerUnit)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter MOQ details to calculate investment.</p>
-                        </div>
-                    )}
-                    {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                        <div className="flex items-start gap-3">
-                            <AlertTriangle className={`w-5 h-5 mt-0.5 ${riskAssessment.level === "bad" ? "text-rose-500" : riskAssessment.level === "good" ? "text-blue-500" : "text-amber-500"}`} />
-                            <div>
-                                <h4 className="font-semibold text-slate-800 mb-1">
-                                    Investment Insight
-                                </h4>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    {riskAssessment.level === "bad"
-                                        ? <>This Minimum Order Quantity (MOQ) of <strong>{moq} units</strong> covers <strong>{monthsInventory.toFixed(1)} months</strong> of sales. This ties up cash and increases storage fees. Consider negotiating a lower Minimum Order Quantity (MOQ).</>
-                                        : riskAssessment.level === "good"
-                                            ? <>This Minimum Order Quantity (MOQ) of <strong>{moq || 0} units</strong> is a healthy order size at <strong>{monthsInventory.toFixed(1)} months</strong> of coverage. Your cash flow turnover looks efficient.</>
-                                            : <>Enter your supplier costs and estimated monthly sales to see a full investment risk analysis.</>
-                                    }
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <FadeIn delay={0.2}>
+                        <MOQBreakdown
+                            unitPrice={val(unitPrice)}
+                            moq={val(moq)}
+                            shippingCost={val(shippingCost)}
+                            miscCost={val(miscCost)}
+                            totalInvestment={totalInvestment}
+                            currency={currency}
+                        />
+                    </FadeIn>
                 </div>
             </div>
         </FadeIn>
     );
-}
+}

@@ -1,45 +1,46 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { BarChart, DollarSign, MousePointer } from "lucide-react"
+import { BarChart2, DollarSign, MousePointerClick, TrendingUp } from "lucide-react"
+
 export function PPCBidGuide() {
     return (
         <ToolGuide
-            title="Understanding Pay-Per-Click (PPC) Bidding"
-            icon={BarChart}
+            title="Understanding PPC Bid Strategy"
+            icon={BarChart2}
             items={[
                 {
-                    title: "What is a PPC Bid?",
-                    description: "A Pay-Per-Click (PPC) bid is the maximum amount you are willing to pay for a click on your ad. Your bid determines where and how often your ad is shown.",
+                    title: "How PPC Bidding Works",
+                    description: "Your PPC bid is the maximum amount you're willing to pay for a single click on your ad. It directly controls ad placement and spend velocity—bid too low and you lose impressions, bid too high and your margins shrink fast.",
                     icon: DollarSign,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
                     stat: "Max CPC",
                     statColor: "text-blue-600",
-                    statLabel: "Bid Control",
-                    tooltip: "The ceiling for your ad spend per click."
+                    statLabel: "Your bid ceiling",
+                    tooltip: "Controls cost per click and overall ad visibility."
                 },
                 {
-                    title: "Optimal Bid Logic",
-                    description: "The formula (Price × CR × Target ACoS) ensures your bids remain perfectly aligned with your business goals and conversion efficiency.",
-                    icon: MousePointer,
+                    title: "The Bid Formula",
+                    description: "The optimal bid is Product Price × Conversion Rate × Target ACoS. If you don't have a specific target, using 75% of your profit margin provides a safe, conservative bidding baseline.",
+                    icon: MousePointerClick,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
-                    stat: "Calculated",
+                    stat: "Data-Driven",
                     statColor: "text-blue-600",
-                    statLabel: "Data Driven",
-                    tooltip: "Math over guesswork."
+                    statLabel: "Math over guesswork",
+                    tooltip: "Formula-based bidding eliminates arbitrary decisions."
                 },
                 {
-                    title: "Strategic Impact",
-                    description: "Winning the right bids at the right price balances visibility and profit. Higher bids increase traffic, but optimized bids increase ROAS.",
-                    icon: BarChart,
+                    title: "Profitability & Scale",
+                    description: "Know your break-even point: Price × Conversion Rate × Profit Margin. Bidding above this ceiling will erode your profit and potentially lead to a loss on every sale generated from ads.",
+                    icon: TrendingUp,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
                     stat: "ROAS+",
                     statColor: "text-amber-600",
-                    statLabel: "Profit Focus",
+                    statLabel: "Profit-first approach",
                 }
             ]}
         />
     )
-}
+}
