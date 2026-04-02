@@ -1,26 +1,27 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Calculator, Target, BarChart2 } from "lucide-react"
+import { DollarSign, Target, MousePointerClick } from "lucide-react"
+
 export function PPCBidHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Target Cost",
-                    description: "Enter strictly the highest acceptable percentage ceiling for advertising cost of sales.",
-                    icon: Calculator
+                    title: "Enter Product Data",
+                    description: "Input your selling price, conversion rate, and profit margin to define your profitability limits.",
+                    icon: DollarSign
                 },
                 {
-                    title: "Sale Impact",
-                    description: "Input exactly the product listed ticket cost and expected historically accurate ad conversion.",
-                    icon: BarChart2
-                },
-                {
-                    title: "Get Max Bid",
-                    description: "Instantly locate the numerical optimal maximum safe CPC bid preserving positive cashflow.",
+                    title: "Define Campaign Goals",
+                    description: "Add an optional Target ACoS to refine your bid recommendations based on specific ad spend targets.",
                     icon: Target
+                },
+                {
+                    title: "Receive Recommended Bid",
+                    description: "Instantly see your maximum recommended cost-per-click and the exact point where you'll break even.",
+                    icon: MousePointerClick
                 }
             ]}
         />
     )
-}
+}

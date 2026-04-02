@@ -1,26 +1,27 @@
-"use client"
-import { ToolSteps } from "@/app/tools/_shared/components"
-import { Package, Ship, Calculator } from "lucide-react"
+"use client";
+import { ToolSteps } from "@/app/tools/_shared/components/ToolSteps";
+import { Package, Ship, TrendingDown } from "lucide-react";
+
 export function LandedCostHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Base Cost",
-                    description: "Enter the absolute pure manufacturing or bulk factory invoice price per exact item.",
+                    title: "Enter Order Details",
+                    description: "Input your supplier's cost per unit and the total number of units in your shipment. These two values form the base of the calculation.",
                     icon: Package
                 },
                 {
-                    title: "Extra Debt",
-                    description: "Input combined freight charges, global customs tariffs, cargo insurance, and tax.",
+                    title: "Add Shipping Costs",
+                    description: "Include international freight, cargo insurance, your customs duty rate, and any extra fees like brokerage or port handling. Every cost counts.",
                     icon: Ship
                 },
                 {
-                    title: "Check Price",
-                    description: "Instantly formulate the actual true final monetary cost physically arriving dockside.",
-                    icon: Calculator
+                    title: "Review True Cost",
+                    description: "The calculator divides all costs evenly across your order to show the real landed cost per unit — the only price to use when setting margins.",
+                    icon: TrendingDown
                 }
             ]}
         />
-    )
-}
+    );
+}

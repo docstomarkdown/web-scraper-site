@@ -1,26 +1,27 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { DollarSign, Scale, TrendingUp } from "lucide-react"
+import { Building2, Tag, Target } from "lucide-react"
+
 export function BreakEvenHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Fixed Costs",
-                    description: "Enter firm overhead expenses like building rent, salaries, and systems.",
-                    icon: DollarSign
+                    title: "Input Business Overheads",
+                    description: "Enter your total fixed costs like rent, software, and salaries that don't change with sales.",
+                    icon: Building2
                 },
                 {
-                    title: "Variable Cost",
-                    description: "Input the base per-unit financial cost to build or acquire your goods.",
-                    icon: Scale
+                    title: "Enter Unit Economics",
+                    description: "Add your planned selling price and the variable costs to produce or ship one single unit.",
+                    icon: Tag
                 },
                 {
-                    title: "Target Check",
-                    description: "Instantly project the exact unit sales volume needed to hit zero loss.",
-                    icon: TrendingUp
+                    title: "Review Target Volume",
+                    description: "Instantly see the exact number of units you need to sell to cover all costs and start profiting.",
+                    icon: Target
                 }
             ]}
         />
     )
-}
+}
