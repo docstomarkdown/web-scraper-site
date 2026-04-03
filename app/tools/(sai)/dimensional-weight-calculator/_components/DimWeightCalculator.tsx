@@ -15,7 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Info, Box, Scale, Ruler } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn } from "@/app/tools/_shared/components"
+import { ResultSummaryCard } from "@/app/tools/_shared/components/ResultSummaryCard"
+import { DimWeightBreakdown } from "./DimWeightBreakdown"
 export function DimWeightCalculator() {
     const [length, setLength] = useState<number | "">("");
     const [width, setWidth] = useState<number | "">("");
@@ -81,21 +83,21 @@ export function DimWeightCalculator() {
                                     value={length}
                                     onChange={setLength}
                                     placeholder="0"
-                                    tooltip="The longest side of the package."
+                                    tooltip="Longest side of your package."
                                 />
                                 <CalculatorInput
                                     label={`Width (${dimUnit})`}
                                     value={width}
                                     onChange={setWidth}
                                     placeholder="0"
-                                    tooltip="The width of the package."
+                                    tooltip="Width of your package."
                                 />
                                 <CalculatorInput
                                     label={`Height (${dimUnit})`}
                                     value={height}
                                     onChange={setHeight}
                                     placeholder="0"
-                                    tooltip="The height of the package."
+                                    tooltip="Height of your package."
                                 />
                                 {/* Custom Select for Divisor to match CalculatorInput style slightly */}
                                 {/* DIM Divisor Selection - Optimized Design */}
@@ -167,7 +169,7 @@ export function DimWeightCalculator() {
                                     value={actualWeight}
                                     onChange={setActualWeight}
                                     placeholder="0"
-                                    tooltip="The actual physical weight of the package on a scale."
+                                    tooltip="Physical weight on a scale."
                                 />
                             </CardContent>
                         </Card>
@@ -175,98 +177,51 @@ export function DimWeightCalculator() {
                 </div>
                 {/* Right Column: Results */}
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-3">
-                        <ResultFeedbackCard
-                            title="Billable Weight"
-                            mainValue={
-                                <div className="flex items-baseline gap-1">
-                                    <Counter value={billableWeight} />
-                                    <span className="text-2xl font-normal opacity-80">{weightUnit === "lb" ? "lbs" : "kg"}</span>
-                                </div>
+                    <ResultSummaryCard
+                        primaryResult={{
+                            value: billableWeight,
+                            unit: weightUnit === "lb" ? "lbs" : "kg",
+                            label: "Billable Weight",
+                            key: "billableWeight",
+                        }}
+                        secondaryResults={[
+                            {
+                                key: "actualWeight",
+                                label: "Actual Weight",
+                                value: actualWeight || 0,
+                                unit: weightUnit === "lb" ? "lbs" : "kg",
+                                tooltip: "The physical weight of the package on a scale."
+                            },
+                            {
+                                key: "dimWeight",
+                                label: "Dimensional Weight",
+                                value: dimWeight,
+                                unit: weightUnit === "lb" ? "lbs" : "kg",
+                                tooltip: "Calculated based on volume ÷ DIM Divisor."
                             }
-                            valueColor="text-white"
-                            secondaryMetrics={[
-                                {
-                                    label: "Dimensional Weight",
-                                    value: <><Counter value={dimWeight} /> {weightUnit === "lb" ? "lbs" : "kg"}</>,
-                                    color: "text-blue-200"
-                                }
-                            ]}
-                        />
-                        {/* Breakdown Card */}
-                        {(dimWeight > 0 || actualWeight !== "") ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                                <div className="px-5 py-3.5 border-b border-slate-100">
-                                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Weight Breakdown</p>
-                                </div>
-                                <div className="divide-y divide-slate-100">
-                                    <div className="flex justify-between items-center px-5 py-3.5">
-                                        <span className="text-sm text-slate-600">Actual Weight</span>
-                                        <span className="text-sm font-semibold text-slate-800">
-                                            {actualWeight || 0} {weightUnit === "lb" ? "lbs" : "kg"}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between items-center px-5 py-3.5">
-                                        <span className="text-sm text-slate-600">Dimensional Weight</span>
-                                        <span className="text-sm font-semibold text-slate-800">
-                                            {dimWeight} {weightUnit === "lb" ? "lbs" : "kg"}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between items-center px-5 py-3.5">
-                                        <span className="text-sm text-slate-600">DIM Divisor Used</span>
-                                        <span className="text-sm font-semibold text-slate-800">
-                                            ÷ {divisor}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between items-center px-5 py-4">
-                                        <span className="text-sm font-bold text-blue-600">Billable Weight</span>
-                                        <span className="text-base font-bold text-blue-600">
-                                            {billableWeight} {weightUnit === "lb" ? "lbs" : "kg"}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                                <p className="text-sm text-slate-400">Enter package details to see breakdown.</p>
-                            </div>
-                        )}
-                        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed">
+                        ]}
+                        isCalculated={dimWeight > 0 || actualWeight !== ""}
+                        emptyMessage="Billable Weight"
+                        validationBadgeText={{ valid: "Calculated", invalid: "Pending" }}
+                    >
+                        {/* Information inside the card */}
+                        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-sm text-slate-600 leading-relaxed mt-2 mx-5 mb-5">
                             Carriers charge based on the <strong>greater</strong> of Actual Weight or Dimensional Weight.
                             In this case, you will be billed for <strong>{billableWeight} {weightUnit === "lb" ? "lbs" : "kg"}</strong>.
                         </div>
+                    </ResultSummaryCard>
+
+                    {/* Breakdown Chart */}
+                    <FadeIn delay={0.1}>
+                        <DimWeightBreakdown
+                            actualWeight={Number(actualWeight) || 0}
+                            dimWeight={dimWeight}
+                            billableWeight={billableWeight}
+                            weightUnit={weightUnit === "lb" ? "lbs" : "kg"}
+                        />
                     </FadeIn>
                 </div>
             </div>
         </FadeIn>
     );
-}
-function ResultCard({ title, value, icon: Icon, tooltip }: { title: string, value: React.ReactNode, icon: any, tooltip?: string }) {
-    return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-            <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                    <p className="text-xs font-semibold text-slate-500">{title}</p>
-                    {tooltip && (
-                        <TooltipProvider delayDuration={100}>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button type="button" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                        <Info className="h-3 w-3" />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                    {tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                </div>
-                <p className="text-lg font-bold text-slate-800">{value}</p>
-            </div>
-            <div className="bg-slate-50 p-2 rounded-lg text-slate-400">
-                <Icon className="w-5 h-5" />
-            </div>
-        </div>
-    )
 }
