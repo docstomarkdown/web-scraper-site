@@ -102,7 +102,6 @@ export function BreakEvenCalculator() {
                             unit: "units",
                             label: "Break-even Units",
                             key: "breakEvenUnits",
-                            tooltip: "Number of units you need to sell to cover all costs",
                         }}
                         secondaryResults={[
                             {
