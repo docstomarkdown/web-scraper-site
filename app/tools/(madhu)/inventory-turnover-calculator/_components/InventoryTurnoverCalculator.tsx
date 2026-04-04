@@ -6,17 +6,8 @@ import {
     ResultSummaryCard,
     FadeIn
 } from "@/app/tools/_shared/components"
+import { CalendarDays, Boxes } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-
-const CURRENCY_SYMBOLS: Record<string, string> = {
-    USD: "$",
-    EUR: "€",
-    GBP: "£",
-    CAD: "C$",
-    AUD: "A$",
-    JPY: "¥",
-    INR: "₹",
-}
 
 interface TurnoverState {
     cogs: string | number
@@ -89,7 +80,6 @@ export function InventoryTurnoverCalculator() {
     }, [values, hasInputs])
 
     const handleReset = () => setValues(DEFAULT_STATE)
-    const currencySymbol = CURRENCY_SYMBOLS[values.currency] || "$"
 
     return (
         <div className="max-w-6xl mx-auto">
@@ -114,23 +104,23 @@ export function InventoryTurnoverCalculator() {
                                         onChange={(v) => handleInputChange('cogs', v)}
                                         placeholder="150000"
                                         tooltip="The total cost of all products sold during the period. Found on your Income Statement."
-                                        prefix={currencySymbol}
+                                        currency={values.currency}
                                     />
                                     <CalculatorInput
-                                        label="Opening Stock Value"
+                                        label="Opening Inventory"
                                         value={values.beginningInventory}
                                         onChange={(v) => handleInputChange('beginningInventory', v)}
                                         placeholder="25000"
-                                        tooltip="The value of your inventory at the very start of the measurement period."
-                                        prefix={currencySymbol}
+                                        tooltip="The total value of all unsold products (stock) you had in your warehouse at the very beginning of the time period."
+                                        currency={values.currency}
                                     />
                                     <CalculatorInput
-                                        label="Closing Stock Value"
+                                        label="Closing Inventory"
                                         value={values.endingInventory}
                                         onChange={(v) => handleInputChange('endingInventory', v)}
                                         placeholder="35000"
-                                        tooltip="The value of your inventory at the very end of the measurement period."
-                                        prefix={currencySymbol}
+                                        tooltip="The total value of all unsold products (stock) you still had left in your warehouse at the very end of the time period."
+                                        currency={values.currency}
                                     />
                                     <CalculatorInput
                                         label="Analysis Period"
@@ -161,17 +151,19 @@ export function InventoryTurnoverCalculator() {
                             secondaryResults={[
                                 {
                                     key: "dsi",
-                                    label: "Days Sales in Inventory (DSI)",
+                                    label: "Days to Sell Inventory",
                                     value: hasInputs ? results.dsi.toFixed(1) : "0",
                                     unit: "Days",
-                                    tooltip: "How many days of stock you currently hold based on your sales velocity. Lower is generally better."
+                                    tooltip: "How many days of stock you currently hold based on your sales velocity. Lower is generally better.",
+                                    icon: CalendarDays,
                                 },
                                 {
                                     key: "avgInventory",
                                     label: "Average Inventory Value",
                                     value: hasInputs ? results.avgInventory : 0,
                                     isCurrency: true,
-                                    tooltip: "The average value of stock held during this period, calculated as (Opening + Closing Stock) ÷ 2."
+                                    tooltip: "The average value of stock held during this period, calculated as (Opening + Closing Stock) ÷ 2.",
+                                    icon: Boxes,
                                 }
                             ]}
                             currency={values.currency}

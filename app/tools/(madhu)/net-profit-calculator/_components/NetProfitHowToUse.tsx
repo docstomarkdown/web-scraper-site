@@ -4,21 +4,21 @@ import { DollarSign, PieChart, Calculator } from "lucide-react"
 export function NetProfitHowToUse() {
     return (
         <ToolSteps
-            title="Master Your Bottom Line"
+            title="How to Use This Tool"
             steps={[
                 {
-                    title: "Revenue Capture",
-                    description: "Input your <strong>Total Revenue</strong> before any deductions to establish your baseline income.",
+                    title: "Enter Revenue",
+                    description: "Input your <strong>Total Revenue</strong> and <strong>COGS</strong> in the sticky left panel to instantly populate your dashboard baseline.",
                     icon: DollarSign
                 },
                 {
-                    title: "Operational Costs",
-                    description: "Log your <strong>COGS</strong>, marketing spend, and overhead to see what it truly costs to run your business.",
+                    title: "Add Expenses",
+                    description: "Log your marketing spend, overhead, and tax percentage to calculate what it truly costs to run your ongoing business operations.",
                     icon: Calculator
                 },
                 {
-                    title: "Profit Strategy",
-                    description: "Evaluate your <strong>Net Profit</strong> and use the margin breakdown to identify your biggest saving opportunities.",
+                    title: "View Results",
+                    description: "Analyze your <strong>Net Profit</strong> immediately, then click the new <strong>View Income & Expense Breakdown</strong> dropdown in the result card to natively visualize every detailed expense block.",
                     icon: PieChart
                 }
             ]}

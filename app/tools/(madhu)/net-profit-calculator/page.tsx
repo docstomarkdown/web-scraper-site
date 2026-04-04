@@ -1,13 +1,17 @@
 import { Metadata } from "next"
-import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { NetProfitCalculator } from "./_components/NetProfitCalculator"
+import { NetProfitOverview } from "./_components/NetProfitOverview"
 import { NetProfitHowToUse } from "./_components/NetProfitHowToUse"
 import { NetProfitGuide } from "./_components/NetProfitGuide"
 import { CTA } from "@/components/sections/CTA"
+import { Lightbulb } from "lucide-react"
+
 export const metadata: Metadata = {
     title: "Net Profit Calculator - Calculate True Business Profit | Web Scraper.do",
     description: "Calculate your net profit after expenses, ads, overhead, and taxes. Get a clear view of your business bottom line with our free calculator.",
 }
+
 export default function NetProfitCalculatorPage() {
     return (
         <div className="min-h-screen bg-slate-50 pt-32 pb-12">
@@ -18,17 +22,24 @@ export default function NetProfitCalculatorPage() {
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
-                        <NetProfitHowToUse />
+                        <ToolSectionHeader 
+                            title="Tool Essential"
+                            icon={Lightbulb}
+                        />
+                        <NetProfitOverview />
                     </FadeIn>
                     <FadeIn delay={0.3}>
-                        <NetProfitGuide />
+                        <NetProfitHowToUse />
                     </FadeIn>
                     <FadeIn delay={0.4}>
+                        <NetProfitGuide />
+                    </FadeIn>
+                    <FadeIn delay={0.5}>
                         <ToolFAQ
                             faqs={[
                                 {
                                     question: "What is the difference between Gross Profit and Net Profit?",
-                                    answer: "<strong>Gross Profit</strong> is only your Revenue minus COGS (what it costs to make the product). <strong>Net Profit</strong> is the 'True Bottom Line'—it's what remains after subtracting EVERYTHING else, including ads, rent, software, payroll, and taxes. It is your actual take-home pay."
+                                    answer: "<strong>Gross Profit</strong> is only your Revenue minus COGS (what it costs to make the product). <strong>Net Profit</strong> is the 'True Bottom Line'—it's what remains after subtracting everything else, including ads, rent, software, payroll, and taxes. It is your actual take-home pay."
                                 },
                                 {
                                     question: "Should I include my own salary in the overhead costs?",
@@ -41,11 +52,15 @@ export default function NetProfitCalculatorPage() {
                                 {
                                     question: "Why does the tool subtract taxes from the net profit?",
                                     answer: "Many business owners make the mistake of spending 'Operational Profit' before taxes are paid. By subtracting your estimated tax rate, this tool gives you a realistic view of the actual cash you can safely withdraw or reinvest back into the business."
+                                },
+                                {
+                                    question: "How do I use the new Income & Expense Breakdown?",
+                                    answer: "After your net profit is calculated, look for the 'View Income & Expense Breakdown' dropdown near the bottom of the Results Panel. Clicking it will expand an interactive chart and categorized list showing exactly what percentage of your revenue is consumed by each distinct cost block."
                                 }
                             ]}
                         />
                     </FadeIn>
-                    <FadeIn delay={0.5}>
+                    <FadeIn delay={0.6}>
                         <CTA withSectionWrapper={false} />
                     </FadeIn>
                 </div>

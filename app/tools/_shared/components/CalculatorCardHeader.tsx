@@ -56,7 +56,7 @@ export function CalculatorCardHeader({
                                     type="button"
                                     tabIndex={-1}
                                     onClick={scrollToGuide}
-                                    className="text-slate-300 hover:text-blue-500 transition-colors flex-shrink-0"
+                                    className="text-slate-400 hover:text-blue-500 transition-colors flex-shrink-0 mt-0.5"
                                 >
                                     <HelpCircle className="h-4 w-4" />
                                 </button>

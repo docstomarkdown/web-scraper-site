@@ -1,7 +1,9 @@
 "use client"
 import React, { useState, useMemo, useEffect } from "react"
 import {
-    Info
+    Info,
+    TrendingUp,
+    ShieldCheck
 } from "lucide-react"
 import {
     InputCardHeader,
@@ -56,30 +58,32 @@ export function ReorderPointCalculator() {
                         <CalculatorCardHeader
                             title="Calculator Inputs"
                             description="Configure your inventory reorder point calculation."
+                            tooltip="Set your inventory parameters to calculate the optimal point for restocking your warehouse."
                             onReset={handleReset}
                         />
                         <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-8 flex-1 flex flex-col">
                             <div className="space-y-3">
                                 <CalculatorInput
-                                    label="Average Units Sold per Day"
+                                    label="Average Daily Units Sold"
                                     value={values.salesVelocity}
                                     onChange={(v) => handleInputChange('salesVelocity', v)}
                                     placeholder="25"
-                                    tooltip="How many units do you sell on average each day?"
+                                    tooltip="The average number of units your business sells each day."
                                 />
                                 <CalculatorInput
-                                    label="Supplier Delivery Time (Days)"
+                                    label="Delivery Time (Days)"
                                     value={values.leadTime}
                                     onChange={(v) => handleInputChange('leadTime', v)}
                                     placeholder="14"
-                                    tooltip="How many days does it take from order to delivery?"
+                                    tooltip="The total time (in days) from placing an order to having the stock available for sale."
                                 />
                                 <CalculatorInput
                                     label="Safety Stock (Units)"
                                     value={values.safetyStock}
                                     onChange={(v) => handleInputChange('safetyStock', v)}
                                     placeholder="50"
-                                    tooltip="How many units do you want to keep as an emergency buffer?"
+                                    tooltip="Extra buffer stock to prevent stockouts during unexpected demand spikes or shipping delays."
+                                    isOptional
                                 />
                             </div>
 
@@ -92,8 +96,9 @@ export function ReorderPointCalculator() {
                         title="REORDER POINT"
                         description="Place your next order when inventory drops to this amount."
                         isCalculated={hasInputs}
+                        liveBadgeText={values.safetyStock ? "Buffered Stock" : "Just-In-Time"}
                         checklistItems={[
-                            { label: "Enter Daily Sales", isComplete: values.salesVelocity !== "" },
+                            { label: "Enter Daily Units Sold", isComplete: values.salesVelocity !== "" },
                             { label: "Enter Delivery Time", isComplete: values.leadTime !== "" }
                         ]}
                         primaryResult={{
@@ -104,17 +109,19 @@ export function ReorderPointCalculator() {
                         secondaryResults={[
                             {
                                 key: "demand",
-                                label: "Lead Time Demand",
-                                tooltip: "The number of units you expect to sell while waiting for your order to arrive.",
+                                label: "Demand During Delivery Time",
+                                tooltip: "Estimated units sold during lead time (Daily Units Sold × Delivery Time).",
                                 value: Math.round(results.leadTimeDemand),
-                                unit: "Units"
+                                unit: "Units",
+                                icon: TrendingUp,
                             },
                             ...(values.safetyStock !== "" ? [{
                                 key: "safety",
                                 label: "Safety Stock",
-                                tooltip: "Extra inventory you hold to guard against unexpected delays or demand spikes.",
+                                tooltip: "The chosen buffer stock to protect against delays or demand spikes.",
                                 value: Math.round(results.safetyStock),
-                                unit: "Units"
+                                unit: "Units",
+                                icon: ShieldCheck,
                             }] : [])
                         ]}
                         emptyMessage="Reorder Point"

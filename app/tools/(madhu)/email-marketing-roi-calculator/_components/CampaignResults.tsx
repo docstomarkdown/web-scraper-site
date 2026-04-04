@@ -45,7 +45,7 @@ export function CampaignResults({
                         </span>
                     </div>
                     <div>
-                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Opens</p>
+                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Emails Opened</p>
                         <p className="text-sm font-bold text-blue-500">
                             <Counter value={opens} formatter={formatNumber} />
                         </p>
@@ -67,7 +67,7 @@ export function CampaignResults({
                         </span>
                     </div>
                     <div>
-                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Clicks</p>
+                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Total Clicks</p>
                         <p className="text-sm font-bold text-purple-500">
                             <Counter value={clicks} formatter={formatNumber} />
                         </p>
@@ -89,7 +89,7 @@ export function CampaignResults({
                         </span>
                     </div>
                     <div>
-                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Conversions</p>
+                        <p className="text-[10px] font-medium text-slate-500 mb-0.5">Total Sales Conversions</p>
                         <p className="text-sm font-bold text-emerald-500">
                             <Counter value={conversions} formatter={formatNumber} />
                         </p>
@@ -111,10 +111,10 @@ export function CampaignResults({
                         </TooltipContent>
                     </Tooltip>
                 </div>
-                <span className="text-base font-bold text-emerald-600">
+                <span className="text-base font-bold text-slate-700">
                     <Counter value={revenue} formatter={formatCurrency} />
                 </span>
             </div>
         </Card>
     )
-}
+}

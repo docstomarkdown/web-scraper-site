@@ -1,265 +1,307 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Package, Scale, Info, Box, Truck } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Package, Truck, DollarSign, HandCoins, AlertTriangle, CheckCircle2, } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultSummaryCard, getCurrencySymbol } from "@/app/tools/_shared/components"
+
 export function FBARemovalCalculator() {
-    // State
-    const [unitWeight, setUnitWeight] = useState<number | "">("")
-    const [length, setLength] = useState<number | "">("")
-    const [width, setWidth] = useState<number | "">("")
-    const [height, setHeight] = useState<number | "">("")
-    const [quantity, setQuantity] = useState<number | "">("")
     const [currency, setCurrency] = useState("USD")
-    // Derived State
-    const [sizeTier, setSizeTier] = useState<"Standard" | "Large/Bulky" | null>(null)
-    const [shippingWeight, setShippingWeight] = useState<number>(0)
-    const [removalFeePerUnit, setRemovalFeePerUnit] = useState<number>(0)
-    const [totalCost, setTotalCost] = useState<number>(0)
+
+    // Input States
+    const [numberOfUnits, setNumberOfUnits] = useState<number | "">("")
+    
+    // Amazon Fees
+    const [removalFee, setRemovalFee] = useState<number | "">("")
+    const [disposalFee, setDisposalFee] = useState<number | "">("")
+    
+    // Recovery Value
+    const [expectedSellingPrice, setExpectedSellingPrice] = useState<number | "">("")
+    const [otherCosts, setOtherCosts] = useState<number | "">("")
+
+    // Result States
+    const [profitRemoval, setProfitRemoval] = useState(0)
+    const [lossDisposal, setLossDisposal] = useState(0)
+    const [netDifference, setNetDifference] = useState(0)
+    const [bestOption, setBestOption] = useState<"REMOVE" | "DISPOSE" | "HOLD" | null>(null)
+
     const handleReset = () => {
-        setUnitWeight("")
-        setLength("")
-        setWidth("")
-        setHeight("")
-        setQuantity("")
+        setNumberOfUnits("")
+        setRemovalFee("")
+        setDisposalFee("")
+        setExpectedSellingPrice("")
+        setOtherCosts("")
+        setBestOption(null)
     }
-    // Get currency symbol
-    const currencySymbol = currencies.find(c => c.code === currency)?.symbol || "$"
-    // specific 2025 fee logic
+
     useEffect(() => {
-        const w = Number(unitWeight) || 0
-        const l = Number(length) || 0
-        const wi = Number(width) || 0
-        const h = Number(height) || 0
-        const q = Number(quantity) || 0
-        if (w === 0 || l === 0 || wi === 0 || h === 0) {
-            setTotalCost(0)
-            setRemovalFeePerUnit(0)
-            setSizeTier(null)
+        const units = Number(numberOfUnits) || 0
+        const rFee = Number(removalFee) || 0
+        const dFee = Number(disposalFee) || 0
+        const price = Number(expectedSellingPrice) || 0
+        const costs = Number(otherCosts) || 0
+
+        // Incomplete Data
+        if (units === 0 || (rFee === 0 && dFee === 0 && price === 0)) {
+            setProfitRemoval(0)
+            setLossDisposal(0)
+            setNetDifference(0)
+            setBestOption(null)
             return
         }
-        // 1. Determine Size Tier
-        // Standard: <= 18 x 14 x 8 inches AND <= 20 lbs
-        const isStandardDims = l <= 18 && wi <= 14 && h <= 8
-        const isStandardWeight = w <= 20
-        const isStandard = isStandardDims && isStandardWeight
-        const specificTier = isStandard ? "Standard" : "Large/Bulky"
-        setSizeTier(specificTier)
-        // 2. Calculate Dimensional Weight (Divisor 139)
-        const dimWeight = (l * wi * h) / 139
-        // 3. Determine Shipping Weight
-        // For Standard: Unit weight only? No, usually greater of unit or dim weight for fees, 
-        // BUT for removal fees specifically, the rate card uses "Shipping Weight".
-        // Use greater of unit or dim weight.
-        const shipW = Math.max(w, dimWeight)
-        setShippingWeight(shipW)
-        // 4. Calculate Fee based on 2025 Rate Card
-        let fee = 0
-        if (isStandard) {
-            // Standard Size Tiers (Weight in lb ranges)
-            // Rate card: 
-            // 0-0.5 lb: $1.04
-            // 0.5-1.0 lb: $1.53
-            // 1.0-2.0 lb: $2.27
-            // > 2 lb: $2.89 + $1.06/lb above 2lb
-            if (shipW <= 0.5) fee = 1.04
-            else if (shipW <= 1.0) fee = 1.53
-            else if (shipW <= 2.0) fee = 2.27
-            else {
-                const roundedWeight = Math.ceil(shipW)
-                const additionalLbs = Math.max(0, roundedWeight - 2)
-                fee = 2.89 + (additionalLbs * 1.06)
+
+        const profitRem = (price - rFee - costs) * units
+        const lossDisp = dFee * units
+
+        setProfitRemoval(profitRem)
+        setLossDisposal(lossDisp) // Keeping this positive per user example "Loss if Disposed: 800"
+
+        if (profitRem > 0) {
+            setBestOption("REMOVE")
+            setNetDifference(profitRem - (-lossDisp)) // e.g. 1200 - (-800) = 2000
+        } else if (profitRem <= -lossDisp && profitRem <= 0) {
+            // Both bad, but disposal might be less bad (e.g., profitRem=-1000, lossDisp=800 => -1000 <= -800)
+            // Or both are equal
+            if (profitRem === -lossDisp && lossDisp > 0) {
+                // If they are exactly the same loss
+                setBestOption("HOLD")
+                setNetDifference(0)
+            } else if (profitRem < -lossDisp) {
+                setBestOption("DISPOSE")
+                setNetDifference(-lossDisp - profitRem) // e.g. -800 - (-1000) = 200
+            } else {
+                setBestOption("HOLD")
+                setNetDifference(0)
             }
         } else {
-            // Large Bulky / Extra Large
-            // 0-1 lb: $3.12
-            // 1-2 lb: $4.30
-            // 2-4 lb: $6.36
-            // 4-10 lb: $10.04
-            // > 10 lb: $14.32 + $1.06/lb above 10 lb
-            // "For these size tiers, shipping weight is rounded up to the nearest whole pound"
-            const roundedShipW = Math.ceil(shipW)
-            if (roundedShipW <= 1) fee = 3.12
-            else if (roundedShipW <= 2) fee = 4.30
-            else if (roundedShipW <= 4) fee = 6.36
-            else if (roundedShipW <= 10) fee = 10.04
-            else {
-                const additionalLbs = Math.max(0, roundedShipW - 10)
-                fee = 14.32 + (additionalLbs * 1.06)
-            }
+            // Both bad, but removal is less of a loss, wait, "HOLD -> When both options are bad Both removing and disposing result in a loss."
+            setBestOption("HOLD")
+            setNetDifference(profitRem - (-lossDisp))
         }
-        setRemovalFeePerUnit(fee)
-        setTotalCost(fee * q)
-    }, [unitWeight, length, width, height, quantity])
+    }, [numberOfUnits, removalFee, disposalFee, expectedSellingPrice, otherCosts])
+
+    const isValid = numberOfUnits !== "" && removalFee !== "" && disposalFee !== "" && expectedSellingPrice !== ""
+
+    // Formatters
+    const formatCurrency = (val: number) => {
+        return new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: currency,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }).format(val)
+    }
+
+    // Dynamic result primary message
+    let primaryMessage = ""
+    if (isValid && bestOption) {
+        if (bestOption === "REMOVE") primaryMessage = `You gain ${formatCurrency(netDifference)} more by removing instead of disposing.`
+        else if (bestOption === "DISPOSE") primaryMessage = `You save ${formatCurrency(netDifference)} by disposing instead of removing.`
+        else if (bestOption === "HOLD") primaryMessage = `Both choices result in a loss.`
+    }
+
     return (
-        <div className="w-full max-w-6xl mx-auto space-y-8">
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="space-y-1">
-                    <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                        Removal Order Cost Calculator
-                    </h2>
-                </div>
-            </div>
+        <FadeIn className="w-full max-w-6xl mx-auto py-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Left Column: Inputs */}
-                <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
-                    <CalculatorCardHeader
-                        description="Enter your details."
-                        onReset={handleReset}
-                        currency={currency}
-                        onCurrencyChange={setCurrency}
-                    />
-                    <CardContent className="p-6 md:p-8 space-y-8">
-                        {/* Dimensional Data */}
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Box className="w-4 h-4 text-slate-400" />
-                                    Dimensions (Inches)
-                                </label>
-                            </div>
-                            <div className="grid grid-cols-1 gap-4">
-                                <CalculatorInput
-                                    label="Length"
-                                    value={length}
-                                    onChange={setLength}
-                                    placeholder="10"
-                                />
-                                <CalculatorInput
-                                    label="Width"
-                                    value={width}
-                                    onChange={setWidth}
-                                    placeholder="8"
-                                />
-                                <CalculatorInput
-                                    label="Height"
-                                    value={height}
-                                    onChange={setHeight}
-                                    placeholder="6"
-                                />
-                            </div>
-                        </div>
-                        <Separator className="bg-slate-100" />
-                        {/* Weight & Quantity */}
-                        <div className="grid grid-cols-1 gap-4">
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Scale className="w-4 h-4 text-slate-400" />
-                                    Unit Weight
-                                </label>
-                                <CalculatorInput
-                                    label="Weight (lbs)"
-                                    value={unitWeight}
-                                    onChange={setUnitWeight}
-                                    placeholder="0.5"
-                                    tooltip="The actual weight of a single unit."
-                                />
-                            </div>
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                    <Truck className="w-4 h-4 text-slate-400" />
-                                    Removal Quantity
-                                </label>
-                                <CalculatorInput
-                                    label="Total Units"
-                                    value={quantity}
-                                    onChange={setQuantity}
-                                    placeholder="100"
-                                    tooltip="How many units to remove?"
-                                />
-                            </div>
-                        </div>
-                        {/* Size Tier Alert */}
-                        {Boolean(sizeTier) && (
-                            <FadeIn>
-                                <div className={cn(
-                                    "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
-                                    sizeTier === "Standard"
-                                        ? "bg-emerald-50/50 border-emerald-100"
-                                        : "bg-amber-50/50 border-amber-100"
-                                )}>
-                                    <div className={cn(
-                                        "p-2 rounded-lg bg-white shadow-sm ring-1",
-                                        sizeTier === "Standard" ? "ring-emerald-100 text-emerald-600" : "ring-amber-100 text-amber-600"
-                                    )}>
-                                        <Box className="w-4 h-4" />
-                                    </div>
-                                    <div>
-                                        <p className={cn(
-                                            "text-sm font-semibold",
-                                            sizeTier === "Standard" ? "text-emerald-900" : "text-amber-900"
-                                        )}>
-                                            {sizeTier} Size Tier Detected
-                                        </p>
-                                        <p className={cn(
-                                            "text-xs mt-0.5",
-                                            sizeTier === "Standard" ? "text-emerald-700" : "text-amber-700"
-                                        )}>
-                                            Billing is based on {shippingWeight > 0.5 ? Math.ceil(shippingWeight) : shippingWeight} lbs shipping weight.
-                                        </p>
-                                    </div>
+                {/* Left side inputs */}
+                <div className="lg:col-span-7 space-y-3">
+                    <Card className="border border-slate-200 shadow-sm bg-white">
+                        <CalculatorCardHeader
+                            title="Removal vs Disposal Details"
+                            description="Enter your inventory and fee details to determine the most profitable action."
+                            onReset={handleReset}
+                            guideId="fba-removal-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
+                        <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3 flex flex-col">
+                            <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                {/* 1. Inventory */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        hideSeparator={true}
+                                        groupingTitle="Inventory"
+                                        groupingIcon={Package}
+                                        label="Number of Units"
+                                        value={numberOfUnits}
+                                        onChange={setNumberOfUnits}
+                                        placeholder="100"
+                                        suffix="units"
+                                        step={1}
+                                        min={1}
+                                        max={1000000}
+                                        tooltip="Total items you want to remove or dispose."
+                                        autoFocus
+                                    />
                                 </div>
-                            </FadeIn>
-                        )}
-                    </CardContent>
-                </Card>
-                {/* Right Column: Results */}
+
+                                {/* 2. Amazon Fees */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        groupingTitle="Amazon Fees"
+                                        groupingIcon={DollarSign}
+                                        label="Removal Fee"
+                                        value={removalFee}
+                                        onChange={setRemovalFee}
+                                        placeholder="1.50"
+                                        prefix={getCurrencySymbol(currency)}
+                                        step={0.01}
+                                        min={0}
+                                        tooltip="Fee charged by Amazon to return one item to you."
+                                    />
+                                    <CalculatorInput
+                                        label="Disposal Fee"
+                                        value={disposalFee}
+                                        onChange={setDisposalFee}
+                                        placeholder="1.00"
+                                        prefix={getCurrencySymbol(currency)}
+                                        step={0.01}
+                                        min={0}
+                                        tooltip="Fee charged by Amazon to discard one item."
+                                    />
+                                </div>
+
+                                {/* 3. Recovery Value */}
+                                <div className="space-y-3">
+                                    <CalculatorInput
+                                        groupingTitle="Recovery Value"
+                                        groupingIcon={HandCoins}
+                                        label="Expected Selling Price"
+                                        value={expectedSellingPrice}
+                                        onChange={setExpectedSellingPrice}
+                                        placeholder="15.00"
+                                        prefix={getCurrencySymbol(currency)}
+                                        step={0.01}
+                                        min={0}
+                                        tooltip="Price you expect to sell each item for after removal."
+                                    />
+                                    <CalculatorInput
+                                        label="Other Costs"
+                                        value={otherCosts}
+                                        onChange={setOtherCosts}
+                                        placeholder="2.00"
+                                        prefix={getCurrencySymbol(currency)}
+                                        step={0.01}
+                                        min={0}
+                                        tooltip="Additional costs like shipping, repair, or packaging after removal."
+                                        isOptional={true}
+                                    />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Right side results */}
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="Estimated Removal Cost"
-                        titleLabel="Total Fees"
-                        mainValue={<Counter value={totalCost} prefix={currencySymbol} />}
-                        valueColor="text-slate-100"
-                        secondaryMetrics={[
+                    <ResultSummaryCard
+                        isCalculated={isValid}
+                        currency={currency}
+                        emptyMessage="removal comparison"
+                        liveBadgeText={
+                            isValid
+                                ? bestOption === "REMOVE" ? "Remove Recommended"
+                                  : bestOption === "DISPOSE" ? "Dispose Recommended"
+                                  : "Hold Recommended"
+                                : "Draft"
+                        }
+                        liveBadgeColor={
+                            isValid
+                                ? bestOption === "REMOVE" ? "emerald"
+                                  : bestOption === "DISPOSE" ? "blue"
+                                  : "amber"
+                                : "slate"
+                        }
+                        dynamicMessages={{
+                            positive: primaryMessage,
+                            negative: primaryMessage,
+                            neutral: primaryMessage
+                        }}
+                        primaryResult={{
+                            value: bestOption || "—",
+                            label: "Best Option",
+                            isCurrency: false,
+                            key: "bestOption"
+                        }}
+                        secondaryResults={[
                             {
-                                label: "Fee Per Unit",
-                                value: <Counter value={removalFeePerUnit} prefix={currencySymbol} />,
+                                key: "profitAfterRemoval",
+                                label: "Profit After Removal",
+                                value: profitRemoval,
+                                isCurrency: true,
+                                icon: HandCoins,
+                                tooltip: "Your total profit after paying removal and other costs."
                             },
                             {
-                                label: "Billing Weight",
-                                value: `${shippingWeight.toFixed(2)} lbs`,
+                                key: "lossIfDisposed",
+                                label: "Loss if Disposed",
+                                value: lossDisposal,
+                                isCurrency: true,
+                                icon: AlertTriangle,
+                                tooltip: "Total amount you lose if you choose to dispose the items."
+                            },
+                            {
+                                key: "netDifference",
+                                label: "Net Difference",
+                                value: netDifference,
+                                isCurrency: true,
+                                icon: DollarSign,
+                                tooltip: "How much more you gain or lose between removal and disposal."
                             }
                         ]}
+                        checklistItems={[
+                            { key: "inv", label: "Inventory", isComplete: numberOfUnits !== "" },
+                            { key: "rf", label: "Removal Fee", isComplete: removalFee !== "" },
+                            { key: "df", label: "Disposal Fee", isComplete: disposalFee !== "" },
+                            { key: "sp", label: "Selling Price", isComplete: expectedSellingPrice !== "" },
+                        ]}
                     >
-                        <div className="flex justify-between items-center py-2 border-t border-slate-100 mt-2">
-                            <span className="text-sm text-slate-500 font-medium">Rate Card Year</span>
-                            <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-100">
-                                2025 Rates
-                            </Badge>
-                        </div>
-                    </ResultFeedbackCard>
-                    {/* Breakdown Card */}
-                    {totalCost > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
-                            <div className="px-5 py-3.5 border-b border-slate-100">
-                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Cost Breakdown</p>
+                    </ResultSummaryCard>
+
+                    {/* Result Callout Context */}
+                    {isValid && bestOption && (
+                        <div className={cn(
+                            "flex items-start gap-4 p-5 rounded-2xl border transition-all duration-300 shadow-sm",
+                            bestOption === "REMOVE" ? "bg-emerald-50/50 border-emerald-100" :
+                            bestOption === "DISPOSE" ? "bg-blue-50/50 border-blue-100" :
+                            "bg-amber-50/50 border-amber-100"
+                        )}>
+                            <div className={cn(
+                                "p-2.5 rounded-xl bg-white shadow-sm ring-1 shrink-0 mt-0.5",
+                                bestOption === "REMOVE" ? "text-emerald-600 ring-emerald-100" :
+                                bestOption === "DISPOSE" ? "text-blue-600 ring-blue-100" :
+                                "text-amber-600 ring-amber-100"
+                            )}>
+                                {bestOption === "REMOVE" ? <CheckCircle2 className="w-5 h-5" /> :
+                                 bestOption === "DISPOSE" ? <Truck className="w-5 h-5" /> :
+                                 <AlertTriangle className="w-5 h-5" />}
                             </div>
-                            <div className="divide-y divide-slate-100">
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Per-Unit Fee</span>
-                                    <span className="text-sm font-semibold text-slate-800">{currencySymbol}{removalFeePerUnit.toFixed(2)}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Quantity</span>
-                                    <span className="text-sm font-semibold text-slate-800">{Number(quantity).toLocaleString()} units</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                    <span className="text-sm font-bold text-slate-900">Total Removal Cost</span>
-                                    <span className="text-base font-bold text-emerald-600">{currencySymbol}{totalCost.toFixed(2)}</span>
-                                </div>
+                            <div className="space-y-1">
+                                <h4 className={cn(
+                                    "text-sm font-semibold",
+                                    bestOption === "REMOVE" ? "text-emerald-900" :
+                                    bestOption === "DISPOSE" ? "text-blue-900" :
+                                    "text-amber-900"
+                                )}>
+                                    {bestOption === "REMOVE" ? "Action: REMOVE ✅" :
+                                     bestOption === "DISPOSE" ? "Action: DISPOSE ❌" :
+                                     "Action: HOLD ⚠️"}
+                                </h4>
+                                <p className={cn(
+                                    "text-sm leading-relaxed",
+                                    bestOption === "REMOVE" ? "text-emerald-700" :
+                                    bestOption === "DISPOSE" ? "text-blue-700" :
+                                    "text-amber-700"
+                                )}>
+                                    {bestOption === "REMOVE" && `The net difference is ${formatCurrency(netDifference)} better if you REMOVE. When profit after removal is positive, removal is the ideal choice.`}
+                                    {bestOption === "DISPOSE" && `The net difference is ${formatCurrency(netDifference)} better if you DISPOSE. Removal gives more loss than disposal in this scenario.`}
+                                    {bestOption === "HOLD" && `Both removing and disposing result in a loss. Consider keeping inventory, holding off, or re-evaluating pricing.`}
+                                </p>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter details to calculate removal cost.</p>
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </FadeIn>
     )
-}
+}

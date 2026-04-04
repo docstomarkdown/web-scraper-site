@@ -1,0 +1,48 @@
+"use client"
+import { ToolOverview } from "@/app/tools/_shared/components"
+import { Lightbulb } from "lucide-react"
+
+export function AffiliateOverview() {
+    return (
+        <div className="space-y-8" id="overview">
+            {/* Section Header */}
+            <div className="px-1">
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                    <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/80 shadow-[0_2px_8px_-4px_rgba(59,130,246,0.2)]">
+                        <Lightbulb className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                    </div>
+                    <div>
+                        <h2 className="text-[22px] sm:text-[28px] font-bold text-slate-700 tracking-tight leading-tight">
+                            Tool Essential
+                        </h2>
+                    </div>
+                </div>
+                
+            </div>
+
+            {/* Tool Overview */}
+            <ToolOverview
+                heading="Why Use Affiliate Payout Calculator?"
+                headingAccent="Affiliate Payout Calculator"
+                definition="The primary purpose of the Affiliate Payout Calculator is to securely project exactly how much commission you owe and how much profit you keep. Built for store owners, brands, and affiliate managers, this tool transparently simulates sales data against your commission rates. It is your essential tool for testing different payout percentages, ensuring affiliates are rewarded fairly, and protecting your core profit margins."
+                facts={[
+                    {
+                        stat: "Payout",
+                        label: "Projection",
+                        detail: "See the exact total commission you owe across all your affiliate-driven sales — before you commit to a rate."
+                    },
+                    {
+                        stat: "Net",
+                        label: "Profit",
+                        detail: "Know your true take-home after deducting both affiliate commissions and your product sourcing or manufacturing cost."
+                    },
+                    {
+                        stat: "Rate",
+                        label: "Testing",
+                        detail: "Quickly simulate different commission percentages to find the rate that rewards affiliates fairly without sacrificing your margin."
+                    }
+                ]}
+            />
+        </div>
+    )
+}

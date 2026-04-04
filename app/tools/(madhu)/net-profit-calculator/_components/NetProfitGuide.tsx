@@ -20,7 +20,7 @@ export function NetProfitGuide() {
                 },
                 {
                     title: "Eliminating Overhead Creep",
-                    description: "Small subscriptions and 'miscellaneous' fees can quietly consume 5-10% of your total revenue. Regular audits of your recurring expenses are the fastest way to instantly boost your net profit.",
+                    description: "Small subscriptions and 'miscellaneous' fees can quietly consume 5-10% of your total revenue. Expand the Income & Expense Breakdown in the results panel to instantly spot overhead bloat and boost your net profit.",
                     icon: CreditCard,
                     stat: "-12%",
                     statLabel: "Average Leakage",

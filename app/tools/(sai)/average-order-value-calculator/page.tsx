@@ -2,8 +2,10 @@ import { Metadata } from "next"
 import { AOVCalculator } from "./_components/AOVCalculator"
 import { AOVGuide } from "./_components/AOVGuide"
 import { AOVHowToUse } from "./_components/AOVHowToUse"
-import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
+import { AOVOverview } from "./_components/AOVOverview"
+import { FadeIn, ToolFAQ, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { CTA } from "@/components/sections/CTA"
+import { BookOpen } from "lucide-react"
 export const metadata: Metadata = {
     title: 'Average Order Value (AOV) Calculator | Web Scraper.do',
     description: 'Calculate your Average Order Value (AOV) to understand customer spending habits and improve your pricing strategy.',
@@ -27,6 +29,13 @@ export default function AOVCalculatorPage() {
                 </div>
                 <div className="max-w-5xl mx-auto space-y-16" id="aov-guide">
                     <FadeIn delay={0.2}>
+                        <ToolSectionHeader
+                            title="Tool Essential"
+                            icon={BookOpen}
+                        />
+                        <AOVOverview />
+                    </FadeIn>
+                    <FadeIn delay={0.2}>
                         <AOVHowToUse />
                     </FadeIn>
                     <FadeIn delay={0.2}>
@@ -37,16 +46,20 @@ export default function AOVCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is AOV?",
-                                    answer: "Average Order Value (AOV) is the average dollar amount spent each time a customer places an order on a website or mobile app."
+                                    question: "What is AOV and why does it matter?",
+                                    answer: "Average Order Value (AOV) is the average amount of money a customer spends per transaction in your store. It matters because increasing your AOV is one of the fastest and cheapest ways to grow revenue—you’re extracting more value from the traffic you already have without spending more on marketing."
                                 },
                                 {
                                     question: "How do I calculate AOV?",
-                                    answer: "Simply divide total revenue by the number of orders. Formula: Total Revenue / Total Orders."
+                                    answer: "AOV is calculated by dividing your total revenue by the total number of orders placed over a specific time period. For example, if your store generated $50,000 in sales from 1,000 orders last month, your AOV is $50 ($50,000 ÷ 1,000)."
                                 },
                                 {
-                                    question: "Why is tracking AOV important?",
-                                    answer: "Tracking AOV helps you evaluate your overall marketing efforts and pricing strategy. Increasing AOV is a key way to boost revenue without increasing traffic."
+                                    question: "What is considered a good AOV?",
+                                    answer: "There is no universal 'good' AOV, as it depends heavily on your industry and product pricing. For a low-ticket apparel store, an AOV of $60 might be excellent. For high-ticket electronics, $500 could be standard. The best benchmark is your own historical data—a 'good' AOV is one that consistently grows over time and comfortably covers your customer acquisition costs (CAC)."
+                                },
+                                {
+                                    question: "How can I increase my AOV?",
+                                    answer: "The most effective strategies include creating product bundles, setting free shipping thresholds (e.g., 'Spend $20 more for free shipping'), adding low-cost impulse upsells directly in the checkout cart, and offering volume discounts (e.g., 'Buy 2, Get 10% Off')."
                                 }
                             ]}
                         />
@@ -59,4 +72,4 @@ export default function AOVCalculatorPage() {
             </div>
         </div>
     )
-}
+}

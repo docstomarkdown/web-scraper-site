@@ -9,9 +9,10 @@ import {
     Info,
     CheckCircle2,
     Check,
+    X,
     XCircle,
     AlertTriangle,
-    Activity,
+    ClipboardList,
     ClipboardPenLine,
     Upload,
     ImageIcon,
@@ -298,21 +299,21 @@ export function Validator() {
             />
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* LEFT: Input (Col Span 6) */}
-                <div className="lg:col-span-6">
+                <div className="lg:col-span-6 self-start lg:sticky lg:top-28">
                     <FadeIn delay={0.2} direction="right">
-                        <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white">
+                        <Card className="border border-slate-200 shadow-sm overflow-hidden bg-white min-h-[360px]">
                             <CalculatorCardHeader
                                 title="UPC/EAN Validator"
-                                description="Validate any UPC or EAN barcode instantly — verify check digits, detect errors, and confirm format compliance."
+                                description="Enter a barcode / upload an image / import a CSV/TXT file to check status—with bulk validation support."
                                 guideId="how-to-use"
                                 tooltip="How to use this validator"
                                 onReset={clearAll}
                             />
-                            <CardContent className="p-6 md:p-8 pb-12 md:pb-16 space-y-6 flex-1 flex flex-col">
-                                 {/* Unified Input Structure */}
-                                <div className="space-y-6">
+                            <CardContent className="p-6 md:p-8 flex flex-col gap-6">
+                                {/* ── Single Barcode Input ── */}
+                                <div>
                                     <CalculatorInput
-                                        label="Barcode Number"
+                                        label="UPC / EAN Number"
                                         value={inputCode}
                                         onChange={(v) => {
                                             if (/^[\d\s-]*$/.test(v)) {
@@ -324,104 +325,98 @@ export function Validator() {
                                         tooltip="Enter EAN / UPC (8, 12, or 13 digits) to validate."
                                         type="text"
                                     />
-
-                                    <AnimatePresence mode="wait">
-                                        {bulkResults.length > 0 ? (
-                                            /* Bulk uploaded success state */
-                                            <motion.div
-                                                key="bulk-success"
-                                                initial={{ opacity: 0, scale: 0.97 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0, scale: 0.97 }}
-                                                transition={{ duration: 0.25 }}
-                                                className="flex flex-col items-center justify-center py-7 px-4 rounded-xl border-2 border-emerald-300 bg-emerald-50/60"
-                                            >
-                                                <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-3">
-                                                    <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                                                </div>
-                                                <p className="text-sm font-bold text-emerald-700 text-center">
-                                                    Bulk Upload Complete
-                                                </p>
-                                                <p className="text-[11px] text-emerald-600/80 mt-1 text-center">
-                                                    {bulkResults.length} barcode{bulkResults.length !== 1 ? 's' : ''} loaded from{" "}
-                                                    <span className="font-bold">{bulkFileName}</span>
-                                                </p>
-                                                <button
-                                                    className="mt-3 text-[10px] text-slate-400 hover:text-slate-600 underline underline-offset-2 transition-colors"
-                                                    onClick={() => { setBulkResults([]); setBulkFileName("") }}
-                                                >
-                                                    Clear &amp; upload another
-                                                </button>
-                                            </motion.div>
-                                        ) : (
-                                            <motion.div
-                                                key="upload-options"
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                transition={{ duration: 0.25 }}
-                                                className="space-y-6"
-                                            >
-                                                {/* Divider */}
-                                                <div className="flex items-center gap-4 py-1">
-                                                    <div className="h-px bg-slate-200 flex-1"></div>
-                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Or upload file</span>
-                                                    <div className="h-px bg-slate-200 flex-1"></div>
-                                                </div>
-
-                                                {/* Buttons */}
-                                                <div className="flex gap-3">
-                                                    <Button
-                                                        variant="secondary"
-                                                        className="flex-1 h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
-                                                        onClick={() => document.getElementById('barcode-upload')?.click()}
-                                                    >
-                                                        <div className="flex items-center justify-center">
-                                                            <ImageIcon className="w-4 h-4 mr-2 text-blue-500 shrink-0" />
-                                                            Upload Image
-                                                        </div>
-                                                    </Button>
-                                                    <Button
-                                                        variant="secondary"
-                                                        className="flex-1 h-10 text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl"
-                                                        onClick={() => document.getElementById('bulk-upload')?.click()}
-                                                    >
-                                                        <div className="flex items-center justify-center">
-                                                            <FileUp className="w-4 h-4 mr-2 text-blue-500 shrink-0" />
-                                                            Upload CSV / TXT
-                                                        </div>
-                                                    </Button>
-                                                </div>
-
-                                                {/* Dropzone */}
-                                                <div
-                                                    className={cn(
-                                                        "relative flex flex-col items-center justify-center py-6 px-4 rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer",
-                                                        isDragOver
-                                                            ? "border-blue-400 bg-blue-50/50"
-                                                            : "border-slate-200 bg-slate-50/50 hover:border-slate-300 hover:bg-slate-50"
-                                                    )}
-                                                    onDragOver={handleDragOver}
-                                                    onDragLeave={handleDragLeave}
-                                                    onDrop={handleDrop}
-                                                    onClick={() => document.getElementById('combined-upload')?.click()}
-                                                >
-                                                    <Upload className={cn(
-                                                        "w-5 h-5 mb-2 transition-colors",
-                                                        isDragOver ? "text-blue-500" : "text-slate-400"
-                                                    )} />
-                                                    <p className="text-xs text-slate-500 font-medium text-center">
-                                                        Drag &amp; drop your file here
-                                                    </p>
-                                                    <p className="text-[10px] text-slate-400 mt-1 text-center">
-                                                        Supports Image, CSV, and TXT files
-                                                    </p>
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
                                 </div>
 
+                                {/* ── Divider ── */}
+                                <div className="relative flex items-center justify-center">
+                                    <div className="w-full border-t border-slate-200/80"></div>
+                                    <span className="absolute px-3 bg-white text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
+                                        Or
+                                    </span>
+                                </div>
+                                {/* ── Upload Section ── */}
+                                <AnimatePresence mode="wait">
+                                    {bulkResults.length > 0 ? (
+                                        <motion.div
+                                            key="bulk-success"
+                                            initial={{ opacity: 0, scale: 0.97 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.97 }}
+                                            transition={{ duration: 0.25 }}
+                                            className="rounded-xl border border-blue-200 bg-blue-50/50 p-5"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                                    <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-[13px] font-bold text-blue-700">
+                                                        {bulkResults.length} barcode{bulkResults.length !== 1 ? 's' : ''} loaded
+                                                    </p>
+                                                    <p className="text-[11px] text-blue-600/70 truncate">
+                                                        from <span className="font-semibold">{bulkFileName}</span>
+                                                    </p>
+                                                </div>
+                                                <button
+                                                    className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 bg-blue-100 hover:bg-blue-200 px-3 py-1.5 rounded-lg transition-colors flex-shrink-0"
+                                                    onClick={() => { setBulkResults([]); setBulkFileName("") }}
+                                                >
+                                                    Clear
+                                                </button>
+                                            </div>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div
+                                            key="upload-options"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            {/* Dropzone */}
+                                            <div
+                                                className={cn(
+                                                    "relative rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer",
+                                                    "px-6 py-6",
+                                                    isDragOver
+                                                        ? "border-blue-400 bg-blue-50/60"
+                                                        : "border-slate-200 bg-slate-50/40 hover:border-blue-300 hover:bg-blue-50/30"
+                                                )}
+                                                onDragOver={handleDragOver}
+                                                onDragLeave={handleDragLeave}
+                                                onDrop={handleDrop}
+                                                onClick={() => document.getElementById('combined-upload')?.click()}
+                                            >
+                                                <div className="flex flex-col items-center gap-3">
+                                                    <div className={cn(
+                                                        "w-11 h-11 rounded-xl flex items-center justify-center transition-colors",
+                                                        isDragOver ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"
+                                                    )}>
+                                                        <Upload className="w-5 h-5" />
+                                                    </div>
+                                                    <div className="text-center space-y-1.5">
+                                                        <p className="text-[13.5px] font-semibold text-slate-700 leading-snug">
+                                                            Drop file here or <span className="text-blue-600 hover:text-blue-700 transition-colors">browse</span>
+                                                        </p>
+                                                        <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                                                            Supports barcode images, CSV, or TXT files
+                                                        </p>
+                                                        <div className="flex items-center justify-center gap-2 pt-1">
+                                                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100">
+                                                                <ImageIcon className="w-3 h-3 text-blue-600" />
+                                                                <span className="text-[10px] font-semibold text-blue-700">Image</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100">
+                                                                <FileUp className="w-3 h-3 text-blue-600" />
+                                                                <span className="text-[10px] font-semibold text-blue-700">Bulk CSV/TXT</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </CardContent>
                         </Card>
                     </FadeIn>
@@ -441,9 +436,9 @@ export function Validator() {
                                     <div className="flex justify-between items-center gap-4 px-6 pt-5 pb-1">
                                         <div className="flex items-center gap-2.5">
                                             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
-                                                <Activity className="w-4 h-4 text-blue-600" />
+                                                <ClipboardList className="w-4 h-4 text-blue-600" />
                                             </div>
-                                            <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
+                                            <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
                                                 Results Panel
                                             </span>
                                         </div>
@@ -463,13 +458,17 @@ export function Validator() {
                                                 animate={{ opacity: 1 }}
                                                 transition={{ duration: 0.4, ease: "easeInOut" }}
                                                 className={cn(
-                                                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold tracking-wide shrink-0 border-slate-200/50",
+                                                    "flex items-center justify-center px-2.5 py-1.5 rounded-full border shrink-0 border-slate-200/50",
                                                     result.isValid
                                                         ? "bg-emerald-100/80 text-emerald-700"
                                                         : "bg-red-100/80 text-red-700"
                                                 )}
                                             >
-                                                {result.isValid ? "Valid" : "Invalid"}
+                                                {result.isValid ? (
+                                                    <Check className="w-3.5 h-3.5" />
+                                                ) : (
+                                                    <X className="w-3.5 h-3.5" />
+                                                )}
                                             </motion.div>
                                         ) : null}
                                     </div>
@@ -623,7 +622,11 @@ export function Validator() {
                                                             className="text-[12px] text-slate-500 font-medium max-w-[280px] mx-auto leading-relaxed mt-2.5"
                                                         >
                                                             {result.isValid
-                                                                ? `Matches ${result.format} standard. Structure and check digit are correct.`
+                                                                ? (
+                                                                    result.format === "EAN-13"
+                                                                        ? "Valid EAN-13 barcode. Check digit is correct."
+                                                                        : `Valid ${result.format} barcode. Check digit is correct.`
+                                                                )
                                                                 : result.details.join(". ")}
                                                         </motion.p>
                                                     </motion.div>
@@ -640,10 +643,10 @@ export function Validator() {
                                                     >
                                                         <div className="flex items-center gap-2 mb-2">
                                                             {result.format !== "Unknown"
-                                                                ? <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                                                                : <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                                ? <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                                                                : <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
                                                             }
-                                                            <span className="text-sm font-bold text-slate-800">Barcode type</span>
+                                                            <span className="text-[13px] font-bold text-slate-500">Barcode type</span>
                                                         </div>
                                                         <div className="pl-7 space-y-1.5">
                                                             {result.format !== "Unknown" ? (
@@ -651,7 +654,7 @@ export function Validator() {
                                                                     <div className="flex items-center gap-1.5">
                                                                         <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                                                                         <span className="text-xs text-slate-600">
-                                                                            Barcode type: <span className="font-bold text-slate-800">{result.format}</span>
+                                                                            Barcode type: <span className="font-bold text-slate-700">{result.format}</span>
                                                                         </span>
                                                                     </div>
                                                                 </>
@@ -674,24 +677,24 @@ export function Validator() {
                                                         >
                                                             <div className="flex items-center gap-2 mb-2">
                                                                 {result.isValid
-                                                                    ? <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                                                                    : <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                                    ? <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                                                                    : <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
                                                                 }
-                                                                <span className="text-sm font-bold text-slate-800">Check Digit Analysis</span>
+                                                                <span className="text-[13px] font-bold text-slate-500">Check Digit Analysis</span>
                                                             </div>
                                                             <div className="pl-7 space-y-1.5">
                                                                 {result.isValid ? (
                                                                     <div className="flex items-center gap-1.5">
                                                                         <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                                                                         <span className="text-xs text-slate-600">
-                                                                            Check digit is correct: <span className="font-bold text-slate-800">{result.checkDigit}</span>
+                                                                            Check digit is correct: <span className="font-bold text-slate-700">{result.checkDigit}</span>
                                                                         </span>
                                                                     </div>
                                                                 ) : (
                                                                     <div className="flex items-center gap-1.5">
                                                                         <AlertTriangle className="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
                                                                         <span className="text-xs text-slate-600">
-                                                                            Entered check digit is <span className="font-bold text-slate-800">{result.checkDigit}</span>, expected <span className="font-bold text-slate-800">{result.expectedCheckDigit}</span>.
+                                                                            Entered check digit is <span className="font-bold text-slate-700">{result.checkDigit}</span>, expected <span className="font-bold text-slate-700">{result.expectedCheckDigit}</span>.
                                                                         </span>
                                                                     </div>
                                                                 )}
@@ -715,7 +718,7 @@ export function Validator() {
                                                                     >
                                                                         <span className="flex items-center gap-2">
                                                                             <Calculator className="w-4 h-4 text-blue-500" />
-                                                                            View Calculation Breakdown
+                                                                            <span className="text-[13px] font-bold text-slate-500">View Calculation Breakdown</span>
                                                                             <TooltipProvider delayDuration={0}>
                                                                                 <Tooltip>
                                                                                     <TooltipTrigger asChild>
@@ -774,7 +777,7 @@ export function Validator() {
                                                                                         {step.step}
                                                                                     </div>
                                                                                     <div className="space-y-1">
-                                                                                        <p className="text-sm font-bold text-slate-800 leading-none">{step.description}</p>
+                                                                                        <p className="text-sm font-bold text-slate-700 leading-none">{step.description}</p>
                                                                                         <div className={cn(
                                                                                             "font-mono text-xs px-2.5 py-1 rounded w-fit border transition-colors",
                                                                                             result.isValid

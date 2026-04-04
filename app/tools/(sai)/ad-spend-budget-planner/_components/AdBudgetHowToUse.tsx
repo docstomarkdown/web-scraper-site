@@ -1,26 +1,27 @@
 "use client";
 import { ToolSteps } from "@/app/tools/_shared/components";
-import { Target, TrendingUp, Wallet } from "lucide-react";
+import { Target, TrendingUp, MousePointer2, Wallet } from "lucide-react";
+
 export function AdBudgetHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Revenue Goal",
-                    description: "Enter your structured target monthly or annual sales revenue objective.",
+                    title: "Define Growth Goals",
+                    description: "Enter your monthly revenue target and the minimum ROAS required for profitability.",
                     icon: Target
                 },
                 {
-                    title: "Campaign ROI",
-                    description: "Input your firm historical or best anticipated Return on Ad Spend (ROAS).",
-                    icon: TrendingUp
+                    title: "Adjust Traffic Assumptions",
+                    description: "Input your estimated CPC and Conversion Rate to see how many orders you can expect.",
+                    icon: MousePointer2
                 },
                 {
-                    title: "Get Budget",
-                    description: "See the exact quantitative advertising spend required to hit your goals.",
+                    title: "Review Budget & Pace",
+                    description: "Get your total monthly spend and the exact daily budget required to hit your objective.",
                     icon: Wallet
                 }
             ]}
         />
     );
-}
+}

@@ -1,53 +1,40 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { Package, RotateCcw, SlidersHorizontal, Maximize, AlertTriangle, Truck } from "lucide-react"
+import { RotateCcw, Ruler, Target, Scale } from "lucide-react"
+
 export function PalletGuide() {
     return (
         <ToolGuide
-            title="Master Pallet Loading: What You Need to Know"
-            icon={Package}
+            title="Getting the Most From Your Pallet"
+            icon={Target}
             items={[
                 {
-                    title: "Why Pallet Configuration Matters",
-                    description: "Proper pallet loading directly impacts your shipping costs, warehouse efficiency, and product safety. This calculator analyzes 6 different box orientations to find the configuration that maximizes units per pallet while respecting weight and height constraints. Even a 5% improvement in pallet utilization can save thousands in annual freight costs.",
-                    icon: Package,
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-600"
-                },
-                {
-                    title: "The Power of Box Orientation",
-                    description: "The calculator automatically tests Standard, Rotated 90°, On Side (L), On Side (W), On End (L), and On End (W) orientations. A box measuring 12\"×8\"×6\" might fit 20 units standing upright but 24 units on its side. The optimal orientation depends on your pallet size and stack height limits.",
+                    title: "How Box Rotation Finds More Space",
+                    description: "When <strong>Allow Rotation</strong> is enabled (under Advanced Settings), the calculator tests your box in 6 orientations — Standard, Rotated 90°, On Side (L/W), and On End (L/W). A box measuring 12×8×6 might fit 20 units upright but 24 units on its side. Leave rotation on to always get the best possible fit.",
                     icon: RotateCcw,
                     iconBg: "bg-purple-50",
                     iconColor: "text-purple-600"
                 },
                 {
-                    title: "Understanding Configuration Presets",
-                    description: "Standard LTL (72\" / 2,500 lb) is ideal for general freight. Amazon FBA (72\" / 1,500 lb) ensures warehouse compliance. Max Volume (96\" / 3,000 lb) maximizes full truckload efficiency. Double Stack (48\" / 1,200 lb) allows two pallets stacked vertically in a trailer. Choose the preset that matches your shipping method.",
-                    icon: SlidersHorizontal,
-                    iconBg: "bg-indigo-50",
-                    iconColor: "text-indigo-600"
+                    title: "Why the 72-Inch Height Matters",
+                    description: "The default <strong>Max Stack Height</strong> of 72 inches is the universally accepted limit for LTL freight and Amazon FBA shipments — it includes the 5.5-inch pallet base. Exceeding this triggers carrier surcharges and warehouse rejections. Only increase beyond 72 inches if you're shipping full truckload (FTL) and your carrier explicitly allows it.",
+                    icon: Ruler,
+                    iconBg: "bg-blue-50",
+                    iconColor: "text-blue-600"
                 },
                 {
-                    title: "Space Efficiency Explained",
-                    description: "This percentage shows how much of the pallet's surface area is covered by boxes. 90%+ is excellent, 80-89% is good, below 80% suggests trying a different pallet size or box orientation. The calculator also shows overhang (unused edge space) and unused height to help you optimize further.",
-                    icon: Maximize,
+                    title: "What Space Efficiency Tells You",
+                    description: "<strong>Space Used %</strong> shows how much pallet surface area your boxes actually cover. Above 90% is excellent, 80–89% is good, and below 80% means you're wasting space. If your efficiency is low, try switching between <strong>Standard</strong> and <strong>Euro</strong> pallet types or adjusting box dimensions.",
+                    icon: Target,
                     iconBg: "bg-green-50",
                     iconColor: "text-green-600"
                 },
                 {
-                    title: "Common Mistakes to Avoid",
-                    description: "Don't ignore weight limits — overloaded pallets cause pallet collapse and carrier rejections. Don't exceed 72\" for LTL or you'll pay premium fees. Don't forget the 5.5\" pallet base height when calculating total height. Always leave 2-3\" buffer for stretch wrap and pallet overhang.",
-                    icon: AlertTriangle,
+                    title: "When to Use Weight Limits",
+                    description: "Under <strong>Advanced Settings</strong>, enter <strong>Box Weight</strong> and <strong>Max Pallet Weight</strong> if your product is heavy. The calculator will automatically reduce the number of layers so the total weight never exceeds your limit — even if there's still height left. Standard LTL pallets typically max out at 2,500 lb.",
+                    icon: Scale,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600"
-                },
-                {
-                    title: "Real-World Application",
-                    description: "Use this calculator before ordering packaging to ensure your box dimensions work efficiently with standard pallets. Use it to compare pallet types (US vs Euro) for international shipping. Use it to calculate truck capacity by multiplying units per pallet by pallets per truck. Optimize once, save forever.",
-                    icon: Truck,
-                    iconBg: "bg-cyan-50",
-                    iconColor: "text-cyan-600"
                 }
             ]}
         />

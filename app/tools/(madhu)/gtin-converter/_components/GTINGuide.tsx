@@ -8,44 +8,44 @@ export function GTINGuide() {
             icon={BookOpen}
             items={[
                 {
-                    title: "UPC to EAN Conversion",
-                    description: "When you enter a 12-digit UPC-A (GTIN-12), our converter automatically shows GTIN-13 (EAN) as the primary result. This is because UPC and EAN are mathematically equivalent—a UPC is simply an EAN with a leading zero.",
+                    title: "UPC to EAN (GTIN-12 to 13)",
+                    description: "The primary conversion for US/Canada retail. Our tool automatically prepends the required zero prefix to transition your UPC-A codes into the 13-digit EAN-13 (GTIN-13) international standard.",
                     icon: Globe,
                     stat: "UPC→EAN",
-                    statLabel: "Primary Conversion",
+                    statLabel: "USA to Global",
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
                     statColor: "text-blue-600"
                 },
                 {
-                    title: "EAN to UPC Conversion",
-                    description: "When you enter a 13-digit EAN-13 (GTIN-13), the tool shows GTIN-12 (UPC) as the primary result. This conversion removes the leading zero to create the North American UPC format, essential for US and Canadian retail.",
+                    title: "EAN to UPC (GTIN-13 to 12)",
+                    description: "When converting for North American marketplaces like Amazon, Walmart, or Target, our tool strips the zero-padding from your EAN-13 to return the standard 12-digit UPC format.",
                     icon: MapPin,
                     stat: "EAN→UPC",
-                    statLabel: "Reverse Conversion",
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    statColor: "text-blue-600"
+                    statLabel: "Global to USA",
+                    iconBg: "bg-indigo-50",
+                    iconColor: "text-indigo-500",
+                    statColor: "text-indigo-600"
                 },
                 {
-                    title: "Complete GTIN Format Coverage",
-                    description: "Our converter generates all three GTIN formats simultaneously: GTIN-12 (UPC), GTIN-13 (EAN), and GTIN-14 (for cartons). All formats are calculated with correct check digits using the official GS1 Modulo 10 algorithm.",
+                    title: "Logistics GTIN-14 Levels",
+                    description: "Commonly used for cartons, cases, and pallet configurations. We convert your consumer-level barcode (UPC/EAN) to the shipper-level GTIN-14 format essential for warehouse and supply chain management.",
                     icon: Boxes,
-                    stat: "3 Formats",
-                    statLabel: "All GTIN Types",
+                    stat: "Shipper",
+                    statLabel: "Case/Pack Level",
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-500",
                     statColor: "text-emerald-600"
                 },
                 {
-                    title: "Validation Before Conversion",
-                    description: "Before converting, the tool validates your input barcode using the GS1 check digit algorithm. Invalid codes are flagged immediately, preventing errors in your product listings and inventory systems.",
+                    title: "Instant Image Scanning",
+                    description: "New scanning technology: upload a photo from your warehouse. Our tool automatically reads the numerical data from the image for instant validation and conversion — no more manual entry errors.",
                     icon: ShieldCheck,
-                    stat: "GS1",
-                    statLabel: "Validated",
-                    iconBg: "bg-rose-50",
-                    iconColor: "text-rose-500",
-                    statColor: "text-rose-600"
+                    stat: "Scan-ID",
+                    statLabel: "Auto-Read",
+                    iconBg: "bg-violet-50",
+                    iconColor: "text-violet-500",
+                    statColor: "text-violet-600"
                 }
             ]}
         />

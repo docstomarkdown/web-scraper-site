@@ -2,6 +2,7 @@ import { FadeIn, ToolFAQ } from "@/app/tools/_shared/components"
 import { LeadTimeCalculator } from "./_components/LeadTimeCalculator"
 import { LeadTimeHowToUse } from "./_components/LeadTimeHowToUse"
 import { LeadTimeGuide } from "./_components/LeadTimeGuide"
+import { LeadTimeOverview } from "./_components/LeadTimeOverview"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
 export const metadata: Metadata = {
@@ -23,6 +24,9 @@ export default function LeadTimeCalculatorPage() {
                     <LeadTimeCalculator />
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.15}>
+                        <LeadTimeOverview />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <LeadTimeHowToUse />
                     </FadeIn>

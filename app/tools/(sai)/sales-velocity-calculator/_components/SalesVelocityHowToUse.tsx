@@ -1,26 +1,27 @@
 "use client";
 import { ToolSteps } from "@/app/tools/_shared/components";
 import { ClipboardList, CalendarOff, LineChart } from "lucide-react";
+
 export function SalesVelocityHowToUse() {
     return (
         <ToolSteps
             steps={[
                 {
-                    title: "Data Entry",
-                    description: "Enter specific raw tracked prospect contact amounts, mathematically validated win rates, and averaged specific invoice sizes.",
+                    title: "Enter Sales Data",
+                    description: "Input your total units sold over a specific period of time (e.g., 300 units over 30 days).",
                     icon: ClipboardList
                 },
                 {
-                    title: "Sale Timing",
-                    description: "Input totally mapped holistic quantitative timelines required converting fresh interested inbound leads into full paying clients.",
+                    title: "Log Stockouts",
+                    description: "Record any days your product was out of stock. The calculator will remove these from the average.",
                     icon: CalendarOff
                 },
                 {
-                    title: "Check Result",
-                    description: "Instantly trace absolutely exactly how heavily monetary funds explicitly pump across integrated sales representative pipelines daily.",
+                    title: "Get True Velocity",
+                    description: "See exactly how fast your product sells when it's available, so you can reorder with precision.",
                     icon: LineChart
                 }
             ]}
         />
     );
-}
+}

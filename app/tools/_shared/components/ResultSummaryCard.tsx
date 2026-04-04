@@ -2,10 +2,10 @@
 import React from "react"
 import { Card } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info, CheckCircle2, Circle, ArrowLeft, Percent, Activity, ClipboardPenLine, TextCursorInput, MousePointerClick } from "lucide-react"
+import { Info, CheckCircle2, Circle, ArrowLeft, Percent, ClipboardList, ClipboardPenLine, TextCursorInput, MousePointerClick, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
-import { currencies } from "./CurrencyCombobox"
+import { currencies, formatCurrencyValue } from "./CurrencyCombobox"
 interface SecondaryResult {
     key: string
     label: string
@@ -14,6 +14,8 @@ interface SecondaryResult {
     tooltip?: string
     isCurrency?: boolean // New flag to handle currency formatting
     className?: string // Added to support custom grid layouts
+    icon?: LucideIcon | React.ComponentType<any> // Icon to display instead of the dot
+    badge?: string // Badge text to display inline (e.g. "$ 90.00/ft³")
 }
 export interface ChecklistItem {
     key?: string
@@ -22,6 +24,7 @@ export interface ChecklistItem {
 }
 interface ResultSummaryCardProps {
     title?: string
+    panelTitle?: string
     primaryResult: {
         value: string | number
         unit?: string
@@ -33,6 +36,7 @@ interface ResultSummaryCardProps {
     currency?: string // Global currency code for the card
     showLiveBadge?: boolean
     liveBadgeText?: string
+    liveBadgeColor?: "emerald" | "amber" | "rose" | "blue" | "slate"
     isCalculated?: boolean
     profitLossKey?: string
     validationBadgeText?: { valid: string; invalid: string }
@@ -47,14 +51,17 @@ interface ResultSummaryCardProps {
     className?: string
     checklistItems?: ChecklistItem[]
     variant?: 'indicators' | 'editorial'
+    children?: React.ReactNode
 }
 export function ResultSummaryCard({
     title,
+    panelTitle,
     primaryResult,
     secondaryResults,
     currency,
     showLiveBadge = true,
     liveBadgeText = "Live",
+    liveBadgeColor = "emerald",
     isCalculated = false,
     profitLossKey,
     validationBadgeText,
@@ -64,11 +71,101 @@ export function ResultSummaryCard({
     dynamicMessages,
     className,
     checklistItems,
-    variant = 'indicators'
+    variant = 'indicators',
+    children
 }: ResultSummaryCardProps) {
     const [showResults, setShowResults] = React.useState(isCalculated)
-    const completedCount = checklistItems ? checklistItems.filter(i => i.isComplete).length : 0
-    const totalCount = checklistItems ? checklistItems.length : 0
+    
+    // Dynamic Mandatory Fields Computation
+    const [dynamicStats, setDynamicStats] = React.useState({ completed: 0, total: 0 });
+    const [hasInteracted, setHasInteracted] = React.useState(false);
+
+    React.useEffect(() => {
+        if (typeof document === 'undefined') return;
+        
+        const updateStats = () => {
+            const elements = Array.from(document.querySelectorAll('.calculator-input-row, button, .calculator-input-field'));
+            
+            let currentGroupOptional = false;
+            let total = 0;
+            let completed = 0;
+            const seenInputs = new Set();
+
+            elements.forEach(el => {
+                if (el.classList.contains('calculator-input-row') && el.getAttribute('data-has-title') === 'true') {
+                    currentGroupOptional = el.textContent?.toLowerCase().includes('optional') || false;
+                }
+                else if (el.tagName === 'BUTTON') {
+                    const text = el.textContent?.toLowerCase() || '';
+                    if (text.includes('optional')) {
+                        currentGroupOptional = true;
+                    } else if (text.includes('advanced') && !text.includes('optional')) {
+                        currentGroupOptional = false;
+                    }
+                }
+                else if (el.classList.contains('calculator-input-field') && !seenInputs.has(el)) {
+                    seenInputs.add(el);
+                    const input = el as HTMLInputElement;
+                    const val = input.value.trim();
+                    const row = input.closest('.calculator-input-row');
+                    const labelText = row?.querySelector('label')?.parentElement?.textContent?.toLowerCase() || '';
+                    const isSelfOptional = labelText.includes('optional') || input.dataset.ignoreChecklist === 'true';
+                    
+                    const isMandatory = !currentGroupOptional && !isSelfOptional;
+
+                    if (isMandatory) {
+                        total++;
+                        if (val !== "") {
+                            completed++;
+                        }
+                    }
+                }
+            });
+
+            setDynamicStats(prev => (prev.completed === completed && prev.total === total) ? prev : { completed, total });
+        };
+
+        updateStats();
+
+        const handleInput = (e: Event) => {
+            if ((e.target as HTMLElement).classList.contains('calculator-input-field')) {
+                setHasInteracted(true);
+                setTimeout(updateStats, 10);
+            }
+        };
+        
+        const handleClick = (e: Event) => {
+            const btn = (e.target as HTMLElement).closest('button');
+            if (btn && btn.textContent?.toLowerCase().includes('reset')) {
+                setHasInteracted(false);
+            }
+            setTimeout(updateStats, 50); 
+            setTimeout(updateStats, 200);
+        };
+
+        document.addEventListener('input', handleInput);
+        document.addEventListener('click', handleClick);
+        const interval = setInterval(updateStats, 1000);
+
+        return () => {
+            document.removeEventListener('input', handleInput);
+            document.removeEventListener('click', handleClick);
+            clearInterval(interval);
+        };
+    }, []);
+
+    let completedCount = dynamicStats.completed;
+    let totalCount = dynamicStats.total;
+
+    // Fallback
+    if (totalCount === 0 && checklistItems) {
+        totalCount = checklistItems.length;
+        completedCount = checklistItems.filter(i => i.isComplete).length;
+    }
+
+    if (!hasInteracted && completedCount < totalCount) {
+        completedCount = 0;
+    }
 
     React.useEffect(() => {
         if (isCalculated) {
@@ -85,52 +182,18 @@ export function ResultSummaryCard({
     const formatValueWithUnit = (value: string | number, unit?: string, isCurrency?: boolean) => {
         const numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]+/g, "")) : value
         if (isCurrency && currency && !isNaN(numValue)) {
-            // Priority: Use the symbol from our established currencies list
-            const found = currencies.find(c => c.code === currency)
-            if (found) {
-                const formatter = new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })
-                return (
-                    <span className="flex items-baseline">
-                        <span className="mr-1 opacity-90">{found.symbol}</span>
-                        {formatter.format(numValue)}
-                    </span>
-                )
-            }
-
-            try {
-                const formatter = new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: currency,
-                    currencyDisplay: 'narrowSymbol',
-                    maximumFractionDigits: 2
-                })
-                const formatted = formatter.format(numValue)
-                // If it's a currency, we use the formatter's output directly
-                return (
-                    <span className="flex items-baseline">
-                        {formatted}
-                    </span>
-                )
-            } catch {
-                try {
-                    const formatter = new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: currency,
-                        maximumFractionDigits: 2
-                    })
-                    return (
-                        <span className="flex items-baseline">
-                            {formatter.format(numValue)}
-                        </span>
-                    )
-                } catch {
-                    // silent fallback
-                }
-            }
+            return (
+                <span className="flex items-baseline">
+                    {formatCurrencyValue(numValue, currency, 2)}
+                </span>
+            )
         }
+        
+        // If it's a string that doesn't contain a number, return it as is
+        if (typeof value === 'string' && isNaN(numValue)) {
+            return value
+        }
+
         const displayNum = isNaN(numValue) ? 0 : numValue
         if (!unit) return displayNum
         // Symbols that usually go at the front
@@ -139,7 +202,7 @@ export function ResultSummaryCard({
         if (isFront) {
             return (
                 <span className="flex items-baseline">
-                    <span className="mr-0.5 opacity-90">{unit}</span>
+                    <span className="mr-0.5">{unit}</span>
                     {value}
                 </span>
             )
@@ -148,7 +211,7 @@ export function ResultSummaryCard({
         return (
             <span className="flex items-baseline">
                 {value}
-                <span className="ml-1 opacity-70 font-medium text-[0.6em]">{unit}</span>
+                <span className="ml-1 font-medium text-[0.6em]">{unit}</span>
             </span>
         )
     }
@@ -174,11 +237,7 @@ export function ResultSummaryCard({
         return text.replace(/Profit/g, "Loss").replace(/PROFIT/g, "LOSS").replace(/profit/g, "loss")
     }
     const getSecondaryValueColor = (result: SecondaryResult) => {
-        if (profitLossKey && result.key === profitLossKey) {
-            if (numericProfitLoss > 0) return "text-emerald-600"
-            if (numericProfitLoss < 0) return "text-red-600"
-        }
-        return "text-slate-400"
+        return "text-slate-700"
     }
     const badge = (() => {
         if (profitLossKey) {
@@ -199,11 +258,16 @@ export function ResultSummaryCard({
                 }
             }
         }
+        const colors = {
+            emerald: { bg: "bg-emerald-100/50", dot: "bg-emerald-500", textCol: "text-emerald-700" },
+            amber: { bg: "bg-amber-100/50 border-amber-200", dot: "bg-amber-500", textCol: "text-amber-700 font-semibold" },
+            rose: { bg: "bg-rose-100/50 border-rose-200", dot: "bg-rose-500", textCol: "text-rose-700 font-semibold" },
+            blue: { bg: "bg-blue-100/50 border-blue-200", dot: "bg-blue-500", textCol: "text-blue-700 font-semibold" },
+            slate: { bg: "bg-slate-100/50 border-slate-200", dot: "bg-slate-500", textCol: "text-slate-700 font-semibold" },
+        }
         return {
             text: liveBadgeText || "Live",
-            bg: "bg-emerald-100/50",
-            dot: "bg-emerald-500",
-            textCol: "text-emerald-700"
+            ...colors[liveBadgeColor]
         }
     })()
     // Dynamic description generator
@@ -221,8 +285,8 @@ export function ResultSummaryCard({
         return "A quick measure of your success."
     })()
     // Handle title and label adjustments
-    const displayTitle = title ? autoAdjustText(title) : undefined
-    const displayLabel = primaryResult.label ? autoAdjustText(primaryResult.label) : undefined
+    const displayLabelComponent = primaryResult.label || title
+    const displayLabel = displayLabelComponent ? autoAdjustText(displayLabelComponent) : undefined
     // For display purposes, we might want to show the absolute value if we are already labeling it as "Loss"
     // and if it's the primary profit/loss result.
     const getDisplayValue = (val: string | number, key?: string) => {
@@ -260,10 +324,10 @@ export function ResultSummaryCard({
                 <div className="flex justify-between items-center gap-4 px-6 pt-5 pb-1">
                     <div className="flex items-center gap-2.5">
                         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
-                            <Activity className="w-4 h-4 text-blue-600" />
+                            <ClipboardList className="w-4 h-4 text-blue-600" />
                         </div>
-                        <span className="text-[11px] font-black text-blue-600 uppercase tracking-[0.18em] leading-none">
-                            Results Panel
+                        <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
+                            Result Panel
                         </span>
                     </div>
 
@@ -363,21 +427,14 @@ export function ResultSummaryCard({
                                             <div className="h-2 w-32 rounded-full bg-slate-200/50 animate-pulse" style={{ animationDelay: "0.3s" }} />
                                         </div>
                                     </div>
-                                    <div className="h-px w-full bg-slate-200/40 my-4" />
-                                    <div className={cn(
-                                        "grid gap-2",
-                                        secondaryResults.length === 1 && "grid-cols-1",
-                                        secondaryResults.length === 2 && "grid-cols-2",
-                                        secondaryResults.length === 3 && "grid-cols-2",
-                                        secondaryResults.length >= 4 && "grid-cols-2"
-                                    )}>
+                                    <div className="flex flex-col gap-2">
                                         {secondaryResults.map((result, idx) => (
                                             <div
                                                 key={`skeleton-${result.key}`}
-                                                className="bg-slate-50/50 border border-slate-100 p-3 sm:p-4 rounded-xl flex flex-col justify-between"
+                                                className="bg-white border border-slate-100 p-4 rounded-xl"
                                             >
-                                                <div className="h-2 w-20 rounded-full bg-slate-200/60 mb-3 animate-pulse" style={{ animationDelay: `${0.1 + idx * 0.08}s` }} />
-                                                <div className="h-4 w-16 rounded-lg bg-slate-200/50 animate-pulse" style={{ animationDelay: `${0.15 + idx * 0.08}s` }} />
+                                                <div className="h-2 w-16 rounded-full bg-slate-200/60 mb-3 animate-pulse" style={{ animationDelay: `${0.1 + idx * 0.08}s` }} />
+                                                <div className="h-4 w-24 rounded-lg bg-slate-200/50 animate-pulse" style={{ animationDelay: `${0.15 + idx * 0.08}s` }} />
                                             </div>
                                         ))}
                                     </div>
@@ -392,105 +449,116 @@ export function ResultSummaryCard({
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.55, ease: "easeInOut" }}
-                            className="flex flex-col"
+                            className="flex flex-col gap-3 px-5 pb-5 pt-2"
                         >
-                            {/* ── Primary Hero ── */}
-                            <div className="px-5 pb-4">
+                            {/* ── Primary Hero (transparent, no border box) ── */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.97 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.4, delay: 0.05 }}
+                                className="relative flex flex-col items-center text-center py-6 px-4 bg-transparent"
+                            >
+                                {displayLabel && (
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 3 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3, delay: 0.12 }}
+                                        className="text-[10px] sm:text-[11px] font-black text-slate-400 uppercase tracking-[0.18em] leading-none mb-2"
+                                    >
+                                        {displayLabel}
+                                    </motion.span>
+                                )}
+
                                 <motion.div
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                                    className="relative flex flex-col items-center text-center py-6 px-4 rounded-2xl bg-slate-50/70 border border-slate-100/80"
+                                    transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                                    className="flex items-baseline justify-center"
                                 >
-                                    {displayLabel && (
-                                        <motion.span
-                                            initial={{ opacity: 0, y: 3 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.3, delay: 0.12 }}
-                                            className="text-[10px] sm:text-[11px] font-black text-slate-400 uppercase tracking-[0.16em] leading-none mb-2"
-                                        >
-                                            {displayLabel}
-                                        </motion.span>
-                                    )}
+                                    <span className="text-[3.25rem] font-black text-blue-600 tracking-tighter leading-none">
+                                        {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
+                                    </span>
+                                </motion.div>
 
-                                    <motion.div
+                                {displayDescription && (
+                                    <motion.p
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-                                        className="flex items-baseline justify-center"
+                                        transition={{ duration: 0.3, delay: 0.22 }}
+                                        className="text-[11.5px] text-slate-500 font-medium mt-2 max-w-[280px] mx-auto leading-relaxed"
                                     >
-                                        <span className="text-[2.75rem] sm:text-[3.25rem] font-black text-blue-600 tracking-tighter leading-none">
-                                            {formatValueWithUnit(displayValue, primaryResult.unit, primaryResult.isCurrency)}
-                                        </span>
-                                    </motion.div>
+                                        {displayDescription}
+                                    </motion.p>
+                                )}
+                            </motion.div>
 
-                                    {displayDescription && (
-                                        <motion.p
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            transition={{ duration: 0.3, delay: 0.2 }}
-                                            className="text-[12px] text-slate-500 font-medium max-w-[280px] mx-auto leading-relaxed mt-2.5"
-                                        >
-                                            {displayDescription}
-                                        </motion.p>
-                                    )}
-                                </motion.div>
-                            </div>
-
-                            {/* ── Secondary Metrics Grid ── */}
-                            {secondaryResults.length > 0 && (
-                                <div className="px-5 pb-5">
-                                    <div className={cn(
-                                        "grid gap-2",
-                                        secondaryResults.length === 1 && "grid-cols-1",
-                                        secondaryResults.length === 2 && "grid-cols-2", // 2 results: 2 columns covering full width
-                                        secondaryResults.length === 3 && "grid-cols-2", // 3 results: 2 columns (2 in first row, 1 in second row)
-                                        secondaryResults.length >= 4 && "grid-cols-2" // 4+ results: 2 columns (2 rows with 2 columns each)
-                                    )}>
-                                        {secondaryResults.map((result, idx) => (
-                                            <motion.div
-                                                key={result.key}
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.3, delay: 0.12 + idx * 0.05, ease: "easeOut" }}
-                                                className={cn(
-                                                    "group bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200 flex flex-col justify-center",
-                                                    "hover:border-slate-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)]",
-                                                    result.className
+                            {/* ── Secondary Result Cards (full-width stacked) ── */}
+                            {secondaryResults.length > 0 && secondaryResults.map((result, idx) => {
+                                const isCurrencyCard = result.isCurrency && currency
+                                const hasBadge = !!result.badge
+                                const valueColor = getSecondaryValueColor(result)
+                                const IconComponent = result.icon
+                                return (
+                                    <motion.div
+                                        key={result.key}
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.35, delay: 0.1 + idx * 0.05 }}
+                                        className={cn(
+                                            "bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4 transition-all duration-200",
+                                            "hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)] hover:border-slate-300",
+                                            result.className
+                                        )}
+                                    >
+                                        {/* Header: icon + label + badge + tooltip */}
+                                        <div className="flex items-center justify-between mb-2">
+                                            <div className="flex items-center gap-2">
+                                                {IconComponent ? (
+                                                    <IconComponent className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                                ) : (
+                                                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-slate-300" />
                                                 )}
-                                            >
-                                                <div className="flex items-center gap-1.5 mb-1.5">
-                                                    <span className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.08em] leading-none group-hover:text-slate-500 transition-colors">
-                                                        {autoAdjustText(result.label)}
-                                                    </span>
-                                                    {result.tooltip && (
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <button type="button" tabIndex={-1} className="text-slate-300 hover:text-blue-500 transition-colors cursor-help shrink-0">
-                                                                    <Info className="w-3 h-3" />
-                                                                </button>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
-                                                                {result.tooltip}
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    )}
-                                                </div>
-                                                <div className={cn(
-                                                    "text-[16px] font-extrabold tracking-tight",
-                                                    getSecondaryValueColor(result)
-                                                )}>
-                                                    {formatValueWithUnit(
-                                                        getDisplayValue(result.value, result.key),
-                                                        result.unit,
-                                                        result.isCurrency
-                                                    )}
-                                                </div>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">
+                                                    {autoAdjustText(result.label)}
+                                                </span>
+                                                {result.tooltip && (
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" tabIndex={-1} className="text-slate-300 hover:text-blue-500 transition-colors cursor-help shrink-0">
+                                                                <Info className="w-3 h-3" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent sideOffset={6} className="bg-slate-900 border-slate-800 text-white text-xs max-w-xs p-3 shadow-xl rounded-xl font-medium z-[110]">
+                                                            {result.tooltip}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                )}
+                                            </div>
+                                            {result.badge && (
+                                                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-blue-100/80 text-blue-700">
+                                                    {result.badge}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {/* Value */}
+                                        <div className={cn(IconComponent ? "pl-6" : "pl-3.5", hasBadge && "pt-0.5")}>
+                                            <span className={cn(
+                                                "font-bold tracking-tight block text-[16px] sm:text-[17px]",
+                                                isCurrencyCard
+                                                    ? "text-slate-700"
+                                                    : valueColor
+                                            )}>
+                                                {formatValueWithUnit(
+                                                    getDisplayValue(result.value, result.key),
+                                                    result.unit,
+                                                    result.isCurrency
+                                                )}
+                                            </span>
+                                        </div>
+                                    </motion.div>
+                                )
+                            })}
+                            {children}
                         </motion.div>
                     )}
                 </AnimatePresence>

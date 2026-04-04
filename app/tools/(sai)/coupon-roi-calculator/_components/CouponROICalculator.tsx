@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { DollarSign, Percent, ShoppingCart, Tag, BarChart } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
-import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard, currencies } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultSummaryCard, currencies } from "@/app/tools/_shared/components"
+import { CouponROIBreakdown } from "./CouponROIBreakdown"
 export function CouponROICalculator() {
     const [currency, setCurrency] = useState("USD")
     const [campaignCost, setCampaignCost] = useState<number | "">("")
+    const [couponsIssued, setCouponsIssued] = useState<number | "">("")
     const [redemptions, setRedemptions] = useState<number | "">("")
     const [aov, setAov] = useState<number | "">("")
     const [discountAmount, setDiscountAmount] = useState<number | "">("")
@@ -18,6 +20,9 @@ export function CouponROICalculator() {
     const [totalCost, setTotalCost] = useState(0) // Includes goods + campaign + discount
     const [netProfit, setNetProfit] = useState(0)
     const [roi, setRoi] = useState(0)
+    const [grossRevenue, setGrossRevenue] = useState(0)
+    const [totalCOGS, setTotalCOGS] = useState(0)
+    const [totalDiscountOut, setTotalDiscountOut] = useState(0)
     useEffect(() => {
         const cCost = Number(campaignCost) || 0
         const count = Number(redemptions) || 0
@@ -58,6 +63,9 @@ export function CouponROICalculator() {
         const grossProfit = netRevenue - totalCOGS
         const profitAfterCampaign = grossProfit - cCost
         const calcRoi = cCost > 0 ? (profitAfterCampaign / cCost) * 100 : (profitAfterCampaign > 0 ? 9999 : 0)
+        setGrossRevenue(grossRevenue)
+        setTotalCOGS(totalCOGS)
+        setTotalDiscountOut(totalDiscount)
         setTotalRevenue(netRevenue)
         setTotalCost(cCost + totalDiscount) // Showing "Cost of Campaign" (Media + Discounts)
         setNetProfit(profitAfterCampaign)
@@ -65,74 +73,87 @@ export function CouponROICalculator() {
     }, [campaignCost, redemptions, aov, discountAmount, margin])
     const handleReset = () => {
         setCampaignCost("")
+        setCouponsIssued("")
         setRedemptions("")
         setAov("")
         setDiscountAmount("")
         setMargin("")
     }
+
+    const isValid = campaignCost !== "" && redemptions !== "" && aov !== "" && discountAmount !== "" && margin !== ""
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs */}
                 <Card className="lg:col-span-7 border-none shadow-lg bg-white/80 backdrop-blur-sm ring-1 ring-slate-900/5">
                     <CalculatorCardHeader
+                        title="Campaign Details"
                         description="Enter your coupon efficiency metrics."
                         onReset={handleReset}
+                        guideId="tool-guide"
                         currency={currency}
                         onCurrencyChange={setCurrency}
                     />
-                    <CardContent className="p-6 md:p-8 space-y-8">
-                        {/* Campaign Costs */}
-                        <div className="space-y-3">
-                            <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                <DollarSign className="w-4 h-4 text-slate-400" />
-                                Costs & Volume
-                            </h3>
-                            <div className="grid grid-cols-1 gap-4">
+                    <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3 flex flex-col">
+                        <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                            {/* Campaign Basics */}
+                            <div className="space-y-3">
                                 <CalculatorInput
-                                    label={`Campaign Cost (${currencySymbol})`}
+                                    hideSeparator={true}
+                                    groupingTitle="Campaign Basics"
+                                    groupingIcon={DollarSign}
+                                    label="Campaign Cost"
                                     value={campaignCost}
                                     onChange={setCampaignCost}
                                     placeholder="500"
-                                    tooltip="Total spend on marketing, printing, or distribution."
+                                    tooltip="Total amount spent to run the coupon campaign."
+                                    currency={currency}
+                                />
+                                <CalculatorInput
+                                    label="Number of Coupons Issued"
+                                    value={couponsIssued}
+                                    onChange={setCouponsIssued}
+                                    placeholder="5000"
+                                    tooltip="Total coupons distributed."
+                                    isOptional={true}
                                 />
                                 <CalculatorInput
                                     label="Redemptions"
                                     value={redemptions}
                                     onChange={setRedemptions}
                                     placeholder="100"
-                                    tooltip="Number of times the coupon was used."
+                                    tooltip="Number of coupons actually used."
                                 />
                             </div>
-                        </div>
-                        {/* Product Economics */}
-                        <div className="space-y-3">
-                            <h3 className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                <ShoppingCart className="w-4 h-4 text-slate-400" />
-                                Sales Metrics
-                            </h3>
-                            <div className="grid grid-cols-1 gap-4">
+                            {/* Sales Data */}
+                            <div className="space-y-3">
                                 <CalculatorInput
-                                    label={`Avg Order Value (${currencySymbol})`}
+                                    groupingTitle="Sales Data"
+                                    groupingIcon={ShoppingCart}
+                                    label="Average Order Value"
                                     value={aov}
                                     onChange={setAov}
                                     placeholder="50.00"
-                                    tooltip="Average cart size before discount."
+                                    tooltip="Average purchase amount per order."
+                                    currency={currency}
                                 />
                                 <CalculatorInput
-                                    label={`Discount Amount (${currencySymbol})`}
+                                    label="Discount Amount (per order)"
                                     value={discountAmount}
                                     onChange={setDiscountAmount}
                                     placeholder="10.00"
-                                    tooltip="The value deducted per order."
+                                    tooltip="Discount applied per order."
+                                    currency={currency}
                                 />
                                 <CalculatorInput
-                                    label="Profit Margin (%)"
+                                    label="Profit Margin"
                                     value={margin}
                                     onChange={setMargin}
                                     placeholder="40"
                                     max={100}
-                                    tooltip="Your standard profit margin percentage."
+                                    tooltip="Profit margin before discount."
+                                    suffix="%"
                                 />
                             </div>
                         </div>
@@ -140,75 +161,50 @@ export function CouponROICalculator() {
                 </Card>
                 {/* Results */}
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="Campaign ROI"
-                        titleLabel="Return on Investment"
-                        mainValue={<Counter value={roi} formatter={(v) => `${v.toFixed(0)}%`} />}
-                        valueColor={roi > 0 ? "text-slate-100" : (roi < 0 ? "text-rose-400" : "text-slate-100")}
-                        secondaryMetrics={[
+                    <ResultSummaryCard
+                        isCalculated={isValid}
+                        currency={currency}
+                        emptyMessage="net profit ROI"
+                        liveBadgeText={roi > 0 ? "Positive ROI" : roi === 0 ? "Break-Even" : "Negative ROI"}
+                        liveBadgeColor={roi > 0 ? "emerald" : roi === 0 ? "slate" : "rose"}
+                        primaryResult={{
+                            value: roi,
+                            label: "Return on Investment",
+                            isCurrency: false,
+                            unit: "%",
+                            key: "roi"
+                        }}
+                        secondaryResults={[
                             {
+                                key: "netProfit",
                                 label: "Net Profit",
-                                value: <Counter value={netProfit} prefix={currencySymbol} />,
-                                color: netProfit >= 0 ? "text-emerald-500 font-bold" : "text-rose-400"
-                            },
-                            {
-                                label: "Total Revenue",
-                                value: <Counter value={totalRevenue} prefix={currencySymbol} />,
+                                value: netProfit,
+                                isCurrency: true,
+                                tooltip: "Derived by subtracting your Campaign Spend, Total Granted Discounts, and COGS from top-line revenue."
                             }
                         ]}
+                        checklistItems={[
+                            { key: "cc", label: "Campaign Cost", isComplete: campaignCost !== "" },
+                            { key: "red", label: "Redemptions", isComplete: redemptions !== "" },
+                            { key: "aov", label: "Avg Order Value", isComplete: aov !== "" },
+                            { key: "da", label: "Discount Amount", isComplete: discountAmount !== "" },
+                            { key: "pm", label: "Profit Margin", isComplete: margin !== "" },
+                        ]}
+                        profitLossKey="netProfit"
                     >
-                        <div className="flex justify-between items-center py-2 border-t border-slate-100 mt-2">
-                            <span className="text-sm text-slate-500">Break-even Redemptions</span>
-                            <span className="text-sm font-medium text-slate-900">
-                                {((Number(campaignCost) || 0) / Math.max(0.01, (Number(aov) || 0) * (Number(margin) || 0) / 100 - (Number(discountAmount) || 0))).toFixed(0)} units
-                            </span>
-                        </div>
-                    </ResultFeedbackCard>
-                    {/* Indicator Badge */}
-                    {totalRevenue > 0 && (
-                        <div className={cn(
-                            "px-4 py-3 rounded-xl border text-center text-sm font-semibold",
-                            roi > 0 ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
-                                roi === 0 ? "bg-slate-50 border-slate-200 text-slate-700" :
-                                    "bg-rose-50 border-rose-200 text-rose-700"
-                        )}>
-                            {roi > 0 ? "🚀 Positive ROI Campaign" : roi === 0 ? "⚖️ Break-Even Campaign" : "🛑 Negative ROI Campaign"}
-                        </div>
-                    )}
+                    </ResultSummaryCard>
                     {/* Breakdown */}
-                    {totalRevenue > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
-                            <div className="px-5 py-3.5 border-b border-slate-100">
-                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Financial Breakdown</p>
-                            </div>
-                            <div className="divide-y divide-slate-100">
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Gross Sales</span>
-                                    <span className="text-sm font-medium text-slate-700">{currencySymbol}{(Number(redemptions) * Number(aov)).toFixed(2)}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-4 py-3">
-                                    <span className="text-sm text-slate-500">Total Cost (Goods + Ads)</span>
-                                    <span className="text-sm font-medium text-slate-700">-{currencySymbol}{totalCost.toFixed(2)}</span>
-                                </div>
-                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50/50">
-                                    <span className="text-sm text-slate-500">Discount Given</span>
-                                    <span className="text-sm font-medium text-rose-600">-{currencySymbol}{(Number(redemptions) * Number(discountAmount)).toFixed(2)}</span>
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-center px-5 py-3.5 bg-slate-100/50 border-t border-slate-100">
-                                <span className="text-sm font-bold text-slate-900">Net Profit</span>
-                                <span className={cn("text-base font-bold", netProfit >= 0 ? "text-emerald-600" : "text-rose-600")}>
-                                    {currencySymbol}{netProfit.toFixed(2)}
-                                </span>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter metrics to see financial breakdown.</p>
-                        </div>
-                    )}
+                    <CouponROIBreakdown
+                        netProfit={netProfit}
+                        cogs={totalCOGS}
+                        campaignCost={Number(campaignCost) || 0}
+                        totalDiscount={totalDiscountOut}
+                        grossRevenue={grossRevenue}
+                        currency={currency}
+                        className="mt-3"
+                    />
                 </div>
             </div>
         </FadeIn>
     )
-}
+}

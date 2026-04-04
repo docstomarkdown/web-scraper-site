@@ -1,37 +1,45 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components/ToolGuide"
-import { BookOpen, Info, Trash2, Truck } from "lucide-react"
+import { Anchor, ShieldAlert, ArrowRightLeft, HandCoins } from "lucide-react"
+
 export function FBARemovalGuide() {
     return (
         <ToolGuide
-            title="Understanding Removal & Disposal Fees"
-            icon={BookOpen}
+            title="Understanding FBA Inventory Options"
+            icon={ArrowRightLeft}
             items={[
                 {
-                    title: "Removal vs. Disposal",
-                    description: "Removal orders ship inventory back to you (or a 3rd party). Disposal orders instruct Amazon to destroy or donate the inventory. The fees are typically identical per unit.",
-                    icon: Truck,
+                    title: "Removal vs. Disposal Options",
+                    description: "A removal order returns inventory back to you, which incurs shipping but enables you to resell locally or on another channel. Disposal means Amazon destroys or donates the item. Choose removal only if the resale value covers the removal fees + extra prep costs.",
+                    icon: ShieldAlert,
                     iconBg: "bg-blue-50",
-                    iconColor: "text-blue-600"
+                    iconColor: "text-blue-600",
+                    stat: "Strategy",
+                    statLabel: "Compare Net Value",
+                    tooltip: "Ensure profit after removal fee justifies keeping the physical items."
                 },
                 {
-                    title: "2025 Fee Changes",
-                    description: "Fees are now more granular for standard size items. Costs have generally increased to discourage long-term storage of slow-moving inventory.",
-                    icon: Info,
+                    title: "When to 'Hold' Inventory",
+                    description: "If both removing and disposing generate a strict net loss, and long-term storage fees aren't punishing your margins yet, it may be better to Hold the inventory. During this period, consider running promotions, adjusting your PPC bids, or dropping the price slightly to increase sell-through rate.",
+                    icon: Anchor,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
-                    stat: "Feb 1",
-                    statLabel: "Effective Date",
-                    tooltip: "New rates effective from Feb 1, 2025"
+                    stat: "Patience",
+                    statLabel: "Wait and Optimise",
+                    tooltip: "A temporary hold might allow time for better market conditions."
                 },
                 {
-                    title: "Liquidation Option",
-                    description: "Instead of paying to dispose, use FBA Liquidations. You might recover a small portion of value (5-10% of ASP) and avoid removal fees.",
-                    icon: Trash2,
-                    iconBg: "bg-green-50",
-                    iconColor: "text-green-600"
+                    title: "Selling on Other Channels",
+                    description: "Expected selling price is key when you opt to Remove. Many sellers use multi-channel fulfillment, eBay, or their own Shopify store to offload removed items. Factoring in 'Other Costs' like shipping and prep helps predict the actual net profit correctly.",
+                    icon: HandCoins,
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
+                    stat: "Sales",
+                    statLabel: "Alternative Channels",
+                    tooltip: "Include external operational costs to get a true representation of removal profit."
                 }
             ]}
         />
     )
-}
+}
+

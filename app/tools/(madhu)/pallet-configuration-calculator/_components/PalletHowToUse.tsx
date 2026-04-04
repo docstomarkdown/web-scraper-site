@@ -1,25 +1,26 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Box, Settings2, Grid3x3 } from "lucide-react"
+import { Box, Layers, Eye } from "lucide-react"
+
 export function PalletHowToUse() {
     return (
         <ToolSteps
             title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Enter Box Dimensions",
-                    description: "Input your box length, width, and height in inches or centimeters. Use the IN/CM toggle to switch units.",
+                    title: "Box Dimensions",
+                    description: "Input your box <strong>Length</strong>, <strong>Width</strong>, and <strong>Height</strong>. Use the <strong>in / cm</strong> toggle to switch between units.",
                     icon: Box
                 },
                 {
-                    title: "Configure Pallet Settings",
-                    description: "Select Standard US, Euro, or custom pallet size. Then choose a preset configuration or set max height and weight limits.",
-                    icon: Settings2
+                    title: "Pallet Settings",
+                    description: "Select <strong>Standard</strong>, <strong>Euro</strong>, or <strong>Custom</strong>. Adjust the <strong>Max Stack Height</strong> if needed for carrier compliance.",
+                    icon: Layers
                 },
                 {
-                    title: "View Optimal Configuration",
-                    description: "See the best box orientation, total units per pallet, layers, and 3D visualization instantly.",
-                    icon: Grid3x3
+                    title: "Optimal Layout",
+                    description: "Instantly see the best <strong>box orientation</strong>, total units per pallet, layers, space efficiency, and a <strong>live visual preview</strong>.",
+                    icon: Eye
                 }
             ]}
         />

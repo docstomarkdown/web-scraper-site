@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { TrendingUp, DollarSign, Percent, BarChart3, PieChart } from "lucide-react"
+import { Box, TrendingUp, DollarSign, Percent, BarChart3, PieChart, LineChart, ShieldAlert } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { CalculatorCardHeader, CalculatorInput, Counter, CurrencyCombobox, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
+import { CalculatorCardHeader, CalculatorInput, FadeIn, ResultSummaryCard } from "@/app/tools/_shared/components"
 export function TACoSCalculator() {
     const [currency, setCurrency] = useState("USD");
     const [totalAdSpend, setTotalAdSpend] = useState<number | "">("")
@@ -84,9 +84,10 @@ export function TACoSCalculator() {
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7 space-y-3">
+                <div className="lg:col-span-7 space-y-3 lg:sticky lg:top-8">
                     <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
+                            title="TACoS Details"
                             description="Enter total ad spend, revenue, and product margins."
                             onReset={handleReset}
                             currency={currency}
@@ -94,110 +95,124 @@ export function TACoSCalculator() {
                         />
                         <CardContent className="space-y-3 pt-6">
                             {/* Group 1: Business Data */}
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
-                                        <BarChart3 className="w-4 h-4" />
-                                    </div>
-                                    <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Business Data</h3>
-                                </div>
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full">
                                 <CalculatorInput
-                                    label={`Total Revenue (${currency})`}
+                                    hideSeparator={true}
+                                    groupingTitle="Business Data"
+                                    groupingIcon={BarChart3}
+                                    label="Total Revenue"
                                     value={totalRevenue}
                                     onChange={setTotalRevenue}
                                     placeholder="50000"
-                                    tooltip="Total sales from both organic and paid traffic."
+                                    tooltip="Combined total of pure organic sales and ad-driven revenue over a specific period."
+                                    isCurrency
+                                    currency={currency}
                                 />
                                 <CalculatorInput
-                                    label={`Total Ad Spend (${currency})`}
+                                    label="Total Ad Spend"
                                     value={totalAdSpend}
                                     onChange={setTotalAdSpend}
                                     placeholder="5000"
-                                    tooltip="Total spend on all ad platforms."
+                                    tooltip="Total capital deployed across all advertising channels targeting this revenue."
+                                    isCurrency
+                                    currency={currency}
                                 />
                             </div>
                             {/* Group 2: Profitability */}
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
-                                        <PieChart className="w-4 h-4" />
-                                    </div>
-                                    <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">Profitability</h3>
-                                </div>
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full">
                                 <CalculatorInput
-                                    label="Gross Profit Margin (%)"
+                                    groupingTitle="Profitability"
+                                    groupingIcon={PieChart}
+                                    label="Gross Profit Margin"
+                                    suffix="%"
                                     value={grossMargin}
                                     onChange={setGrossMargin}
                                     placeholder="40.0"
                                     min={0}
                                     max={100}
-                                    tooltip="Your overall business profit margin before ad costs."
+                                    tooltip="Base business profitability before advertising costs are factored in."
                                 />
                             </div>
                         </CardContent>
                     </Card>
                 </div>
                 {/* Right Column: Results */}
-                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="TACoS Percentage"
-                        mainValue={
-                            <div className="flex items-baseline gap-1">
-                                <Counter
-                                    value={tacos}
-                                    formatter={(val) => val.toFixed(2)}
-                                    className="text-5xl font-bold"
-                                />
-                                <span className="text-3xl font-bold text-slate-400">%</span>
-                            </div>
+                <div className="lg:col-span-5 space-y-3">
+                    <ResultSummaryCard
+                        isCalculated={revenue > 0 && spend > 0}
+                        currency={currency}
+                        emptyMessage="TACoS Percentage"
+                        showLiveBadge={true}
+                        liveBadgeText={status !== "Waiting" ? status : "Live"}
+                        liveBadgeColor={
+                            status === "Excellent" || status === "Healthy" ? "emerald" :
+                            status === "Warning" || status === "High" ? "amber" :
+                            status === "Unprofitable" ? "rose" : "blue"
                         }
-                        secondaryMetrics={[
-                            { label: "Ad Spend", value: formatCurrency(spend), color: "text-slate-300" },
-                            { label: "Net Profit", value: formatCurrency(netProfit), color: netProfit >= 0 ? "text-blue-400" : "text-red-400" }
+                        description={
+                            revenue > 0
+                                ? `TACoS measures ad dependency. You spend ${currency}${spend.toLocaleString()} to generate ${currency}${revenue.toLocaleString()} total revenue.`
+                                : undefined
+                        }
+                        primaryResult={{
+                            value: tacos,
+                            label: "Total ACoS (TACoS)",
+                            unit: "%",
+                            key: "tacosResult"
+                        }}
+                        secondaryResults={[
+                            {
+                                key: "adSpend",
+                                label: "Ad Spend",
+                                value: spend,
+                                isCurrency: true,
+                                icon: DollarSign,
+                                tooltip: "The total amount spent on advertising."
+                            },
+                            {
+                                key: "netProfit",
+                                label: "Estimated Net Profit",
+                                value: netProfit,
+                                isCurrency: true,
+                                icon: PieChart,
+                                tooltip: "Estimated real currency profit based on Net Margin × Total Revenue.",
+                                className: netProfit > 0 ? "text-emerald-600" : "text-red-500"
+                            }
+                        ]}
+                        checklistItems={[
+                            { key: "rev", label: "Total Revenue", isComplete: totalRevenue !== "" },
+                            { key: "spend", label: "Total Ad Spend", isComplete: totalAdSpend !== "" },
+                            { key: "margin", label: "Gross Margin", isComplete: grossMargin !== "" }
                         ]}
                     />
-                    {/* Breakdown Card */}
-                    {revenue > 0 && margin > 0 && (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                            <div className="px-5 py-3.5 border-b border-slate-100">
-                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Margin Breakdown</p>
-                            </div>
-                            <div className="divide-y divide-slate-100">
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Gross Margin</span>
-                                    <span className="text-sm font-semibold text-slate-800">{margin.toFixed(2)}%</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">TACoS Impact</span>
-                                    <span className="text-sm font-semibold text-red-600">-{tacos.toFixed(2)}%</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                    <span className="text-sm font-bold text-slate-900">Net Margin</span>
-                                    <span className={cn("text-base font-bold", netMargin > 0 ? "text-blue-600" : "text-red-600")}>
-                                        {netMargin.toFixed(2)}%
+
+                    {/* Insight Card */}
+                    <Card className="border border-slate-200 shadow-sm p-4 md:p-6 space-y-3 bg-white mt-4">
+                        <div className="flex flex-col gap-2 mb-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/10 border border-blue-100/50 shadow-sm shadow-blue-500/5">
+                                        <LineChart className="w-4 h-4 text-blue-600" />
+                                    </div>
+                                    <span className="text-[15px] sm:text-[16px] font-bold text-blue-700 leading-none">
+                                        Margin Health
                                     </span>
                                 </div>
+                                {revenue > 0 && (
+                                    <span className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] font-bold tracking-wide shrink-0 border-slate-200/50", statusBg, statusColor)}>
+                                        {status}
+                                    </span>
+                                )}
                             </div>
-                        </div>
-                    )}
-                    {/* Insight Card */}
-                    <Card className="border border-slate-200 shadow-sm p-6 space-y-3 bg-white">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-blue-600" />
-                                Margin Health
-                            </h3>
-                            {revenue > 0 && (
-                                <span className={cn("text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full", statusBg, statusColor)}>
-                                    {status}
-                                </span>
-                            )}
+                            <p className="text-xs font-medium text-slate-500 leading-relaxed pr-6 mt-1">
+                                Visualize how your total ad spend impacts your overall gross margin. Keep the pointer inside the <strong className="text-blue-500 font-bold">Safe</strong> zone to ensure your business remains profitable.
+                            </p>
                         </div>
                         <div className="pt-2">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Profitability Scale</p>
                                 {margin > 0 && (
-                                    <span className={cn("text-xs font-bold px-2 py-0.5 rounded-md border",
+                                    <span className={cn("text-xs font-bold px-2.5 py-1 rounded-md border",
                                         netMargin > 0 ? "text-blue-600 bg-blue-50 border-blue-100" : "text-red-600 bg-red-50 border-red-100"
                                     )}>
                                         {netMargin.toFixed(1)}% Net

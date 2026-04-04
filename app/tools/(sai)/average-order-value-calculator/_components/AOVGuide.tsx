@@ -4,53 +4,53 @@ import { DollarSign, ShoppingBag, TrendingUp, Package } from "lucide-react"
 export function AOVGuide() {
     return (
         <ToolGuide
-            title="Understanding Average Order Value (AOV)"
+            title="About Average Order Value Calculator"
             items={[
                 {
-                    title: "What is AOV?",
+                    title: "Set Strategic Shipping Thresholds",
                     icon: DollarSign,
                     iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    stat: "Avg",
-                    statColor: "text-blue-600",
-                    statLabel: "Revenue per order",
-                    tooltip: "AOV = Total Revenue / Total Number of Orders.",
-                    description: "Average Order Value (AOV) tracks the average dollar amount spent each time a customer places an order on your website or mobile app."
+                    iconColor: "text-blue-600",
+                    stat: "+20%",
+                    statColor: "text-blue-700",
+                    statLabel: "Above Target",
+                    tooltip: "Push customers to add one more item.",
+                    description: "Use your computed AOV to set an intelligent free shipping threshold. A proven strategy is setting your free shipping minimum 15% to 20% higher than your current Average Order Value to consistently bump up order sizes."
                 },
                 {
-                    title: "Why it Matters?",
+                    title: "Optimize Ad Spend Targets",
                     icon: TrendingUp,
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    stat: "Profit",
-                    statColor: "text-blue-600",
-                    statLabel: "Efficiency metric",
-                    tooltip: "Higher AOV means more revenue for the same marketing cost.",
-                    description: "Improving your AOV directly increases your revenue growth without the added cost of acquiring new customers. It helps you get more value from every transaction."
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
+                    stat: "CPA",
+                    statColor: "text-emerald-700",
+                    statLabel: "Cost Per Acquisition",
+                    tooltip: "Higher AOV means you can afford higher acquisition costs.",
+                    description: "Connect your raw calculation directly to profitability. By establishing your baseline average order value, you can immediately determine your maximum allowable Cost Per Acquisition (CPA) for Facebook and Google Ads."
                 },
                 {
-                    title: "How to Increase AOV?",
+                    title: "Design Smart Product Bundles",
                     icon: Package,
-                    iconBg: "bg-purple-50",
-                    iconColor: "text-purple-500",
-                    stat: "Tips",
-                    statColor: "text-purple-600",
-                    statLabel: "Bundling & Upsells",
-                    tooltip: "Common strategies: Product bundling, cross-selling, and free shipping thresholds.",
-                    description: "Effective strategies include offering product bundles, suggesting complementary items (cross-selling) at checkout, or setting a free shipping threshold just above your current AOV."
+                    iconBg: "bg-indigo-50",
+                    iconColor: "text-indigo-600",
+                    stat: "Bundles",
+                    statColor: "text-indigo-700",
+                    statLabel: "Higher Value",
+                    tooltip: "Combine popular items at a slight discount.",
+                    description: "Use your resulting number to accurately determine the best price points for product kits. If your AOV is $40, create logical, bundled packages priced at $55 and $75 to capture high-intent buyers."
                 },
                 {
-                    title: "Volume vs. Value",
+                    title: "Balance Conversion Rates",
                     icon: ShoppingBag,
                     iconBg: "bg-amber-50",
-                    iconColor: "text-amber-500",
-                    stat: "Balance",
-                    statColor: "text-amber-600",
-                    statLabel: "Find the sweet spot",
-                    tooltip: "Extremely high prices might lower conversion rate.",
-                    description: "Be careful not to just raise prices to increase AOV, as this could hurt your conversion rate. The goal is to encourage customers to buy *more* or *higher value* items willingly."
+                    iconColor: "text-amber-600",
+                    stat: "Safe",
+                    statColor: "text-amber-700",
+                    statLabel: "Pricing",
+                    tooltip: "Balance higher prices with conversion health.",
+                    description: "Monitor your store's baseline to keep pricing strategies secure. Pushing aggressively for a higher AOV can sometimes negatively impact your overall conversion rate, so track both metrics side-by-side to ensure total revenue grows."
                 }
             ]}
         />
     )
-}
+}

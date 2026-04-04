@@ -1,56 +1,57 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components"
-import { Box, Calendar, AlertTriangle, TrendingUp } from "lucide-react"
+import { Box, Calendar, AlertTriangle, TrendingUp, BookOpen } from "lucide-react"
 export function StorageFeeGuide() {
     return (
         <ToolGuide
-            title="Understanding FBA Storage Fees"
+            title="How Amazon Storage Fees Work"
+            icon={BookOpen}
             items={[
                 {
-                    title: "How it's Calculated",
+                    title: "Volume-Based Pricing",
+                    description: "Amazon measures your product's <strong>cubic volume</strong> by multiplying Length × Width × Height (in inches), then dividing by 1,728 to get cubic feet. Your <strong>monthly storage fee</strong> is this volume × the number of units × the per-cubic-foot rate. Smaller products = lower fees per unit.",
                     icon: Box,
+                    stat: "Per",
+                    statLabel: "Cubic Foot",
                     iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    stat: "Volume",
+                    iconColor: "text-blue-600",
                     statColor: "text-blue-600",
-                    statLabel: "Cubic Feet",
-                    tooltip: "Fee = Avg Daily Volume * Rate.",
-                    description: "Amazon charges monthly inventory storage fees based on the daily average volume (measured in cubic feet) for the space your inventory occupies in fulfillment centers."
+                    tooltip: "Formula: (L × W × H ÷ 1728) × Units × Rate = Monthly Fee"
                 },
                 {
-                    title: "Seasonality Matters",
+                    title: "Seasonal Rate Changes",
+                    description: "Amazon charges <strong>standard rates</strong> from January through September (~$0.87/cu ft for standard-size). During the holiday season (<strong>October–December</strong>), rates jump to ~$2.40/cu ft — nearly <strong>3× higher</strong>. Use the Advanced Settings to toggle between seasons and plan your Q4 inventory accordingly.",
                     icon: Calendar,
-                    iconBg: "bg-amber-50",
-                    iconColor: "text-amber-500",
                     stat: "Q4",
+                    statLabel: "3× Higher",
+                    iconBg: "bg-amber-50",
+                    iconColor: "text-amber-600",
                     statColor: "text-amber-600",
-                    statLabel: "Peak Prices",
-                    tooltip: "Prices jump in Oct-Dec.",
-                    description: "From January to September, rates are standard. However, during the holiday season (October–December), storage fees increase dramatically—sometimes by more than 200%—to account for high demand."
+                    tooltip: "Oct-Dec peak season rates are roughly 3× higher than Jan-Sept standard rates."
                 },
                 {
-                    title: "Oversize vs Standard",
+                    title: "Standard vs Oversize Tiers",
+                    description: "Products that fit within <strong>18 × 14 × 8 inches</strong> are classified as Standard-size. Anything larger is Oversize. Oversize items have a <strong>lower per-cubic-foot rate</strong>, but because they occupy more space, the <strong>total fee per unit is often higher</strong>. The calculator auto-detects this based on your dimensions.",
                     icon: AlertTriangle,
+                    stat: "Auto",
+                    statLabel: "Size Detection",
                     iconBg: "bg-purple-50",
-                    iconColor: "text-purple-500",
-                    stat: "Size",
+                    iconColor: "text-purple-600",
                     statColor: "text-purple-600",
-                    statLabel: "Tier Classification",
-                    tooltip: "Different rates for Oversize items.",
-                    description: "Oversize items actually have a *lower* cost per cubic foot than standard items, but because they are so large, the total fee per unit is often much higher."
+                    tooltip: "Standard: ≤ 18×14×8 in. Oversize: Anything larger."
                 },
                 {
-                    title: "Long-Term Fees",
+                    title: "Long-Term Storage Surcharges",
+                    description: "Inventory that sits in Amazon warehouses for <strong>more than 6 months</strong> triggers additional aged inventory surcharges on top of the standard monthly fee. This calculator automatically adds these extra charges when your storage duration exceeds 6 months — helping you identify slow-moving stock before it becomes a costly liability.",
                     icon: TrendingUp,
+                    stat: "6+",
+                    statLabel: "Month Warning",
                     iconBg: "bg-red-50",
-                    iconColor: "text-red-500",
-                    stat: "Aged",
+                    iconColor: "text-red-600",
                     statColor: "text-red-600",
-                    statLabel: "Extra Surcharges",
-                    tooltip: "Items stored > 180 days incur surcharges.",
-                    description: "This calculator covers standard monthly fees. If your inventory sits for more than 180 days, Amazon applies additional 'Aged Inventory Surcharges' (formerly Long-Term Storage Fees)."
+                    tooltip: "After 6 months, Amazon charges ~$1.50/cu ft per additional month."
                 }
             ]}
         />
     )
-}
+}

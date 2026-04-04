@@ -1,136 +1,166 @@
-"use client"
-import React, { useState } from "react"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { AlertTriangle, ShieldCheck } from "lucide-react"
-import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn, ResultFeedbackCard } from "@/app/tools/_shared/components"
+"use client";
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { CalculatorInput } from "@/app/tools/_shared/components/CalculatorInput";
+import { ResultSummaryCard } from "@/app/tools/_shared/components/ResultSummaryCard";
+import { FadeIn } from "@/app/tools/_shared/components/FadeIn";
+import { CalculatorCardHeader } from "@/app/tools/_shared/components/CalculatorCardHeader";
+import { ShieldCheck, TrendingUp, Clock, Package, BarChart3 } from "lucide-react";
+import { Counter } from "@/app/tools/_shared/components/Counter";
+import { SafetyStockBreakdown } from "./SafetyStockBreakdown";
+
 export function SafetyStockCalculator() {
-    const [maxDailySales, setMaxDailySales] = useState<number | "">("")
-    const [maxLeadTime, setMaxLeadTime] = useState<number | "">("")
-    const [avgDailySales, setAvgDailySales] = useState<number | "">("")
-    const [avgLeadTime, setAvgLeadTime] = useState<number | "">("")
-    const val = (v: number | "") => (v === "" ? 0 : v)
-    // --- Calculations ---
-    const maxSales = val(maxDailySales)
-    const maxLead = val(maxLeadTime)
-    const avgSales = val(avgDailySales)
-    const avgLead = val(avgLeadTime)
-    // Formula: (Max Daily Sales * Max Lead Time) - (Avg Daily Sales * Avg Lead Time)
-    const maxUsage = maxSales * maxLead
-    const avgUsage = avgSales * avgLead
-    const safetyStock = Math.max(0, Math.ceil(maxUsage - avgUsage))
+    const [maxDailySales, setMaxDailySales] = useState<number | "">("");
+    const [maxLeadTime, setMaxLeadTime] = useState<number | "">("");
+    const [avgDailySales, setAvgDailySales] = useState<number | "">("");
+    const [avgLeadTime, setAvgLeadTime] = useState<number | "">("");
+
+    const handleReset = () => {
+        setMaxDailySales("");
+        setMaxLeadTime("");
+        setAvgDailySales("");
+        setAvgLeadTime("");
+    };
+
+    const val = (v: number | "") => (v === "" ? 0 : v);
+
+    const maxSales = val(maxDailySales);
+    const maxLead = val(maxLeadTime);
+    const avgSales = val(avgDailySales);
+    const avgLead = val(avgLeadTime);
+
+    // Formula: (Max Daily Sales × Max Lead Time) - (Avg Daily Sales × Avg Lead Time)
+    const maxUsage = maxSales * maxLead;
+    const avgUsage = avgSales * avgLead;
+    const safetyStock = Math.max(0, Math.ceil(maxUsage - avgUsage));
+
+    const hasData = maxSales > 0 || maxLead > 0 || avgSales > 0 || avgLead > 0;
+    const isCalculated = maxSales > 0 && maxLead > 0 && avgSales > 0 && avgLead > 0;
+
+    const riskLevel = (() => {
+        if (!isCalculated) return { text: "Review Inputs", color: "amber" as const };
+        if (safetyStock === 0) return { text: "No Buffer Needed", color: "blue" as const };
+        if (safetyStock <= 30) return { text: "Low Buffer", color: "blue" as const };
+        if (safetyStock <= 100) return { text: "Moderate Buffer", color: "amber" as const };
+        return { text: "High Buffer", color: "rose" as const };
+    })();
+
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs Section */}
-                <div className="lg:col-span-7 space-y-3">
-                    <Card className="border border-slate-200 shadow-sm bg-white">
+                <div className="lg:col-span-7 space-y-3 lg:sticky lg:top-8">
+                    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden">
                         <CalculatorCardHeader
-                            description="Enter your best and average case scenarios."
-                            onReset={() => { setMaxDailySales(""); setMaxLeadTime(""); setAvgDailySales(""); setAvgLeadTime(""); }}
+                            title="Stock Variables"
+                            description="Enter your worst-case and average sales and lead time data."
+                            onReset={handleReset}
                         />
                         <CardContent className="space-y-3 pt-6">
-                            <CalculatorInput
-                                label="Max Daily Sales"
-                                value={maxDailySales}
-                                onChange={setMaxDailySales}
-                                placeholder="20"
-                                tooltip="The highest number of units sold in a single day."
-                            />
-                            <CalculatorInput
-                                label="Avg. Daily Sales"
-                                value={avgDailySales}
-                                onChange={setAvgDailySales}
-                                placeholder="10"
-                                tooltip="The typical number of units sold in a day."
-                            />
-                            <CalculatorInput
-                                label="Max Lead Time (Days)"
-                                value={maxLeadTime}
-                                onChange={setMaxLeadTime}
-                                placeholder="21"
-                                tooltip="The longest it has ever taken for stock to arrive."
-                            />
-                            <CalculatorInput
-                                label="Avg. Lead Time (Days)"
-                                value={avgLeadTime}
-                                onChange={setAvgLeadTime}
-                                placeholder="14"
-                                tooltip="The typical number of days for stock to arrive."
-                            />
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full">
+                                <CalculatorInput
+                                    hideSeparator={true}
+                                    groupingTitle="Worst-Case Scenario"
+                                    groupingIcon={TrendingUp}
+                                    label="Max Daily Sales (Units)"
+                                    value={maxDailySales}
+                                    onChange={setMaxDailySales}
+                                    placeholder="20"
+                                    tooltip="Your single highest sales day ever — use your peak holiday or promotion figure"
+                                />
+                                <CalculatorInput
+                                    label="Max Lead Time (Days)"
+                                    value={maxLeadTime}
+                                    onChange={setMaxLeadTime}
+                                    placeholder="21"
+                                    tooltip="The longest your supplier has ever taken to deliver — your worst-case shipping delay"
+                                />
+                            </div>
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full pt-2">
+                                <CalculatorInput
+                                    groupingTitle="Normal Operating Baseline"
+                                    groupingIcon={BarChart3}
+                                    label="Avg. Daily Sales (Units)"
+                                    value={avgDailySales}
+                                    onChange={setAvgDailySales}
+                                    placeholder="10"
+                                    tooltip="Your typical daily units sold — a 30 or 60-day average works well here"
+                                />
+                                <CalculatorInput
+                                    label="Avg. Lead Time (Days)"
+                                    value={avgLeadTime}
+                                    onChange={setAvgLeadTime}
+                                    placeholder="14"
+                                    tooltip="How many days it normally takes for stock to arrive from your supplier"
+                                />
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
+
                 {/* Results Section */}
                 <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <ResultFeedbackCard
-                        title="Recommended Safety Stock"
-                        titleLabel="Buffer Needed"
-                        labelClassName="bg-blue-500/10 text-blue-400"
-                        mainValue={
-                            <div className="flex items-baseline gap-1">
-                                <Counter value={safetyStock} />
-                                <span className="text-2xl font-normal opacity-80">Units</span>
-                            </div>
-                        }
-                        valueColor="text-blue-400"
-                        mainMetricLabel="Impact"
-                        mainMetricValue="Prevents Stockouts"
-                        mainMetricColor="text-blue-400"
-                        secondaryMetrics={[
+                    <ResultSummaryCard
+                        primaryResult={{
+                            value: safetyStock,
+                            label: "Safety Stock Buffer",
+                            key: "safetyStock",
+                        }}
+                        secondaryResults={[
                             {
+                                key: "maxDemand",
                                 label: "Max Lead Time Demand",
-                                value: <><Counter value={maxUsage} /> Units</>,
-                                color: "text-slate-300"
+                                value: `${maxUsage} Units`,
+                                icon: TrendingUp,
+                                tooltip: "Total units you'd sell in the worst-case: Max Daily Sales × Max Lead Time"
                             },
                             {
-                                label: "Avg Lead Time Demand",
-                                value: <><Counter value={avgUsage} /> Units</>,
-                                color: "text-slate-400"
+                                key: "avgDemand",
+                                label: "Avg. Lead Time Demand",
+                                value: `${avgUsage} Units`,
+                                icon: BarChart3,
+                                tooltip: "Units sold during a normal restock cycle: Avg Daily Sales × Avg Lead Time"
                             }
                         ]}
-                    />
-                    {/* Breakdown Card */}
-                    {maxSales > 0 || maxLead > 0 || avgSales > 0 || avgLead > 0 ? (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-500">
-                            <div className="px-5 py-3.5 border-b border-slate-100">
-                                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Stock Calculation</p>
-                            </div>
-                            <div className="divide-y divide-slate-100">
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Max Usage (Worst Case)</span>
-                                    <span className="text-sm font-semibold text-slate-800"><Counter value={maxUsage} /> units</span>
+                        isCalculated={isCalculated}
+                        emptyMessage="Safety Stock Buffer"
+                        liveBadgeText={riskLevel.text}
+                        liveBadgeColor={riskLevel.color}
+                    >
+                        <FadeIn delay={0.1}>
+                            {/* Inventory Protection — stays inside the result card */}
+                            <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] space-y-3 mt-4">
+                                <div className="flex items-start gap-3">
+                                    <ShieldCheck className="w-5 h-5 text-blue-500 mt-0.5" />
+                                    <div>
+                                        <h4 className="font-semibold text-slate-800 mb-1">
+                                            Inventory Protection
+                                        </h4>
+                                        <p className="text-sm text-slate-600 leading-relaxed">
+                                            {isCalculated ? (
+                                                <>
+                                                    To cover demand variability and supplier delays, hold <strong>{safetyStock} units</strong> as a permanent buffer. This ensures you stay in stock even if sales spike or a shipment arrives late.
+                                                </>
+                                            ) : (
+                                                <>Enter your sales and lead time figures to see your recommended buffer quantity.</>
+                                            )}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex justify-between items-center px-5 py-3.5">
-                                    <span className="text-sm text-slate-600">Avg Usage (Normal Case)</span>
-                                    <span className="text-sm font-semibold text-slate-800">- <Counter value={avgUsage} /> units</span>
-                                </div>
-                                <div className="flex justify-between items-center px-5 py-3.5 bg-blue-50/20">
-                                    <span className="text-sm font-bold text-slate-900">Safety Buffer</span>
-                                    <span className="text-base font-bold text-blue-600"><Counter value={safetyStock} /> units</span>
-                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                            <p className="text-sm text-slate-400">Enter sales and lead times to see stock calculation.</p>
-                        </div>
-                    )}
-                    {/* Analysis Card */}
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                        <div className="flex items-start gap-3">
-                            <ShieldCheck className="w-5 h-5 text-blue-500 mt-0.5" />
-                            <div>
-                                <h4 className="font-semibold text-slate-800 mb-1">
-                                    Inventory Protection
-                                </h4>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    To protect against the variability in your sales and supplier delays, you should hold <strong>{safetyStock} units</strong> as a permanent buffer. This ensures you can cover demand even if a shipment is late or sales spike.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        </FadeIn>
+                    </ResultSummaryCard>
+
+                    {/* Stock Calculation Breakdown — outside main result card */}
+                    <FadeIn delay={0.2}>
+                        <SafetyStockBreakdown
+                            avgUsage={avgUsage}
+                            safetyStock={safetyStock}
+                            maxUsage={maxUsage}
+                        />
+                    </FadeIn>
                 </div>
             </div>
         </FadeIn>
-    )
-}
+    );
+}

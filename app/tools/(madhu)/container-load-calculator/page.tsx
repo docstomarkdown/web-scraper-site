@@ -1,10 +1,11 @@
-import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
+import { FadeIn, ToolFAQ, ToolPageTitle, ToolSectionHeader } from "@/app/tools/_shared/components"
 import { ContainerLoadCalculator } from "./_components/ContainerLoadCalculator"
 import { ContainerLoadHowToUse } from "./_components/ContainerLoadHowToUse"
 import { ContainerLoadGuide } from "./_components/ContainerLoadGuide"
+import { ContainerLoadOverview } from "./_components/ContainerLoadOverview"
 import { CTA } from "@/components/sections/CTA"
 import { Metadata } from "next"
-import { Container } from "lucide-react"
+import { BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
     title: "Container Load Calculator - Optimize Shipping & Cargo Space",
@@ -27,6 +28,14 @@ export default function ContainerLoadCalculatorPage() {
                 </div>
 
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.1}>
+                        <ToolSectionHeader 
+                            title="Tool Essential"
+                            icon={BookOpen}
+                        />
+                        <ContainerLoadOverview />
+                    </FadeIn>
+
                     <FadeIn delay={0.2}>
                         <ContainerLoadHowToUse />
                     </FadeIn>
@@ -39,16 +48,24 @@ export default function ContainerLoadCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How do you calculate pallet fit?",
-                                    answer: "We maximize the floor area by rotating pallets (if standard size). We then stack boxes on the pallet up to the container's ceiling height."
+                                    question: "What's the difference between Loose and Pallet loading?",
+                                    answer: "Loose loading stacks your cartons directly inside the container, maximising volume. Pallet loading places boxes on pallets first — it's slower to load but protects fragile goods and allows forklift handling. Pallets typically reduce usable volume by 10–15%."
                                 },
                                 {
-                                    question: "Does this include container tare weight?",
-                                    answer: "No, the 'Max Weight' shown is the Payload Capacity (Net Weight) typically allowed. Always check your specific container's CSC plate."
+                                    question: "Do I need to fill in the Unit Weight?",
+                                    answer: "No — Unit Weight is optional. If you leave it blank, the calculator will focus purely on dimensional capacity (how many boxes fit by size). If you enter a weight, the tool will also check whether the total cargo weight stays within the container's payload limit."
                                 },
                                 {
-                                    question: "What if my boxes are crushable?",
-                                    answer: "This calculator assumes boxes can be stacked to the ceiling. If your goods are fragile, you should manually limit the height or use pallets with defined max height."
+                                    question: "What does the Arrangement result mean?",
+                                    answer: "The Arrangement shows exactly how your boxes are positioned in the container — for example '14L × 4W × 6H' means 14 boxes along the length, 4 across the width, and 6 stacked high. For pallet mode, it shows pallet positions and box layers per pallet."
+                                },
+                                {
+                                    question: "What does Space Utilization % mean?",
+                                    answer: "Space Utilization is the percentage of total container interior volume that your cargo actually occupies. A score of 85%+ is considered efficient. If your score is low, try adjusting your carton dimensions or switching between loose and pallet mode."
+                                },
+                                {
+                                    question: "Which container type should I choose?",
+                                    answer: "Use a 20ft Standard for dense, heavy goods (it has the highest payload at 28,200 kg). Use a 40ft High Cube for light, bulky cargo — the extra 30cm of interior height often fits an entire extra stacking layer. Use Reefer containers for temperature-controlled shipments."
                                 }
                             ]}
                         />

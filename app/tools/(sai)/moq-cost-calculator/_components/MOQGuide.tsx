@@ -8,7 +8,7 @@ export function MOQGuide() {
             icon={BookOpen}
             items={[
                 {
-                    title: "What is Minimum Order Quantity (MOQ)?",
+                    title: "Minimum Order Quantity (MOQ) Fundamentals",
                     description: "Minimum Order Quantity (MOQ) is the lowest number of units a supplier is willing to sell to you at once. Suppliers use Minimum Order Quantities (MOQs) to cover their production overheads and ensure profitability.",
                     icon: Package,
                     iconBg: "bg-blue-50",
@@ -19,7 +19,7 @@ export function MOQGuide() {
                     tooltip: "The hurdle you must clear to buy."
                 },
                 {
-                    title: "The 'Cash Trap' Risk",
+                    title: "Inventory and 'Cash Trap' Risks",
                     description: "A high Minimum Order Quantity (MOQ) can tie up all your capital in inventory that sits in a warehouse. If your sales velocity is low, a large Minimum Order Quantity (MOQ) means you'll be paying storage fees for months (or years) before you see your cash back.",
                     icon: AlertTriangle,
                     iconBg: "bg-amber-50",
@@ -30,8 +30,8 @@ export function MOQGuide() {
                     tooltip: "Don't buy 2 years of stock!"
                 },
                 {
-                    title: "Negotiating Minimum Order Quantity (MOQ)",
-                    description: "Minimum Order Quantities (MOQs) are often negotiable. You can offer to pay a slightly higher price per unit for a smaller test batch, or split the production into two shipments to manage cash flow better.",
+                    title: "Minimum Order Quantity (MOQ) Negotiation",
+                    description: "Minimum Order Quantities (MOQs) are often negotiable. You can offer to pay a slightly higher cost per unit for a smaller test batch, or split the production into two shipments to manage cash flow better.",
                     icon: TrendingUp,
                     iconBg: "bg-green-50",
                     iconColor: "text-green-500",

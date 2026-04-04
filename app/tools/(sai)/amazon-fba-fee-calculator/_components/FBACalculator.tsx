@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Info, Check, ChevronsUpDown } from "lucide-react"
-import { FadeIn, Counter, CalculatorInput, ResultFeedbackCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
+import { Info, ChevronsUpDown, ChevronDown, ChevronUp, Box, DollarSign, Layers, Calendar, Clock, Tag, Truck, CircleDollarSign } from "lucide-react"
+import { FadeIn, CalculatorInput, ResultSummaryCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
 import { cn } from "@/lib/utils"
-import { ChevronDown, ChevronUp } from "lucide-react"
 // --- Market Configurations ---
 // Define fee structures and unit preferences for each region
 type MarketConfig = {
@@ -285,64 +284,71 @@ export function FBACalculator() {
                 {/* Left Column: Inputs (Col Span 7) */}
                 <div className="lg:col-span-7">
                     <FadeIn delay={0.2} direction="right" className="h-full">
-                        <Card className="border border-slate-200 shadow-sm bg-white">
-                            <CalculatorCardHeader
-                                description="Estimate FBA and referral fees."
-                                onReset={handleReset}
-                                currency={currency}
-                                onCurrencyChange={setCurrency}
-                            />
-                            <CardContent className="space-y-3 pt-6">
-                                <div className="space-y-3">
-                                    <CalculatorInput
-                                        label={`Selling Price (${symbol})`}
-                                        value={salesPrice}
-                                        onChange={setSalesPrice}
-                                        placeholder="29.99"
-                                        max={100000}
-                                        tooltip="The price you list your product for on Amazon."
-                                    />
-                                    <div className="grid grid-cols-1 gap-4">
+                        <Card className="border border-slate-200/80 shadow-sm bg-white overflow-hidden h-full flex flex-col rounded-3xl">
+                        <CalculatorCardHeader
+                            title="Amazon FBA Fee Calculator"
+                            description="Analyze FBA fees, storage costs, and net profitability."
+                            onReset={handleReset}
+                            guideId="fba-calculator-guide"
+                            currency={currency}
+                            onCurrencyChange={setCurrency}
+                        />
+                            <CardContent className="p-4 md:p-6 pb-10 md:pb-14 space-y-3 flex-1 flex flex-col">
+                                <div className="space-y-6 max-w-[520px] mx-auto w-full">
+                                    <div className="space-y-3">
                                         <CalculatorInput
-                                            label={`Packaged Weight (${units.weight})`}
+                                            hideSeparator={true}
+                                            label={`Selling Price`}
+                                            value={salesPrice}
+                                            onChange={setSalesPrice}
+                                            placeholder="29.99"
+                                            max={100000}
+                                            prefix={symbol}
+                                            tooltip="The price you list your product for on Amazon."
+                                            groupingTitle="Pricing & Weight"
+                                            groupingIcon={DollarSign}
+                                        />
+                                        <CalculatorInput
+                                            label={`Packaged Weight`}
                                             value={weight}
                                             onChange={setWeight}
                                             placeholder={units.weight === "lbs" ? "1.5" : "0.5"}
                                             max={150}
-                                            tooltip={`Total weight including packaging in ${units.weight}.`}
+                                            suffix={units.weight}
+                                            tooltip={`Total weight including packaging.`}
                                         />
-                                        <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-3">
-                                            <div className="space-y-1">
-                                                <label className="text-base font-semibold text-slate-700 flex items-center justify-between">
-                                                    <span>Dimensions ({units.dim})</span>
-                                                    <span className="text-[11px] font-medium text-slate-400/80 bg-slate-50 px-2 py-0.5 rounded">L x W x H</span>
-                                                </label>
-                                                <div className="grid grid-cols-1 gap-4 pt-2">
-                                                    <CalculatorInput
-                                                        label="Length"
-                                                        value={length}
-                                                        onChange={setLength}
-                                                        placeholder="Length"
-                                                    />
-                                                    <CalculatorInput
-                                                        label="Width"
-                                                        value={width}
-                                                        onChange={setWidth}
-                                                        placeholder="Width"
-                                                    />
-                                                    <CalculatorInput
-                                                        label="Height"
-                                                        value={height}
-                                                        onChange={setHeight}
-                                                        placeholder="Height"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <CalculatorInput
+                                            label="Length"
+                                            value={length}
+                                            onChange={setLength}
+                                            placeholder="Length"
+                                            suffix={units.dim}
+                                            tooltip={`Product length in ${units.dim}.`}
+                                            groupingTitle="Dimensions"
+                                            groupingIcon={Box}
+                                        />
+                                        <CalculatorInput
+                                            label="Width"
+                                            value={width}
+                                            onChange={setWidth}
+                                            placeholder="Width"
+                                            suffix={units.dim}
+                                            tooltip={`Product width in ${units.dim}.`}
+                                        />
+                                        <CalculatorInput
+                                            label="Height"
+                                            value={height}
+                                            onChange={setHeight}
+                                            placeholder="Height"
+                                            suffix={units.dim}
+                                            tooltip={`Product height in ${units.dim}.`}
+                                        />
                                     </div>
                                 </div>
                                 {/* Advanced Toggle */}
-                                <div className="pt-6 mt-4 border-t border-slate-100">
+                                <div className="pt-6 mt-4 border-t border-slate-100 max-w-[520px] mx-auto w-full">
                                     <div
                                         onClick={() => setShowAdvanced(!showAdvanced)}
                                         className={cn(
@@ -379,96 +385,77 @@ export function FBACalculator() {
                                         </div>
                                     </div>
                                     {showAdvanced && (
-                                        <FadeIn className="mt-4 p-5 bg-slate-50/50 rounded-xl border border-slate-200/60 space-y-3">
-                                            {/* Category Selector */}
-                                            <div className="space-y-3">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-2">
-                                                        <label className="text-sm font-semibold text-slate-700">Product Category</label>
-                                                        <TooltipProvider delayDuration={100}>
-                                                            <Tooltip>
-                                                                <TooltipTrigger asChild>
-                                                                    <button
-                                                                        type="button"
-                                                                        tabIndex={-1}
-                                                                        className="text-slate-400 hover:text-emerald-600 transition-colors cursor-default"
-                                                                    >
-                                                                        <Info className="h-3.5 w-3.5" />
-                                                                    </button>
-                                                                </TooltipTrigger>
-                                                                <TooltipContent side="top" className="max-w-xs text-xs bg-slate-900 text-white border-slate-800">
-                                                                    Referral fee percentage varies by product category.
-                                                                </TooltipContent>
-                                                            </Tooltip>
-                                                        </TooltipProvider>
-                                                    </div>
-                                                    <span className="text-xs font-medium text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200 shadow-sm">
-                                                        Fee: <span className="text-emerald-600 font-bold">{Math.round(categories[category] * 100)}%</span>
-                                                    </span>
+                                        <TooltipProvider delayDuration={200}>
+                                        <FadeIn className="pt-4 space-y-5 max-w-[520px] mx-auto w-full px-1">
+                                            <div className="flex items-center gap-3 w-full relative z-10">
+                                                <div className="flex items-center gap-2 flex-1 min-w-0 text-left">
+                                                    <label className="text-[14.5px] font-medium text-slate-600/90 cursor-pointer py-1">Product Category</label>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className="text-slate-400 hover:text-emerald-600 transition-colors cursor-help">
+                                                                <Info className="h-3.5 w-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent className="bg-slate-900 text-white border-slate-800 text-[13px]">
+                                                            Amazon Referral fees vary by product category. Use this to ensure accuracy.
+                                                        </TooltipContent>
+                                                    </Tooltip>
                                                 </div>
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            className="w-full justify-between h-11 bg-white border-slate-200 text-slate-700 hover:border-emerald-400 hover:text-slate-900 shadow-sm transition-all"
-                                                        >
-                                                            <span className="truncate">{category}</span>
-                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-                                                        <Command>
-                                                            <CommandInput placeholder="Search category..." className="text-sm" />
-                                                            <CommandList>
-                                                                <CommandEmpty>No category found.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {Object.keys(categories).map(cat => (
-                                                                        <CommandItem
-                                                                            key={cat}
-                                                                            value={cat}
-                                                                            onSelect={(val) => {
-                                                                                const match = Object.keys(categories).find(k => k.toLowerCase() === val.toLowerCase());
-                                                                                if (match) setCategory(match);
-                                                                            }}
-                                                                            className="flex items-center justify-between py-2.5 px-3 cursor-pointer"
-                                                                        >
-                                                                            <span className="text-sm truncate mr-2">{cat}</span>
-                                                                            <div className="flex items-center gap-2 shrink-0">
-                                                                                <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded", category === cat ? "bg-emerald-50 text-emerald-600" : "text-slate-400")}>
+                                                <div className="w-36 sm:w-44 relative flex-shrink-0">
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                role="combobox"
+                                                                className="w-full justify-between h-11 bg-white border-2 border-slate-200 text-slate-700 hover:border-emerald-300 hover:shadow-md transition-all font-semibold px-3 rounded-xl"
+                                                            >
+                                                                <span className="truncate w-full text-right pr-3">{category}</span>
+                                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                                                            <Command>
+                                                                <CommandInput placeholder="Search category..." className="text-sm" />
+                                                                <CommandList>
+                                                                    <CommandEmpty>No category found.</CommandEmpty>
+                                                                    <CommandGroup>
+                                                                        {Object.keys(categories).map(cat => (
+                                                                            <CommandItem
+                                                                                key={cat}
+                                                                                value={cat}
+                                                                                onSelect={(val) => {
+                                                                                    const match = Object.keys(categories).find(k => k.toLowerCase() === val.toLowerCase());
+                                                                                    if (match) setCategory(match);
+                                                                                }}
+                                                                                className="flex items-center justify-between py-2.5 px-3 cursor-pointer"
+                                                                            >
+                                                                                <span className="text-sm truncate mr-2">{cat}</span>
+                                                                                <span className={cn("text-xs font-medium px-1.5 py-0.5 rounded shrink-0", category === cat ? "bg-emerald-50 text-emerald-600" : "text-slate-400")}>
                                                                                     {Math.round(categories[cat] * 100)}%
                                                                                 </span>
-                                                                                {category === cat && <Check className="h-3.5 w-3.5 text-emerald-600" />}
-                                                                            </div>
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
-                                                            </CommandList>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-                                            </div>
-                                            {/* Storage Input */}
-                                            <div className="pt-2 border-t border-slate-200/50">
-                                                <div className="grid grid-cols-1 gap-4">
-                                                    <div>
-                                                        <CalculatorInput
-                                                            label="Avg. Storage Duration"
-                                                            value={storageMonths}
-                                                            onChange={setStorageMonths}
-                                                            placeholder="0"
-                                                            max={12}
-                                                            tooltip="Average months inventory stays in Fulfillment by Amazon (FBA) warehouses."
-                                                        />
-                                                        <div className="flex justify-end mt-1.5">
-                                                            <span className="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
-                                                                Est. Cost: {market.currencyParams.storagePerCubic} {symbol}/{market.currencyParams.storageUnit} / mo
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                                            </CommandItem>
+                                                                        ))}
+                                                                    </CommandGroup>
+                                                                </CommandList>
+                                                            </Command>
+                                                        </PopoverContent>
+                                                    </Popover>
                                                 </div>
                                             </div>
+                                            
+                                            {/* Storage Input properly aligned horizontally natively by internal component */}
+                                            <div className="flex w-[calc(100%+12px)] -ml-[6px]">
+                                                <CalculatorInput
+                                                    label="Storage Duration (Months)"
+                                                    value={storageMonths}
+                                                    onChange={setStorageMonths}
+                                                    placeholder="0"
+                                                    max={12}
+                                                    tooltip="Average months inventory stays in Fulfillment by Amazon (FBA) warehouses."
+                                                />
+                                            </div>
                                         </FadeIn>
+                                        </TooltipProvider>
                                     )}
                                 </div>
                             </CardContent>
@@ -476,59 +463,58 @@ export function FBACalculator() {
                     </FadeIn>
                 </div>
                 {/* Right Column: Results (Col Span 5) - Sticky & Dark Theme */}
-                <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-8">
-                    <FadeIn delay={0.4} direction="left" className="space-y-3">
-                        <ResultFeedbackCard
+                <div className="lg:col-span-5 lg:sticky lg:top-8">
+                    <FadeIn delay={0.4} direction="left" className="h-full">
+                        <ResultSummaryCard
                             title="Total Amazon Fees"
-                            titleLabel="Estimated (2026 Rates)"
-                            mainValue={
-                                <Counter value={totalFees} formatter={formatCurrency} key={currency} />
-                            }
-                            valueColor="text-slate-100"
-                            secondaryMetrics={[]}
+                            liveBadgeText="Estimated (2026 Rates)"
+                            currency={currency}
+                            primaryResult={{
+                                value: totalFees,
+                                isCurrency: true,
+                                key: "total_fees",
+                                label: "Total Estimated Fees"
+                            }}
+                            secondaryResults={[
+                                {
+                                    key: "referral_fee",
+                                    label: `Referral Fee (${(categories?.[category] || (currency === 'INR' ? 0.12 : 0.15)) * 100}%)`,
+                                    value: referralFee,
+                                    isCurrency: true,
+                                    icon: Tag
+                                },
+                                {
+                                    key: "fulfillment_fee",
+                                    label: "Fulfillment Fee (FBA)",
+                                    value: fbaFee,
+                                    isCurrency: true,
+                                    badge: getSizeTier(),
+                                    icon: Truck
+                                },
+                                ...(closingFee > 0 ? [{
+                                    key: "closing_fee",
+                                    label: "Closing Fee",
+                                    value: closingFee,
+                                    isCurrency: true,
+                                    icon: CircleDollarSign
+                                }] : []),
+                                ...(storageFee > 0 ? [{
+                                    key: "storage_fee",
+                                    label: "Est. Storage Fee",
+                                    value: storageFee,
+                                    isCurrency: true,
+                                    icon: Calendar
+                                }] : [])
+                            ]}
+                            showLiveBadge={true}
+                            isCalculated={salesPrice !== ""}
+                            description="Estimated fees based on dimensions, weight, and Amazon rates."
+                            emptyMessage="Fill in product details to calculate fees."
+                            emptyResultLabel="Total Amazon Fees"
                         />
-                        {/* Fee Breakdown Card */}
-                        {salesPriceVal > 0 ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
-                                <div className="px-5 py-3.5 border-b border-slate-100 flex justify-between items-center">
-                                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Fee Breakdown</p>
-                                    <span className="text-[10px] font-semibold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{getSizeTier()}</span>
-                                </div>
-                                <div className="divide-y divide-slate-100">
-                                    <div className="flex justify-between items-center px-5 py-3.5">
-                                        <span className="text-sm text-slate-600">Referral Fee ({(categories?.[category] || (currency === 'INR' ? 0.12 : 0.15)) * 100}%)</span>
-                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(referralFee)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center px-5 py-3.5">
-                                        <span className="text-sm text-slate-600">Fulfillment Fee (FBA)</span>
-                                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(fbaFee)}</span>
-                                    </div>
-                                    {closingFee > 0 && (
-                                        <div className="flex justify-between items-center px-5 py-3.5">
-                                            <span className="text-sm text-slate-600">Closing Fee</span>
-                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(closingFee)}</span>
-                                        </div>
-                                    )}
-                                    {storageFee > 0 && (
-                                        <div className="flex justify-between items-center px-5 py-3.5">
-                                            <span className="text-sm text-slate-600">Est. Storage Fee</span>
-                                            <span className="text-sm font-semibold text-slate-800">{formatCurrency(storageFee)}</span>
-                                        </div>
-                                    )}
-                                    <div className="flex justify-between items-center px-5 py-4 bg-emerald-50/20">
-                                        <span className="text-sm font-bold text-slate-900">Total Fees</span>
-                                        <span className="text-base font-bold text-emerald-600">{formatCurrency(totalFees)}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
-                                <p className="text-sm text-slate-400">Enter product details to calculate fees.</p>
-                            </div>
-                        )}
                     </FadeIn>
-                </div >
-            </div >
+                </div>
+            </div>
         </FadeIn >
     )
-}
+}

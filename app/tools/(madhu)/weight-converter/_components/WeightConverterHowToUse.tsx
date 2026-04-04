@@ -1,25 +1,26 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Weight, SlidersHorizontal, LayoutList } from "lucide-react"
+import { Scale, Truck, ChevronDown } from "lucide-react"
+
 export function WeightConverterHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Weight Converter"
+            title="How to Use This Tool"
             steps={[
                 {
-                    title: "Enter Weight Value",
-                    description: "Type the numeric weight value you want to convert in the input field.",
-                    icon: Weight
+                    title: "Enter Item Weight",
+                    description: "Just type in your item's weight and pick your unit (like pounds or kilograms). We'll instantly convert it into all other measurement sizes for you.",
+                    icon: Scale
                 },
                 {
-                    title: "Select Units",
-                    description: "Choose your input unit (lbs, oz, kg, or g) and target unit using the tab buttons. The target unit cannot be the same as the input unit.",
-                    icon: SlidersHorizontal
+                    title: "Select Shipping",
+                    description: "Want to know shipping costs? Choose your preferred carrier or shipping speed, and we'll automatically find the correct pricing tier for your item's weight.",
+                    icon: Truck
                 },
                 {
-                    title: "View Results",
-                    description: "Instantly see the converted weight in your target unit, plus all other unit conversions displayed in the results panel.",
-                    icon: LayoutList
+                    title: "View Breakdown",
+                    description: "Open the cost breakdown to see exactly which shipping bracket your item falls into, and easily check how much more weight you can add before the price goes up!",
+                    icon: ChevronDown
                 }
             ]}
         />

@@ -1,56 +1,57 @@
 "use client"
 import { ToolGuide } from "@/app/tools/_shared/components"
-import { DollarSign, Users, PieChart, Target } from "lucide-react"
+import { DollarSign, PieChart, Target, Users } from "lucide-react"
+
 export function CACGuide() {
     return (
         <ToolGuide
-            title="Understanding Customer Acquisition Cost (CAC)"
+            title="About Customer Acquisition Cost Calculator"
             items={[
                 {
-                    title: "What is CAC?",
-                    icon: DollarSign,
-                    iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    stat: "Cost",
-                    statColor: "text-blue-600",
-                    statLabel: "Cost per new customer",
-                    tooltip: "CAC = Total Sales & Marketing Expenses / Number of New Customers Acquired.",
-                    description: "Customer Acquisition Cost (CAC) is the total cost of winning a customer to purchase a product or service. It is an important metric to determine the profitability of your business model."
-                },
-                {
-                    title: "What to Include?",
+                    title: "Fully Loaded Cost Method",
                     icon: PieChart,
-                    iconBg: "bg-purple-50",
-                    iconColor: "text-purple-500",
-                    stat: "All",
-                    statColor: "text-purple-600",
-                    statLabel: "Comprehensive costs",
-                    tooltip: "Include ad spend, salaries, commissions, bonuses, overhead, and tools used for marketing and sales.",
-                    description: "CAC isn't just ad spend (that's CPA). Using the 'Fully Loaded' CAC method means including salaries, commissions, bonuses, overhead, and software tools related to sales and marketing."
-                },
-                {
-                    title: "LTV:CAC Ratio",
-                    icon: Target,
                     iconBg: "bg-blue-50",
-                    iconColor: "text-blue-500",
-                    stat: "3:1",
-                    statColor: "text-blue-600",
-                    statLabel: "Ideal Ratio",
-                    tooltip: "Lifetime Value (LTV) should ideally be 3x your CAC.",
-                    description: "The golden rule for business sustainability is an LTV:CAC ratio of 3:1. If your ratio is 1:1, you are spending too much. If it's 5:1, you might be under-spending and missing growth opportunities."
+                    iconColor: "text-blue-600",
+                    stat: "All-In",
+                    statColor: "text-blue-700",
+                    statLabel: "Expenses",
+                    tooltip: "Include ad spend, salaries, commissions, bonuses, overhead, and tools used for marketing and sales.",
+                    description: "CAC is not just your ad spend — that is CPA. A true CAC calculation uses the fully loaded method: include every dollar your sales and marketing teams cost, from salaries and commissions to software subscriptions and creative production."
                 },
                 {
-                    title: "New Customers Only",
+                    title: "Count Only New Customers",
                     icon: Users,
-                    iconBg: "bg-amber-50",
-                    iconColor: "text-amber-500",
+                    iconBg: "bg-emerald-50",
+                    iconColor: "text-emerald-600",
                     stat: "New",
-                    statColor: "text-amber-600",
-                    statLabel: "Don't count returning",
+                    statColor: "text-emerald-700",
+                    statLabel: "Acquisitions Only",
                     tooltip: "Only divide by the number of NEW customers acquired in the period.",
-                    description: "Ensure you are dividing your costs only by the number of *new* customers acquired. Including returning customers will artificially lower your CAC and give you misleading data."
+                    description: "Always divide your total spend by newly acquired customers only. Including returning or repeat buyers will artificially lower your CAC and mask the true cost of customer acquisition, leading to poor budget decisions."
+                },
+                {
+                    title: "The 3:1 Golden Benchmark",
+                    icon: Target,
+                    iconBg: "bg-indigo-50",
+                    iconColor: "text-indigo-600",
+                    stat: "3:1",
+                    statColor: "text-indigo-700",
+                    statLabel: "LTV:CAC Target",
+                    tooltip: "Lifetime Value (LTV) should ideally be 3x your CAC.",
+                    description: "The industry standard for sustainable growth is an LTV:CAC ratio of 3:1. At 1:1 you are breaking even and losing money on overhead. At 5:1 or above, you may be under-investing in growth and missing market share."
+                },
+                {
+                    title: "Optimize Your Payback Period",
+                    icon: DollarSign,
+                    iconBg: "bg-amber-50",
+                    iconColor: "text-amber-600",
+                    stat: "< 12 mo",
+                    statColor: "text-amber-700",
+                    statLabel: "Ideal Payback",
+                    tooltip: "Track how many months it takes to recoup your acquisition cost from a customer.",
+                    description: "Beyond the ratio, track your CAC payback period — how long it takes for a customer's revenue to cover their acquisition cost. Top-performing SaaS and e-commerce businesses aim to recover CAC within 12 months or less."
                 }
             ]}
         />
     )
-}
+}

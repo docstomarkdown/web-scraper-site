@@ -4,23 +4,24 @@ import { DollarSign, BarChart3, Percent } from "lucide-react";
 export function TACoSHowToUse() {
     return (
         <ToolSteps
+            title="How to Calculate TACoS"
             steps={[
                 {
-                    title: "All Ad Cash",
-                    description: "Enter total raw holistic digital financial expenditures strictly funding targeted explicit broad PPC marketing retail campaigns.",
-                    icon: DollarSign
-                },
-                {
-                    title: "All Impact",
-                    description: "Input universal cross channel entire gross retail sales encompassing directly attributed revenue alongside all completely organic sales.",
+                    title: "Add Total Revenue",
+                    description: "Enter your total sales for the period. Make sure to include both the sales generated from ads AND your free organic sales.",
                     icon: BarChart3
                 },
                 {
-                    title: "Check Scale",
-                    description: "Instantly derive exact Total Advertising Cost metrics outlining precisely broader digital spending impact heavily manipulating base bottomlines.",
+                    title: "Add Spend & Margins",
+                    description: "Enter the total amount of money you spent on advertising, along with your product's base profit margin.",
+                    icon: DollarSign
+                },
+                {
+                    title: "Check Your Health",
+                    description: "Instantly see your TACoS percentage and use the visual health meter to ensure your ads aren't silently eating all your profits.",
                     icon: Percent
                 }
             ]}
         />
     );
-}
+}

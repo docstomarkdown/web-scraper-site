@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { FadeIn, ToolFAQ, ToolPageTitle } from "@/app/tools/_shared/components"
 import { WeightConverter } from "./_components/WeightConverter"
+import { WeightConverterInfo } from "./_components/WeightConverterInfo"
 import { WeightConverterHowToUse } from "./_components/WeightConverterHowToUse"
 import { WeightConverterGuide } from "./_components/WeightConverterGuide"
 import { CTA } from "@/components/sections/CTA"
@@ -17,6 +18,9 @@ export default function WeightConverterPage() {
                     <WeightConverter />
                 </div>
                 <div className="max-w-4xl mx-auto space-y-16">
+                    <FadeIn delay={0.15}>
+                        <WeightConverterInfo />
+                    </FadeIn>
                     <FadeIn delay={0.2}>
                         <WeightConverterHowToUse />
                     </FadeIn>
@@ -27,21 +31,25 @@ export default function WeightConverterPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What units can I convert between?",
-                                    answer: "You can convert between four standard weight units: <strong>Pounds (lbs)</strong>, <strong>Ounces (oz)</strong>, <strong>Kilograms (kg)</strong>, and <strong>Grams (g)</strong>. The converter shows all four conversions simultaneously for easy comparison."
+                                    question: "Which shipping carriers are supported?",
+                                    answer: "The tool includes tier estimates for <strong>7+ global carriers</strong>: USPS, FedEx, UPS, and DHL for US and global shipping, plus Royal Mail (UK), Canada Post, and Australia Post for regional shipping. Each carrier has its own set of weight tiers with realistic cost range estimates."
                                 },
                                 {
-                                    question: "Why can't I select the same unit for input and target?",
-                                    answer: "The target unit must be different from the input unit to perform a conversion. If you need the same unit, there's no conversion needed - the value remains the same."
+                                    question: "What is the Shipping Speed option?",
+                                    answer: "If you haven't decided on a carrier yet, switch to <strong>Shipping Speed mode</strong> (Standard / Express / Next Day) to get generic cross-carrier cost estimates based on delivery speed. This is useful for early-stage pricing research before committing to a specific carrier."
                                 },
                                 {
-                                    question: "How accurate are the conversions?",
-                                    answer: "Our converter uses precise conversion factors: 1 pound = 453.592 grams and 1 ounce = 28.3495 grams. This ensures accurate conversions suitable for e-commerce, shipping, cooking, and scientific applications."
+                                    question: "How accurate are the shipping cost estimates?",
+                                    answer: "Estimates are based on publicly published carrier weight tiers and represent <strong>typical retail rate ranges</strong>. Actual costs will vary based on origin/destination distance, package dimensions, negotiated business rates, and surcharges. Use these figures as a baseline to identify which tier your product falls into — not as a final invoiced amount."
                                 },
                                 {
-                                    question: "Can I convert very large or very small weights?",
-                                    answer: "Yes, the converter handles a wide range of values. Large numbers are automatically formatted for readability (e.g., 1,000,000 becomes 1M), while maintaining calculation accuracy for precise conversions."
+                                    question: "What does the Cost Breakdown expand to?",
+                                    answer: "Clicking <strong>\"View Cost Breakdown\"</strong> reveals every weight tier for the selected carrier in a scrollable list. Your current tier is highlighted with a colored border and badge. This lets you see exactly how many lbs/oz stand between you and a cheaper or more expensive shipping band — critical for packaging weight optimisation."
                                 },
+                                {
+                                    question: "Why did my product fall into a 'Contact carrier' or 'Freight' tier?",
+                                    answer: "When a package exceeds a carrier's standard parcel weight limit (typically 70–150 lbs depending on the carrier), it moves out of standard parcel delivery into <strong>freight forwarding</strong>. Freight pricing requires a custom quote based on pallet dimensions, weight, density, and shipping lane — these can't be estimated generically."
+                                }
                             ]}
                         />
                     </FadeIn>

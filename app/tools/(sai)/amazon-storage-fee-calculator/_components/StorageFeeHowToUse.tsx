@@ -1,26 +1,27 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Box, Calendar, Package } from "lucide-react"
+import { Box, Layers, BarChart3 } from "lucide-react"
 export function StorageFeeHowToUse() {
     return (
         <ToolSteps
+            title="How to Use This Calculator"
             steps={[
                 {
-                    title: "Item Volume",
-                    description: "Enter your specific product dimensions to calculate true cubic footage.",
+                    title: "Enter Product Dimensions",
+                    description: "Input your product's length, width, and height in inches to automatically compute cubic volume and size tier.",
                     icon: Box
                 },
                 {
-                    title: "Inventory Size",
-                    description: "Input the average number of physical units held in Amazon facilities.",
-                    icon: Package
+                    title: "Add Inventory Details",
+                    description: "Enter the total units stored and storage duration to estimate standard monthly fees and long-term surcharges.",
+                    icon: Layers
                 },
                 {
-                    title: "Check Cost",
-                    description: "Instantly see your total monthly storage fee based on current FBA terms.",
-                    icon: Calendar
+                    title: "Review Storage Costs",
+                    description: "Instantly view your total storage cost, monthly breakdown, and actionable insights to optimize inventory health.",
+                    icon: BarChart3
                 }
             ]}
         />
     )
-}
+}

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { DollarSign, PieChart, Calculator } from "lucide-react"
+import { DollarSign, PieChart, Calculator, Percent, Receipt, CreditCard } from "lucide-react"
 import {
     CalculatorCardHeader,
     CalculatorInput,
@@ -43,8 +43,6 @@ export function NetProfitCalculator() {
     const netProfit = operatingProfit - taxAmount
     const netMargin = r > 0 ? (netProfit / r) * 100 : 0
     const grossMargin = r > 0 ? (grossProfit / r) * 100 : 0
-    // ROI (Return on Investment) = (Net Profit / Total Costs) * 100
-    const roi = totalExpenses > 0 ? (netProfit / totalExpenses) * 100 : 0
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -85,9 +83,9 @@ export function NetProfitCalculator() {
     const profitPercent = getPercent(Math.max(netProfit, 0)) // Only show positive profit on bar
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-2 px-4" duration={0.6}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
                 {/* Left Column: Inputs */}
-                <div className="lg:col-span-7">
+                <div className="lg:col-span-7 self-start lg:sticky lg:top-28">
                     <Card className="border border-slate-200 shadow-lg shadow-slate-200/40 bg-white rounded-3xl overflow-hidden">
                         <CalculatorCardHeader
                             title="Profit Analysis"
@@ -172,28 +170,24 @@ export function NetProfitCalculator() {
                                 label: "Net Margin",
                                 value: netMargin.toFixed(2),
                                 unit: "%",
-                                tooltip: "The percentage of revenue that remains as profit after all costs are deducted."
-                            },
-                            {
-                                key: "roi",
-                                label: "ROI",
-                                value: roi.toFixed(2),
-                                unit: "%",
-                                tooltip: "Return on Investment: Net Profit divided by Total Costs (COGS + Ads + Overhead)."
+                                tooltip: "The percentage of revenue that remains as profit after all costs are deducted.",
+                                icon: Percent,
                             },
                             {
                                 key: "tax-amount",
                                 label: "Tax Amount",
                                 value: taxAmount,
                                 isCurrency: true,
-                                tooltip: "Estimated income tax based on your operating profit and tax rate."
+                                tooltip: "Estimated income tax based on your operating profit and tax rate.",
+                                icon: Receipt,
                             },
                             {
                                 key: "total-expenses",
                                 label: "Total Expenses",
                                 value: totalExpenses + taxAmount,
                                 isCurrency: true,
-                                tooltip: "Sum of all business costs: COGS, Ad Spend, Overhead, and Tax."
+                                tooltip: "Sum of all business costs: COGS, Ad Spend, Overhead, and Tax.",
+                                icon: CreditCard,
                             }
                         ]}
                         currency={currency}
@@ -208,16 +202,17 @@ export function NetProfitCalculator() {
                             negative: "Your total expenses exceed your revenue. You are operating at a net loss.",
                             neutral: "Your business is breaking even. Revenue exactly covers all expenses."
                         }}
-                    />
-                    <ProfitAllocation
-                        revenue={r}
-                        cogs={c}
-                        adSpend={ads}
-                        overhead={over}
-                        taxAmount={taxAmount}
-                        netProfit={netProfit}
-                        currency={currency}
-                    />
+                    >
+                        <ProfitAllocation
+                            revenue={r}
+                            cogs={c}
+                            adSpend={ads}
+                            overhead={over}
+                            taxAmount={taxAmount}
+                            netProfit={netProfit}
+                            currency={currency}
+                        />
+                    </ResultSummaryCard>
                 </div>
             </div>
         </FadeIn >

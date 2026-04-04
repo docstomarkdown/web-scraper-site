@@ -1,4 +1,3 @@
-'use client';
 import * as React from 'react';
 import Image from "next/image";
 import { Check, ChevronDown } from 'lucide-react';
@@ -176,6 +175,58 @@ export const currencies = [
     { code: 'ZMW', symbol: 'K', name: "Zambian Kwacha", flag: 'zm' },
     { code: 'ZWL', symbol: '$', name: "Zimbabwean Dollar", flag: 'zw' },
 ];
+
+// Helper to get currency symbol robustly
+export function getCurrencySymbol(code: string): string {
+    const found = currencies.find((c) => c.code === code);
+    return found ? found.symbol : code;
+}
+
+// Helper to get formatted currency string
+export function formatCurrencyValue(value: number, code: string, maximumFractionDigits: number = 2): string {
+    const found = currencies.find(c => c.code === code);
+    
+    // Priority: Use the symbol from our established currencies list
+    if (found) {
+        const formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: maximumFractionDigits,
+            maximumFractionDigits: maximumFractionDigits
+        });
+        const isNegative = value < 0;
+        const absValue = Math.abs(value);
+        return `${isNegative ? '-' : ''}${found.symbol}${formatter.format(absValue)}`;
+    }
+
+    try {
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: code,
+            currencyDisplay: 'narrowSymbol',
+            maximumFractionDigits
+        });
+        return formatter.format(value);
+    } catch {
+        try {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: code,
+                maximumFractionDigits
+            });
+            return formatter.format(value);
+        } catch {
+            return `${code} ${value.toFixed(maximumFractionDigits)}`;
+        }
+    }
+}
+
+export function CurrencyIcon({ code, className }: { code: string; className?: string }) {
+    return (
+        <span className={cn("font-bold font-sans flex items-center justify-center leading-none text-current tracking-tighter", className)}>
+            {getCurrencySymbol(code)}
+        </span>
+    );
+}
+
 interface CurrencyComboboxProps {
     value: string;
     onValueChange: (value: string) => void;

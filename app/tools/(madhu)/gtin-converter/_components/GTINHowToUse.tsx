@@ -1,25 +1,25 @@
 "use client"
 import { ToolSteps } from "@/app/tools/_shared/components"
-import { Barcode, RefreshCw, Layers } from "lucide-react"
+import { Scan, SearchCheck, RefreshCw } from "lucide-react"
 export function GTINHowToUse() {
     return (
         <ToolSteps
-            title="How to Use This Converter"
+            title="How to Use the GTIN Converter"
             steps={[
                 {
-                    title: "Enter Barcode",
-                    description: "Type your 12-digit UPC-A, 13-digit EAN-13, or 14-digit GTIN-14. Or upload a barcode image.",
-                    icon: Barcode
+                    title: "Enter or Scan",
+                    description: "Manually type your numeric barcode (8, 12, 13, or 14 digits) or simply upload an image of the barcode label for instant Conversion.",
+                    icon: Scan
                 },
                 {
-                    title: "Auto Conversion",
-                    description: "Enter UPC → see EAN as primary result. Enter EAN → see UPC as primary result.",
+                    title: "Validate Digit",
+                    description: "Our tool automatically verifies the GS1 Modulo 10 check digit. If it's invalid, we'll flag it immediately to ensure your data is listing-ready.",
+                    icon: SearchCheck
+                },
+                {
+                    title: "Format Output",
+                    description: "Instantly view your barcode converted across all standard formats, including GTIN-8, GTIN-12 (UPC), GTIN-13 (EAN), and GTIN-14 for logistics.",
                     icon: RefreshCw
-                },
-                {
-                    title: "Get All Formats",
-                    description: "View all three GTIN formats (GTIN-12, GTIN-13, GTIN-14) with validated check digits.",
-                    icon: Layers
                 }
             ]}
         />
