@@ -127,7 +127,7 @@ export function ToolOverview({
                     <h2 className="text-[21px] sm:text-[23px] font-extrabold tracking-tight leading-snug text-slate-800 mb-3">
                         {renderHeading()}
                     </h2>
-                    <p className="text-[13.5px] sm:text-[14px] text-slate-500 font-medium leading-relaxed">
+                    <p className="text-[13.5px] sm:text-[14px] text-slate-500 font-medium leading-relaxed text-left hyphens-none">
                         {definition}
                     </p>
                 </div>

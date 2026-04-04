@@ -8,17 +8,17 @@ export function StorageFeeHowToUse() {
             steps={[
                 {
                     title: "Enter Product Dimensions",
-                    description: "Input your product's <strong>Length</strong>, <strong>Width</strong>, and <strong>Height</strong> in inches. The calculator uses these to compute cubic volume and automatically detect your size tier (Standard vs Oversize).",
+                    description: "Input your product's length, width, and height in inches to automatically compute cubic volume and size tier.",
                     icon: Box
                 },
                 {
                     title: "Add Inventory Details",
-                    description: "Enter the total <strong>Units Stored</strong> in Amazon's warehouses and how many <strong>Months</strong> they will sit. Anything beyond 6 months triggers long-term storage surcharges.",
+                    description: "Enter the total units stored and storage duration to estimate standard monthly fees and long-term surcharges.",
                     icon: Layers
                 },
                 {
                     title: "Review Storage Costs",
-                    description: "Instantly see your <strong>Total Storage Cost</strong>, <strong>Monthly Fee</strong>, and any <strong>Long-Term Surcharges</strong>. A smart insight message tells you if your storage costs are efficient or need attention.",
+                    description: "Instantly view your total storage cost, monthly breakdown, and actionable insights to optimize inventory health.",
                     icon: BarChart3
                 }
             ]}

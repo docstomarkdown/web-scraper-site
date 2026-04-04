@@ -119,35 +119,23 @@ export function SafetyStockBreakdown({
                         return (
                             <div
                                 key={item.label}
-                                className="flex items-start sm:items-center justify-between px-3 bg-white border border-slate-200/80 rounded-[10px] py-1.5 shadow-sm w-full gap-2 transition-all hover:border-slate-300"
+                                className="flex items-center justify-between text-[11px] px-3 bg-white border border-slate-100 rounded-lg py-1.5 shadow-sm"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 shrink-0">
                                     <div
-                                        className="w-2.5 h-2.5 rounded-full shrink-0 mt-0.5"
+                                        className="w-2 h-2 rounded-full shrink-0"
                                         style={{ backgroundColor: derivedDotColor }}
                                     />
-                                    <span className="text-[11.5px] text-slate-600 font-bold leading-tight whitespace-nowrap">
+                                    <span className="text-slate-600 font-bold whitespace-nowrap">
                                         {item.label}
                                     </span>
                                 </div>
-                                <div className="flex items-center flex-1 justify-end shrink-0">
-                                    <span
-                                        className={cn(
-                                            "text-[12px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[60px]",
-                                            "text-slate-500"
-                                        )}
-                                    >
+                                <div className="flex items-center gap-3 shrink-0 ml-4">
+                                    <span className="text-slate-500 font-semibold tabular-nums w-[76px] sm:w-[86px] text-right">
                                         {item.value} units
                                     </span>
-                                    <span
-                                        className={cn(
-                                            "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[32px] ml-2.5",
-                                            "text-slate-900"
-                                        )}
-                                    >
-                                        {Math.abs(item.value) > 0
-                                            ? `${item.pct.toFixed(0)}%`
-                                            : "—"}
+                                    <span className="font-extrabold text-slate-900 tabular-nums w-[32px] sm:w-[40px] text-right">
+                                        {`${item.pct.toFixed(0)}%`}
                                     </span>
                                 </div>
                             </div>

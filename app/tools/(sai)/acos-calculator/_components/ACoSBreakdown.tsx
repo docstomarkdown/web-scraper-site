@@ -124,13 +124,13 @@ export function ACoSBreakdown({
                                 </div>
                                 <div className="flex items-center flex-1 justify-end shrink-0">
                                     <span className={cn(
-                                        "text-[12px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[50px]",
+                                        "text-[12px] font-semibold tabular-nums text-right flex-shrink-0 w-[76px] sm:w-[86px]",
                                         item.isCost ? "text-slate-500" : (!isPositive ? "text-rose-600" : "text-emerald-600")
                                     )}>
                                         {!item.isCost && item.value > 0 ? "+" : ""}{formatCurrency(item.value)}
                                     </span>
                                     <span className={cn(
-                                        "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[32px] ml-2.5",
+                                        "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 w-[32px] sm:w-[40px] ml-2.5",
                                         item.isCost ? "text-slate-900" : (!isPositive ? "text-rose-700" : "text-emerald-700")
                                     )}>
                                         {Math.abs(item.value) > 0 ? `${item.pct.toFixed(0)}%` : "—"}

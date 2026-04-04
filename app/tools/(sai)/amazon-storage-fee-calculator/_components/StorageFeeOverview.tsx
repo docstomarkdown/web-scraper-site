@@ -26,22 +26,22 @@ export function StorageFeeOverview() {
             <ToolOverview
                 heading="Why Use the Storage Fee Calculator?"
                 headingAccent="Storage Fee Calculator"
-                definition="If you sell on Amazon FBA, your inventory sits in Amazon's warehouses — and Amazon charges you rent for that space every single month. This calculator is built for FBA sellers, private label brands, and wholesale distributors who need to know exactly how much their storage will cost before sending inventory in. Simply enter your product dimensions, how many units you're storing, and how long they'll sit, and the tool instantly estimates your monthly storage bill — including long-term surcharges for slow-moving stock."
+                definition="If you sell on Amazon FBA, your inventory sits in Amazon's warehouses — and Amazon charges you rent for that space every single month. The Amazon Storage Fee Calculator is a simple, accurate tool that shows how much Amazon will charge to store your products in FBA warehouses. Built for FBA sellers, private-label brands, and wholesale distributors, it helps you estimate storage costs before sending inventory in. Just enter your product dimensions, units, and storage duration, and the tool instantly calculates your monthly storage fees — plus any long-term charges for slow-moving stock."
                 facts={[
                     {
-                        stat: "Monthly",
-                        label: "Storage Cost",
-                        detail: "See exactly what Amazon will charge you per month based on your product's cubic volume, size tier, and storage season."
+                        stat: "Always",
+                        label: "Stay In Stock",
+                        detail: "Instantly calculate the extra units you need to avoid stockouts during demand spikes or supplier delays — so your operations never stop."
                     },
                     {
-                        stat: "Long-Term",
-                        label: "Fee Alert",
-                        detail: "Inventory stored beyond 6 months triggers additional aged inventory surcharges. This tool flags that risk automatically."
+                        stat: "Accurate",
+                        label: "Demand Coverage",
+                        detail: "See your expected demand during lead time and understand how much buffer inventory you truly need to stay safe."
                     },
                     {
-                        stat: "Size",
-                        label: "Auto-Detect",
-                        detail: "Enter your product dimensions and the calculator automatically classifies it as Standard or Oversize using Amazon's official thresholds."
+                        stat: "Restock",
+                        label: "With Confidence",
+                        detail: "Plan smarter reorder points, reduce lost sales, and maintain healthy inventory levels — all with one simple calculation."
                     }
                 ]}
             />

@@ -120,26 +120,23 @@ export function PackagingCostBreakdown({
                     {legendItems.map((item) => (
                         <div
                             key={item.label}
-                            className="flex items-center justify-between px-3 bg-white border border-slate-200/80 rounded-[10px] py-1.5 shadow-sm w-full gap-2 transition-all hover:border-slate-300"
+                            className="flex items-center justify-between text-[11px] px-3 bg-white border border-slate-100 rounded-lg py-1.5 shadow-sm"
                         >
-                            <div className="flex items-center gap-2 min-w-0">
+                            <div className="flex items-center gap-2 shrink-0">
                                 <div
-                                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                                    className="w-2 h-2 rounded-full shrink-0"
                                     style={{ backgroundColor: item.colorBg }}
                                 />
-                                <span className="text-[12px] text-slate-600 font-bold truncate">
+                                <span className="text-slate-600 font-bold whitespace-nowrap">
                                     {item.label}
                                 </span>
                             </div>
-                            <div className="flex items-center shrink-0">
-                                <span className="text-[12px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[50px] text-slate-500">
+                            <div className="flex items-center gap-3 shrink-0 ml-4">
+                                <span className="text-slate-500 font-semibold tabular-nums w-[76px] sm:w-[86px] text-right">
                                     {formatCurrency(item.value)}
                                 </span>
-                                <span className={cn(
-                                    "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[32px] ml-2.5",
-                                    item.value > 0 ? "text-slate-900" : "text-slate-300"
-                                )}>
-                                    {item.value > 0 ? `${item.pct.toFixed(0)}%` : "—"}
+                                <span className="font-extrabold text-slate-900 tabular-nums w-[32px] sm:w-[40px] text-right">
+                                    {`${item.pct.toFixed(0)}%`}
                                 </span>
                             </div>
                         </div>

@@ -16,20 +16,24 @@ export const metadata: Metadata = {
 export default function Page() {
     const faqs = [
         {
-            question: "How do I measure an irregularly shaped package or poly mailer?",
-            answer: "Always measure the furthest points of the package, including any bulges or uneven areas (length, width, and height). If the package is cylindrical like a shipping tube, treat it as a square box matching its diameter.",
+            question: "What is a DIM divisor and why is it used?",
+            answer: "A DIM divisor is a number carriers use to convert package volume into a billable weight. It ensures large, lightweight packages are charged fairly based on the space they occupy.",
         },
         {
-            question: "Does dimensional weight apply to all USPS services?",
-            answer: "Unlike UPS and FedEx which apply DIM weight to almost all packages, USPS currently only applies dimensional weight to packages exceeding 1 cubic foot (1,728 cubic inches).",
+            question: "Why do carriers charge based on dimensional weight?",
+            answer: "Because large boxes take up more room in trucks and planes even if they weigh very little. DIM weight helps carriers price shipments based on both weight and space used.",
         },
         {
-            question: "Is dimensional weight calculated differently for international shipping?",
-            answer: "Yes, international shipments typically use the metric system. Carriers often use a standard divisor of 5000 cm³ per kilogram for international air freight. Always verify the exact international divisor with your carrier.",
+            question: "How do I measure an irregular or poly mailer package?",
+            answer: "Measure the longest points of length, width, and height, including bulges or uneven areas. For tubes or cylinders, use the diameter as both width and height.",
         },
         {
-            question: "Does this calculator work for metric units?",
-            answer: "Yes, you can toggle between Imperial (inches/lbs) and Metric (cm/kg) units using the switch at the top of the calculator.",
+            question: "Will I be charged based on actual weight or dimensional weight?",
+            answer: "Carriers always charge you based on whichever is higher — actual weight or DIM weight. This calculator highlights the billable weight instantly so you know what to expect.",
+        },
+        {
+            question: "Does this calculator work with both inches/lbs and cm/kg?",
+            answer: "Yes, you can switch between Imperial and Metric units anytime. The tool automatically recalculates DIM weight using the selected measurement system.",
         },
     ];
 

@@ -42,33 +42,29 @@ export default function ABDurationCalculatorPage() {
                         <ABDurationGuide />
                     </FadeIn>
 
-                    {/* FAQ — 6 questions matching exact tool inputs & outputs */}
+                    {/* FAQ — 5 high-impact questions focusing on A/B testing strategy and common pitfalls */}
                     <FadeIn delay={0.2}>
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "Why is 'Test Duration' the primary result?",
-                                    answer: "The main goal of this calculator is to tell you how long your test must run before the results are statistically trustworthy. That's why Test Duration is highlighted — it's the number you act on. Sample size and daily traffic are shown as supporting context to help you plan the test."
+                                    question: "How long should my A/B test run?",
+                                    answer: "Your test should run until it reaches the calculated sample size and duration. However, as a strategic rule of thumb, always run for at least 7 to 14 days. This ensures you account for fluctuations in user behavior across different days of the week (e.g., weekend vs. weekday traffic patterns)."
                                 },
                                 {
-                                    question: "What is the Expected Improvement (%) field?",
-                                    answer: "This is the minimum lift you want to detect — how much better you expect Version B to perform over Version A. Example: if your current conversion rate is 5% and you expect B to reach 5.5%, that's a 10% relative improvement. Smaller improvements require significantly longer tests and more traffic."
+                                    question: "Can I stop the test early if one version looks like a winner?",
+                                    answer: "No. Stopping a test early just because it looks like a winner (known as 'peeking') is a major mistake. Results often swing back and forth before data stabilize. You must commit to the full calculated sample size to ensure your result is statistically significant and not just a temporary data spike."
                                 },
                                 {
-                                    question: "What does Traffic Split do?",
-                                    answer: "Traffic split controls how visitors are divided between Version A and Version B. A 50/50 split is the most efficient — it means both variants reach their required sample size at the same pace. Unequal splits (e.g. 70/30) slow down the minority variant, making the overall test take longer."
+                                    question: "Why does low traffic increase my test duration?",
+                                    answer: "Statistical significance requires a specific amount of data (sample size). If fewer people visit your page each day, it takes longer to collect enough conversions to confidently say that one version is truly better than the other. More data leads to more certain results."
                                 },
                                 {
-                                    question: "Can I stop the test once results look significant?",
-                                    answer: "No — this is known as 'peeking' and it inflates your false positive rate significantly. You should commit to the full calculated duration and sample size before the test starts, and only read results after both are reached."
+                                    question: "What expected improvement should I enter?",
+                                    answer: "This depends on the boldness of your change. If you're testing minor adjustments (like a button color), expect a small uplift (1-3%). For high-impact changes (like a new offer or headline), you might expect 10-20%. Note: Smaller expected improvements require much larger sample sizes and more time to detect."
                                 },
                                 {
-                                    question: "What are Confidence Level (95%) and Statistical Power (80%)?",
-                                    answer: "Confidence Level (95%) means there is only a 5% chance the result is a false positive — i.e. a 'winner' that isn't actually better. Statistical Power (80%) means the test has an 80% chance of detecting a real improvement if one exists. These are industry-standard settings fixed in this calculator to ensure reliable results."
-                                },
-                                {
-                                    question: "What if my test duration seems too long?",
-                                    answer: "If the calculator returns a duration of months, consider: (1) Testing a bolder change — a larger expected improvement needs fewer users; (2) Increasing traffic to the tested page; (3) Narrowing the test to a high-traffic segment. A minimum run of 7 days is always recommended regardless of sample size to capture weekly user behavior patterns."
+                                    question: "Why can't I run my test for just 1–2 days?",
+                                    answer: "Short tests are highly prone to 'false positives' because they don't capture a full cycle of user behavior. Sunday shoppers often behave differently than Tuesday buyers. A 7-day minimum run is the industry standard to ensure your winner holds true across any given day of the week."
                                 }
                             ]}
                         />

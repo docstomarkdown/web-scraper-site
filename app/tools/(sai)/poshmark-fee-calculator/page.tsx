@@ -44,24 +44,24 @@ export default function PoshmarkFeeCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What is the Poshmark fee for items under $15?",
-                                    answer: "Poshmark charges a flat fee of <strong>$2.95</strong> for any sale under $15. This is important to note for low-price items, as the percentage cost can be significatnly higher than 20%."
+                                    question: "What is the Poshmark fee structure?",
+                                    answer: "Poshmark's fee structure is extremely straightforward: they take a flat <strong>$2.95 fee</strong> for any item that sells for under $15. For any item that sells for $15 or more, they take a flat <strong>20% commission</strong>, and you keep 80%."
                                 },
                                 {
-                                    question: "How is the 20% commission calculated?",
-                                    answer: "For sales of $15 or more, Poshmark keeps <strong>20% (the commission)</strong> and you keep 80%. This fee covers shipping labels, payment processing, and Posh Protect insurance."
+                                    question: "Who pays for shipping on Poshmark?",
+                                    answer: "The <strong>buyer</strong> typically pays a flat-rate shipping fee (currently $7.97) for orders up to 5 lbs. You only pay for shipping if you explicitly offer a shipping discount (like during an 'Offer to Likers') or if your package exceeds 5 lbs."
                                 },
                                 {
-                                    question: "Are shipping discounts for 'Offer to Likers' mandatory?",
-                                    answer: "Yes, when you use the 'Offer to Likers' feature, Poshmark requires you to include a shipping discount of at least <strong>$1.50 or more</strong>. This discount is deducted from your final 80% earnings."
+                                    question: "Are there listing fees on Poshmark?",
+                                    answer: "No, Poshmark does not charge any upfront listing fees. You can list as many items as you want for free, and you only pay a fee when an item successfully sells."
                                 },
                                 {
-                                    question: "What is 'Closet Clearout' and does it affect my fees?",
-                                    answer: "Closet Clearout is a promotional event where Poshmark pays for the shipping discount if you lower your listing price by at least 10%. In this case, <strong>you do not lose money</strong> to the shipping discount, making it a great time to sell."
+                                    question: "Do I pay extra for credit card processing or PayPal fees?",
+                                    answer: "No. Unlike other platforms like eBay or Shopify, the 20% Poshmark commission covers absolutely everything: credit card processing fees, customer service, and Posh Protect seller insurance."
                                 },
                                 {
-                                    question: "Does the Poshmark fee cover credit card processing?",
-                                    answer: "Yes, unlike other platforms like eBay or Etsy, Poshmark's commission <strong>includes all payment processing fees</strong>. There are no additional credit card or payout fees."
+                                    question: "How do shipping discounts affect my profit?",
+                                    answer: "If you use the 'Offer to Likers' feature, Poshmark requires you to provide a shipping discount (usually $1.50 or free shipping). This discount is deducted <strong>directly from your final payout</strong>, effectively lowering your net earnings."
                                 }
                             ]}
                         />

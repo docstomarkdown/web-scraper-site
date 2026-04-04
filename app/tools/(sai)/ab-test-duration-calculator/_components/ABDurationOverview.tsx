@@ -14,24 +14,24 @@ export function ABDurationOverview() {
 
             {/* Tool Overview */}
             <ToolOverview
-                heading="Know Exactly When to Stop Your Test"
-                headingAccent="When to Stop Your Test"
-                definition="The A/B Test Duration Calculator is built for marketers, product managers, and CRO specialists who want data-backed decisions — not gut feeling. Simply enter your current conversion rate, the improvement you're aiming for, and your daily traffic. The tool instantly calculates how many days your test must run, how many users each variant needs, and whether your traffic is enough to get a reliable result."
+                heading="Know Exactly How Long to Run Your Test"
+                headingAccent="How Long to Run Your Test"
+                definition="The A/B Test Duration Calculator helps you know how many days you should run a test when comparing two versions of a webpage, ad, or app screen. Just enter your daily visitors and conversion details, and the tool instantly tells you how long to run the test to get trustworthy results. It’s made for anyone who wants to improve performance — website owners, marketers, sellers, designers, or app teams — and works for any kind of experiment where you’re testing Version A vs Version B."
                 facts={[
                     {
-                        stat: "Duration",
-                        label: "In Days",
-                        detail: "See the minimum number of days your test must run before you can trust the results."
+                        stat: "Know",
+                        label: "How Long to Run Your Test",
+                        detail: "Instantly get the exact number of days needed to run a reliable A/B test — no guessing, no confusion."
                     },
                     {
-                        stat: "Sample",
-                        label: "Per Variant",
-                        detail: "Know exactly how many users Version A and Version B each need before the test is statistically valid."
+                        stat: "Get",
+                        label: "Accurate Sample Size",
+                        detail: "See how many total visitors (and per variant) you need to get trustworthy, statistically valid results."
                     },
                     {
-                        stat: "Traffic",
-                        label: "Check",
-                        detail: "Instantly see if your daily visitor count is enough — or if low traffic will make the test unreliable."
+                        stat: "Improve",
+                        label: "Your Decisions",
+                        detail: "Avoid stopping tests too early or wasting time running them too long — run smarter, more confident experiments."
                     }
                 ]}
             />

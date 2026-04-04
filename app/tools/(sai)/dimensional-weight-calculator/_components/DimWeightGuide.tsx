@@ -4,17 +4,8 @@ import { Box, Calculator, Zap, BookOpen } from "lucide-react";
 export function DimWeightGuide() {
     const items = [
         {
-            title: "What is Dimensional Weight?",
-            description: (
-                <>
-                    <p className="mb-2">
-                        Dimensional weight (DIM weight) is a pricing technique used by commercial freight transport companies. It reflects the package density—the amount of space a package occupies in relation to its actual weight.
-                    </p>
-                    <p>
-                        Carriers charge based on the greater of the <strong>Actual Weight</strong> or the <strong>Dimensional Weight</strong>.
-                    </p>
-                </>
-            ),
+            title: "Understanding Package Density",
+            description: "Dimensional weight (DIM weight) is a pricing technique that reflects package density. Carriers always charge based on the greater of the Actual Weight or the Dimensional Weight.",
             icon: Box,
             iconBg: "bg-blue-100",
             iconColor: "text-blue-600",
@@ -24,16 +15,7 @@ export function DimWeightGuide() {
         },
         {
             title: "The Calculation Formula",
-            description: (
-                <>
-                    <p className="mb-2">
-                        The formula is: <code>(Length × Width × Height) / Divisor</code>.
-                    </p>
-                    <p>
-                        Common divisors are <strong>139</strong> for daily rates (UPS/FedEx) and <strong>166</strong> for retail rates. Always round up dimensions to the nearest inch.
-                    </p>
-                </>
-            ),
+            description: "The formula is (Length × Width × Height) / Divisor. Common divisors are 139 for daily rates (UPS/FedEx) and 166 for retail rates. Always round up dimensions to the nearest inch.",
             icon: Calculator,
             iconBg: "bg-green-100",
             iconColor: "text-green-600",
@@ -43,16 +25,7 @@ export function DimWeightGuide() {
         },
         {
             title: "Optimization Strategies",
-            description: (
-                <>
-                    <p className="mb-2">
-                        To reduce costs, use the smallest box possible. Avoid &quot;shipping air&quot; by using custom-sized boxes or poly mailers for non-fragile items.
-                    </p>
-                    <p>
-                        Negotiating a higher DIM divisor (e.g., 166 instead of 139) with your carrier can also significantly reduce billable weight.
-                    </p>
-                </>
-            ),
+            description: "To reduce costs, use the smallest box possible. Avoid 'shipping air' by using custom-sized boxes or poly mailers. Negotiating a higher DIM divisor with your carrier can also reduce billable weight.",
             icon: Zap,
             iconBg: "bg-amber-100",
             iconColor: "text-amber-600",

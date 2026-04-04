@@ -5,24 +5,24 @@ export function AbandonmentOverview() {
     return (
         <div className="space-y-8" id="overview">
             <ToolOverview
-                heading="Why Use the Cart Abandonment Calculator?"
-                headingAccent="Cart Abandonment Calculator"
-                definition="The primary purpose of the Cart Abandonment Rate Calculator is to measure exactly how many potential buyers are leaving your store without completing their purchase. Built for e-commerce store owners, growth marketers, and UX designers, this tool instantly highlights the friction in your checkout flow. It is your essential tool for understanding lost revenue, setting up email recovery campaigns, and improving your overall conversion rate."
+                heading="What is the Cart Abandonment Rate?"
+                headingAccent="Cart Abandonment Rate"
+                definition="The Cart Abandonment Rate Calculator is a free, simple tool that tells you how many shoppers add items to their cart but leave without buying. By entering your total carts created and completed checkouts, it instantly shows your abandonment percentage so you can spot checkout issues and improve conversions. It's used by eCommerce sellers, digital marketers, D2C brands, and online store owners across platforms like Shopify, WooCommerce, Magento, and Amazon to understand shopper behavior and reduce lost sales."
                 facts={[
                     {
-                        stat: "Lost",
-                        label: "Revenue",
-                        detail: "Identify exactly how many interested shoppers didn't cross the finish line, representing direct lost revenue."
+                        stat: "Spot",
+                        label: "Drop-Off Points",
+                        detail: "See what percentage of customers add items to their cart but don't complete the purchase, helping you quickly identify checkout issues."
                     },
                     {
-                        stat: "Health",
-                        label: "Check",
-                        detail: "Compare your store's abandonment rate against the global industry average of around 70%."
+                        stat: "Boost",
+                        label: "Conversion Rate",
+                        detail: "Use the abandonment rate to spot friction points, fix checkout steps, and increase the number of shoppers who complete their purchase."
                     },
                     {
-                        stat: "Optimize",
-                        label: "Funnels",
-                        detail: "Use this baseline metric to test new checkout flows, remove hidden fees, and optimize the buying experience."
+                        stat: "Make",
+                        label: "Smarter Decisions",
+                        detail: "Know exactly where your store is losing revenue so you can optimize your pricing, UX, payment flow, and remarketing efforts."
                     }
                 ]}
             />

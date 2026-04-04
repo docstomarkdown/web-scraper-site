@@ -19,22 +19,17 @@ export function DimWeightOverview() {
                 }
                 facts={[
                     {
-                        stat: (
-                            <span className="flex items-center gap-1.5">
-                                <span className="text-slate-900 drop-shadow-sm">⚖️</span>
-                                <span>Know Your</span>
-                            </span>
-                        ) as any,
+                        stat: "Know Your",
                         label: "Chargeable Weight",
                         detail: "Instantly see whether carriers like UPS, FedEx, or Amazon will bill you based on Actual Weight or Dimensional Weight."
                     },
                     {
-                        stat: "📦 Calculate",
+                        stat: "Calculate",
                         label: "DIM Weight in Seconds",
                         detail: "Just enter Length, Width, Height, and the tool automatically computes your Dimensional Weight using the correct carrier DIM divisor."
                     },
                     {
-                        stat: "💰 Avoid",
+                        stat: "Avoid",
                         label: "Unexpected Shipping Costs",
                         detail: "Understand the true cost of shipping before you send a package, helping you choose smarter packaging and prevent overspending."
                     }

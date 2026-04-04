@@ -8,7 +8,7 @@ export function AbandonmentGuide() {
             title="Understanding Your Abandonment Data"
             items={[
                 {
-                    title: "What is Cart Abandonment?",
+                    title: "Understand the Core Concept",
                     icon: ShoppingCart,
                     iconBg: "bg-orange-50",
                     iconColor: "text-orange-500",
@@ -19,7 +19,7 @@ export function AbandonmentGuide() {
                     description: "Cart abandonment occurs when a highly-interested customer adds items to a shopping cart to checkout, but leaves your site before successfully processing their payment."
                 },
                 {
-                    title: "Common Friction Points",
+                    title: "Identify Conversion Killers",
                     icon: Ban,
                     iconBg: "bg-red-50",
                     iconColor: "text-red-500",
@@ -30,7 +30,7 @@ export function AbandonmentGuide() {
                     description: "The primary killers of checkout flows are: unexpected shipping and tax costs, requiring users to create accounts instead of allowing guest checkout, and complicated or buggy form validations."
                 },
                 {
-                    title: "Industry Baselines",
+                    title: "Know the Industry Benchmarks",
                     icon: CreditCard,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
@@ -41,7 +41,7 @@ export function AbandonmentGuide() {
                     description: "If your abandonment rate is under 60%, your checkout is performing highly efficiently. Rates between 65% and 75% are standard across the ecommerce industry. Anything above 75% requires urgent optimization."
                 },
                 {
-                    title: "Effective Recovery",
+                    title: "Automate Sales Recovery",
                     icon: Mail,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-500",

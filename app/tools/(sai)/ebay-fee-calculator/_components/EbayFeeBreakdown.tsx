@@ -110,27 +110,29 @@ export function EbayFeeBreakdown({
                         const derivedDotColor = (isNetItem && !isPositive) ? "#e11d48" : item.colorBg
 
                         return (
-                            <div key={item.label} className="flex items-center justify-between px-3 bg-white border border-slate-200/80 rounded-[10px] py-1.5 shadow-sm w-full gap-2">
+                            <div
+                                key={item.label}
+                                className="grid text-[11px] px-3 bg-white border border-slate-100 rounded-lg py-1.5 shadow-sm"
+                                style={{ gridTemplateColumns: "1fr auto auto" }}
+                            >
                                 <div className="flex items-center gap-2 min-w-0">
                                     <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: derivedDotColor }} />
-                                    <span className="text-[11px] text-slate-600 font-bold truncate">
+                                    <span className="text-slate-600 font-bold truncate">
                                         {item.label}
                                     </span>
                                 </div>
-                                <div className="flex items-center shrink-0">
-                                    <span className={cn(
-                                        "text-[11px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[50px]",
-                                        item.isCost ? "text-slate-500" : (!isPositive ? "text-rose-600" : "text-emerald-600")
-                                    )}>
-                                        {!item.isCost && item.value > 0 ? "+" : ""}{formatCurrency(item.value)}
-                                    </span>
-                                    <span className={cn(
-                                        "text-[11px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[28px] ml-2",
-                                        item.isCost ? "text-slate-900" : (!isPositive ? "text-rose-700" : "text-emerald-700")
-                                    )}>
-                                        {item.pct.toFixed(0)}%
-                                    </span>
-                                </div>
+                                <span className={cn(
+                                    "font-semibold tabular-nums text-right px-2 self-center",
+                                    item.isCost ? "text-slate-500" : (!isPositive ? "text-rose-600" : "text-emerald-600")
+                                )}>
+                                    {!item.isCost && item.value > 0 ? "+" : ""}{formatCurrency(item.value)}
+                                </span>
+                                <span className={cn(
+                                    "font-extrabold tabular-nums text-right self-center w-[36px]",
+                                    item.isCost ? "text-slate-900" : (!isPositive ? "text-rose-700" : "text-emerald-700")
+                                )}>
+                                    {item.pct.toFixed(0)}%
+                                </span>
                             </div>
                         )
                     })}

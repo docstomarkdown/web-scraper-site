@@ -7,7 +7,7 @@ export function ABDurationGuide() {
             title="Understanding A/B Testing"
             items={[
                 {
-                    title: "Why Calculator Duration?",
+                    title: "Calculate Duration Before Testing",
                     icon: Clock,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
@@ -18,15 +18,15 @@ export function ABDurationGuide() {
                     description: "Calculating duration beforehand prevents 'peeking'—stopping a statistically significant test too early, which often results in false positives. Stick to the calculated sample size."
                 },
                 {
-                    title: "Minimum Detectable Effect (MDE)",
+                    title: "Expected Improvement (MDE)",
                     icon: Search,
                     iconBg: "bg-purple-50",
                     iconColor: "text-purple-500",
-                    stat: "MDE",
+                    stat: "Uplift",
                     statColor: "text-purple-600",
                     statLabel: "Sensitivity",
-                    tooltip: "The smallest improvement you care about detecting.",
-                    description: "MDE is the minimum improvement you want to be able to detect. Smaller MDEs require much larger sample sizes. If you only care about big wins, you can test faster."
+                    tooltip: "The minimum improvement you aim to detect.",
+                    description: "Also known as Minimum Detectable Effect (MDE), this is the target improvement you expect to see. Smaller improvements require much larger sample sizes and run times. If your expected improvement is large, you can test faster."
                 },
                 {
                     title: "Statistical Significance",
