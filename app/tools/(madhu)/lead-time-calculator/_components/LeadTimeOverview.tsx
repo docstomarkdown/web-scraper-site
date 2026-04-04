@@ -17,9 +17,7 @@ export function LeadTimeOverview() {
                         </h2>
                     </div>
                 </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-500 font-medium leading-relaxed pl-[3.375rem] sm:pl-[4rem] max-w-2xl mt-2">
-                    Predict exactly when your inventory will arrive at your warehouse, accounting for production, transit, and unexpected delays.
-                </p>
+                
             </div>
 
             {/* Tool Overview */}

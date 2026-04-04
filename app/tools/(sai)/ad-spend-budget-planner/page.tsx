@@ -26,7 +26,6 @@ export default function AdBudgetPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Know exactly what you need to spend before you launch. Our calculator reverse-engineers your ad budget so you can plan for real results, not guesswork."
                             icon={BookOpen}
                         />
                         <AdBudgetOverview />

@@ -26,7 +26,6 @@ export default function EbayFeeCalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Gain clarity on your eBay payout by understanding how fees, shipping costs, and sourcing expenses impact your actual net earnings."
                             icon={BookOpen}
                         />
                         <EbayOverview />

@@ -8,8 +8,7 @@ export function CLVOverview() {
     <div className="space-y-6">
             <ToolSectionHeader
                 icon={Info}
-                title="Tool Overview"
-                subtitle="Understanding the economics of customer retention and lifetime profit."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the Customer Lifetime Value Calculator?"

@@ -9,7 +9,6 @@ export function ABDurationOverview() {
             <ToolSectionHeader
                 icon={Lightbulb}
                 title="Tool Essential"
-                subtitle="Understand what this calculator does and how it helps you run better experiments."
             />
 
             {/* Tool Overview */}

@@ -17,9 +17,7 @@ export function StorageFeeOverview() {
                         </h2>
                     </div>
                 </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-500 font-medium leading-relaxed pl-[3.375rem] sm:pl-[4rem] max-w-2xl mt-2">
-                    Plan your FBA inventory costs by estimating monthly and long-term storage charges before you ship.
-                </p>
+                
             </div>
 
             {/* Tool Overview */}

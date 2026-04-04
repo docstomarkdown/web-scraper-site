@@ -70,7 +70,6 @@ export default function MercariFeeCalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Know exactly what Mercari takes before you list. Our calculator breaks down every fee so you can price for real profit, not guesswork."
                             icon={BookOpen}
                         />
                         <MercariFeeOverview />

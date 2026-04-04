@@ -23,8 +23,7 @@ export default function NetProfitCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about calculating your business's true take-home pay."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <NetProfitOverview />

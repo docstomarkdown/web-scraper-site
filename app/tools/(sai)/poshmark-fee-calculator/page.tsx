@@ -26,7 +26,6 @@ export default function PoshmarkFeeCalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Gain clarity on your Poshmark payout by understanding how fees, shipping discounts, and sourcing costs impact your bottom line."
                             icon={BookOpen}
                         />
                         <PoshmarkOverview />

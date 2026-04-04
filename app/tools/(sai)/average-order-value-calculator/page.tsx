@@ -31,7 +31,6 @@ export default function AOVCalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Understand how tracking your Average Order Value helps you grow your store's total revenue with every transaction."
                             icon={BookOpen}
                         />
                         <AOVOverview />

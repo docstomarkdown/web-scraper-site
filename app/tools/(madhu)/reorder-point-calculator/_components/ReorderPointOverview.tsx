@@ -17,9 +17,7 @@ export function ReorderPointOverview() {
                         </h2>
                     </div>
                 </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-500 font-medium leading-relaxed pl-[3.375rem] sm:pl-[4rem] max-w-2xl mt-2">
-                    Optimize your stock levels and prevent stockouts with data-driven reordering
-                </p>
+                
             </div>
 
             {/* Tool Overview */}

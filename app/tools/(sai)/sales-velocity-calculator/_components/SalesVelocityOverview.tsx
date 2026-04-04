@@ -6,8 +6,7 @@ export function SalesVelocityOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the Sales Velocity Calculator?"
-                subtitle="Uncover your true sales rate by removing stockout days from your average."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

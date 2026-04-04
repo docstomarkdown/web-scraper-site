@@ -6,8 +6,7 @@ export function DimWeightOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the Dimensional Weight Calculator?"
-                subtitle="Calculate how much your package actually costs to ship based on its size."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

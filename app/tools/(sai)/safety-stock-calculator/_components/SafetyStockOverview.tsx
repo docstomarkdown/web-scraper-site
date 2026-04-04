@@ -6,8 +6,7 @@ export function SafetyStockOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the Safety Stock Calculator?"
-                subtitle="Prevent stockouts by calculating the precise buffer inventory you need to hold."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

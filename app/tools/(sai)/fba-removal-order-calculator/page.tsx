@@ -26,7 +26,6 @@ export default function FBARemovalOrderPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Understand exactly what Amazon will charge before you submit a removal or disposal order — based on 2025 rates, size tiers, and shipping weight logic."
                             icon={BookOpen}
                         />
                         <FBARemovalOverview />

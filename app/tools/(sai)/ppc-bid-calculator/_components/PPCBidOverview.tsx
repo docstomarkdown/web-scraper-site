@@ -7,7 +7,6 @@ export function PPCBidOverview() {
             <ToolSectionHeader
                 icon={Info}
                 title="Tool Essential"
-                subtitle="Find the exact maximum bid that hits your ACoS target without overspending."
             />
             <ToolOverview
                 heading="What is the "

@@ -23,8 +23,7 @@ export default function EOQCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Discover how balancing your ordering and holding costs unlocks massive inventory savings."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <EOQOverview />

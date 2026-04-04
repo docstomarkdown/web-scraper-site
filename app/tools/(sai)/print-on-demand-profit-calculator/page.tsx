@@ -26,7 +26,6 @@ export default function PODProfitCalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Gain clarity on your POD payout by understanding how dual-shipping, platform fees, and manufacturing expenses impact your actual net earnings."
                             icon={BookOpen}
                         />
                         <PODProfitOverview />

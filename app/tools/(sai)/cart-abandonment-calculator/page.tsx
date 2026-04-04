@@ -28,8 +28,7 @@ export default function CartAbandonmentCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16" id="abandonment-guide">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about calculating and analyzing your cart abandonment rate."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <div className="mt-8">

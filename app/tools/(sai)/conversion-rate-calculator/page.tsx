@@ -32,8 +32,7 @@ export default function ConversionCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16" id="conversion-guide">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about calculating and analyzing your conversion rate."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <div className="mt-8">

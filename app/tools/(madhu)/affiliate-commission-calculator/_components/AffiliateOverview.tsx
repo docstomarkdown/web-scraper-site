@@ -17,9 +17,7 @@ export function AffiliateOverview() {
                         </h2>
                     </div>
                 </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-500 font-medium leading-relaxed pl-[3.375rem] sm:pl-[4rem] max-w-2xl mt-2">
-                    Optimize your affiliate strategy by understanding payouts, sales volume, and true profitability.
-                </p>
+                
             </div>
 
             {/* Tool Overview */}

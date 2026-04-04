@@ -6,8 +6,7 @@ export function WholesalePriceOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the Wholesale Price Calculator?"
-                subtitle="Set a price that covers every cost and locks in your target margin."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

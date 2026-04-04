@@ -6,8 +6,7 @@ export function BreakEvenOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the Break-Even Calculator?"
-                subtitle="Know exactly how much you need to sell to hit profitability."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

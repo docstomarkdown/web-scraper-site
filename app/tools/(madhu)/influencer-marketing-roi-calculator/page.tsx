@@ -24,8 +24,7 @@ export default function InfluencerROICalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about measuring the true financial success of your brand partnerships."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <InfluencerOverview />

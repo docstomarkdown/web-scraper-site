@@ -17,9 +17,7 @@ export function InventoryTurnoverOverview() {
                         </h2>
                     </div>
                 </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-500 font-medium leading-relaxed pl-[3.375rem] sm:pl-[4rem] max-w-2xl mt-2">
-                    Understand how quickly your business is selling and replacing its inventory, and how many days it takes to turn stock into cash.
-                </p>
+                
             </div>
 
             {/* Tool Overview */}

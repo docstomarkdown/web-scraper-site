@@ -21,8 +21,7 @@ export default function DaysOfInventoryCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about forecasting your stock runway and reorder points."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <DaysOfInventoryOverview />
