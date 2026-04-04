@@ -6,8 +6,7 @@ export function MOQOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the MOQ Cost Calculator?"
-                subtitle="Calculate landed costs and evaluate inventory investment risks."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

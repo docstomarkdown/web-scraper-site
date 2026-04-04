@@ -25,8 +25,7 @@ export default function EmailROICalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Discover how tracking the right email marketing metrics unlocks massive hidden revenue potential."
+                            title="Tool Essential"
                             icon={BookOpen}
                         />
                         <EmailROIOverview />

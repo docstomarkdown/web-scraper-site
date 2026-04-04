@@ -7,48 +7,48 @@ export function AOVGuide() {
             title="About Average Order Value Calculator"
             items={[
                 {
-                    title: "Instant Revenue Processing",
+                    title: "Set Strategic Shipping Thresholds",
                     icon: DollarSign,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
-                    stat: "Live",
+                    stat: "+20%",
                     statColor: "text-blue-700",
-                    statLabel: "Calculation",
-                    tooltip: "Instantly process the Revenue ÷ Orders equation.",
-                    description: "Dynamically process your total gross revenue against your exact order count. The calculator instantly reveals the average amount of money generated every time a customer checks out."
+                    statLabel: "Above Target",
+                    tooltip: "Push customers to add one more item.",
+                    description: "Use your computed AOV to set an intelligent free shipping threshold. A proven strategy is setting your free shipping minimum 15% to 20% higher than your current Average Order Value to consistently bump up order sizes."
                 },
                 {
-                    title: "Profitability Alignment",
+                    title: "Optimize Ad Spend Targets",
                     icon: TrendingUp,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-600",
-                    stat: "Zero",
+                    stat: "CPA",
                     statColor: "text-emerald-700",
-                    statLabel: "Ad Spend required",
-                    tooltip: "A higher calculated AOV means more profit per visitor.",
-                    description: "Connect your raw calculation directly to profitability. By establishing your baseline average order value, you can immediately identify paths to scale revenue without paying to acquire new customers."
+                    statLabel: "Cost Per Acquisition",
+                    tooltip: "Higher AOV means you can afford higher acquisition costs.",
+                    description: "Connect your raw calculation directly to profitability. By establishing your baseline average order value, you can immediately determine your maximum allowable Cost Per Acquisition (CPA) for Facebook and Google Ads."
                 },
                 {
-                    title: "Strategic Action Tiers",
+                    title: "Design Smart Product Bundles",
                     icon: Package,
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600",
-                    stat: "Growth",
+                    stat: "Bundles",
                     statColor: "text-indigo-700",
-                    statLabel: "Tactics",
-                    tooltip: "Use your baseline to create intelligent promotion thresholds.",
-                    description: "Use your computed metrics to drive confident store updates. Your resulting number helps you accurately determine the best price points for creating product bundles or setting free shipping thresholds."
+                    statLabel: "Higher Value",
+                    tooltip: "Combine popular items at a slight discount.",
+                    description: "Use your resulting number to accurately determine the best price points for product kits. If your AOV is $40, create logical, bundled packages priced at $55 and $75 to capture high-intent buyers."
                 },
                 {
-                    title: "Volume & Conversion Optimization",
+                    title: "Balance Conversion Rates",
                     icon: ShoppingBag,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-600",
                     stat: "Safe",
                     statColor: "text-amber-700",
-                    statLabel: "Balance",
+                    statLabel: "Pricing",
                     tooltip: "Balance higher prices with conversion health.",
-                    description: "Monitor your store's baseline to balance pricing strategies securely. Consistently checking your average order value ensures that pushing for higher revenue doesn't accidentally damage your overall checkout volume."
+                    description: "Monitor your store's baseline to keep pricing strategies secure. Pushing aggressively for a higher AOV can sometimes negatively impact your overall conversion rate, so track both metrics side-by-side to ensure total revenue grows."
                 }
             ]}
         />

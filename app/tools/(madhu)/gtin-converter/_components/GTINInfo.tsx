@@ -17,9 +17,7 @@ export function GTINInfo() {
                         </h2>
                     </div>
                 </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-500 font-medium leading-relaxed pl-[3.375rem] sm:pl-[4rem] max-w-2xl mt-2">
-                    Key information about GTIN formats and barcode conversion
-                </p>
+                
             </div>
 
             {/* Tool Overview */}

@@ -6,8 +6,7 @@ export function ACoSOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader 
                 icon={Info}
-                title="What is the ACoS Calculator?"
-                subtitle="Instantly see how efficiently your ads are turning into actual profit."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="Why track your "

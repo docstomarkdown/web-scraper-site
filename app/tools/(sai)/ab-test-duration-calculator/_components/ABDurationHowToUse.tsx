@@ -19,7 +19,7 @@ export function ABDurationHowToUse() {
                 },
                 {
                     title: "Read Your Results",
-                    description: "Instantly get the required test duration in days, sample size per variant, total visitors needed, and daily users per variant — everything you need to plan a statistically sound A/B test.",
+                    description: "Instantly get the required test duration in days, visitors needed per variant, total visitors needed, and your estimated end date — everything you need to plan a statistically sound A/B test.",
                     icon: BarChart2
                 }
             ]}

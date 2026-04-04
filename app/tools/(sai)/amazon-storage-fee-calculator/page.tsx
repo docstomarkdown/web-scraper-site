@@ -31,24 +31,24 @@ export default function AmazonStorageFeeCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "How is the storage fee calculated?",
-                                    answer: "Amazon charges storage fees based on the <strong>cubic volume</strong> of your inventory. The formula is: <strong>(Length × Width × Height ÷ 1,728) × Units × Rate per Cubic Foot</strong>. For example, a 12×12×12 inch box is exactly 1 cubic foot, and storing 100 of them in January–September costs roughly $87/month."
+                                    question: "How does Amazon calculate storage fees?",
+                                    answer: "Amazon calculates monthly storage fees based on the daily average volume (measured in cubic feet) that your inventory occupies in their fulfillment centers. The rate changes depending on the product size tier (Standard vs Oversize) and the time of year, with costs significantly spiking during the Q4 holiday season (October–December)."
                                 },
                                 {
-                                    question: "Why do storage fees increase in Q4?",
-                                    answer: "During the holiday season (<strong>October–December</strong>), Amazon's warehouses are in peak demand. Rates jump from ~<strong>$0.87/cu ft</strong> to ~<strong>$2.40/cu ft</strong> for standard-size items — nearly <strong>3× higher</strong>. Use the Advanced Settings to toggle between seasons and plan your Q4 inventory levels."
+                                    question: "What is long-term storage fee?",
+                                    answer: "Amazon applies an Aged Inventory Surcharge (commonly known as a long-term storage fee) to any inventory that has been stored in their fulfillment centers for more than 181 days (6 months). This surcharge is applied monthly on top of your standard storage fees and becomes more expensive the longer the item sits."
                                 },
                                 {
-                                    question: "What does Auto-detect do for Size Tier?",
-                                    answer: "When set to <strong>Auto-detect</strong>, the calculator checks your entered dimensions against Amazon's official thresholds (<strong>18 × 14 × 8 inches</strong>). If your product fits within those limits, it's classified as Standard-size. Anything larger is automatically classified as Oversize — and the correct storage rate is applied."
+                                    question: "How can I avoid long-term storage fees?",
+                                    answer: "To avoid surcharges, aim to move inventory before the 6-month mark. You can run promotions, create Outlet deals, lower your price, or create a removal order to have excess stock sent back to you or disposed of before aged fees apply."
                                 },
                                 {
-                                    question: "Does this calculator include long-term storage fees?",
-                                    answer: "Yes. If your <strong>Storage Duration exceeds 6 months</strong>, the calculator automatically adds estimated <strong>Aged Inventory Surcharges</strong> (~$1.50/cu ft per additional month) on top of the standard monthly fee. This helps you identify slow-moving stock before it becomes a costly liability."
+                                    question: "Are storage fees the same as FBA fulfillment fees?",
+                                    answer: "No. <strong>Storage fees</strong> act as the monthly rent for holding your products in an Amazon fulfillment center. <strong>Fulfillment fees</strong> (pick and pack) are a separate charge applied only when an item actually sells and is shipped to a customer."
                                 },
                                 {
-                                    question: "Why is this calculator locked to USD?",
-                                    answer: "The storage rates used in this calculator (<strong>$0.87, $2.40/cu ft</strong>) are specific to the <strong>Amazon US marketplace</strong>. Amazon UK, India, and EU have entirely different rate cards and use metric measurements (cm). Showing a different currency symbol without changing the underlying math would give you incorrect results."
+                                    question: "How much inventory should I send to Amazon?",
+                                    answer: "To balance stockouts and storage costs, most sellers aim to keep <strong>30 to 60 days of inventory</strong> at Amazon. For larger volumes, it is often cheaper to use a 3PL partner for bulk storage and 'drip-feed' stock into FBA to avoid high monthly bills and long-term surcharges."
                                 }
                             ]}
                         />

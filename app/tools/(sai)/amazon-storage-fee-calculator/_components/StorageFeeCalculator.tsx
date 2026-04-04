@@ -88,11 +88,11 @@ export function StorageFeeCalculator() {
     let insightText = "Add dimensions, duration, and quantity to see insights."
     if (actualMonths > 0 && totalVolume > 0) {
         if (actualMonths > 6) {
-            insightText = "🚨 Long-term fee risk — slow-moving inventory"
+            insightText = "Long-term fee risk — slow-moving inventory"
         } else if (monthlyFee > 100) {
-            insightText = "⚠️ High storage cost — reduce size or inventory"
+            insightText = "High storage cost — reduce size or inventory"
         } else {
-            insightText = "✅ Efficient storage — low cost product"
+            insightText = "Efficient storage — low cost product"
         }
     }
 

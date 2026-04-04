@@ -6,8 +6,7 @@ export function LandedCostOverview() {
         <div className="w-full mb-16">
             <ToolSectionHeader
                 icon={Info}
-                title="What is the Landed Cost Calculator?"
-                subtitle="Calculate the true all-in cost of importing products — including hidden fees."
+                title="Tool Essential"
             />
             <ToolOverview
                 heading="What is the "

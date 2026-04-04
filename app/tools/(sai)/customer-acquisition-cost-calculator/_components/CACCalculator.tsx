@@ -110,17 +110,22 @@ export function CACCalculator() {
                                 icon: Users
                             }
                         ]}
-                    />
-                    {/* Insight Card */}
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start">
-                        <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                            <h4 className="text-sm font-semibold text-slate-900 mb-1">Benchmarks</h4>
-                            <p className="text-sm text-blue-700 leading-relaxed">
-                                A good CAC depends on your industry and LTV (Lifetime Value). A healthy business model typically aims for an LTV:CAC ratio of 3:1 or higher.
-                            </p>
+                    >
+                        {/* Benchmark Inner Card */}
+                        <div className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl transition-all duration-200 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)] hover:border-slate-300 overflow-hidden">
+                            <div className="flex items-center gap-2 p-4">
+                                <Target className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 tracking-tight">
+                                    Industry Benchmark
+                                </span>
+                            </div>
+                            <div className="px-4 pb-4 pt-0 border-t border-slate-100">
+                                <p className="text-[13px] text-slate-500 leading-relaxed pt-3 pl-[24px]">
+                                    A good CAC depends on your industry and LTV (Lifetime Value). A healthy business model typically aims for an <strong className="text-slate-700 font-semibold">LTV:CAC ratio of 3:1</strong> or higher.
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    </ResultSummaryCard>
                 </div>
             </div>
         </FadeIn>

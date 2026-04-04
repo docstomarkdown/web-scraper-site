@@ -8,7 +8,7 @@ export function ConversionGuide() {
             title="Understanding Your Conversion Data"
             items={[
                 {
-                    title: "Interpreting the Output",
+                    title: "Understand the Core Formula",
                     icon: MousePointerClick,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-500",
@@ -19,7 +19,7 @@ export function ConversionGuide() {
                     description: "Your conversion rate calculates the exact percentage of your raw traffic that successfully completed your desired, primary objective (like sales, leads, or signups)."
                 },
                 {
-                    title: "Structuring Your Data",
+                    title: "Clean Your Traffic Data",
                     icon: Users,
                     iconBg: "bg-amber-50",
                     iconColor: "text-amber-500",
@@ -30,7 +30,7 @@ export function ConversionGuide() {
                     description: "For the most precise calculation, exclude bot traffic, internal visits, and known spam from your Total Visitors input. Inflated traffic metrics artificially suppress your real conversion rate."
                 },
                 {
-                    title: "Defining Business Goals",
+                    title: "Separate Macro and Micro Goals",
                     icon: Target,
                     iconBg: "bg-purple-50",
                     iconColor: "text-purple-500",
@@ -41,7 +41,7 @@ export function ConversionGuide() {
                     description: "Not all traffic intends to buy on the first visit. It's recommended to calculate separate conversion rates against multiple goal types: from high-friction macro events (checkouts) to low-friction micro events (newsletter signups)."
                 },
                 {
-                    title: "Strategic Optimization",
+                    title: "Prioritize Conversions Over Traffic",
                     icon: TrendingUp,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-500",

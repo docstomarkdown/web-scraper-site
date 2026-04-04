@@ -78,32 +78,40 @@ export function PoshmarkFeeCalculator() {
                         />
 
                         <CardContent className="space-y-3 pt-6">
-                            <CalculatorInput
-                                label="Sold Price"
-                                value={soldPrice}
-                                onChange={setSoldPrice}
-                                placeholder="25.00"
-                                max={100000}
-                                tooltip="The final sold price of your item on Poshmark."
-                            />
+                            <div className="space-y-4 max-w-[520px] mx-auto w-full">
+                                <CalculatorInput
+                                    label="Selling Price"
+                                    value={soldPrice}
+                                    onChange={setSoldPrice}
+                                    placeholder="25.00"
+                                    max={100000}
+                                    tooltip="Price at which you are selling the item"
+                                    isCurrency={true}
+                                    currency={currency}
+                                />
 
-                            <CalculatorInput
-                                label="Shipping Discount"
-                                value={shippingDiscount}
-                                onChange={setShippingDiscount}
-                                placeholder="0.00"
-                                max={100000}
-                                tooltip="Amount of shipping YOU paid (e.g. Offer to Likers, Closet Clearout)."
-                            />
+                                <CalculatorInput
+                                    label="Item Cost"
+                                    value={costPrice}
+                                    onChange={setCostPrice}
+                                    placeholder="5.00"
+                                    max={100000}
+                                    tooltip="Your cost to buy or make the product"
+                                    isCurrency={true}
+                                    currency={currency}
+                                />
 
-                            <CalculatorInput
-                                label="Item Cost"
-                                value={costPrice}
-                                onChange={setCostPrice}
-                                placeholder="5.00"
-                                max={100000}
-                                tooltip="Your original purchase cost for the item."
-                            />
+                                <CalculatorInput
+                                    label="Shipping Discount (optional)"
+                                    value={shippingDiscount}
+                                    onChange={setShippingDiscount}
+                                    placeholder="0.00"
+                                    max={100000}
+                                    tooltip="Amount you pay for shipping on behalf of the buyer"
+                                    isCurrency={true}
+                                    currency={currency}
+                                />
+                            </div>
                         </CardContent>
                     </Card>
                 </div>

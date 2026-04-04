@@ -178,7 +178,7 @@ export function BreakEvenBreakdown({
                                     </span>
                                     <span
                                         className={cn(
-                                            "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[32px] ml-2.5",
+                                            "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 w-[32px] sm:w-[40px] ml-2.5",
                                             !item.showDot ? "text-blue-600" : "text-slate-500"
                                         )}
                                     >

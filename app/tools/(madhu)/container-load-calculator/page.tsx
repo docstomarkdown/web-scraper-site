@@ -30,8 +30,7 @@ export default function ContainerLoadCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Deep dive into how our tool precisely calculates volume utilization to help you optimize shipping costs."
+                            title="Tool Essential"
                             icon={BookOpen}
                         />
                         <ContainerLoadOverview />

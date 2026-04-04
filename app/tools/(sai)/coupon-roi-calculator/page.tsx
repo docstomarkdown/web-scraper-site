@@ -22,7 +22,6 @@ export default function CouponROICalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Understand how your coupon campaigns impact your bottom line and discover the true cost of discounting before running your next promotion."
                             icon={BookOpen}
                         />
                         <CouponROIOverview />

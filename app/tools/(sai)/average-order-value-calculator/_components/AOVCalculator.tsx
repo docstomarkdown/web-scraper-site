@@ -55,21 +55,23 @@ export function AOVCalculator() {
 
                         <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
-                                label={`Total Revenue`}
+                                groupingTitle="Sales Data"
+                                groupingIcon={DollarSign}
+                                label="Total Revenue"
                                 value={revenue}
                                 onChange={setRevenue}
                                 placeholder="50000.00"
                                 max={100000000}
-                                tooltip="Total gross sales revenue for the period."
+                                tooltip="Enter your total sales revenue for the selected period (before refunds and taxes)."
                             />
                             
                             <CalculatorInput
-                                label="Total Number of Orders"
+                                label="Total Orders"
                                 value={orders}
                                 onChange={setOrders}
                                 placeholder="850"
                                 max={1000000}
-                                tooltip="The total count of individual orders placed."
+                                tooltip="Enter the total number of completed customer orders during the same period."
                             />
                         </CardContent>
                     </Card>
@@ -97,7 +99,7 @@ export function AOVCalculator() {
                         }
                         primaryResult={{
                             value: aov,
-                            label: "Average Order Value",
+                            label: "Average Order Value (AOV)",
                             isCurrency: true,
                             key: "aov"
                         }}
@@ -107,14 +109,16 @@ export function AOVCalculator() {
                                 label: "Total Revenue",
                                 value: revenueVal,
                                 isCurrency: true,
-                                icon: DollarSign
+                                icon: DollarSign,
+                                tooltip: "This is the total revenue you entered."
                             },
                             {
                                 key: "orders",
                                 label: "Total Orders",
                                 value: ordersVal,
                                 isCurrency: false,
-                                icon: ShoppingCart
+                                icon: ShoppingCart,
+                                tooltip: "This is the total number of orders you entered."
                             }
                         ]}
                     />

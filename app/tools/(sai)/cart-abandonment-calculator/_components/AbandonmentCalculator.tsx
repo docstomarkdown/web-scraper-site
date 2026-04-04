@@ -37,12 +37,14 @@ export function AbandonmentCalculator() {
                         />
                         <CardContent className="space-y-3 pt-6">
                             <CalculatorInput
+                                groupingTitle="Checkout Performance"
+                                groupingIcon={ShoppingCart}
                                 label="Number of Carts Created"
                                 value={carts}
                                 onChange={setCarts}
                                 placeholder="500"
                                 max={1000000}
-                                tooltip="The total number of visitors who added items to their shopping cart."
+                                tooltip="Total number of shopping carts created by users during a chosen period."
                             />
                             <CalculatorInput
                                 label="Completed Transactions"
@@ -50,7 +52,7 @@ export function AbandonmentCalculator() {
                                 onChange={setTransactions}
                                 placeholder="150"
                                 max={1000000}
-                                tooltip="The number of users who successfully completed the checkout process."
+                                tooltip="Number of carts that successfully resulted in a purchase."
                             />
                         </CardContent>
                     </Card>
@@ -76,7 +78,7 @@ export function AbandonmentCalculator() {
                                 label: "Abandoned Carts",
                                 value: (cartsVal - transactionsVal).toLocaleString(),
                                 icon: UserMinus,
-                                tooltip: "Total users who dropped off (Carts - Orders)"
+                                tooltip: "Number of carts that did not convert into purchases."
                             },
                             {
                                 key: "conversion",
@@ -84,7 +86,7 @@ export function AbandonmentCalculator() {
                                 value: (isValid ? (100 - rate).toFixed(2) : 0),
                                 unit: "%",
                                 icon: Percent,
-                                tooltip: "% of users who completed purchase"
+                                tooltip: "How many shoppers completed checkout out of all carts created."
                             }
                         ]}
                         emptyMessage="Abandonment rate"

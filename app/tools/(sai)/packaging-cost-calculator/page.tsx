@@ -60,7 +60,6 @@ export default function Page() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Stop losing money on hidden fulfillment expenses. Calculate the true per-unit cost of your packaging materials, tape, labels, and labor down to the cent."
                             icon={BookOpen}
                         />
                         <PackagingCostOverview />

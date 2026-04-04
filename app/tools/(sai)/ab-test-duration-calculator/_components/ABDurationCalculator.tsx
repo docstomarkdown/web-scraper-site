@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, Target, Activity, Settings, ChevronDown, ChevronUp } from "lucide-react"
+import { Users, Target, Activity, Settings, ChevronDown, ChevronUp, Calendar, Info } from "lucide-react"
 import { FadeIn, CalculatorInput, ResultSummaryCard, CalculatorCardHeader } from "@/app/tools/_shared/components"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 export function ABDurationCalculator() {
@@ -59,9 +60,13 @@ export function ABDurationCalculator() {
 
     const insightMessage = isCalculated
         ? (duration <= 30
-            ? "Your traffic is sufficient for a reliable test ✅"
-            : "Low traffic — test will take longer ⚠️")
-        : "A quick measure of your test duration."
+            ? "Your traffic is sufficient for a reliable test"
+            : "Low traffic — test will take longer")
+        : "Estimate how long your experiment should run."
+
+    const estimatedEndDate = isCalculated
+        ? new Date(Date.now() + duration * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        : "—"
 
     return (
         <FadeIn className="w-full max-w-6xl mx-auto py-8 px-4" duration={0.6}>
@@ -78,39 +83,42 @@ export function ABDurationCalculator() {
                         />
                         <CardContent className="space-y-4 pt-6 px-6 pb-6">
                             <CalculatorInput
-                                label="Current Conversion Rate"
-                                value={baselineRate}
-                                onChange={setBaselineRate}
-                                placeholder="5"
-                                max={100}
-                                suffix="%"
-                                tooltip="Out of 100 users, how many convert. Example: 5"
-                            />
-                            <CalculatorInput
-                                label="Expected Improvement"
-                                value={mde}
-                                onChange={setMde}
-                                placeholder="10"
-                                max={1000}
-                                suffix="%"
-                                tooltip="How much better you expect Version B to perform. Smaller improvements need longer tests."
-                            />
-                            <CalculatorInput
+                                groupingTitle="Test Configuration"
+                                groupingIcon={Target}
                                 label="Daily Visitors"
                                 value={dailyVisitors}
                                 onChange={setDailyVisitors}
                                 placeholder="1000"
                                 max={10000000}
-                                tooltip="Number of users visiting per day. Example: 1000"
+                                tooltip="How many users visit your page per day."
+                            />
+                            <CalculatorInput
+                                label="Current Conversion Rate (%)"
+                                value={baselineRate}
+                                onChange={setBaselineRate}
+                                placeholder="5"
+                                max={100}
+                                suffix="%"
+                                tooltip="Your existing conversion rate. Example: if 5 out of 100 visitors convert, enter 5%."
+                            />
+                            <CalculatorInput
+                                label="Expected Improvement (%)"
+                                value={mde}
+                                onChange={setMde}
+                                placeholder="10"
+                                max={1000}
+                                suffix="%"
+                                tooltip="The minimum uplift you want to detect—example: enter 10% if you expect your test version to convert 10% better."
                             />
                             <CalculatorInput
                                 label="Traffic Split"
+                                isOptional={true}
                                 value={trafficSplit}
                                 onChange={setTrafficSplit}
                                 placeholder="50"
                                 max={99}
                                 suffix="/ 50"
-                                tooltip="How users are divided between A & B. Default: 50 / 50"
+                                tooltip="How you divide visitors between Variant A and B (default: 50/50)."
                             />
                         </CardContent>
                     </Card>
@@ -119,40 +127,46 @@ export function ABDurationCalculator() {
                 {/* ── RIGHT: Results ── */}
                 <div className="lg:col-span-5 space-y-4">
                     <ResultSummaryCard
-                        title="Test Duration"
+                        title="Test Results"
                         isCalculated={isCalculated}
+                        liveBadgeText={
+                            duration < 7 ? "Too Short" : duration > 30 ? "Check Risk" : "Optimal"
+                        }
+                        liveBadgeColor={
+                            duration < 7 ? "amber" : duration > 30 ? "rose" : "emerald"
+                        }
                         primaryResult={{
-                            label: "RUN TEST FOR",
-                            value: isCalculated ? duration : 0,
-                            unit: "days",
+                            label: "REQUIRED TEST DURATION",
+                            value: isCalculated ? `Run your test for: ${duration} days` : "—",
+                            unit: "",
                             key: "duration"
                         }}
                         description={insightMessage}
                         emptyMessage="Test duration"
                         secondaryResults={[
                             {
-                                key: "samplePerVariant",
-                                label: "Sample Size per Variant",
-                                value: isCalculated ? sampleSize.toLocaleString() : "0",
-                                unit: "users",
-                                tooltip: "Users needed for each version (A & B)",
-                                icon: Users
-                            },
-                            {
                                 key: "totalVisitors",
                                 label: "Total Visitors Needed",
                                 value: isCalculated ? totalVisitorsNeeded.toLocaleString() : "0",
                                 unit: "users",
-                                tooltip: "Total users required (A + B)",
+                                tooltip: "The total sample size required for a trustworthy result.",
                                 icon: Target
                             },
                             {
-                                key: "dailyPerVariant",
-                                label: "Daily Users per Variant",
-                                value: isCalculated ? dailyPerVariant.toLocaleString() : "0",
-                                unit: "users/day",
-                                tooltip: "Users per version per day",
-                                icon: Activity
+                                key: "samplePerVariant",
+                                label: "Visitors Needed Per Variant",
+                                value: isCalculated ? sampleSize.toLocaleString() : "0",
+                                unit: "users",
+                                tooltip: "Minimum number of visitors required for Variant A and Variant B.",
+                                icon: Users
+                            },
+                            {
+                                key: "estimatedEndDate",
+                                label: "Estimated End Date",
+                                value: estimatedEndDate,
+                                unit: "",
+                                tooltip: "Based on today’s date and the calculated duration.",
+                                icon: Calendar
                             }
                         ]}
                     >
@@ -163,9 +177,12 @@ export function ABDurationCalculator() {
                                 onClick={() => setSettingsOpen(o => !o)}
                                 className="w-full flex items-center justify-between p-4 text-left group"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 flex-1">
                                     <Settings className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                    <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 group-hover:text-slate-600 transition-colors">Test Settings</span>
+                                    <span className="text-[13px] sm:text-[14px] font-bold text-slate-500 group-hover:text-slate-600 transition-colors flex-1 text-left tracking-tight">
+                                        Test Settings
+                                        <span className="ml-1.5 font-normal italic text-[12px] text-slate-400 lowercase tracking-normal group-hover:text-blue-400/80 transition-colors">(optional)</span>
+                                    </span>
                                 </div>
                                 {settingsOpen
                                     ? <ChevronUp className="w-4 h-4 text-slate-400 group-hover:text-slate-500 transition-colors" />
@@ -178,14 +195,36 @@ export function ABDurationCalculator() {
                                 settingsOpen ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
                             )}>
                                 <div className="px-4 pb-4 pt-1 space-y-0 border-t border-slate-100">
-                                    <div className="flex justify-between items-center py-3 border-b border-slate-100">
-                                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Confidence Level</span>
-                                        <span className="text-[16px] sm:text-[17px] font-bold tracking-tight text-slate-700">95%</span>
-                                    </div>
-                                    <div className="flex justify-between items-center py-3">
-                                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Statistical Power</span>
-                                        <span className="text-[16px] sm:text-[17px] font-bold tracking-tight text-slate-700">80%</span>
-                                    </div>
+                                    <TooltipProvider delayDuration={100}>
+                                        <div className="flex justify-between items-center py-3 border-b border-slate-100 group/item">
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Confidence Level</span>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Info className="w-3.5 h-3.5 text-slate-400 cursor-help" />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="max-w-xs text-[11px] bg-slate-900 text-white border-slate-800">
+                                                        Higher confidence means more reliable results but needs more time (default: 95%).
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </div>
+                                            <span className="text-[16px] sm:text-[17px] font-bold tracking-tight text-slate-700">95%</span>
+                                        </div>
+                                        <div className="flex justify-between items-center py-3 group/item">
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Statistical Power</span>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Info className="w-3.5 h-3.5 text-slate-400 cursor-help" />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="max-w-xs text-[11px] bg-slate-900 text-white border-slate-800">
+                                                        Power determines how likely your test is to detect a real difference (default: 80%).
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </div>
+                                            <span className="text-[16px] sm:text-[17px] font-bold tracking-tight text-slate-700">80%</span>
+                                        </div>
+                                    </TooltipProvider>
                                     <p className="text-[11.5px] text-slate-400 leading-relaxed pt-2">
                                         These are standard settings to ensure accurate and reliable test results. You don't need to change them.
                                     </p>

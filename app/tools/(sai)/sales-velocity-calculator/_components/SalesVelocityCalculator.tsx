@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { TrendingUp, AlertTriangle } from "lucide-react"
+import { TrendingUp, AlertTriangle, BarChart2, Calendar, DollarSign } from "lucide-react"
 import { CalculatorCardHeader, CalculatorInput, Counter, FadeIn } from "@/app/tools/_shared/components"
 import { ResultSummaryCard } from "@/app/tools/_shared/components/ResultSummaryCard"
 import { SalesVelocityBreakdown } from "./SalesVelocityBreakdown"
@@ -113,54 +113,64 @@ export function SalesVelocityCalculator() {
                                 label: "Raw Daily Average",
                                 value: rawVelocity.toFixed(1),
                                 unit: "/ Day",
-                                tooltip: "Unadjusted sales per day over the period."
+                                tooltip: "Unadjusted sales per day over the period.",
+                                icon: BarChart2
                             },
                             {
                                 key: "monthlyRunRate",
                                 label: "Monthly Run Rate",
                                 value: monthlyRunRate.toFixed(0),
                                 unit: "Units",
-                                tooltip: "Projected monthly unit sales if perfectly in stock."
+                                tooltip: "Projected monthly unit sales if perfectly in stock.",
+                                icon: Calendar
                             }
                         ]}
                         isCalculated={days > 0 || totalSold > 0}
                         emptyMessage="True Sales Velocity"
-                        validationBadgeText={{ valid: "Calculated", invalid: "Pending" }}
+                        liveBadgeText={
+                            oosDays > 0
+                                ? "Stockout Adjusted"
+                                : "Fully In Stock"
+                        }
+                        liveBadgeColor={
+                            oosDays > 0
+                                ? "amber"
+                                : "emerald"
+                        }
                     >
                         {/* Information inside the card */}
-                        <div className="flex flex-col gap-3 mt-2 mx-5 mb-5">
-                            {/* Analysis Card */}
-                            <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm space-y-3">
-                                <div className="flex items-start gap-3">
-                                    <TrendingUp className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <h4 className="text-sm font-bold text-slate-800 mb-1">
-                                            Forecasting Insight
-                                        </h4>
-                                        <p className="text-xs text-slate-600 leading-relaxed">
-                                            {oosDays > 0 ? (
-                                                <>
-                                                    You were out of stock for <strong>{oosDays} days</strong>.
-                                                    If you had been in stock, you likely would have sold <strong>{((trueVelocity * days) - totalSold).toFixed(0)} more units</strong>.
-                                                    Use the <strong>{trueVelocity.toFixed(1)}/day</strong> rate for future reordering.
-                                                </>
-                                            ) : (
-                                                <>
-                                                    No stockouts recorded. Your sales velocity is steady at <strong>{rawVelocity.toFixed(1)} units/day</strong>.
-                                                </>
-                                            )}
-                                        </p>
-                                    </div>
+                        <div className="flex flex-col gap-3">
+                            {/* Forecasting Insight Card */}
+                            <div className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <TrendingUp className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                    <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Forecasting Insight</span>
                                 </div>
+                                <p className="text-sm text-slate-600 leading-relaxed pl-6">
+                                    {oosDays > 0 ? (
+                                        <>
+                                            You were out of stock for <strong>{oosDays} days</strong>. If you had been in stock, you likely would have sold <strong>{((trueVelocity * days) - totalSold).toFixed(0)} more units</strong>. Use the <strong>{trueVelocity.toFixed(1)}/day</strong> rate for future reordering.
+                                        </>
+                                    ) : (
+                                        <>
+                                            No stockouts recorded. Your sales velocity is steady at <strong>{rawVelocity.toFixed(1)} units/day</strong>.
+                                        </>
+                                    )}
+                                </p>
                             </div>
-                            
+
                             {/* Revenue Card */}
                             {unitPrice > 0 && (
-                                <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 shadow-sm space-y-1">
-                                    <h4 className="text-[11px] font-bold text-blue-500 uppercase tracking-wider">Projected Monthly Revenue</h4>
-                                    <div className="text-2xl font-bold text-slate-800 flex items-baseline gap-1.5">
-                                        <Counter value={revenueRunRate} formatter={formatCurrency} key={currency} />
-                                        <span className="text-xs font-normal text-slate-400">/ mo</span>
+                                <div className="bg-white border border-slate-200/70 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <DollarSign className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                        <span className="text-[13px] sm:text-[14px] font-bold text-slate-500">Projected Monthly Revenue</span>
+                                    </div>
+                                    <div className="pl-6 flex items-baseline gap-1.5">
+                                        <span className="text-[16px] sm:text-[17px] font-bold tracking-tight text-slate-700">
+                                            <Counter value={revenueRunRate} formatter={formatCurrency} key={currency} />
+                                        </span>
+                                        <span className="text-[0.6em] font-medium text-slate-400 ml-1">/ mo</span>
                                     </div>
                                 </div>
                             )}

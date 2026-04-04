@@ -8,44 +8,44 @@ export function PoshmarkFeeGuide() {
             title="Understanding Poshmark Fees & Payouts"
             items={[
                 {
-                    title: "Tiered Commission Structure",
-                    description: "Poshmark takes a flat $2.95 commission for items priced below $15. For items $15 and above, they take a 20% commission, and you keep 80%.",
+                    title: "Optimize Low-Priced Items",
+                    description: "Poshmark takes a flat $2.95 fee for any sale under $15. Selling a $10 item means giving away nearly 30% of your revenue in fees. Aim to price items at least $15 or higher to switch back to the more favorable 20% flat commission.",
                     icon: DollarSign,
                     iconBg: "bg-rose-50",
                     iconColor: "text-rose-600",
-                    stat: "80%",
+                    stat: "Protect",
                     statColor: "text-rose-700",
-                    statLabel: "Seller Portion"
+                    statLabel: "Your Margins"
                 },
                 {
-                    title: "Shipping Discount Impacts",
-                    description: "When using 'Offer to Likers,' Poshmark requires you to provide a shipping discount. This discount comes directly out of your 80% earnings.",
+                    title: "Utilize Closet Clearout Days",
+                    description: "Instead of paying for shipping discounts yourself via 'Offer to Likers,' wait for Closet Clearout events. If you drop your listing price by 10%, Poshmark will cover the shipping discount, retaining your expected net profit.",
                     icon: Truck,
                     iconBg: "bg-blue-50",
                     iconColor: "text-blue-600",
-                    stat: "Varies",
+                    stat: "Free",
                     statColor: "text-blue-700",
-                    statLabel: "Discount Amount"
+                    statLabel: "Shipping Promos"
                 },
                 {
-                    title: "Poshmark Selling ROI",
-                    description: "True ROI (Return on Investment) depends on your original cost of goods. By subtracting your cost, you can see if your time and effort on Poshmark is profitable.",
-                    icon: TrendingUp,
+                    title: "Bundle to Improve ROI",
+                    description: "Encourage buyers to purchase multiple low-priced items at once. Bundling dramatically protects your ROI by keeping the total order value well above $15, thereby bypassing the harsh $2.95 flat fee on individual cheap listings.",
+                    icon: ShoppingBag,
                     iconBg: "bg-emerald-50",
                     iconColor: "text-emerald-600",
-                    stat: "ROI",
+                    stat: "Scale",
                     statColor: "text-emerald-700",
-                    statLabel: "Target Metric"
+                    statLabel: "Order Value"
                 },
                 {
-                    title: "Seller Protections Included",
-                    description: "Poshmark's commission covers payment processing, customer service, and their 'Posh Protect' seller insurance, ensuring you get paid even if items are lost in transit.",
-                    icon: ShieldCheck,
+                    title: "Target the '3x Sourcing Rule'",
+                    description: "A standard benchmark for successful clothing resellers: list your items for at least 3 times what you paid for them. This provides enough buffer room to absorb the 20% marketplace fee and leaving room to send 20% off offers to likers while staying highly profitable.",
+                    icon: TrendingUp,
                     iconBg: "bg-indigo-50",
                     iconColor: "text-indigo-600",
-                    stat: "Secure",
+                    stat: "3x",
                     statColor: "text-indigo-700",
-                    statLabel: "Protection Status"
+                    statLabel: "Sourcing Metric"
                 }
             ]}
         />

@@ -9,7 +9,6 @@ export function TACoSOverview() {
             <ToolSectionHeader 
                 icon={Info}
                 title="Tool Essential"
-                subtitle="Understand the true impact of your advertising on your entire business."
             />
             <ToolOverview
                 heading="Why track your "

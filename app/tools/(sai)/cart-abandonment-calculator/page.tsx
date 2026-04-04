@@ -28,8 +28,7 @@ export default function CartAbandonmentCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16" id="abandonment-guide">
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about calculating and analyzing your cart abandonment rate."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <div className="mt-8">
@@ -47,24 +46,28 @@ export default function CartAbandonmentCalculatorPage() {
                         <ToolFAQ
                             faqs={[
                                 {
-                                    question: "What exactly is cart abandonment?",
-                                    answer: "Cart abandonment is when a shopper adds an item to their online cart but leaves the website before completing the purchase. Our calculator directly measures this as a percentage by comparing total carts created to completed transactions."
+                                    question: "Where do I find my 'Carts Created' and 'Successful Checkouts' in Shopify/WooCommerce?",
+                                    answer: "In Shopify, check <strong>Analytics > Reports</strong> for 'Added to Cart' (carts created) and 'Total Orders'. In WooCommerce, use <strong>WooCommerce Analytics > Orders</strong> or use Google Analytics Enhanced Ecommerce tracking."
                                 },
                                 {
-                                    question: "What is a 'good' cart abandonment rate?",
-                                    answer: "A 'good' cart abandonment rate sits securely under <strong>60%</strong>. However, the global e-commerce average is nearly <strong>70%</strong>. Industries like travel and finance tend to have even higher abandonment rates naturally due to browsing behaviors."
+                                    question: "What is considered a good cart abandonment rate?",
+                                    answer: "A good rate is <strong>under 60%</strong>, though the global e-commerce average is around <strong>70%</strong>. If your rate falls above 75%, your checkout flow needs immediate optimization."
                                 },
                                 {
-                                    question: "Why do so many users abandon their checkout?",
-                                    answer: "The primary culprit is usually <strong>hidden costs</strong> such as taxes or steep shipping fees revealed at the final step. Other massive friction points include requiring users to create an account instead of providing 'guest checkout', complex form validations, or a confusing UI."
+                                    question: "What causes high cart abandonment?",
+                                    answer: "The #1 cause is <strong>unexpected shipping costs or taxes</strong> at checkout. Other major factors include forced account creation, long checkout forms, a lack of preferred payment options (like PayPal/Apple Pay), and slow mobile page speeds."
                                 },
                                 {
-                                    question: "How do I fix a high abandonment rate?",
-                                    answer: "You should immediately optimize three things: <strong>transparency, speed, and trust</strong>. Show shipping costs early, offer a streamlined guest checkout option, minimize mandatory form fields, display security badges clearly, and ensure page-loads are incredibly fast especially on mobile."
+                                    question: "How can I reduce my cart abandonment rate?",
+                                    answer: "Offer a simple <strong>Guest Checkout</strong> option, show shipping costs upfront unconditionally, minimize mandatory form fields, display prominent trust badges, and ensure your mobile checkout loads instantly."
                                 },
                                 {
-                                    question: "Does cart abandonment negative impact my SEO?",
-                                    answer: "No, search engines like Google cannot see your specific checkout drop-off rate. However, extreme abandonment might indicate terrible overall page performance, slow speeds, or poor UI—and <i>those</i> broader user experience (UX) signals do heavily impact rankings."
+                                    question: "What’s the difference between cart abandonment and checkout abandonment?",
+                                    answer: "<strong>Cart abandonment</strong> is when a shopper adds an item but never starts the checkout process. <strong>Checkout abandonment</strong> is when they start entering their details (like email or address) but leave before actually paying."
+                                },
+                                {
+                                    question: "What tools or methods can I use to recover abandoned carts?",
+                                    answer: "Set up automated <strong>email recovery flows</strong> using tools like Klaviyo or Mailchimp. You can also use automated SMS reminders, browser push notifications, and retargeting ads on Meta/Google to win back those lost sales."
                                 }
                             ]}
                         />

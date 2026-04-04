@@ -4,24 +4,24 @@ import { ToolOverview } from "@/app/tools/_shared/components"
 export function AOVOverview() {
     return (
         <ToolOverview
-            heading="Why Calculate Average Order Value?"
-            headingAccent="Average Order Value"
-            definition="The primary purpose of the Average Order Value (AOV) Calculator is to instantly reveal how much revenue you generate every time a customer checks out. Built for e-commerce store owners, dropshippers, and marketers, this tool transforms your gross revenue and order counts into a single powerful benchmark. It is your essential tool to track customer spending habits, evaluate pricing strategies, and set goals for bundles or free shipping thresholds."
+            heading="What is the AOV Calculator?"
+            headingAccent="AOV Calculator"
+            definition="The Average Order Value (AOV) Calculator is a free, simple tool that helps online businesses measure how much money they earn on each customer order. Just enter your total revenue and number of orders, and the tool instantly calculates your AOV—showing whether your store is attracting high-value buyers or needs improvement. Used by ecommerce owners, marketers, DTC brands, Shopify/WooCommerce sellers, and analytics teams, it reveals how effectively your store converts traffic into revenue and helps you identify opportunities to grow basket size."
             facts={[
                 {
                     stat: "Instant",
-                    label: "Calculation",
-                    detail: "Quickly determine your exact average order value by processing your total gross sales revenue against your total transaction volume."
+                    label: "AOV Calculation",
+                    detail: "Quickly see how much revenue you earn per order with just two inputs—no complex formulas or spreadsheets needed."
                 },
                 {
-                    stat: "Global",
-                    label: "Currencies",
-                    detail: "Analyze your metrics accurately in your preferred local market with native support for over 30 different international currencies."
+                    stat: "Clear",
+                    label: "Revenue Insights",
+                    detail: "Understand your total revenue, order count, and (optional) revenue per customer to spot buying patterns and performance trends."
                 },
                 {
-                    stat: "Data",
-                    label: "Breakdown",
-                    detail: "View a clear, side-by-side dashboard that organizes your total revenue and order volume alongside your primary AOV result for easy benchmarking."
+                    stat: "Actionable",
+                    label: "Growth Ideas",
+                    detail: "Get smart suggestions—like bundles, upsells, and free-shipping thresholds—to help you increase your store’s average order value."
                 }
             ]}
         />

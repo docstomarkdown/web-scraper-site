@@ -146,37 +146,24 @@ export function LandedCostBreakdown({
                         return (
                             <div
                                 key={item.label}
-                                className="flex items-start sm:items-center justify-between px-3 bg-white border border-slate-200/80 rounded-[10px] py-1.5 shadow-sm w-full gap-2 transition-all hover:border-slate-300"
+                                className="grid text-[11px] px-3 bg-white border border-slate-100 rounded-lg py-1.5 shadow-sm"
+                                style={{ gridTemplateColumns: "1fr auto auto" }}
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 min-w-0">
                                     <div
-                                        className="w-2.5 h-2.5 rounded-full shrink-0 mt-0.5"
+                                        className="w-2 h-2 rounded-full shrink-0"
                                         style={{ backgroundColor: derivedDotColor }}
                                     />
-                                    <span className="text-[11.5px] text-slate-600 font-bold leading-tight whitespace-nowrap">
+                                    <span className="text-slate-600 font-bold truncate">
                                         {item.label}
                                     </span>
                                 </div>
-                                <div className="flex items-center flex-1 justify-end shrink-0">
-                                    <span
-                                        className={cn(
-                                            "text-[12px] font-semibold tabular-nums text-right flex-shrink-0 min-w-[60px]",
-                                            "text-slate-500"
-                                        )}
-                                    >
-                                        {formatCurrency(item.value)}
-                                    </span>
-                                    <span
-                                        className={cn(
-                                            "text-[12px] font-extrabold tabular-nums text-right flex-shrink-0 min-w-[32px] ml-2.5",
-                                            "text-slate-900"
-                                        )}
-                                    >
-                                        {Math.abs(item.value) > 0
-                                            ? `${item.pct.toFixed(0)}%`
-                                            : "—"}
-                                    </span>
-                                </div>
+                                <span className="text-slate-500 font-semibold tabular-nums text-right px-2 self-center">
+                                    {formatCurrency(item.value)}
+                                </span>
+                                <span className="font-extrabold text-slate-900 tabular-nums text-right self-center w-[36px]">
+                                    {`${item.pct.toFixed(0)}%`}
+                                </span>
                             </div>
                         )
                     })}

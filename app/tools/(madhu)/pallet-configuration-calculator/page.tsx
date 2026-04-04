@@ -23,8 +23,7 @@ export default function PalletConfigurationCalculatorPage() {
                 <div className="max-w-4xl mx-auto space-y-16">
                     <FadeIn delay={0.1}>
                         <ToolSectionHeader 
-                            title="Tool Essential" 
-                            subtitle="Everything you need to know about finding the best way to load boxes onto a pallet."
+                            title="Tool Essential"
                             icon={Lightbulb}
                         />
                         <PalletOverview />

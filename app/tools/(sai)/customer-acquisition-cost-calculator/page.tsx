@@ -30,7 +30,6 @@ export default function CACCalculatorPage() {
                     <FadeIn delay={0.2}>
                         <ToolSectionHeader
                             title="Tool Essential"
-                            subtitle="Understand how tracking your Customer Acquisition Cost helps you evaluate and optimize your marketing strategies."
                             icon={Target}
                         />
                         <CACOverview />
