@@ -73,7 +73,7 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                                     </h3>
                                     <div
                                         className="text-[14.5px] text-slate-500 leading-relaxed font-medium [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
-                                        dangerouslySetInnerHTML={{ __html: item.description.replace(/<strong>(.*?)<\/strong>/gi, '$1') }}
+                                        dangerouslySetInnerHTML={{ __html: (item.description ?? '').replace(/<strong>(.*?)<\/strong>/gi, '$1') }}
                                     />
                                 </div>
                             </div>
