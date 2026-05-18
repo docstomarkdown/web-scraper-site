@@ -44,11 +44,18 @@ export default function Footer() {
                             )}
                         </div>
 
-                        <img
-                            src="/badge.png"
-                            alt="Chrome Web Store badge"
-                            className="h-11 w-auto"
-                        />
+                        <Link
+                            href="https://chromewebstore.google.com/detail/web-scraper-pro/mdlllfgflmhlfjpdjggpbncdjgckcaan?utm_source=website&utm_medium=footer&utm_campaign=chrome_install"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-block"
+                        >
+                            <img
+                                src="/badge.png"
+                                alt="Available in the Chrome Web Store"
+                                className="h-11 w-auto opacity-90 hover:opacity-100 transition-opacity"
+                            />
+                        </Link>
                     </div>
 
                     <div className="lg:col-span-2">

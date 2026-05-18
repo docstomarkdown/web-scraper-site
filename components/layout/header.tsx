@@ -148,7 +148,7 @@ export default function Header() {
                 asChild
                 className="h-10 px-6 rounded-xl border border-[#2772ED]/25 bg-[#2772ED]/8 text-[#1f5ec2] hover:bg-[#2772ED]/14 hover:border-[#2772ED]/35 shadow-sm shadow-[#2772ED]/10 transition-all duration-300"
               >
-                <Link href={productConfig.product.ctaUrl} target="_blank">
+                <Link href={`${productConfig.product.ctaUrl}?utm_source=website&utm_medium=header&utm_campaign=chrome_install`} target="_blank">
                   Install Web Scraper Pro
                 </Link>
               </Button>
@@ -214,7 +214,7 @@ export default function Header() {
                     ))}
                     <div className="pt-6 mt-auto">
                       <Button asChild className="w-full h-11 rounded-xl border border-[#2772ED]/25 bg-[#2772ED]/8 hover:bg-[#2772ED]/14 hover:border-[#2772ED]/35 text-base text-[#1f5ec2] shadow-sm shadow-[#2772ED]/10 transition-all duration-300">
-                        <Link href={productConfig.product.ctaUrl} target="_blank">
+                        <Link href={`${productConfig.product.ctaUrl}?utm_source=website&utm_medium=header_mobile&utm_campaign=chrome_install`} target="_blank">
                           Install Web Scraper Pro
                         </Link>
                       </Button>

@@ -94,7 +94,7 @@ export const productConfig = {
     url: "https://www.webscraper.pro/",
     ctaText: "Install Web Scraper.do Free",
     ctaUrl:
-      "#", // Placeholder
+      "https://chromewebstore.google.com/detail/web-scraper-pro/mdlllfgflmhlfjpdjggpbncdjgckcaan",
     target: "_blank",
     secondaryCtaText: "Watch How",
     secondaryCtaUrl: "",

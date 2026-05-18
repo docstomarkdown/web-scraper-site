@@ -36,7 +36,7 @@ export default function CTA() {
 
                         <div className="mt-8 flex justify-center">
                             <Link
-                                href={productConfig.product.ctaUrl}
+                                href={`${productConfig.product.ctaUrl}?utm_source=website&utm_medium=cta_section&utm_campaign=chrome_install`}
                                 target="_blank"
                                 className="group inline-flex items-center justify-center rounded-xl bg-[#2772ED] hover:bg-[#1f5ec2] px-8 py-3.5 text-base font-semibold text-white transition-all hover:translate-y-[-1px] active:scale-[0.98] gap-2 shadow-lg shadow-[#2772ED]/25"
                             >
