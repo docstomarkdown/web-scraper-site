@@ -71,10 +71,16 @@ export function ToolGuide({ title, icon = BookOpen, items }: ToolGuideProps) {
                                     <h3 className="text-[16px] font-bold text-slate-600 mb-1 leading-snug transition-colors">
                                         {item.title}
                                     </h3>
-                                    <div
-                                        className="text-[14.5px] text-slate-500 leading-relaxed font-medium [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
-                                        dangerouslySetInnerHTML={{ __html: (item.description ?? '').replace(/<strong>(.*?)<\/strong>/gi, '$1') }}
-                                    />
+                                    {typeof item.description === 'string' ? (
+                                        <div
+                                            className="text-[14.5px] text-slate-500 leading-relaxed font-medium [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500"
+                                            dangerouslySetInnerHTML={{ __html: item.description.replace(/<strong>(.*?)<\/strong>/gi, '$1') }}
+                                        />
+                                    ) : (
+                                        <div className="text-[14.5px] text-slate-500 leading-relaxed font-medium [&_em]:not-italic [&_em]:font-semibold [&_em]:text-slate-500">
+                                            {item.description}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             </div>
